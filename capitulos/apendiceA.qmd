@@ -1,0 +1,526 @@
+---
+title: "Configuração do Ambiente de Desenvolvimento"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Introdução {#sec-apA-intro}
+
+Este apêndice descreve, passo a passo, a configuração do ambiente de
+desenvolvimento apresentado no @sec-03-ambiente, tanto por máquina
+virtual como por contentores. Há, para cada uma destas duas abordagens,
+dois cenários possíveis:
+
+- **O professor fornece o ambiente já preparado**: uma máquina virtual
+  já instalada e configurada, distribuída como ficheiro `.ova`, ou um
+  conjunto de contentores já definidos, distribuídos como ficheiros de
+  configuração ou como imagens já construídas. Este é o cenário mais
+  comum, e o único que a maioria dos alunos precisa de seguir.
+- **O aluno constrói o ambiente do zero**: instalando e configurando
+  ele próprio o `Apache`, o `MySQL` e o `PHP`, ou escrevendo o seu
+  próprio `Dockerfile` e `docker-compose.yml`. É útil para quem quer
+  usar o mesmo ambiente num computador pessoal fora do contexto da
+  aula, ou simplesmente compreender, em detalhe, do que é feito o
+  ambiente que lhe é disponibilizado.
+
+Nenhuma destas descrições substitui as instruções concretas que possam
+vir a ser dadas nas aulas práticas, que podem especificar versões,
+configurações de rede ou credenciais diferentes das aqui usadas como
+exemplo; o objetivo deste apêndice é apenas garantir que qualquer aluno
+consegue, por si só, chegar a um ambiente funcional, com o `Apache`, o
+`PHP` e o `MySQL` prontos a usar.
+
+### Sistemas Operativos dos Computadores dos Alunos {#sec-apA-sistemas}
+
+Antes de descarregar qualquer *software*, é importante saber qual das
+seguintes três variantes corresponde ao computador de cada aluno, já
+que tanto o `VirtualBox` como o `Docker Desktop` disponibilizam
+instaladores diferentes para cada uma:
+
+- **Windows**;
+- **macOS com processador Intel** (Mac mais antigos, anteriores a
+  2020/2021);
+- **macOS com Apple Silicon** (Mac com processador `M1`, `M2`, `M3` ou
+  `M4`, a generalidade dos modelos vendidos a partir de 2020/2021).
+
+Num Mac, esta informação obtém-se no menu `Apple` (o ícone no canto
+superior esquerdo do ecrã), em *Sobre Este Mac*: se o campo `Chip`
+mostrar `Apple M1`, `M2`, `M3` ou `M4`, trata-se de Apple Silicon; se
+mostrar `Processador Intel`, trata-se de um Mac Intel. Escolher o
+instalador errado é um dos erros mais comuns nesta fase, e resulta
+tipicamente numa aplicação que não abre, ou que abre mas falha ao
+iniciar qualquer máquina virtual ou contentor.
+
+### O phpMyAdmin {#sec-apA-phpmyadmin}
+
+O [`phpMyAdmin`](https://www.phpmyadmin.net/) é uma ferramenta gratuita
+de administração do `MySQL` através do *browser*, escrita, ela própria,
+em PHP. Em vez de escrever instruções SQL na linha de comandos para ver
+o conteúdo de uma tabela, criar uma base de dados, ou verificar se uma
+linha foi corretamente inserida, o `phpMyAdmin` mostra tudo isto numa
+interface visual, o que o torna particularmente útil enquanto se
+aprende a trabalhar com bases de dados. Nem a máquina virtual, nem os
+contentores, precisam obrigatoriamente de o incluir, o `MySQL` funciona
+perfeitamente sem ele, mas, quando disponível, é frequentemente a forma
+mais rápida de confirmar visualmente que uma aplicação PHP está, de
+facto, a gravar e a ler os dados corretos. Este apêndice indica, em
+cada uma das quatro secções seguintes, como aceder ao `phpMyAdmin`
+quando este é fornecido pelo professor, e como o instalar quando o
+ambiente é construído do zero.
+
+## Máquina Virtual Fornecida pelo Professor {#sec-apA-vm-fornecida}
+
+### Instalar o VirtualBox {#sec-apA-vm-fornecida-instalar}
+
+O único *software* que cada aluno precisa de instalar, neste cenário, é
+o `VirtualBox`, disponível gratuitamente em
+[virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads),
+onde aparecem pacotes de instalação separados consoante o sistema
+operativo do computador: `Windows hosts`, `macOS / Intel hosts` e
+`macOS / Apple Silicon hosts`, correspondendo às três variantes
+descritas no @sec-apA-sistemas. A máquina virtual em si, com o `Ubuntu`
+e toda a *stack* de desenvolvimento já instalados e configurados, é
+fornecida separadamente pelo professor, como um ficheiro `.ova`.
+
+### Importar o Ficheiro .ova {#sec-apA-vm-fornecida-importar}
+
+Com o `VirtualBox` instalado e o ficheiro `.ova` fornecido pelo
+professor guardado no computador, os passos para o pôr a funcionar são:
+
+1. Abrir o `VirtualBox` e escolher `Ficheiro > Importar Appliance...`
+   (ou o atalho `Ctrl+I`);
+2. Selecionar o ficheiro `.ova` fornecido;
+3. Rever as definições propostas para a máquina virtual (nome, memória
+   RAM, número de processadores, localização do disco virtual), que já
+   vêm preenchidas com os valores usados pelo professor, e que podem
+   ser ajustadas, dentro dos limites do computador de cada aluno, antes
+   de avançar;
+4. Confirmar a importação e aguardar que o `VirtualBox` copie e
+   descomprima o conteúdo do ficheiro `.ova`, um processo que pode
+   demorar vários minutos, consoante o tamanho da máquina virtual e a
+   velocidade do disco;
+5. Concluída a importação, selecionar a máquina virtual na lista do
+   `VirtualBox` e clicar em `Iniciar`.
+
+As credenciais de acesso (nome de utilizador e password) dentro da
+máquina virtual, bem como o endereço e a porta onde a aplicação fica
+acessível a partir do *browser* do computador anfitrião (por exemplo,
+`http://localhost:8080`, caso a máquina virtual use reencaminhamento de
+portas em vez de acesso direto), são indicados pelo professor juntamente
+com o ficheiro `.ova`, já que podem variar de ano para ano.
+
+### Primeiros Testes {#sec-apA-vm-fornecida-testes}
+
+Depois de a máquina virtual arrancar, antes de começar a programar, vale
+a pena confirmar que tudo está a funcionar como esperado. Num terminal
+dentro da máquina virtual, verifica-se a versão de cada componente já
+instalado:
+
+```bash
+php -v
+apache2 -v
+mysql --version
+```
+
+De seguida, testa-se a ligação ao `PHP` através do *browser*: abrindo o
+endereço indicado pelo professor (dentro da máquina virtual,
+tipicamente `http://localhost`; a partir do computador anfitrião,
+consoante a configuração de rede da máquina virtual), deve aparecer uma
+página servida pelo `Apache` e processada pelo `PHP`. Por fim, testa-se
+a ligação à base de dados, seja diretamente no terminal:
+
+```bash
+mysql -u root -p
+```
+
+seja através de um pequeno *script* PHP como o apresentado no
+@sec-apA-verificacao, que confirma que o `PHP` consegue efetivamente
+comunicar com o `MySQL`, e não apenas que os dois serviços estão, cada
+um por si, a correr.
+
+Se a máquina virtual fornecida pelo professor incluir também o
+`phpMyAdmin`, uma ferramenta de administração do `MySQL` através do
+*browser*, referida no @sec-apA-phpmyadmin, é essa a forma mais
+simples de confirmar visualmente que a base de dados está acessível,
+sem ser necessário usar a linha de comandos: basta abrir
+`http://localhost/phpmyadmin` (ou o endereço indicado pelo professor) e
+autenticar-se com as credenciais do `MySQL`.
+
+## Contentores Fornecidos pelo Professor {#sec-apA-docker-fornecido}
+
+### Instalar o Docker {#sec-apA-docker-fornecido-instalar}
+
+Tal como na opção da máquina virtual, o único *software* que cada aluno
+precisa de instalar, neste cenário, é o `Docker`. Em Windows e em
+macOS, instala-se o `Docker Desktop`, disponível em
+[docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/),
+onde aparecem, tal como no `VirtualBox`, instaladores separados para
+`Mac with Apple silicon` e `Mac with Intel chip`, além do instalador
+para Windows; em Linux, instala-se diretamente o `Docker Engine`,
+seguindo as instruções em
+[docs.docker.com/engine/install](https://docs.docker.com/engine/install/).
+Confirma-se a instalação, num terminal do computador anfitrião, com:
+
+```bash
+docker --version
+docker compose version
+```
+
+### Carregar e Arrancar os Contentores {#sec-apA-docker-fornecido-carregar}
+
+O professor pode distribuir o ambiente de duas formas distintas:
+
+- **Ficheiros de configuração** (`docker-compose.yml`, e um
+  `Dockerfile` se aplicável): bastando colocá-los numa pasta e correr,
+  aí dentro:
+
+  ```bash
+  docker compose up -d --build
+  ```
+
+- **Imagens já construídas**, distribuídas como ficheiros `.tar`: neste
+  caso, começa-se por carregar cada imagem para o `Docker` local, antes
+  de a arrancar:
+
+  ```bash
+  docker load -i imagem-apache-php.tar
+  docker load -i imagem-mysql.tar
+  docker compose up -d
+  ```
+
+Em qualquer dos casos, o resultado esperado é o mesmo referido no
+@sec-03-ambiente-docker: um contentor com o `Apache` e o `PHP`, e outro
+contentor, separado, com o `MySQL`, ambos a correr e a comunicar entre
+si.
+
+### Primeiros Testes {#sec-apA-docker-fornecido-testes}
+
+Com os contentores a correr, confirma-se primeiro que ambos estão
+ativos:
+
+```bash
+docker ps
+```
+
+devendo aparecer, na lista, um contentor para o `Apache`/`PHP` e outro
+para o `MySQL`, cada um com o seu próprio nome. Verifica-se, depois, a
+versão instalada em cada um, executando o comando diretamente dentro do
+contentor com `docker exec`:
+
+```bash
+docker exec -it <nome_do_contentor_web> php -v
+docker exec -it <nome_do_contentor_db> mysql --version
+```
+
+Testa-se, de seguida, a ligação ao `PHP` através do *browser*, no
+endereço e porta indicados pelo professor (por exemplo,
+`http://localhost:8080`), e, por fim, a ligação à base de dados, seja
+diretamente a partir do contentor:
+
+```bash
+docker exec -it <nome_do_contentor_db> mysql -u root -p
+```
+
+seja através do pequeno *script* PHP apresentado no
+@sec-apA-verificacao, tal como no cenário da máquina virtual.
+
+Se o professor incluir também um contentor com o `phpMyAdmin`, referido
+no @sec-apA-phpmyadmin, este fica normalmente acessível num endereço
+próprio (por exemplo, `http://localhost:8081`), oferecendo uma forma
+visual, através do *browser*, de confirmar o conteúdo da base de dados,
+sem ser necessário `docker exec` para entrar no contentor do `MySQL`.
+
+## Construir o Ambiente a Partir do Zero {#sec-apA-zero}
+
+As duas secções seguintes destinam-se a quem não vai usar o ambiente
+fornecido pelo professor, e prefere construir, ele próprio, cada uma das
+duas abordagens descritas no @sec-03-ambiente, desde a instalação do
+`VirtualBox` ou do `Docker` até ao `Apache`, ao `MySQL` e ao `PHP`
+prontos a usar.
+
+### Opção 1: Máquina Virtual com VirtualBox {#sec-apA-vm}
+
+#### Criar a Máquina Virtual {#sec-apA-vm-criar}
+
+1. Instalar o `VirtualBox`, tal como descrito no
+   @sec-apA-vm-fornecida-instalar;
+2. Obter uma imagem `.iso` do `Ubuntu`, disponível em
+   [ubuntu.com/download](https://ubuntu.com/download) (a versão
+   *Desktop*, mais simples de usar para quem começa, ou a versão
+   *Server*, mais leve, para quem já tem alguma experiência com a linha
+   de comandos);
+3. No `VirtualBox`, criar uma nova máquina virtual, indicando o tipo
+   `Linux` e a versão `Ubuntu (64-bit)`;
+4. Atribuir à máquina virtual pelo menos 4 GB de memória RAM, e um disco
+   virtual de tamanho dinamicamente alocado, com pelo menos 25 GB, para
+   acomodar o sistema operativo, os pacotes instalados e os projetos
+   desenvolvidos ao longo da UC;
+5. Associar a imagem `.iso` do `Ubuntu` como suporte de arranque, e
+   iniciar a máquina virtual para correr o instalador, indicando o
+   idioma, o teclado, e criando um utilizador e uma password;
+6. Concluída a instalação, reiniciar a máquina virtual e instalar as
+   `Guest Additions` do `VirtualBox` (disponíveis no menu
+   *Dispositivos* do próprio `VirtualBox`), que melhoram o desempenho
+   gráfico e permitem, mais tarde, configurar pastas partilhadas com o
+   computador anfitrião.
+
+#### Instalar o Apache, o MySQL e o PHP {#sec-apA-vm-lamp}
+
+Com o `Ubuntu` instalado e a correr dentro da máquina virtual, abre-se
+um terminal e atualiza-se a lista de pacotes disponíveis antes de
+instalar qualquer coisa:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+Instala-se depois o servidor web `Apache`:
+
+```bash
+sudo apt install apache2 -y
+```
+
+Verifica-se que o `Apache` ficou a correr, e testa-se, no *browser* da
+própria máquina virtual, o endereço `http://localhost`, que deve
+mostrar a página de boas-vindas por omissão do `Apache`:
+
+```bash
+sudo systemctl status apache2
+```
+
+Instala-se, depois, o `MySQL`, e corre-se o assistente de configuração
+de segurança, que pede para definir uma password de administrador e
+remover configurações inseguras por omissão:
+
+```bash
+sudo apt install mysql-server -y
+sudo mysql_secure_installation
+```
+
+Por fim, instala-se o `PHP`, juntamente com o módulo que liga o `PHP` ao
+`Apache`, e a extensão que permite ao `PHP` comunicar com o `MySQL`:
+
+```bash
+sudo apt install php libapache2-mod-php php-mysql -y
+sudo systemctl restart apache2
+```
+
+O reinício do `Apache`, no final, é necessário para que este passe a
+reconhecer o módulo do `PHP` instalado, e a interpretar corretamente
+ficheiros `.php`.
+
+#### Testar a Instalação {#sec-apA-vm-testar}
+
+O `Apache`, por omissão, serve os ficheiros guardados na pasta
+`/var/www/html`. Para confirmar que o `PHP` está corretamente
+instalado, cria-se ali um pequeno ficheiro de teste:
+
+```bash
+echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
+```
+
+Ao abrir `http://localhost/info.php` no *browser*, deve aparecer uma
+página com informação detalhada sobre a instalação do `PHP`, incluindo
+a sua versão e a lista de extensões ativas, onde deve constar `mysqli`.
+Depois de confirmado, este ficheiro deve ser apagado, já que expõe
+informação detalhada do servidor que não deve ficar acessível fora de
+um ambiente de desenvolvimento:
+
+```bash
+sudo rm /var/www/html/info.php
+```
+
+#### Instalar o phpMyAdmin (Opcional) {#sec-apA-vm-phpmyadmin}
+
+O `phpMyAdmin`, referido no @sec-apA-phpmyadmin, é uma ferramenta de
+administração do `MySQL` através do *browser*, útil sobretudo enquanto
+se aprende, para ver rapidamente o conteúdo de uma tabela sem escrever
+uma única instrução SQL. Instala-se com:
+
+```bash
+sudo apt install phpmyadmin -y
+```
+
+Durante a instalação, o `apt` pergunta qual o servidor web a configurar
+automaticamente: seleciona-se `apache2` com a barra de espaços, e
+confirma-se com `Tab` e `Enter`. Pergunta ainda se deve configurar a
+base de dados do próprio `phpMyAdmin` com `dbconfig-common`, ao que se
+responde afirmativamente, definindo uma password para essa configuração
+interna. Concluída a instalação, o `phpMyAdmin` fica acessível em
+`http://localhost/phpmyadmin`, onde se entra com o utilizador e a
+password já criados no `MySQL`. Se o `Apache` não for configurado
+automaticamente, pode ser necessário acrescentar manualmente a linha
+`Include /etc/phpmyadmin/apache.conf` à sua configuração, e reiniciá-lo:
+
+```bash
+echo "Include /etc/phpmyadmin/apache.conf" | sudo tee -a /etc/apache2/apache2.conf
+sudo systemctl restart apache2
+```
+
+#### Editar Código a Partir do Computador Anfitrião {#sec-apA-vm-editor}
+
+Trabalhar diretamente dentro da máquina virtual, num editor de texto
+instalado ali, é possível, mas pouco confortável. Duas alternativas
+permitem editar o código com o `Visual Studio Code`
+([code.visualstudio.com/download](https://code.visualstudio.com/download))
+instalado no computador anfitrião, mantendo os ficheiros acessíveis ao
+`Apache` dentro da máquina virtual:
+
+- **Pasta partilhada**: nas definições da máquina virtual, no
+  `VirtualBox`, é possível definir uma pasta do computador anfitrião
+  como pasta partilhada, montada dentro do `Ubuntu`. Editando os
+  ficheiros nessa pasta a partir do anfitrião, as alterações ficam
+  imediatamente visíveis dentro da máquina virtual;
+- **Ligação remota por SSH**: instalando um servidor SSH dentro da
+  máquina virtual (`sudo apt install openssh-server`), a extensão
+  [`Remote - SSH`](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+  do `Visual Studio Code`, no computador anfitrião, permite abrir e
+  editar diretamente os ficheiros da máquina virtual, como se
+  estivessem no próprio computador.
+
+### Opção 2: Contentores com Docker {#sec-apA-docker}
+
+#### Definir os Serviços com Docker Compose {#sec-apA-docker-compose}
+
+Com o `Docker` instalado, tal como descrito no
+@sec-apA-docker-fornecido-instalar, em vez de instalar o `Apache`, o
+`PHP` e o `MySQL` manualmente, como na opção anterior, descreve-se, num
+ficheiro `docker-compose.yml`, os contentores necessários e como
+comunicam entre si, a partir da imagem oficial do `PHP`
+([hub.docker.com/_/php](https://hub.docker.com/_/php)) e da imagem
+oficial do `MySQL`
+([hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)). A imagem
+oficial do `PHP` com `Apache` não inclui, por omissão, a extensão de
+ligação ao `MySQL`, pelo que é necessário um pequeno `Dockerfile`
+próprio para a acrescentar:
+
+```dockerfile
+# Dockerfile
+FROM php:8.3-apache
+RUN docker-php-ext-install mysqli pdo_mysql
+```
+
+```yaml
+# docker-compose.yml
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: aplicacao
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+```
+
+Note-se a linha `volumes: - ./src:/var/www/html` do serviço `web`: liga
+diretamente a pasta `src`, no computador anfitrião, à pasta onde o
+`Apache` serve ficheiros dentro do contentor, o que significa que
+qualquer ficheiro `.php` criado ou editado nessa pasta, com o
+`Visual Studio Code` a correr normalmente no anfitrião, fica
+imediatamente disponível ao servidor, sem qualquer partilha ou ligação
+remota adicional.
+
+Com o `Dockerfile` e o `docker-compose.yml` na mesma pasta, os
+contentores constroem-se e arrancam-se com:
+
+```bash
+docker compose up -d --build
+```
+
+O `Apache`, dentro do contentor `web`, fica acessível no computador
+anfitrião em `http://localhost:8080`, e o `MySQL`, dentro do contentor
+`db`, fica acessível em `localhost`, na porta `3306`, com o utilizador
+`root` e a password definida na variável `MYSQL_ROOT_PASSWORD`.
+
+#### Adicionar o phpMyAdmin (Opcional) {#sec-apA-docker-phpmyadmin}
+
+O `phpMyAdmin`, referido no @sec-apA-phpmyadmin, também está disponível
+como imagem oficial no `Docker Hub`
+([hub.docker.com/_/phpmyadmin](https://hub.docker.com/_/phpmyadmin)),
+bastando acrescentar mais um serviço ao mesmo `docker-compose.yml`,
+ligado ao contentor `db` através da variável `PMA_HOST`:
+
+```yaml
+# docker-compose.yml (serviço adicional)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+```
+
+Depois de reiniciar os contentores com `docker compose up -d`, o
+`phpMyAdmin` fica acessível em `http://localhost:8081`, onde se entra
+com o utilizador `root` e a password definida em
+`MYSQL_ROOT_PASSWORD`. Ao contrário da instalação na máquina virtual,
+não há aqui qualquer configuração adicional do `Apache` a fazer, já que
+o `phpMyAdmin` corre no seu próprio contentor, independente do
+contentor `web`.
+
+#### Editar Código a Partir do Computador Anfitrião {#sec-apA-docker-editor}
+
+Ao contrário da opção da máquina virtual, esta configuração já liga
+diretamente a pasta `src` do anfitrião ao contentor, pelo que basta
+abrir essa pasta normalmente no `Visual Studio Code`, sem necessidade
+de pastas partilhadas ou ligação remota por SSH. Opcionalmente, a
+extensão
+[`Dev Containers`](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+do `Visual Studio Code` permite ainda abrir o próprio editor "dentro" do
+contentor `web`, com acesso direto às ferramentas ali instaladas.
+
+## Verificar a Instalação {#sec-apA-verificacao}
+
+Seja qual for a opção escolhida, e seja o ambiente fornecido pelo
+professor ou construído do zero, o teste final é o mesmo: confirmar que
+o `PHP` consegue efetivamente comunicar com o `MySQL`. Cria-se, na pasta
+servida pelo `Apache` (`/var/www/html` na máquina virtual, ou `src` nos
+contentores), um pequeno ficheiro de teste:
+
+```php
+<?php
+$conexao = mysqli_connect("localhost", "root", "root");
+
+if ($conexao) {
+    echo "Ligação ao MySQL estabelecida com sucesso!";
+} else {
+    echo "Erro ao ligar: " . mysqli_connect_error();
+}
+```
+
+Ao abrir este ficheiro no *browser*, deve aparecer a mensagem de
+sucesso. Se aparecer, em alternativa, uma mensagem de erro, os motivos
+mais comuns são o `MySQL` ainda não ter arrancado por completo, a
+password indicada não corresponder à definida durante a instalação, ou,
+no caso dos contentores, o nome do servidor não ser `localhost` mas sim
+o nome do serviço definido no `docker-compose.yml` (`db`, no exemplo
+acima), já que, de dentro de um contentor, `localhost` refere-se ao
+próprio contentor, e não a outros contentores da mesma aplicação.
+
+Se o `phpMyAdmin` estiver disponível, referido no @sec-apA-phpmyadmin,
+este mesmo teste pode ser feito de forma visual, sem escrever nenhum
+código: basta autenticar-se com as credenciais do `MySQL` e confirmar
+que a base de dados criada aparece listada.
+
+Com este teste bem-sucedido, o ambiente está pronto para o
+desenvolvimento de código PHP retomado no @sec-03-linguagem.
+
+## Referências {#sec-apA-referencias .unnumbered}
+
+::: {#refs}
+:::

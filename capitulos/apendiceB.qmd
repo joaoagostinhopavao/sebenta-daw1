@@ -1,0 +1,280 @@
+---
+title: "Demos de Código das Aulas"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Introdução {#sec-apB-intro}
+
+Este apêndice reúne o código completo das demonstrações feitas ao vivo
+nas aulas teóricas, uma por cada grande tema do PHP abordado nos
+capítulos anteriores. Cada demo aqui apresentada foi limpa da parte
+puramente decorativa (o HTML e a CSS que envolvem a demonstração na
+aula), mantendo apenas a lógica em PHP e os comentários necessários para
+a compreender, de modo a que possa ser copiada diretamente para um
+ficheiro `.php` próprio e executada no ambiente preparado no
+@sec-apA-intro, sem qualquer alteração. Cada capítulo do texto principal
+remete para a secção correspondente deste apêndice, no ponto em que essa
+demo é relevante.
+
+## Demo: Variáveis e Arrays {#sec-apB-variaveis}
+
+Demonstração usada no @sec-03-variaveis e no @sec-03-arrays, com
+exemplos dos quatro tipos de arrays vistos nesse capítulo: numérico,
+associativo e multidimensional.
+
+```php
+<?php
+// Declarar variáveis de tipos diferentes
+$idade = 19;                     // Inteiro
+$preco_do_almoco = 10.5;         // Float
+$texto = "Olá, Mundo!";          // String
+$porta_aberta = true;            // Booleano
+$arraySimples = array(1, 2, 3);  // Array
+
+// Mostrar os valores de forma legível
+echo "<p><strong>Idade:</strong> $idade</p>";
+echo "<p><strong>Preço do almoço:</strong> $preco_do_almoco</p>";
+echo "<p><strong>Texto:</strong> $texto</p>";
+
+// echo de um booleano mostra "1" para true e nada para false;
+// para mostrar um texto legível, usa-se uma expressão ternária
+echo "<p><strong>Porta aberta:</strong> " . ($porta_aberta ? 'true' : 'false') . "</p>";
+
+// echo direto de um array produz um Warning; usa-se print_r() ou var_dump()
+echo "<p><strong>Array simples:</strong> ";
+print_r($arraySimples);
+echo "</p>";
+
+// Array indexado
+$frutas = array("Maçã", "Banana", "Laranja");
+echo "<p>Primeira fruta: " . $frutas[0] . "</p>";
+echo "<p>Segunda fruta: " . $frutas[1] . "</p>";
+echo "<p>Terceira fruta: " . $frutas[2] . "</p>";
+
+// Array associativo
+$pessoa = array(
+    "nome"   => "João",
+    "idade"  => 25,
+    "cidade" => "Lisboa"
+);
+echo "<p>Nome: " . $pessoa["nome"] . "</p>";
+echo "<p>Idade: " . $pessoa["idade"] . "</p>";
+echo "<p>Cidade: " . $pessoa["cidade"] . "</p>";
+
+// Array multidimensional
+$carros = array(
+    "desportivos" => array("Ferrari", "Lamborghini", "Porsche"),
+    "suv"         => array("BMW X5", "Audi Q7", "Mercedes GLE"),
+    "sedans"      => array("Toyota Camry", "Honda Accord", "Hyundai Elantra")
+);
+echo "<p>Primeiro carro desportivo: " . $carros["desportivos"][0] . "</p>";
+echo "<p>Segundo SUV: " . $carros["suv"][1] . "</p>";
+echo "<p>Terceiro sedan: " . $carros["sedans"][2] . "</p>";
+```
+
+## Demo: Condicionais, Loops e Supervariáveis {#sec-apB-condicionais-loops}
+
+Demonstração usada no @sec-04-condicionais, no @sec-04-ciclos e no
+@sec-04-supervariaveis. A parte de `$_POST` requer um pequeno formulário
+HTML na mesma página, submetido para si próprio (`action=""`).
+
+```php
+<?php
+// --- Condicionais ---
+$idade = 18;
+
+if ($idade >= 18) {
+    echo "<p>É maior de idade.</p>";
+} else {
+    echo "<p>É menor de idade.</p>";
+}
+
+$cor = "vermelho";
+
+switch ($cor) {
+    case "azul":
+        echo "<p>A cor é azul.</p>";
+        break;
+    case "vermelho":
+        echo "<p>A cor é vermelho.</p>";
+        break;
+    default:
+        echo "<p>A cor não é azul nem vermelho.</p>";
+}
+
+// --- Loops ---
+echo "<h3>Loop for</h3>";
+for ($i = 1; $i <= 5; $i++) {
+    echo "<p>Iteração $i</p>";
+}
+
+echo "<h3>Loop while</h3>";
+$contador = 1;
+while ($contador <= 3) {
+    echo "<p>Contagem: $contador</p>";
+    $contador++;
+}
+
+echo "<h3>Loop foreach</h3>";
+$frutas = array("Maçã", "Banana", "Laranja");
+foreach ($frutas as $fruta) {
+    echo "<p>Fruta: $fruta</p>";
+}
+?>
+
+<!-- --- Supervariáveis: $_GET, $_POST, $_SERVER --- -->
+<form method="post" action="">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome">
+    <input type="submit" value="Enviar">
+</form>
+
+<?php
+// $_GET: dados vindos de um parâmetro na URL (ex: ?nome=Ana)
+echo "<p>Valor de 'nome' via GET: "
+   . (isset($_GET['nome']) ? $_GET['nome'] : 'não fornecido') . "</p>";
+
+// $_POST: dados vindos do formulário acima, submetido por POST
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    echo "<p>Nome enviado via POST: " . htmlspecialchars($_POST['nome']) . "</p>";
+}
+
+// $_SERVER: informação sobre o próprio servidor e o pedido
+echo "<p>Nome do servidor: " . $_SERVER['SERVER_NAME'] . "</p>";
+```
+
+## Demo: Funções {#sec-apB-funcoes}
+
+Demonstração usada no @sec-05-funcoes, com quatro variantes de função
+(sem parâmetros nem retorno, com parâmetros, com retorno, e com
+parâmetro opcional).
+
+```php
+<?php
+// Sem parâmetros e sem retorno
+function exibirSaudacao() {
+    echo "<p>Bem-vindo ao sistema!</p>";
+}
+
+// Com parâmetros e sem retorno
+function enviarEmail($destinatario, $assunto, $mensagem) {
+    echo "<p>Email enviado para: $destinatario</p>";
+    echo "<p>Assunto: $assunto</p>";
+    echo "<p>Mensagem: $mensagem</p>";
+}
+
+// Com parâmetros e com retorno
+function calcularDesconto($preco, $descontoPercentual) {
+    $desconto = $preco * ($descontoPercentual / 100);
+    return $preco - $desconto;
+}
+
+// Com parâmetro opcional (valor por omissão)
+function criarUtilizador($nome, $email, $senha, $role = 'user') {
+    echo "<p>Utilizador $nome criado com a função de $role.</p>";
+}
+
+function volume($largura, $altura, $comprimento) {
+    return $largura * $altura * $comprimento;
+}
+
+// --- Chamadas ---
+$volume_da_sala = volume(5, 3, 10);
+echo "<p>O volume da sala é de $volume_da_sala m3.</p>";
+
+exibirSaudacao();
+
+enviarEmail("cliente@example.com", "Bem-vindo", "Obrigado por se registar!");
+
+$precoComDesconto = calcularDesconto(100, 10); // 10% de desconto
+echo "<p>Preço final com desconto: $precoComDesconto</p>";
+
+criarUtilizador("José", "jose@example.com", "123456");        // sem 'role': usa 'user'
+criarUtilizador("Ana", "ana@example.com", "789123", "admin"); // 'role' explícito
+```
+
+## Demo: Datas {#sec-apB-datas}
+
+Demonstração usada no @sec-05-datas, desta vez com a classe `DateTime`,
+orientada a objetos, em vez da função `date()`.
+
+```php
+<?php
+// Criar e mostrar a data e hora atuais
+$dataAtual = new DateTime();
+echo "<p>Data e hora atuais: " . $dataAtual->format('d-m-Y H:i:s') . "</p>";
+
+// Somar dias a uma data (clonar para não alterar o objeto original)
+$dataFutura = clone $dataAtual;
+$dataFutura->modify('+150 days');
+echo "<p>Data daqui a 150 dias: " . $dataFutura->format('Y-m-d') . "</p>";
+
+// Subtrair dias a uma data
+$dataPassada = clone $dataAtual;
+$dataPassada->modify('-10 days');
+echo "<p>Data há 10 dias: " . $dataPassada->format('Y-m-d') . "</p>";
+
+// Diferença entre duas datas
+$intervalo = $dataAtual->diff($dataPassada);
+echo "<p>Diferença: " . $intervalo->days . " dias</p>";
+
+// Criar uma data a partir de uma string, num formato específico
+$dataEspecifica = DateTime::createFromFormat('Y-m-d', '2024-12-25');
+echo "<p>Data específica (Natal): " . $dataEspecifica->format('Y-m-d') . "</p>";
+
+// Verificar se um ano é bissexto
+$ano = (int) $dataEspecifica->format('Y');
+if ($ano % 4 === 0 && ($ano % 100 !== 0 || $ano % 400 === 0)) {
+    echo "<p>$ano é um ano bissexto.</p>";
+} else {
+    echo "<p>$ano não é um ano bissexto.</p>";
+}
+```
+
+## Demo: Includes (Header e Footer) {#sec-apB-includes}
+
+Demonstração usada no @sec-05-includes, com três ficheiros: um
+`header.php` e um `footer.php` reutilizáveis, incluídos por uma página
+principal.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Bem-vindo à minha aplicação!</h1>
+    <nav>
+        <a href="index.php">Home</a> |
+        <a href="sobre.php">Sobre</a> |
+        <a href="contacto.php">Contacto</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 A Minha Aplicação. Todos os direitos reservados.</p>
+</footer>
+```
+
+```php
+<!-- index.php -->
+<?php
+// include: se header.php não existir, é apenas um Warning; a página continua
+include 'header.php';
+?>
+
+<h2>Página Principal</h2>
+<p>Conteúdo específico desta página.</p>
+
+<?php
+// require: se footer.php não existir, é um erro fatal; a página para aqui
+require 'footer.php';
+?>
+```
+
+## Referências {#sec-apB-referencias .unnumbered}
+
+::: {#refs}
+:::

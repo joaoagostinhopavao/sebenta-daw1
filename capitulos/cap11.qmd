@@ -1,0 +1,106 @@
+---
+title: "Frameworks de Desenvolvimento Web"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## O Que um Framework Automatiza {#sec-11-automatizacao}
+
+Ao longo desta UC, construíram-se, ficheiro a ficheiro, os elementos
+básicos de uma aplicação PHP: ligação à base de dados, um controlador
+frontal a decidir que ação executar, e a separação entre *Model*,
+*View* e *Controller*, vista no capítulo anterior. Um *framework* de
+desenvolvimento web como o `Laravel`, hoje o mais usado no ecossistema
+PHP [@jetbrains_stateofphp2025], automatiza precisamente este tipo de
+trabalho repetitivo, oferecendo já resolvidas, e testadas por uma
+grande comunidade de utilizadores, partes que, de outra forma, cada
+programador teria de construir à sua maneira em cada novo projeto:
+
+- **Sistema de rotas**: em vez do `switch` manual construído no
+  @sec-10-front-controller, um *framework* permite declarar rotas de
+  forma direta, associando um endereço a uma função do *Controller*;
+- **ORM** (*Object-Relational Mapping*): em vez de escrever SQL à mão
+  com `mysqli`, como no @sec-08-prepared-statements, um ORM representa
+  cada tabela como uma classe PHP, e cada linha como um objeto,
+  permitindo interagir com a base de dados através de código PHP em vez
+  de instruções SQL diretas;
+- **Motor de *templates***: em vez de misturar PHP e HTML diretamente
+  nas *Views*, um motor de *templates* oferece uma sintaxe mais limpa
+  para gerar HTML dinâmico, com funcionalidades como herança de
+  *layouts*, para não repetir cabeçalho e rodapé em cada página;
+- **Migrações**: ficheiros que descrevem, em código, a estrutura da
+  base de dados, permitindo criar, alterar e partilhar essa estrutura
+  entre programadores sem depender de instruções `CREATE TABLE`
+  escritas manualmente por cada um.
+
+## O Laravel {#sec-11-laravel}
+
+O Laravel inclui, entre outros, o `Eloquent`, o seu ORM nativo, e o
+`Blade`, o seu motor de *templates*. Uma consulta que, com `mysqli`,
+exigiria escrever a instrução SQL explicitamente, escreve-se, em
+Eloquent, como uma chamada de método sobre uma classe que representa a
+tabela:
+
+```php
+// Com mysqli (capítulo 8)
+$stmt = $conexao->prepare("SELECT * FROM contactos WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+// Com Eloquent (Laravel)
+$contacto = Contacto::find($id);
+```
+
+O sistema de rotas do Laravel substitui diretamente o `switch` manual do
+controlador frontal construído no @sec-10-front-controller, associando
+um endereço a uma função de forma declarativa:
+
+```php
+// routes/web.php
+Route::get('/contactos', [ContactoController::class, 'listar']);
+Route::post('/contactos', [ContactoController::class, 'criar']);
+Route::get('/contactos/{id}/editar', [ContactoController::class, 'editar']);
+```
+
+As migrações substituem, por sua vez, as instruções `CREATE TABLE`
+escritas à mão no @sec-08-criar-bd, descrevendo a estrutura da tabela em
+código PHP, versionável e partilhável entre toda a equipa:
+
+```php
+// database/migrations/create_contactos_table.php
+Schema::create('contactos', function (Blueprint $table) {
+    $table->id();                    // equivalente a INT AUTO_INCREMENT PRIMARY KEY
+    $table->string('nome');
+    $table->string('email');
+    $table->timestamps();            // equivalente a criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+});
+```
+
+O Laravel gera, também, automaticamente, grande parte da estrutura de
+pastas que foi construída manualmente ao longo desta UC: uma pasta
+`app/Models` para as classes do *Model*, uma pasta `resources/views`
+para as *Views* em Blade, e uma pasta `routes` para declarar as rotas
+da aplicação. A curva de aprendizagem inicial de um *framework* como o
+Laravel é mais exigente do que escrever PHP simples, porque exige
+compreender as suas convenções próprias, mas paga-se rapidamente à
+medida que uma aplicação cresce, evitando que cada equipa reinvente, à
+sua maneira, os mesmos mecanismos de ligação à base de dados, autenticação
+ou geração de páginas.
+
+## Outros Frameworks {#sec-11-outros}
+
+O Laravel não é o único *framework* PHP: o `Symfony`, mais modular e
+usado sobretudo em contextos empresariais, é o segundo mais adotado
+[@jetbrains_stateofphp2025], e partes dele são, de resto, usadas
+internamente pelo próprio Laravel. Fora do universo PHP, o mesmo
+princípio aplica-se a outras linguagens do lado do servidor, como o
+`Django` em Python ou o `Express` em JavaScript, referidos no
+@sec-01-frameworks-servidor: cada um resolve o mesmo tipo de problema,
+rotas, acesso a dados, geração de páginas, com convenções e ferramentas
+próprias da sua linguagem.
+
+## Referências {#sec-11-referencias .unnumbered}
+
+::: {#refs}
+:::

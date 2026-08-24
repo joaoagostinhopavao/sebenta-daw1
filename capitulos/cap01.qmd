@@ -1,0 +1,150 @@
+---
+title: "Desenvolvimento de Software para o Ambiente Web"
+author: "João Pavão"
+date: 2026-08-22
+lang: pt-PT
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap01.jpg');">
+  <div class="hero-badge">Capítulo 1</div>
+  <h1>Desenvolvimento de Software para o Ambiente Web</h1>
+</div>
+```
+
+## Perfis de Programador Web {#sec-01-perfis}
+
+O desenvolvimento web organiza-se, tradicionalmente, em três perfis, que
+se distinguem pelo lado da aplicação em que trabalham.
+
+### Frontend {#sec-01-frontend}
+
+O programador de *frontend* trabalha do lado do cliente, isto é, no
+*browser*, e é responsável pela interface com que o utilizador interage
+diretamente. As ferramentas de base são o HTML, a CSS e o JavaScript,
+frequentemente com o apoio de *frameworks* como o React, o Vue.js ou o
+Angular. O React é hoje o mais usado, mas o Vue.js consolidou-se como
+segunda opção mais adotada globalmente, à frente do Angular em
+satisfação dos programadores [@stateofjs2025].
+
+### Backend {#sec-01-backend}
+
+O programador de *backend* trabalha do lado do servidor: implementa a
+lógica de negócio, gere o acesso a bases de dados e expõe essa lógica ao
+exterior, tipicamente através da API do protocolo HTTP. Usa linguagens
+como o PHP, o Python ou o JavaScript (em ambiente Node.js), e sistemas de
+gestão de bases de dados como o MySQL, o MariaDB, o PostgreSQL ou o
+MongoDB. Ocupa-se ainda de tarefas de configuração de servidores e de
+implantação (*deployment*) da aplicação.
+
+### Full Stack {#sec-01-fullstack}
+
+O programador *full stack* trabalha nos dois lados, frontend e backend,
+com as ferramentas acima descritas ou com *frameworks* que integram as
+duas componentes, como o Laravel (em PHP), o Django ou o FastAPI (em
+Python), ou o Next.js (em JavaScript/TypeScript).
+
+## Ferramentas de Trabalho {#sec-01-ferramentas}
+
+Independentemente do perfil, um programador web trabalha tipicamente com
+o seguinte conjunto de ferramentas:
+
+- **Computador e sistema operativo**: macOS, Windows ou Linux;
+- **Browser**: Chrome, Firefox, Safari ou Edge, para testar o resultado
+  do trabalho;
+- **Editor de texto ou IDE**: Visual Studio Code, Sublime Text ou uma IDE
+  mais completa, como o WebStorm;
+- **Terminal**: a linha de comandos do macOS ou Linux, ou o PowerShell ou
+  Git Bash no Windows;
+- **Software de design**: para protótipos e interfaces, sendo o Figma a
+  ferramenta de referência do mercado [@mapsoft_adobexd_eol].
+
+## HTML e CSS: os Blocos Básicos {#sec-01-htmlcss}
+
+O HTML e a CSS são os blocos de construção fundamentais de qualquer
+página web: o HTML estrutura o conteúdo e a CSS define a sua apresentação
+visual. Um programador de *frontend* deve dominar, no mínimo:
+
+- As *tags* básicas e semânticas do HTML5;
+- Os fundamentos da CSS: seletores, propriedades e o modelo de caixa;
+- Alinhamentos e grelhas em CSS, com recurso a Flexbox e CSS Grid;
+- *Media queries* e desenho responsivo, para que a página funcione em
+  diferentes tamanhos de ecrã;
+- Animações e transições simples.
+
+## Frameworks e Pré-processadores CSS {#sec-01-frameworks-css}
+
+Escrever CSS pura para um projeto grande é possível, mas trabalhoso.
+Surgiram por isso *frameworks* CSS, bibliotecas de estilos e componentes
+prontos a usar. O Tailwind CSS é hoje o mais usado, à frente do Bootstrap
+[@tailkits_css_frameworks_2025]; o Foundation mantém-se como opção de
+nicho, sobretudo em projetos empresariais já existentes.
+
+Para além de *frameworks* de componentes, existem ferramentas que
+estendem a própria linguagem CSS. O Sass é um pré-processador que
+acrescenta funcionalidades à CSS, como variáveis, aninhamento de
+seletores e *mixins*; o PostCSS transforma CSS através de plugins em
+JavaScript, com funcionalidades semelhantes. O aninhamento nativo de
+seletores, as variáveis nativas (`custom properties`) e funcionalidades
+como o `color-mix()` já fazem parte da própria linguagem CSS, com suporte
+alargado nos browsers modernos [@w3tweaks_css_nesting], cobrindo grande
+parte do que motivava o uso de um pré-processador.
+
+## O Que um Frontend Iniciado Deve Saber {#sec-01-frontend-basico}
+
+Resumindo o que se espera de um programador de *frontend* em início de
+carreira:
+
+- Criar *layouts* web com HTML e CSS;
+- Saber JavaScript e trabalhar com o DOM (*Document Object Model*);
+- Criar pequenas aplicações de *frontend* interativas;
+- Ser capaz de ligar essas aplicações a APIs externas;
+- Trabalhar com o Git e usar controlo de versões;
+- Instalar e gerir pequenos projetos reais, já em produção.
+
+## Tecnologias do Lado do Servidor {#sec-01-tecnologias-backend}
+
+As tecnologias do lado do servidor organizam-se em três grandes grupos:
+linguagens e *frameworks*, bases de dados, e a programação através da API
+do protocolo HTTP.
+
+### Linguagens {#sec-01-linguagens}
+
+Do lado do servidor, o panorama de linguagens inclui, entre outras,
+Node.js (JavaScript no servidor), Python, PHP, C#, Go, Ruby, Java, Kotlin,
+Rust, Scala e Swift. O PHP é uma das linguagens mais usadas do lado do
+servidor, sobretudo pela sua ligação histórica ao WordPress e a grande
+parte da Web publicada em sistemas de gestão de conteúdos.
+
+### Frameworks de Servidor {#sec-01-frameworks-servidor}
+
+Cada linguagem de backend tem os seus próprios *frameworks* de
+desenvolvimento web. Em JavaScript, destacam-se o Express, o Koa, o
+Fastify e o Next.js; em Python, o Django, o Flask e o FastAPI; em PHP, o
+Laravel, o Symfony e o Slim. O Laravel é hoje o *framework* PHP mais
+usado, à frente do Symfony [@jetbrains_stateofphp2025].
+
+### Bases de Dados e ORMs {#sec-01-bd-orms}
+
+As bases de dados dividem-se, essencialmente, em dois grandes grupos:
+
+- **Relacionais**, organizadas em tabelas com esquema fixo e relações
+  entre elas, como o PostgreSQL, o MySQL ou o SQLite;
+- **Não relacionais** (*NoSQL*), com esquemas mais flexíveis, como o
+  MongoDB e o Firebase (Cloud Firestore), ambos orientados a documentos
+  [@firebase_firestore_datamodel], ou o Redis (chave-valor, muito usado
+  para *cache*).
+
+Para facilitar o acesso a bases de dados a partir de código orientado a
+objetos, usam-se com frequência ferramentas de mapeamento
+objeto-relacional (ORM), como o Eloquent (o ORM nativo do Laravel), o
+Prisma, o Drizzle ou o TypeORM em JavaScript/TypeScript, o Mongoose para
+MongoDB, ou o SQLAlchemy em Python. O Prisma é o mais usado em número de
+projetos, mas o Drizzle tem crescido com destaque entre projetos que
+privilegiam um controlo mais direto sobre o SQL gerado
+[@bytebase_drizzle_vs_prisma_2026].
+
+## Referências {#sec-01-referencias .unnumbered}
+
+::: {#refs}
+:::

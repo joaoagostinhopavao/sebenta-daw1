@@ -1,0 +1,356 @@
+---
+title: "Bases de Dados e PHP"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Bases de Dados Relacionais e o DBMS {#sec-08-dbms}
+
+Um `DBMS` (*Database Management System*, sistema de gestão de bases de
+dados) é o *software* que cria, organiza e gere bases de dados: controla
+o acesso, as consultas e as atualizações, garante a integridade, a
+segurança e o desempenho dos dados, e permite que aplicações, como as
+escritas em PHP, leiam e escrevam informação de forma persistente.
+Exemplos comuns de DBMS incluem o `MySQL`, o `MariaDB`, o `PostgreSQL`,
+o `Oracle`, o `SQL Server` e o `SQLite`.
+
+Numa base de dados relacional, como o `MySQL`, os dados organizam-se em
+tabelas, cada uma com colunas de tipo fixo, e linhas que representam
+registos individuais. É esta persistência que falta às variáveis PHP
+vistas até agora: uma variável existe apenas durante a execução de um
+*script*, enquanto uma base de dados guarda a informação entre pedidos
+diferentes, e entre utilizadores diferentes.
+
+## Comandos SQL {#sec-08-sql}
+
+`SQL` (*Structured Query Language*) é a linguagem usada para interagir
+com um DBMS relacional. Os seus comandos dividem-se em quatro grupos
+principais:
+
+- **DQL** (*Data Query Language*): consultas que obtêm dados, com o
+  comando `SELECT`;
+- **DML** (*Data Manipulation Language*): inserir, alterar e remover
+  dados, com os comandos `INSERT`, `UPDATE` e `DELETE`;
+- **DDL** (*Data Definition Language*): criar e alterar estruturas da
+  base de dados, com os comandos `CREATE`, `ALTER` e `DROP`;
+- **DCL** (*Data Control Language*): permissões e controlo de acesso,
+  com os comandos `GRANT` e `REVOKE`.
+
+Um comando SQL segue uma estrutura previsível: uma palavra-chave
+(`SELECT`, `UPDATE`, `INSERT`, `DELETE`), cláusulas que refinam a
+instrução (`FROM`, `WHERE`, `ORDER BY`, `VALUES`), expressões e condições
+(campos, valores e comparações, como `idade > 18`), e um ponto e vírgula
+final:
+
+```sql
+SELECT firstname, lastname FROM MyGuests WHERE id = 3;
+```
+
+Um comando de atualização junta estas mesmas partes de forma um pouco
+diferente, comando mais tabela alvo, a ação de alterar valores, e uma
+condição que filtra que registos são afetados:
+
+```sql
+UPDATE Employees SET Salary = Salary * 1.02 WHERE Country = 'USA';
+```
+
+## A Arquitetura em Três Camadas e o Papel do PHP {#sec-08-arquitetura-3camadas}
+
+Retomando o @sec-02-tres-camadas, uma aplicação web organiza-se
+tipicamente em três camadas distintas: o cliente (*browser*), que mostra
+páginas e envia pedidos; o servidor, que processa a lógica da
+aplicação; e o DBMS, que guarda e gere os dados. Separar estas camadas
+aumenta a segurança, o desempenho e a organização da aplicação.
+
+Vale a pena seguir, passo a passo, como circula a informação neste
+modelo, com um exemplo concreto:
+
+1. O cliente envia um pedido, por exemplo `GET /produtos?categoria=livros`;
+2. O servidor (PHP) interpreta o pedido e gera a instrução SQL
+   correspondente: `SELECT * FROM produtos WHERE categoria = 'livros'`;
+3. O DBMS (MySQL) executa essa instrução e devolve os resultados ao
+   servidor;
+4. O servidor insere esses dados num modelo (*template*) HTML;
+5. O servidor devolve ao *browser* a página final, já preenchida com os
+   dados pedidos.
+
+Cada camada cumpre, assim, a sua própria missão: o *browser* pede, o
+servidor pensa, o DBMS guarda e responde, o servidor monta a página, e o
+*browser* mostra o resultado final ao utilizador. O PHP vive
+inteiramente na camada do servidor, sendo o responsável por receber os
+pedidos do cliente, construir as instruções SQL, comunicar com o DBMS,
+processar os resultados devolvidos, e gerar o HTML final enviado ao
+*browser*: é a ponte entre o pedido do utilizador e os dados guardados
+na base de dados.
+
+## Ligar o PHP ao MySQL {#sec-08-ligacao}
+
+O PHP liga-se a uma base de dados `MySQL` através da extensão `mysqli`
+(*MySQL Improved*), que suporta a ligação ao MySQL, permite executar
+consultas, *prepared statements* e transações, e pode ser usada em dois
+estilos: procedural ou orientado a objetos.
+
+No estilo procedural, `mysqli_connect()` cria a ligação e devolve
+`false` caso esta falhe, uma versão simples e direta, adequada a quem
+está a começar:
+
+```php
+<?php
+$conexao = mysqli_connect("localhost", "utilizador", "password", "nome_bd");
+
+if (!$conexao) {
+    die("Ligação falhou: " . mysqli_connect_error());
+}
+```
+
+No estilo orientado a objetos, `new mysqli()` cria um objeto de ligação,
+e os erros ficam expostos na propriedade `connect_error` desse objeto.
+É o estilo mais moderno, e o mais usado na prática:
+
+```php
+<?php
+$conexao = new mysqli("localhost", "utilizador", "password", "nome_bd");
+
+if ($conexao->connect_error) {
+    die("Ligação falhou: " . $conexao->connect_error);
+}
+```
+
+## Criar Bases de Dados e Tabelas {#sec-08-criar-bd}
+
+Criar a base de dados e criar as tabelas são dois passos distintos:
+primeiro cria-se o "contentor" (a base de dados), só depois as
+estruturas internas (as tabelas). Tal como qualquer outra instrução SQL,
+ambos podem ser feitos a partir do PHP, através do método `query()`, que
+envia o comando SQL ao MySQL e devolve sucesso ou erro:
+
+```php
+<?php
+$conexao->query("CREATE DATABASE IF NOT EXISTS loja");
+$conexao->select_db("loja");
+
+$conexao->query("
+    CREATE TABLE IF NOT EXISTS contactos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(100) NOT NULL,
+        email VARCHAR(100) NOT NULL,
+        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+");
+```
+
+Vale a pena perceber o significado de cada parte desta definição de
+tabela:
+
+- **`PRIMARY KEY`** (PK): identifica, de forma inequívoca, cada registo
+  da tabela; nenhuma tabela relacional bem desenhada deve existir sem
+  uma;
+- **`AUTO_INCREMENT`**: faz o valor deste campo aumentar automaticamente
+  em uma unidade a cada novo registo inserido, sem que o programador
+  precise de o calcular;
+- **`NOT NULL`**: obriga a que este campo tenha sempre um valor,
+  impedindo que fique vazio;
+- **`DEFAULT CURRENT_TIMESTAMP`**: se não for indicado um valor
+  explícito para este campo ao inserir um registo, o MySQL coloca
+  automaticamente a data e hora atuais.
+
+Na prática, criar a base de dados e as tabelas a partir do PHP é um
+passo inicial e raro numa aplicação real: a estrutura da base de dados
+de uma aplicação já em produção é, tipicamente, criada e alterada uma
+única vez, através de ferramentas próprias de administração, não a cada
+execução do *script*.
+
+## Operações Fundamentais: CRUD em SQL {#sec-08-crud-sql}
+
+As quatro operações fundamentais sobre dados persistentes, `CRUD`
+(*Create*, *Read*, *Update*, *Delete*), correspondem diretamente a
+quatro comandos SQL.
+
+**Inserir** um novo registo (*Create*), com `INSERT`:
+
+```php
+<?php
+$conexao->query("INSERT INTO contactos (nome, email) VALUES ('Ana Silva', 'ana@exemplo.pt')");
+```
+
+**Ler** dados existentes (*Read*), com `SELECT`. A propriedade
+`num_rows` do resultado indica quantas linhas foram devolvidas, e o
+método `fetch_assoc()` devolve cada linha como um array associativo, tal
+como visto no @sec-03-arrays-multidimensionais:
+
+```php
+<?php
+$resultado = $conexao->query("SELECT * FROM contactos");
+echo $resultado->num_rows . " contactos encontrados";
+
+while ($linha = $resultado->fetch_assoc()) {
+    echo $linha["nome"] . " - " . $linha["email"] . "<br>";
+}
+```
+
+Esta última construção, um `while` a percorrer os resultados linha a
+linha, é também a forma habitual de gerar uma tabela HTML dinamicamente
+a partir dos dados devolvidos pela base de dados, transformando cada
+linha da base de dados numa linha `<tr>` da página.
+
+**Atualizar** (*Update*) e **apagar** (*Delete*) registos existentes,
+com `UPDATE` e `DELETE`:
+
+```php
+<?php
+$conexao->query("UPDATE contactos SET email = 'novo@exemplo.pt' WHERE id = 3");
+$conexao->query("DELETE FROM contactos WHERE id = 3");
+```
+
+Tanto o `UPDATE` como o `DELETE` **exigem sempre uma cláusula `WHERE`**;
+esquecê-la é um dos erros mais graves e mais comuns que se pode cometer
+com uma base de dados, porque, sem uma condição que filtre os registos
+afetados, a instrução aplica-se a **todas** as linhas da tabela.
+
+## Prepared Statements {#sec-08-prepared-statements}
+
+Todos os exemplos acima, com valores fixos escritos diretamente no
+código, servem para perceber o fluxo básico, mas não são adequados a uma
+aplicação real. Construir uma instrução SQL concatenando diretamente
+valores vindos do utilizador, como os de `$_POST`, tem vários problemas:
+mistura dados com código, é vulnerável a um ataque de injeção de SQL
+(tema aprofundado no @sec-09-codigo-proprio), é mais propenso a erros de
+sintaxe, e é difícil de manter.
+
+A alternativa correta é usar *prepared statements*, que separam a
+instrução SQL, fixa, dos valores, que só são inseridos depois. Funcionam
+em duas fases: o servidor prepara a instrução, com pontos de
+interrogação (`?`) no lugar dos valores, e só depois o PHP envia os
+dados, de forma separada e segura. As vantagens são proteção contra
+injeção de SQL, melhor desempenho quando a mesma instrução é executada
+várias vezes, e um código mais limpo:
+
+```php
+<?php
+$stmt = $conexao->prepare(
+    "INSERT INTO contactos (nome, email) VALUES (?, ?)"
+);
+$stmt->bind_param("ss", $nome, $email);  // "ss" = dois parâmetros string
+
+$nome = $_POST["nome"];
+$email = $_POST["email"];
+$stmt->execute();
+```
+
+O `bind_param()` precisa de saber o tipo de cada valor associado,
+indicado por uma letra:
+
+- **`s`**: *string*;
+- **`i`**: *integer*;
+- **`d`**: *double* (números com casas decimais);
+- **`b`**: *blob* (dados binários, como imagens ou ficheiros).
+
+Para consultar dados com *prepared statements*, o padrão é semelhante,
+terminando com `get_result()` para obter as linhas devolvidas:
+
+```php
+<?php
+$stmt = $conexao->prepare("SELECT nome, email FROM contactos WHERE id = ?");
+$stmt->bind_param("i", $id);  // "i" = um parâmetro integer
+$id = $_GET["id"];
+$stmt->execute();
+
+$resultado = $stmt->get_result();
+while ($linha = $resultado->fetch_assoc()) {
+    echo $linha["nome"] . " - " . $linha["email"] . "<br>";
+}
+```
+
+O mesmo princípio aplica-se ao `UPDATE` e ao `DELETE`: usar *prepared
+statements* torna-os seguros, porque os valores nunca são interpretados
+como parte do próprio comando SQL, o que evita tanto a injeção de SQL
+como alterações acidentais.
+
+## Erros e Boas Práticas {#sec-08-erros-boas-praticas}
+
+Trabalhar com bases de dados implica, inevitavelmente, lidar com erros.
+Os mais comuns dividem-se em três categorias:
+
+- **Erros de ligação**: credenciais incorretas, o servidor MySQL estar
+  desligado, ou a base de dados indicada não existir;
+- **Erros de SQL**: sintaxe inválida, nomes de tabelas ou colunas
+  errados, falta de aspas ou vírgulas na instrução;
+- **Erros de execução no PHP**: usar variáveis não definidas, ou chamar
+  `fetch_assoc()` sobre um resultado vazio.
+
+Durante o desenvolvimento, é essencial ativar a exibição de todos os
+erros e avisos do PHP, algo que nunca deve ficar ativo num ambiente de
+produção, por razões de segurança:
+
+```php
+<?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+```
+
+O `mysqli` explica sempre o que falhou, bastando ler a informação
+correta: `connect_error` mostra problemas na própria ligação, e `error`
+mostra problemas vindos do MySQL relativos a uma consulta específica.
+Algumas boas práticas gerais, a manter sempre presentes ao trabalhar com
+bases de dados em PHP:
+
+- Usar *prepared statements* sempre que houver dados vindos do
+  utilizador;
+- Validar e sanitizar as entradas antes de as usar;
+- Separar claramente código PHP, SQL e HTML;
+- Mostrar erros durante o desenvolvimento, mas ocultá-los em produção;
+- Testar sempre com dados reais e também com dados propositadamente
+  maliciosos.
+
+## Uma Aplicação CRUD Completa {#sec-08-crud}
+
+Juntando tudo o que foi visto neste capítulo, uma pequena aplicação de
+gestão de contactos, sobre uma tabela `contacts`, distribui-se
+tipicamente por vários ficheiros PHP, cada um responsável por uma
+operação:
+
+- `config.php`: estabelece a ligação à base de dados, e é incluído, com
+  `require`, no início de todos os outros ficheiros, evitando repetir o
+  código de ligação em cada um;
+- `index.php`: lista todos os contactos existentes (*Read*), e liga a
+  todas as outras operações;
+- `add.php` e `insert.php`: `add.php` apresenta um formulário HTML, que
+  envia os seus dados por `POST` para `insert.php`, o qual, com um
+  *prepared statement*, insere o novo registo (*Create*) e redireciona
+  de volta para `index.php`;
+- `edit.php` e `update.php`: `edit.php` apresenta um formulário
+  pré-preenchido com os dados de um registo existente, e `update.php`
+  grava as alterações (*Update*);
+- `delete.php`: remove um registo existente (*Delete*).
+
+Um detalhe merece atenção especial no `index.php`: cada `link` para
+editar ou apagar um contacto transporta o `id` desse contacto na
+própria URL, por exemplo `edit.php?id=7`, para que a página seguinte
+saiba exatamente a que registo se refere. Este `id`, por vir de um
+`GET` simples, sem dados sensíveis nem efeitos colaterais até ser
+efetivamente processado, não exige, aqui, um *prepared statement* na
+listagem; já em `edit.php`, ao ler esse mesmo `id` do `GET` para o
+incluir de novo no formulário, este tem de ser colocado num campo
+`hidden` do formulário, para que, ao ser submetido por `POST` para
+`update.php`, o `id` do registo a alterar viaje junto com os restantes
+dados.
+
+O fluxo completo da aplicação pode resumir-se assim: o utilizador
+navega entre páginas simples e independentes a partir de `index.php`;
+cada operação, `add`, `edit` ou `delete`, comunica com a base de dados
+através de `insert.php`, `update.php` ou diretamente em `delete.php`; e,
+depois de gravada a alteração, a aplicação redireciona sempre de volta
+para `index.php`, fechando o ciclo.
+
+Este pequeno projeto reúne, na prática, praticamente tudo o que foi
+visto até este ponto da UC: HTML e formulários do lado do cliente,
+supervariáveis para receber os dados submetidos, *prepared statements*
+para os gravar e ler em segurança, e uma aplicação organizada em várias
+páginas simples, cada uma com uma única responsabilidade, o padrão
+sobre o qual assenta a maioria das aplicações web dinâmicas.
+
+## Referências {#sec-08-referencias .unnumbered}
+
+::: {#refs}
+:::

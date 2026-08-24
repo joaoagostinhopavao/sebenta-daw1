@@ -1,0 +1,352 @@
+---
+title: "O Protocolo HTTP e Gestão de Estado"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## O Protocolo HTTP {#sec-07-http}
+
+`HTTP` (*Hypertext Transfer Protocol*) é o protocolo da camada de
+aplicação que permite que duas aplicações comuniquem entre si na Web.
+Na maior parte das vezes, uma dessas aplicações é um servidor web (como
+o `Apache`, o `Tomcat` ou o `GlassFish`) e a outra é um *browser* (como
+o `Chrome`, o `Firefox` ou o `Edge`). Funciona segundo um modelo de
+pedido-resposta: o cliente envia um pedido `HTTP` ao servidor, e o
+servidor devolve uma resposta `HTTP`.
+
+## O Que Acontece Quando se Escreve um URL {#sec-07-processo}
+
+Vale a pena seguir, passo a passo, o que acontece entre o momento em que
+um utilizador escreve um endereço no *browser* e o momento em que a
+página aparece no ecrã, juntando tudo o que foi visto no capítulo
+anterior:
+
+1. O *browser* extrai o nome do servidor (*hostname*) do URL, incluindo
+   o número de porta, se indicado, e consulta o `DNS` para obter o seu
+   endereço `IP`;
+2. Abre um *socket* `TCP`, especificando o `IP` de destino e a porta a
+   usar, por omissão a porta 80 para uma página web comum;
+3. Escreve uma mensagem de pedido `HTTP` e envia-a através desse
+   *socket* `TCP`; se não for indicado explicitamente o nome de uma
+   página no URL, o servidor assume, por omissão, `index.html`;
+4. A camada `TCP` aceita a mensagem e garante a sua entrega fiável ao
+   servidor, tal como descrito no @sec-06-tcp;
+5. O servidor responde, enviando uma mensagem de resposta que percorre o
+   caminho inverso, através da mesma pilha de protocolos, até chegar de
+   volta ao *browser*, que a interpreta e apresenta a página ao
+   utilizador.
+
+## A Mensagem de Pedido {#sec-07-mensagem-pedido}
+
+Uma mensagem de pedido `HTTP` completa tem a seguinte estrutura geral:
+
+```
+[método] [URL] [versão]
+[cabeçalhos]
+
+[corpo]
+```
+
+O método indica a intenção do cliente. Os mais usados no desenvolvimento
+web são o `GET` e o `POST`.
+
+### O Método GET {#sec-07-get}
+
+O `GET` pede a obtenção de um recurso, sem que essa operação, por si só,
+altere nada no servidor. É o método usado sempre que se clica num
+`link` numa página:
+
+```html
+<a href="http://utad.pt/index.html">UTAD</a>
+```
+
+Este `link`, ao ser clicado, resulta na seguinte mensagem `GET`:
+
+```
+GET / HTTP/1.1
+Host: utad.pt
+```
+
+Por não alterar nada no servidor, a mensagem `GET` é considerada uma
+mensagem **inócua**. Esta é uma convenção do protocolo, não uma garantia
+técnica: um servidor mal concebido pode, tecnicamente, alterar dados
+como resposta a um `GET`, mas fazê-lo viola o comportamento esperado
+por qualquer cliente HTTP, e é considerado má prática.
+
+O `GET` pode também ser usado num contexto de formulário HTML, desde
+que o objetivo não seja alterar informação no servidor, apenas obter um
+resultado, como numa pesquisa:
+
+```html
+<form action="/search" method="GET">
+    <label for="term">Procurar:</label>
+    <input id="term" name="term" type="text" />
+    <input type="submit" value="Procurar!" />
+</form>
+```
+
+Ao submeter este formulário com o termo "love", o *browser* gera a
+seguinte mensagem:
+
+```
+GET /search?term=love HTTP/1.1
+Host: searchengine.com
+```
+
+Note-se como os dados do formulário aparecem diretamente na URL, depois
+do `?`, no formato `chave=valor`.
+
+### O Método POST {#sec-07-post}
+
+O `POST` envia dados para o servidor, tipicamente para criar ou alterar
+um recurso. O seu uso típico é também num formulário HTML:
+
+```html
+<form action="/account/create" method="POST">
+    <label for="firstName">Nome próprio</label>
+    <input id="firstName" name="firstName" type="text" />
+    <label for="lastName">Apelido</label>
+    <input id="lastName" name="lastName" type="text" />
+</form>
+<input type="submit" value="Registar!"/>
+```
+
+Que resulta na seguinte mensagem:
+
+```
+POST /account/create HTTP/1.1
+Host: servername.com
+
+firstName=Scott&lastName=Allen
+```
+
+Ao contrário do `GET`, os dados vão no corpo da mensagem, não na URL. Um
+cliente web envia tipicamente um pedido `POST` sempre que tem dados para
+enviar que vão produzir um efeito no servidor: por exemplo, ao clicar
+num botão "Adicionar ao carrinho" numa loja *online*, é enviado um
+`POST` com a informação do artigo escolhido. Ao contrário do `GET`, o
+`POST` **não é uma mensagem inócua**: tipicamente atualiza uma conta,
+regista um pedido ou altera de alguma outra forma o estado do servidor.
+
+### GET vs. POST {#sec-07-get-vs-post}
+
+A escolha entre `GET` e `POST` num formulário tem consequências
+práticas concretas:
+
+- **Desvantagem do `GET`**: os valores dos campos do formulário ficam
+  visíveis na URL do *browser*. Por esta razão, **o `GET` nunca deve ser
+  usado se os dados do formulário forem sensíveis**, como uma
+  palavra-passe, e não devam ser partilhados ou ficar registados no
+  histórico do *browser*;
+- **Vantagem do `GET`**: precisamente por os parâmetros ficarem na URL,
+  esta pode ser marcada como favorita ou partilhada, permitindo voltar
+  aos mesmos resultados sempre que necessário, algo que o `POST` não
+  permite diretamente.
+
+### Recursos Virtuais {#sec-07-recursos-virtuais}
+
+Nem todos os recursos acessíveis através da Web existem, como tal, num
+ficheiro no servidor. Muitos são criados, ou montados "na hora", de
+acordo com o pedido específico do cliente, depois de o servidor
+recuperar os dados necessários de uma base de dados, tema do
+@sec-08-dbms. Um pedido a `pagina.php?id=5`, por exemplo, não corresponde
+a um ficheiro chamado literalmente assim; corresponde à execução do
+*script* `pagina.php`, que, com base no parâmetro `id`, gera
+dinamicamente o conteúdo a devolver.
+
+## Cabeçalhos HTTP {#sec-07-cabecalhos}
+
+Tanto o pedido como a resposta incluem cabeçalhos, pares de chave e
+valor com informação adicional sobre a mensagem. O único cabeçalho
+obrigatório num pedido é o `Host`, que indica a que servidor o pedido se
+destina, essencial quando um mesmo endereço IP aloja vários domínios
+diferentes. Outro cabeçalho comum é o `Accept`, que indica ao servidor
+que tipos de conteúdo (formatos `MIME`) o *browser* prefere receber na
+resposta, por ordem de preferência, indicada por um valor de qualidade
+`q` entre 0 e 1 (o valor por omissão é 1, a preferência máxima).
+
+## A Resposta do Servidor {#sec-07-resposta}
+
+A resposta do servidor segue uma estrutura semelhante à do pedido, mas
+começa por uma linha de estado, em vez de um método e um URL:
+
+```
+[versão] [código de estado] [frase de razão]
+[cabeçalhos]
+
+[corpo]
+```
+
+O código de estado é um número que resume o resultado do pedido,
+agrupado em cinco categorias:
+
+- **1xx**: informativo, usado raramente diretamente por quem programa
+  aplicações web;
+- **2xx**: sucesso, como `200 OK`;
+- **3xx**: redireccionamento, como `301 Moved Permanently`, que indica
+  que o recurso pedido passou a estar disponível noutro endereço;
+- **4xx**: erro do lado do cliente, como `404 Not Found`, quando o
+  recurso pedido não existe, ou `403 Forbidden`, quando o acesso é
+  negado;
+- **5xx**: erro do lado do servidor, como `500 Internal Server Error`,
+  que indica uma falha na aplicação do lado do servidor, tipicamente um
+  erro no próprio código PHP.
+
+## HTTP é um Protocolo Stateless {#sec-07-stateless}
+
+O servidor HTTP não guarda, por si só, qualquer informação sobre o
+estado de ligações anteriores: depois de responder a um pedido, o
+servidor "esquece" essa ligação, uma propriedade chamada *stateless*
+(sem estado). Isto tem uma consequência prática relevante: uma única
+página web normalmente exige vários recursos, o próprio HTML, a folha de
+estilos CSS, o *script* JavaScript, eventuais imagens, e cada um destes
+recursos exige um pedido `HTTP` independente, cada um com o custo de
+estabelecer a sua própria ligação.
+
+Para atenuar este custo, os *browsers* recorrem a diferentes
+estratégias de gestão de ligações:
+
+- **Ligações paralelas**: ao detetar vários recursos numa página, o
+  *browser* abre várias ligações em simultâneo para os carregar mais
+  depressa, uma para o HTML, outra para o CSS, outra para o JavaScript,
+  e assim por diante. O número de ligações paralelas é limitado, porque
+  cada ligação adicional aumenta a carga sobre o servidor, o que, a
+  partir de certo ponto, pode tornar o carregamento da página mais lento
+  em vez de mais rápido;
+- **Ligações persistentes**: em vez de fechar o *socket* logo a seguir a
+  cada resposta, o servidor mantém-no aberto para vários pedidos
+  sucessivos. O `Apache`, por omissão, mantém uma ligação persistente
+  aberta durante 5 segundos de inatividade antes de a fechar. Este
+  período tem também de ser limitado por razões de segurança, para
+  evitar ataques de negação de serviço (*DoS*, *Denial of Service*), em
+  que um atacante mantém propositadamente muitas ligações abertas em
+  simultâneo, impedindo o servidor de atender pedidos legítimos;
+- **Ligações em rajada** (*back-to-back*): desde o HTTP/1.1, um cliente
+  pode enviar vários pedidos seguidos, sobre a mesma ligação, sem
+  esperar pela resposta a cada um antes de enviar o seguinte, reduzindo
+  ainda mais o tempo total de carregamento de uma página com muitos
+  recursos.
+
+## Gestão de Estado: Cookies e Sessões {#sec-07-estado}
+
+Apesar de o HTTP ser, por natureza, *stateless*, o comportamento mais
+comum na Web é precisamente o oposto: um sítio de comércio eletrónico
+precisa de saber que artigos um utilizador colocou no seu carrinho, e um
+sistema de autenticação precisa de reconhecer um utilizador já
+autenticado, sem lhe pedir a palavra-passe em cada página que visita.
+
+Antigamente, este seguimento de utilizador podia ser feito com base no
+endereço IP do cliente: se um pedido vinha de um determinado IP, o
+servidor assumia tratar-se sempre da mesma sessão. Com a popularização
+do `NAT` (*Network Address Translation*), esta abordagem deixou de
+funcionar: numa rede doméstica típica, vários dispositivos, cada um com
+o seu IP privado, partilham um único IP público perante o resto da
+Internet, pelo que pedidos de utilizadores completamente diferentes
+podem chegar ao servidor com o mesmo endereço IP de origem.
+
+Surgiram então duas soluções, complementares, para manter o estado de
+uma sessão entre pedidos sucessivos: cookies e sessões.
+
+### Cookies {#sec-07-cookies}
+
+Os *cookies* estão definidos na norma `RFC 6265`, *HTTP State Management
+Mechanism*. Funcionam da seguinte forma: na primeira vez que um
+utilizador acede a um sítio, o servidor pode enviar-lhe um *cookie*
+através de um cabeçalho da resposta `HTTP`. A partir desse momento, o
+*browser* passa a incluir esse *cookie* em todos os pedidos seguintes a
+esse mesmo servidor, permitindo-lhe reconhecer o cliente.
+
+```
+HTTP/1.1 200 OK
+Set-Cookie: GUID=00b38b9a6f949a8df5476999c876789e; domain=.msn.com; path=/
+```
+
+A partir daqui, o *browser* passa a enviar este cabeçalho em todos os
+pedidos seguintes a esse servidor:
+
+```
+GET http://www.msn.com HTTP/1.1
+Host: msn.com
+Cookie: GUID=00b38b9a6f949a8df5476999c876789e;
+```
+
+Um servidor pode definir vários *cookies* ao mesmo tempo, cada um com o
+seu próprio significado, por exemplo um identificador de sessão e a
+língua preferida do utilizador:
+
+```
+HTTP/1.1 200 OK
+Set-Cookie: SID=31d4d96e407aad42; Path=/; Secure; HttpOnly
+Set-Cookie: lang=pt-PT; Path=/; Domain=example.com
+```
+
+Um *cookie* definido pelo servidor pode incluir vários atributos, para
+além do par nome-valor:
+
+- **`Expires`** ou **`Max-Age`**: definem quando o *cookie* deve
+  expirar (uma data concreta, ou um número de segundos, respetivamente);
+  se ambos forem definidos, prevalece o `Max-Age`. Sem nenhum dos dois,
+  o *cookie* expira quando o *browser* é fechado;
+- **`Domain`** e **`Path`**: restringem a que *host* e a que pasta do
+  servidor o *cookie* é enviado;
+- **`Secure`**: o *browser* só envia este *cookie* por um canal seguro,
+  `HTTPS`;
+- **`HttpOnly`**: o *cookie* só é trocado entre *browser* e servidor,
+  sem ficar acessível a código JavaScript do lado do cliente, uma
+  proteção importante contra ataques de *XSS*, tema do @sec-09-codigo-proprio.
+
+Para apagar um *cookie*, o servidor reenvia-o com uma data de expiração
+já no passado; a partir desse momento, o *browser* deixa de o incluir
+nos pedidos seguintes. Note-se ainda que os *cookies*, por si só, não
+constituem autenticação: apenas permitem reconhecer que um pedido vem do
+mesmo *browser* que recebeu o *cookie* anteriormente, e têm uma
+limitação de 4kB de informação cada. Em PHP, um *cookie* cria-se com a
+função `setcookie()`:
+
+```php
+<?php
+setcookie(
+    "utilizador",   // nome
+    "joao",         // valor
+    time() + 3600,  // expira em 1 hora
+    "/",            // path
+    "",             // domain
+    true,           // secure
+    true            // httponly
+);
+```
+
+### Sessões {#sec-07-sessoes}
+
+As sessões vão mais longe do que os *cookies* simples: em vez de guardar
+os dados propriamente ditos no cliente, visíveis e alteráveis por quem
+tiver acesso ao *browser*, o servidor guarda os dados localmente,
+associados a um identificador único, e envia apenas esse identificador
+ao cliente, tipicamente através de um *cookie*. Em PHP, uma sessão
+inicia-se com `session_start()`, chamado no início de todas as páginas
+que a usem, e os seus dados ficam disponíveis através da supervariável
+`$_SESSION`:
+
+```php
+<?php
+session_start();
+$_SESSION["utilizador"] = "joao";
+```
+
+```php
+<?php
+// Noutra página, também com session_start() no início:
+session_start();
+echo "Bem-vindo, " . $_SESSION["utilizador"];
+```
+
+Cookies e sessões são, assim, a solução de engenharia que permite
+simular continuidade numa aplicação web construída sobre um protocolo
+que, por natureza, não guarda memória de nada entre um pedido e o
+seguinte.
+
+## Referências {#sec-07-referencias .unnumbered}
+
+::: {#refs}
+:::

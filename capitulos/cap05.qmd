@@ -1,0 +1,189 @@
+---
+title: "PHP III: Funções, Datas e Includes"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Funções {#sec-05-funcoes}
+
+Uma função é um conjunto de instruções nomeado, a que se dá um nome, que
+pode ser chamado num programa para realizar uma tarefa específica. As
+funções ajudam a organizar e a reutilizar código, melhorando a
+legibilidade e a manutenção do programa: em vez de repetir o mesmo
+bloco de instruções em vários pontos de um *script*, escreve-se uma vez,
+dentro de uma função, e chama-se essa função sempre que necessário. Uma
+função pode aceitar parâmetros (dados de entrada) e devolver um valor
+(dado de saída), ambos opcionais.
+
+```php
+<?php
+function saudacao($nome) {
+    return "Olá, " . $nome . "!";
+}
+
+echo saudacao("Ana");   // Olá, Ana!
+echo saudacao("Rui");   // Olá, Rui!
+```
+
+Uma função pode receber vários parâmetros, e pode definir-lhes um valor
+por omissão, usado quando esse parâmetro não é indicado na chamada:
+
+```php
+<?php
+function somar($a, $b = 10) {
+    return $a + $b;
+}
+
+echo somar(5);      // 15, usa o valor por omissão de $b
+echo somar(5, 20);  // 25, o valor indicado sobrepõe-se ao valor por omissão
+```
+
+Uma função pode ainda não devolver nada, limitando-se a produzir um
+efeito, como mostrar diretamente algo no ecrã:
+
+```php
+<?php
+function mostrarLinha($texto) {
+    echo "<p>" . $texto . "</p>";
+}
+
+mostrarLinha("Primeira linha");
+mostrarLinha("Segunda linha");
+```
+
+Uma variável definida dentro de uma função é local a essa função, e não
+é visível fora dela, mesmo que uma variável com o mesmo nome exista
+também fora da função; a única forma de uma função comunicar um
+resultado para o resto do *script* é através do valor que devolve com
+`return`:
+
+```php
+<?php
+function calcularIVA($preco) {
+    $taxa = 0.23;              // $taxa só existe dentro desta função
+    return $preco * (1 + $taxa);
+}
+
+echo calcularIVA(10);  // 12.3
+// echo $taxa;         // erro: $taxa não está definida aqui fora
+```
+
+O código completo da demonstração feita na aula sobre funções está
+disponível no @sec-apB-funcoes.
+
+## Datas {#sec-05-datas}
+
+O PHP oferece funções dedicadas à manipulação de datas e horas,
+particularmente relevantes numa aplicação web, onde é comum registar
+quando um contacto foi criado, calcular prazos, ou apresentar uma data
+num formato legível. Há três operações comuns sobre datas em PHP.
+
+### Obter a Data e Hora Atuais {#sec-05-data-atual}
+
+A função `date()` formata a data e hora atuais do servidor de acordo
+com um padrão indicado como parâmetro, usando letras com significados
+predefinidos, como `d` para o dia, `m` para o mês, `Y` para o ano com
+quatro dígitos, `H` para a hora, `i` para os minutos e `s` para os
+segundos:
+
+```php
+<?php
+echo date("d/m/Y");        // 24/08/2026
+echo date("d/m/Y H:i:s");  // 24/08/2026 15:42:07
+echo date("l, d \d\e F");  // segunda-feira, 24 de Agosto (com localização)
+```
+
+### Formatação Personalizada {#sec-05-formatacao-datas}
+
+Como se vê nos exemplos anteriores, o mesmo instante pode ser apresentado
+de formas muito diferentes, apenas mudando o formato pedido a `date()`,
+o que é útil para adaptar a apresentação de uma data ao contexto: um
+formato compacto para uma tabela, ou um formato por extenso para o
+cabeçalho de um artigo.
+
+### Fusos Horários {#sec-05-fusos-horarios}
+
+Por omissão, o PHP usa o fuso horário configurado no servidor, que pode
+não corresponder ao fuso horário dos utilizadores da aplicação. Pode
+definir-se explicitamente o fuso horário a usar com
+`date_default_timezone_set()`, logo no início do *script*:
+
+```php
+<?php
+date_default_timezone_set("Europe/Lisbon");
+echo date("H:i:s");  // hora local em Portugal, independentemente do fuso do servidor
+```
+
+Para operações mais complexas sobre datas, como calcular a diferença
+entre duas datas ou adicionar um intervalo de tempo a uma data, o PHP
+disponibiliza a classe `DateTime`, orientada a objetos:
+
+```php
+<?php
+$data = new DateTime("2026-08-24");
+$data->modify("+7 days");
+echo $data->format("d/m/Y");  // 31/08/2026
+
+$inicio = new DateTime("2026-08-01");
+$fim = new DateTime("2026-08-24");
+$diferenca = $inicio->diff($fim);
+echo $diferenca->days . " dias";  // 23 dias
+```
+
+O código completo da demonstração feita na aula sobre datas, incluindo
+o cálculo de anos bissextos, está disponível no @sec-apB-datas.
+
+## Manipulação do Fluxo de Páginas: Includes {#sec-05-includes}
+
+À medida que um sítio cresce, torna-se comum que várias páginas partilhem
+os mesmos elementos, como o cabeçalho ou o rodapé. Em vez de repetir esse
+código em cada ficheiro, o PHP permite incluir o conteúdo de um ficheiro
+dentro de outro, através de duas instruções muito semelhantes: `include`
+e `require`.
+
+**`include`**: inclui o conteúdo de um ficheiro dentro do ficheiro
+atual. Se o ficheiro indicado não for encontrado, o PHP emite um aviso,
+mas o *script* continua a ser executado. É útil quando se quer incluir
+ficheiros opcionais, não críticos para o funcionamento do *script*.
+
+**`require`**: funciona de forma semelhante ao `include`, mas é usado
+quando o ficheiro incluído é essencial para o funcionamento do
+*script*. Se o ficheiro indicado não for encontrado, o PHP emite um
+erro fatal e interrompe imediatamente a execução. É útil quando se quer
+garantir que um ficheiro fundamental está disponível antes de continuar
+a executar o resto do *script*.
+
+```php
+<?php
+require "header.php";
+?>
+
+<p>Conteúdo específico desta página.</p>
+
+<?php
+require "footer.php";
+?>
+```
+
+Como o cabeçalho e o rodapé costumam ser essenciais à estrutura visual
+de uma página, sem os quais o resultado ficaria incompleto ou quebrado,
+é comum preferir-se `require` a `include` para os incluir. Existem ainda
+as variantes `include_once` e `require_once`, que garantem que um mesmo
+ficheiro só é incluído uma vez, mesmo que a instrução apareça, direta ou
+indiretamente, mais do que uma vez no fluxo de execução, evitando erros
+como a redefinição de uma mesma função.
+
+Este padrão, ficheiros `header.php` e `footer.php` incluídos em cada
+página do sítio, é o primeiro passo prático para pensar numa aplicação
+web como um conjunto de componentes reutilizáveis, em vez de páginas
+HTML independentes e desligadas umas das outras, uma ideia retomada com
+mais profundidade no @sec-02-mvc e no @sec-10-porque-separar.
+
+O código completo dos três ficheiros desta demonstração está disponível
+no @sec-apB-includes.
+
+## Referências {#sec-05-referencias .unnumbered}
+
+::: {#refs}
+:::

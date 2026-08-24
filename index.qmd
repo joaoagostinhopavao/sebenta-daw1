@@ -1,0 +1,60 @@
+# Prefácio {.unnumbered}
+
+```{=html}
+<div class="hero">
+  <div class="hero-badge">UTAD · 2026/2027</div>
+  <h1>Desenvolvimento de Aplicações Web I</h1>
+  <h2>Sebenta de estudo</h2>
+  <p>Universidade de Trás-os-Montes e Alto Douro</p>
+  <div class="hero-meta">
+    <span>João Pavão</span>
+    <span class="hero-meta-date">22 de Agosto de 2026</span>
+  </div>
+</div>
+```
+
+Este documento é um documento de apoio ao estudo autónomo para a componente teórica da
+disciplina de **Desenvolvimento de Aplicações Web I** (DAW1), Licenciatura em
+Comunicação e Multimédia, cobrindo o desenvolvimento de aplicações web do
+lado do servidor com PHP, desde os fundamentos da comunicação cliente-servidor
+até à arquitetura e segurança de aplicações web modernas.
+
+Na componente prática da UC, os alunos aplicam estes conceitos na construção de
+sítios web dinâmicos com PHP e bases de dados. Este documento cobre a componente
+teórica; a componente prática é acompanhada em separado, nas respetivas aulas.
+
+## Organização do documento {.unnumbered}
+
+O texto está organizado em cinco blocos temáticos, que seguem o programa
+oficial da UC:
+
+1. **Fundamentos e Panorama da Web** — o processo de desenvolvimento de
+   uma aplicação web e os diferentes tipos de servidores e infraestruturas
+2. **Programação em PHP** — sintaxe, controlo de fluxo, funções e
+   organização de código
+3. **Comunicação e Estado na Web** — modelos de rede, o protocolo HTTP e
+   a gestão de estado com cookies e sessões
+4. **Dados e Segurança** — bases de dados com PHP e segurança de
+   aplicações web
+5. **Arquitetura e Ferramentas** — o padrão Model-View-Controller e
+   frameworks de desenvolvimento web
+
+## Fonte e atualização {.unnumbered}
+
+Os conteúdos deste documento de aopio ao estudo baseiam-se no material próprio do docente,
+desenvolvido ao longo de anos anteriores de lecionação da UC (slides e
+demonstrações de código), reorganizado e atualizado para o ano letivo
+2026/2027. A bibliografia de referência da UC está indicada em cada
+capítulo e compilada no ficheiro `referencias.bib`.
+
+## Como usar este texto de apoio {.unnumbered}
+
+Cada capítulo corresponde a uma aula teórica da UC. A recomendação é que os
+alunos leiam um capítulo antes da aula respetiva, e que usem aeste texto como
+apoio ao estudo autónomo, para rever conceitos e esclarecer dúvidas. A
+leitura não substitui a presença nas aulas, nem a participação nas
+demonstrações práticas em sala de aula.
+
+## Autor {.unnumbered}
+
+**João Pavão** — UTAD, docente responsável, componente teórica

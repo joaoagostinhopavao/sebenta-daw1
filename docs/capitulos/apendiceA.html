@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-PT" xml:lang="pt-PT"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+
+<title>Apêndice A — Configuração do Ambiente de Desenvolvimento – Desenvolvimento de Aplicações Web I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/apendiceB.html" rel="next">
+<link href="../capitulos/cap11.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/apendiceA.html">Apêndices</a></li><li class="breadcrumb-item"><a href="../capitulos/apendiceA.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Configuração do Ambiente de Desenvolvimento</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Desenvolvimento de Aplicações Web I</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Desenvolvimento de Software para o Ambiente Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Arquiteturas Web e Infraestruturas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Sintaxe, Variáveis e Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Funções, Datas e Includes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modelos de Comunicação e Redes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O Protocolo HTTP e Gestão de Estado</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bases de Dados e PHP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Segurança em Aplicações Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Model-View-Controller (MVC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Frameworks de Desenvolvimento Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Apêndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceA.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Configuração do Ambiente de Desenvolvimento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-apA-intro" id="toc-sec-apA-intro" class="nav-link active" data-scroll-target="#sec-apA-intro"><span class="header-section-number">A.1</span> Introdução</a>
+  <ul class="collapse">
+  <li><a href="#sec-apA-sistemas" id="toc-sec-apA-sistemas" class="nav-link" data-scroll-target="#sec-apA-sistemas"><span class="header-section-number">A.1.1</span> Sistemas Operativos dos Computadores dos Alunos</a></li>
+  <li><a href="#sec-apA-phpmyadmin" id="toc-sec-apA-phpmyadmin" class="nav-link" data-scroll-target="#sec-apA-phpmyadmin"><span class="header-section-number">A.1.2</span> O phpMyAdmin</a></li>
+  </ul></li>
+  <li><a href="#sec-apA-vm-fornecida" id="toc-sec-apA-vm-fornecida" class="nav-link" data-scroll-target="#sec-apA-vm-fornecida"><span class="header-section-number">A.2</span> Máquina Virtual Fornecida pelo Professor</a>
+  <ul class="collapse">
+  <li><a href="#sec-apA-vm-fornecida-instalar" id="toc-sec-apA-vm-fornecida-instalar" class="nav-link" data-scroll-target="#sec-apA-vm-fornecida-instalar"><span class="header-section-number">A.2.1</span> Instalar o VirtualBox</a></li>
+  <li><a href="#sec-apA-vm-fornecida-importar" id="toc-sec-apA-vm-fornecida-importar" class="nav-link" data-scroll-target="#sec-apA-vm-fornecida-importar"><span class="header-section-number">A.2.2</span> Importar o Ficheiro .ova</a></li>
+  <li><a href="#sec-apA-vm-fornecida-testes" id="toc-sec-apA-vm-fornecida-testes" class="nav-link" data-scroll-target="#sec-apA-vm-fornecida-testes"><span class="header-section-number">A.2.3</span> Primeiros Testes</a></li>
+  </ul></li>
+  <li><a href="#sec-apA-docker-fornecido" id="toc-sec-apA-docker-fornecido" class="nav-link" data-scroll-target="#sec-apA-docker-fornecido"><span class="header-section-number">A.3</span> Contentores Fornecidos pelo Professor</a>
+  <ul class="collapse">
+  <li><a href="#sec-apA-docker-fornecido-instalar" id="toc-sec-apA-docker-fornecido-instalar" class="nav-link" data-scroll-target="#sec-apA-docker-fornecido-instalar"><span class="header-section-number">A.3.1</span> Instalar o Docker</a></li>
+  <li><a href="#sec-apA-docker-fornecido-carregar" id="toc-sec-apA-docker-fornecido-carregar" class="nav-link" data-scroll-target="#sec-apA-docker-fornecido-carregar"><span class="header-section-number">A.3.2</span> Carregar e Arrancar os Contentores</a></li>
+  <li><a href="#sec-apA-docker-fornecido-testes" id="toc-sec-apA-docker-fornecido-testes" class="nav-link" data-scroll-target="#sec-apA-docker-fornecido-testes"><span class="header-section-number">A.3.3</span> Primeiros Testes</a></li>
+  </ul></li>
+  <li><a href="#sec-apA-zero" id="toc-sec-apA-zero" class="nav-link" data-scroll-target="#sec-apA-zero"><span class="header-section-number">A.4</span> Construir o Ambiente a Partir do Zero</a>
+  <ul class="collapse">
+  <li><a href="#sec-apA-vm" id="toc-sec-apA-vm" class="nav-link" data-scroll-target="#sec-apA-vm"><span class="header-section-number">A.4.1</span> Opção 1: Máquina Virtual com VirtualBox</a></li>
+  <li><a href="#sec-apA-docker" id="toc-sec-apA-docker" class="nav-link" data-scroll-target="#sec-apA-docker"><span class="header-section-number">A.4.2</span> Opção 2: Contentores com Docker</a></li>
+  </ul></li>
+  <li><a href="#sec-apA-verificacao" id="toc-sec-apA-verificacao" class="nav-link" data-scroll-target="#sec-apA-verificacao"><span class="header-section-number">A.5</span> Verificar a Instalação</a></li>
+  <li><a href="#sec-apA-referencias" id="toc-sec-apA-referencias" class="nav-link" data-scroll-target="#sec-apA-referencias">Referências</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/apendiceA.html">Apêndices</a></li><li class="breadcrumb-item"><a href="../capitulos/apendiceA.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Configuração do Ambiente de Desenvolvimento</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Apêndice A — Configuração do Ambiente de Desenvolvimento</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 de agosto de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-apA-intro" class="level2" data-number="A.1">
+<h2 data-number="A.1" class="anchored" data-anchor-id="sec-apA-intro"><span class="header-section-number">A.1</span> Introdução</h2>
+<p>Este apêndice descreve, passo a passo, a configuração do ambiente de desenvolvimento apresentado no <a href="cap03.html#sec-03-ambiente" class="quarto-xref"><span>Secção 3.1</span></a>, tanto por máquina virtual como por contentores. Há, para cada uma destas duas abordagens, dois cenários possíveis:</p>
+<ul>
+<li><strong>O professor fornece o ambiente já preparado</strong>: uma máquina virtual já instalada e configurada, distribuída como ficheiro <code>.ova</code>, ou um conjunto de contentores já definidos, distribuídos como ficheiros de configuração ou como imagens já construídas. Este é o cenário mais comum, e o único que a maioria dos alunos precisa de seguir.</li>
+<li><strong>O aluno constrói o ambiente do zero</strong>: instalando e configurando ele próprio o <code>Apache</code>, o <code>MySQL</code> e o <code>PHP</code>, ou escrevendo o seu próprio <code>Dockerfile</code> e <code>docker-compose.yml</code>. É útil para quem quer usar o mesmo ambiente num computador pessoal fora do contexto da aula, ou simplesmente compreender, em detalhe, do que é feito o ambiente que lhe é disponibilizado.</li>
+</ul>
+<p>Nenhuma destas descrições substitui as instruções concretas que possam vir a ser dadas nas aulas práticas, que podem especificar versões, configurações de rede ou credenciais diferentes das aqui usadas como exemplo; o objetivo deste apêndice é apenas garantir que qualquer aluno consegue, por si só, chegar a um ambiente funcional, com o <code>Apache</code>, o <code>PHP</code> e o <code>MySQL</code> prontos a usar.</p>
+<section id="sec-apA-sistemas" class="level3" data-number="A.1.1">
+<h3 data-number="A.1.1" class="anchored" data-anchor-id="sec-apA-sistemas"><span class="header-section-number">A.1.1</span> Sistemas Operativos dos Computadores dos Alunos</h3>
+<p>Antes de descarregar qualquer <em>software</em>, é importante saber qual das seguintes três variantes corresponde ao computador de cada aluno, já que tanto o <code>VirtualBox</code> como o <code>Docker Desktop</code> disponibilizam instaladores diferentes para cada uma:</p>
+<ul>
+<li><strong>Windows</strong>;</li>
+<li><strong>macOS com processador Intel</strong> (Mac mais antigos, anteriores a 2020/2021);</li>
+<li><strong>macOS com Apple Silicon</strong> (Mac com processador <code>M1</code>, <code>M2</code>, <code>M3</code> ou <code>M4</code>, a generalidade dos modelos vendidos a partir de 2020/2021).</li>
+</ul>
+<p>Num Mac, esta informação obtém-se no menu <code>Apple</code> (o ícone no canto superior esquerdo do ecrã), em <em>Sobre Este Mac</em>: se o campo <code>Chip</code> mostrar <code>Apple M1</code>, <code>M2</code>, <code>M3</code> ou <code>M4</code>, trata-se de Apple Silicon; se mostrar <code>Processador Intel</code>, trata-se de um Mac Intel. Escolher o instalador errado é um dos erros mais comuns nesta fase, e resulta tipicamente numa aplicação que não abre, ou que abre mas falha ao iniciar qualquer máquina virtual ou contentor.</p>
+</section>
+<section id="sec-apA-phpmyadmin" class="level3" data-number="A.1.2">
+<h3 data-number="A.1.2" class="anchored" data-anchor-id="sec-apA-phpmyadmin"><span class="header-section-number">A.1.2</span> O phpMyAdmin</h3>
+<p>O <a href="https://www.phpmyadmin.net/"><code>phpMyAdmin</code></a> é uma ferramenta gratuita de administração do <code>MySQL</code> através do <em>browser</em>, escrita, ela própria, em PHP. Em vez de escrever instruções SQL na linha de comandos para ver o conteúdo de uma tabela, criar uma base de dados, ou verificar se uma linha foi corretamente inserida, o <code>phpMyAdmin</code> mostra tudo isto numa interface visual, o que o torna particularmente útil enquanto se aprende a trabalhar com bases de dados. Nem a máquina virtual, nem os contentores, precisam obrigatoriamente de o incluir, o <code>MySQL</code> funciona perfeitamente sem ele, mas, quando disponível, é frequentemente a forma mais rápida de confirmar visualmente que uma aplicação PHP está, de facto, a gravar e a ler os dados corretos. Este apêndice indica, em cada uma das quatro secções seguintes, como aceder ao <code>phpMyAdmin</code> quando este é fornecido pelo professor, e como o instalar quando o ambiente é construído do zero.</p>
+</section>
+</section>
+<section id="sec-apA-vm-fornecida" class="level2" data-number="A.2">
+<h2 data-number="A.2" class="anchored" data-anchor-id="sec-apA-vm-fornecida"><span class="header-section-number">A.2</span> Máquina Virtual Fornecida pelo Professor</h2>
+<section id="sec-apA-vm-fornecida-instalar" class="level3" data-number="A.2.1">
+<h3 data-number="A.2.1" class="anchored" data-anchor-id="sec-apA-vm-fornecida-instalar"><span class="header-section-number">A.2.1</span> Instalar o VirtualBox</h3>
+<p>O único <em>software</em> que cada aluno precisa de instalar, neste cenário, é o <code>VirtualBox</code>, disponível gratuitamente em <a href="https://www.virtualbox.org/wiki/Downloads">virtualbox.org/wiki/Downloads</a>, onde aparecem pacotes de instalação separados consoante o sistema operativo do computador: <code>Windows hosts</code>, <code>macOS / Intel hosts</code> e <code>macOS / Apple Silicon hosts</code>, correspondendo às três variantes descritas no <a href="#sec-apA-sistemas" class="quarto-xref"><span>Secção A.1.1</span></a>. A máquina virtual em si, com o <code>Ubuntu</code> e toda a <em>stack</em> de desenvolvimento já instalados e configurados, é fornecida separadamente pelo professor, como um ficheiro <code>.ova</code>.</p>
+</section>
+<section id="sec-apA-vm-fornecida-importar" class="level3" data-number="A.2.2">
+<h3 data-number="A.2.2" class="anchored" data-anchor-id="sec-apA-vm-fornecida-importar"><span class="header-section-number">A.2.2</span> Importar o Ficheiro .ova</h3>
+<p>Com o <code>VirtualBox</code> instalado e o ficheiro <code>.ova</code> fornecido pelo professor guardado no computador, os passos para o pôr a funcionar são:</p>
+<ol type="1">
+<li>Abrir o <code>VirtualBox</code> e escolher <code>Ficheiro &gt; Importar Appliance...</code> (ou o atalho <code>Ctrl+I</code>);</li>
+<li>Selecionar o ficheiro <code>.ova</code> fornecido;</li>
+<li>Rever as definições propostas para a máquina virtual (nome, memória RAM, número de processadores, localização do disco virtual), que já vêm preenchidas com os valores usados pelo professor, e que podem ser ajustadas, dentro dos limites do computador de cada aluno, antes de avançar;</li>
+<li>Confirmar a importação e aguardar que o <code>VirtualBox</code> copie e descomprima o conteúdo do ficheiro <code>.ova</code>, um processo que pode demorar vários minutos, consoante o tamanho da máquina virtual e a velocidade do disco;</li>
+<li>Concluída a importação, selecionar a máquina virtual na lista do <code>VirtualBox</code> e clicar em <code>Iniciar</code>.</li>
+</ol>
+<p>As credenciais de acesso (nome de utilizador e password) dentro da máquina virtual, bem como o endereço e a porta onde a aplicação fica acessível a partir do <em>browser</em> do computador anfitrião (por exemplo, <code>http://localhost:8080</code>, caso a máquina virtual use reencaminhamento de portas em vez de acesso direto), são indicados pelo professor juntamente com o ficheiro <code>.ova</code>, já que podem variar de ano para ano.</p>
+</section>
+<section id="sec-apA-vm-fornecida-testes" class="level3" data-number="A.2.3">
+<h3 data-number="A.2.3" class="anchored" data-anchor-id="sec-apA-vm-fornecida-testes"><span class="header-section-number">A.2.3</span> Primeiros Testes</h3>
+<p>Depois de a máquina virtual arrancar, antes de começar a programar, vale a pena confirmar que tudo está a funcionar como esperado. Num terminal dentro da máquina virtual, verifica-se a versão de cada componente já instalado:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-v</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">apache2</span> <span class="at">-v</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">mysql</span> <span class="at">--version</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>De seguida, testa-se a ligação ao <code>PHP</code> através do <em>browser</em>: abrindo o endereço indicado pelo professor (dentro da máquina virtual, tipicamente <code>http://localhost</code>; a partir do computador anfitrião, consoante a configuração de rede da máquina virtual), deve aparecer uma página servida pelo <code>Apache</code> e processada pelo <code>PHP</code>. Por fim, testa-se a ligação à base de dados, seja diretamente no terminal:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mysql</span> <span class="at">-u</span> root <span class="at">-p</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>seja através de um pequeno <em>script</em> PHP como o apresentado no <a href="#sec-apA-verificacao" class="quarto-xref"><span>Secção A.5</span></a>, que confirma que o <code>PHP</code> consegue efetivamente comunicar com o <code>MySQL</code>, e não apenas que os dois serviços estão, cada um por si, a correr.</p>
+<p>Se a máquina virtual fornecida pelo professor incluir também o <code>phpMyAdmin</code>, uma ferramenta de administração do <code>MySQL</code> através do <em>browser</em>, referida no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.2</span></a>, é essa a forma mais simples de confirmar visualmente que a base de dados está acessível, sem ser necessário usar a linha de comandos: basta abrir <code>http://localhost/phpmyadmin</code> (ou o endereço indicado pelo professor) e autenticar-se com as credenciais do <code>MySQL</code>.</p>
+</section>
+</section>
+<section id="sec-apA-docker-fornecido" class="level2" data-number="A.3">
+<h2 data-number="A.3" class="anchored" data-anchor-id="sec-apA-docker-fornecido"><span class="header-section-number">A.3</span> Contentores Fornecidos pelo Professor</h2>
+<section id="sec-apA-docker-fornecido-instalar" class="level3" data-number="A.3.1">
+<h3 data-number="A.3.1" class="anchored" data-anchor-id="sec-apA-docker-fornecido-instalar"><span class="header-section-number">A.3.1</span> Instalar o Docker</h3>
+<p>Tal como na opção da máquina virtual, o único <em>software</em> que cada aluno precisa de instalar, neste cenário, é o <code>Docker</code>. Em Windows e em macOS, instala-se o <code>Docker Desktop</code>, disponível em <a href="https://www.docker.com/products/docker-desktop/">docker.com/products/docker-desktop</a>, onde aparecem, tal como no <code>VirtualBox</code>, instaladores separados para <code>Mac with Apple silicon</code> e <code>Mac with Intel chip</code>, além do instalador para Windows; em Linux, instala-se diretamente o <code>Docker Engine</code>, seguindo as instruções em <a href="https://docs.docker.com/engine/install/">docs.docker.com/engine/install</a>. Confirma-se a instalação, num terminal do computador anfitrião, com:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose version</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-apA-docker-fornecido-carregar" class="level3" data-number="A.3.2">
+<h3 data-number="A.3.2" class="anchored" data-anchor-id="sec-apA-docker-fornecido-carregar"><span class="header-section-number">A.3.2</span> Carregar e Arrancar os Contentores</h3>
+<p>O professor pode distribuir o ambiente de duas formas distintas:</p>
+<ul>
+<li><p><strong>Ficheiros de configuração</strong> (<code>docker-compose.yml</code>, e um <code>Dockerfile</code> se aplicável): bastando colocá-los numa pasta e correr, aí dentro:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span> <span class="at">--build</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Imagens já construídas</strong>, distribuídas como ficheiros <code>.tar</code>: neste caso, começa-se por carregar cada imagem para o <code>Docker</code> local, antes de a arrancar:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> load <span class="at">-i</span> imagem-apache-php.tar</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> load <span class="at">-i</span> imagem-mysql.tar</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p>Em qualquer dos casos, o resultado esperado é o mesmo referido no <a href="cap03.html#sec-03-ambiente-docker" class="quarto-xref"><span>Secção 3.1.2</span></a>: um contentor com o <code>Apache</code> e o <code>PHP</code>, e outro contentor, separado, com o <code>MySQL</code>, ambos a correr e a comunicar entre si.</p>
+</section>
+<section id="sec-apA-docker-fornecido-testes" class="level3" data-number="A.3.3">
+<h3 data-number="A.3.3" class="anchored" data-anchor-id="sec-apA-docker-fornecido-testes"><span class="header-section-number">A.3.3</span> Primeiros Testes</h3>
+<p>Com os contentores a correr, confirma-se primeiro que ambos estão ativos:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>devendo aparecer, na lista, um contentor para o <code>Apache</code>/<code>PHP</code> e outro para o <code>MySQL</code>, cada um com o seu próprio nome. Verifica-se, depois, a versão instalada em cada um, executando o comando diretamente dentro do contentor com <code>docker exec</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>nome_do_contentor_web<span class="op">&gt;</span> php <span class="at">-v</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>nome_do_contentor_db<span class="op">&gt;</span> mysql <span class="at">--version</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Testa-se, de seguida, a ligação ao <code>PHP</code> através do <em>browser</em>, no endereço e porta indicados pelo professor (por exemplo, <code>http://localhost:8080</code>), e, por fim, a ligação à base de dados, seja diretamente a partir do contentor:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>nome_do_contentor_db<span class="op">&gt;</span> mysql <span class="at">-u</span> root <span class="at">-p</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>seja através do pequeno <em>script</em> PHP apresentado no <a href="#sec-apA-verificacao" class="quarto-xref"><span>Secção A.5</span></a>, tal como no cenário da máquina virtual.</p>
+<p>Se o professor incluir também um contentor com o <code>phpMyAdmin</code>, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.2</span></a>, este fica normalmente acessível num endereço próprio (por exemplo, <code>http://localhost:8081</code>), oferecendo uma forma visual, através do <em>browser</em>, de confirmar o conteúdo da base de dados, sem ser necessário <code>docker exec</code> para entrar no contentor do <code>MySQL</code>.</p>
+</section>
+</section>
+<section id="sec-apA-zero" class="level2" data-number="A.4">
+<h2 data-number="A.4" class="anchored" data-anchor-id="sec-apA-zero"><span class="header-section-number">A.4</span> Construir o Ambiente a Partir do Zero</h2>
+<p>As duas secções seguintes destinam-se a quem não vai usar o ambiente fornecido pelo professor, e prefere construir, ele próprio, cada uma das duas abordagens descritas no <a href="cap03.html#sec-03-ambiente" class="quarto-xref"><span>Secção 3.1</span></a>, desde a instalação do <code>VirtualBox</code> ou do <code>Docker</code> até ao <code>Apache</code>, ao <code>MySQL</code> e ao <code>PHP</code> prontos a usar.</p>
+<section id="sec-apA-vm" class="level3" data-number="A.4.1">
+<h3 data-number="A.4.1" class="anchored" data-anchor-id="sec-apA-vm"><span class="header-section-number">A.4.1</span> Opção 1: Máquina Virtual com VirtualBox</h3>
+<section id="sec-apA-vm-criar" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-vm-criar">Criar a Máquina Virtual</h4>
+<ol type="1">
+<li>Instalar o <code>VirtualBox</code>, tal como descrito no <a href="#sec-apA-vm-fornecida-instalar" class="quarto-xref"><span>Secção A.2.1</span></a>;</li>
+<li>Obter uma imagem <code>.iso</code> do <code>Ubuntu</code>, disponível em <a href="https://ubuntu.com/download">ubuntu.com/download</a> (a versão <em>Desktop</em>, mais simples de usar para quem começa, ou a versão <em>Server</em>, mais leve, para quem já tem alguma experiência com a linha de comandos);</li>
+<li>No <code>VirtualBox</code>, criar uma nova máquina virtual, indicando o tipo <code>Linux</code> e a versão <code>Ubuntu (64-bit)</code>;</li>
+<li>Atribuir à máquina virtual pelo menos 4 GB de memória RAM, e um disco virtual de tamanho dinamicamente alocado, com pelo menos 25 GB, para acomodar o sistema operativo, os pacotes instalados e os projetos desenvolvidos ao longo da UC;</li>
+<li>Associar a imagem <code>.iso</code> do <code>Ubuntu</code> como suporte de arranque, e iniciar a máquina virtual para correr o instalador, indicando o idioma, o teclado, e criando um utilizador e uma password;</li>
+<li>Concluída a instalação, reiniciar a máquina virtual e instalar as <code>Guest Additions</code> do <code>VirtualBox</code> (disponíveis no menu <em>Dispositivos</em> do próprio <code>VirtualBox</code>), que melhoram o desempenho gráfico e permitem, mais tarde, configurar pastas partilhadas com o computador anfitrião.</li>
+</ol>
+</section>
+<section id="sec-apA-vm-lamp" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-vm-lamp">Instalar o Apache, o MySQL e o PHP</h4>
+<p>Com o <code>Ubuntu</code> instalado e a correr dentro da máquina virtual, abre-se um terminal e atualiza-se a lista de pacotes disponíveis antes de instalar qualquer coisa:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Instala-se depois o servidor web <code>Apache</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install apache2 <span class="at">-y</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Verifica-se que o <code>Apache</code> ficou a correr, e testa-se, no <em>browser</em> da própria máquina virtual, o endereço <code>http://localhost</code>, que deve mostrar a página de boas-vindas por omissão do <code>Apache</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl status apache2</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Instala-se, depois, o <code>MySQL</code>, e corre-se o assistente de configuração de segurança, que pede para definir uma password de administrador e remover configurações inseguras por omissão:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install mysql-server <span class="at">-y</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mysql_secure_installation</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Por fim, instala-se o <code>PHP</code>, juntamente com o módulo que liga o <code>PHP</code> ao <code>Apache</code>, e a extensão que permite ao <code>PHP</code> comunicar com o <code>MySQL</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install php libapache2-mod-php php-mysql <span class="at">-y</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart apache2</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O reinício do <code>Apache</code>, no final, é necessário para que este passe a reconhecer o módulo do <code>PHP</code> instalado, e a interpretar corretamente ficheiros <code>.php</code>.</p>
+</section>
+<section id="sec-apA-vm-testar" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-vm-testar">Testar a Instalação</h4>
+<p>O <code>Apache</code>, por omissão, serve os ficheiros guardados na pasta <code>/var/www/html</code>. Para confirmar que o <code>PHP</code> está corretamente instalado, cria-se ali um pequeno ficheiro de teste:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"&lt;?php phpinfo(); ?&gt;"</span> <span class="kw">|</span> <span class="fu">sudo</span> tee /var/www/html/info.php</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ao abrir <code>http://localhost/info.php</code> no <em>browser</em>, deve aparecer uma página com informação detalhada sobre a instalação do <code>PHP</code>, incluindo a sua versão e a lista de extensões ativas, onde deve constar <code>mysqli</code>. Depois de confirmado, este ficheiro deve ser apagado, já que expõe informação detalhada do servidor que não deve ficar acessível fora de um ambiente de desenvolvimento:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> rm /var/www/html/info.php</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-apA-vm-phpmyadmin" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-vm-phpmyadmin">Instalar o phpMyAdmin (Opcional)</h4>
+<p>O <code>phpMyAdmin</code>, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.2</span></a>, é uma ferramenta de administração do <code>MySQL</code> através do <em>browser</em>, útil sobretudo enquanto se aprende, para ver rapidamente o conteúdo de uma tabela sem escrever uma única instrução SQL. Instala-se com:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install phpmyadmin <span class="at">-y</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Durante a instalação, o <code>apt</code> pergunta qual o servidor web a configurar automaticamente: seleciona-se <code>apache2</code> com a barra de espaços, e confirma-se com <code>Tab</code> e <code>Enter</code>. Pergunta ainda se deve configurar a base de dados do próprio <code>phpMyAdmin</code> com <code>dbconfig-common</code>, ao que se responde afirmativamente, definindo uma password para essa configuração interna. Concluída a instalação, o <code>phpMyAdmin</code> fica acessível em <code>http://localhost/phpmyadmin</code>, onde se entra com o utilizador e a password já criados no <code>MySQL</code>. Se o <code>Apache</code> não for configurado automaticamente, pode ser necessário acrescentar manualmente a linha <code>Include /etc/phpmyadmin/apache.conf</code> à sua configuração, e reiniciá-lo:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Include /etc/phpmyadmin/apache.conf"</span> <span class="kw">|</span> <span class="fu">sudo</span> tee <span class="at">-a</span> /etc/apache2/apache2.conf</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart apache2</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-apA-vm-editor" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-vm-editor">Editar Código a Partir do Computador Anfitrião</h4>
+<p>Trabalhar diretamente dentro da máquina virtual, num editor de texto instalado ali, é possível, mas pouco confortável. Duas alternativas permitem editar o código com o <code>Visual Studio Code</code> (<a href="https://code.visualstudio.com/download">code.visualstudio.com/download</a>) instalado no computador anfitrião, mantendo os ficheiros acessíveis ao <code>Apache</code> dentro da máquina virtual:</p>
+<ul>
+<li><strong>Pasta partilhada</strong>: nas definições da máquina virtual, no <code>VirtualBox</code>, é possível definir uma pasta do computador anfitrião como pasta partilhada, montada dentro do <code>Ubuntu</code>. Editando os ficheiros nessa pasta a partir do anfitrião, as alterações ficam imediatamente visíveis dentro da máquina virtual;</li>
+<li><strong>Ligação remota por SSH</strong>: instalando um servidor SSH dentro da máquina virtual (<code>sudo apt install openssh-server</code>), a extensão <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh"><code>Remote - SSH</code></a> do <code>Visual Studio Code</code>, no computador anfitrião, permite abrir e editar diretamente os ficheiros da máquina virtual, como se estivessem no próprio computador.</li>
+</ul>
+</section>
+</section>
+<section id="sec-apA-docker" class="level3" data-number="A.4.2">
+<h3 data-number="A.4.2" class="anchored" data-anchor-id="sec-apA-docker"><span class="header-section-number">A.4.2</span> Opção 2: Contentores com Docker</h3>
+<section id="sec-apA-docker-compose" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-docker-compose">Definir os Serviços com Docker Compose</h4>
+<p>Com o <code>Docker</code> instalado, tal como descrito no <a href="#sec-apA-docker-fornecido-instalar" class="quarto-xref"><span>Secção A.3.1</span></a>, em vez de instalar o <code>Apache</code>, o <code>PHP</code> e o <code>MySQL</code> manualmente, como na opção anterior, descreve-se, num ficheiro <code>docker-compose.yml</code>, os contentores necessários e como comunicam entre si, a partir da imagem oficial do <code>PHP</code> (<a href="https://hub.docker.com/_/php">hub.docker.com/_/php</a>) e da imagem oficial do <code>MySQL</code> (<a href="https://hub.docker.com/_/mysql">hub.docker.com/_/mysql</a>). A imagem oficial do <code>PHP</code> com <code>Apache</code> não inclui, por omissão, a extensão de ligação ao <code>MySQL</code>, pelo que é necessário um pequeno <code>Dockerfile</code> próprio para a acrescentar:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dockerfile</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> php:8.3-apache</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">docker-php-ext-install</span> mysqli pdo_mysql</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># docker-compose.yml</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:80"</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./src:/var/www/html</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql:8</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> root</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> aplicacao</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"3306:3306"</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> db_data:/var/lib/mysql</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db_data</span><span class="kw">:</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note-se a linha <code>volumes: - ./src:/var/www/html</code> do serviço <code>web</code>: liga diretamente a pasta <code>src</code>, no computador anfitrião, à pasta onde o <code>Apache</code> serve ficheiros dentro do contentor, o que significa que qualquer ficheiro <code>.php</code> criado ou editado nessa pasta, com o <code>Visual Studio Code</code> a correr normalmente no anfitrião, fica imediatamente disponível ao servidor, sem qualquer partilha ou ligação remota adicional.</p>
+<p>Com o <code>Dockerfile</code> e o <code>docker-compose.yml</code> na mesma pasta, os contentores constroem-se e arrancam-se com:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span> <span class="at">--build</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O <code>Apache</code>, dentro do contentor <code>web</code>, fica acessível no computador anfitrião em <code>http://localhost:8080</code>, e o <code>MySQL</code>, dentro do contentor <code>db</code>, fica acessível em <code>localhost</code>, na porta <code>3306</code>, com o utilizador <code>root</code> e a password definida na variável <code>MYSQL_ROOT_PASSWORD</code>.</p>
+</section>
+<section id="sec-apA-docker-phpmyadmin" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-docker-phpmyadmin">Adicionar o phpMyAdmin (Opcional)</h4>
+<p>O <code>phpMyAdmin</code>, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.2</span></a>, também está disponível como imagem oficial no <code>Docker Hub</code> (<a href="https://hub.docker.com/_/phpmyadmin">hub.docker.com/_/phpmyadmin</a>), bastando acrescentar mais um serviço ao mesmo <code>docker-compose.yml</code>, ligado ao contentor <code>db</code> através da variável <code>PMA_HOST</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># docker-compose.yml (serviço adicional)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">phpmyadmin</span><span class="kw">:</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> phpmyadmin:latest</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">PMA_HOST</span><span class="kw">:</span><span class="at"> db</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8081:80"</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> db</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Depois de reiniciar os contentores com <code>docker compose up -d</code>, o <code>phpMyAdmin</code> fica acessível em <code>http://localhost:8081</code>, onde se entra com o utilizador <code>root</code> e a password definida em <code>MYSQL_ROOT_PASSWORD</code>. Ao contrário da instalação na máquina virtual, não há aqui qualquer configuração adicional do <code>Apache</code> a fazer, já que o <code>phpMyAdmin</code> corre no seu próprio contentor, independente do contentor <code>web</code>.</p>
+</section>
+<section id="sec-apA-docker-editor" class="level4">
+<h4 class="anchored" data-anchor-id="sec-apA-docker-editor">Editar Código a Partir do Computador Anfitrião</h4>
+<p>Ao contrário da opção da máquina virtual, esta configuração já liga diretamente a pasta <code>src</code> do anfitrião ao contentor, pelo que basta abrir essa pasta normalmente no <code>Visual Studio Code</code>, sem necessidade de pastas partilhadas ou ligação remota por SSH. Opcionalmente, a extensão <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers"><code>Dev Containers</code></a> do <code>Visual Studio Code</code> permite ainda abrir o próprio editor “dentro” do contentor <code>web</code>, com acesso direto às ferramentas ali instaladas.</p>
+</section>
+</section>
+</section>
+<section id="sec-apA-verificacao" class="level2" data-number="A.5">
+<h2 data-number="A.5" class="anchored" data-anchor-id="sec-apA-verificacao"><span class="header-section-number">A.5</span> Verificar a Instalação</h2>
+<p>Seja qual for a opção escolhida, e seja o ambiente fornecido pelo professor ou construído do zero, o teste final é o mesmo: confirmar que o <code>PHP</code> consegue efetivamente comunicar com o <code>MySQL</code>. Cria-se, na pasta servida pelo <code>Apache</code> (<code>/var/www/html</code> na máquina virtual, ou <code>src</code> nos contentores), um pequeno ficheiro de teste:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="fu">mysqli_connect</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"root"</span><span class="ot">,</span> <span class="st">"root"</span>)<span class="ot">;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="va">$conexao</span>) {</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"Ligação ao MySQL estabelecida com sucesso!"</span><span class="ot">;</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"Erro ao ligar: "</span> <span class="op">.</span> <span class="fu">mysqli_connect_error</span>()<span class="ot">;</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ao abrir este ficheiro no <em>browser</em>, deve aparecer a mensagem de sucesso. Se aparecer, em alternativa, uma mensagem de erro, os motivos mais comuns são o <code>MySQL</code> ainda não ter arrancado por completo, a password indicada não corresponder à definida durante a instalação, ou, no caso dos contentores, o nome do servidor não ser <code>localhost</code> mas sim o nome do serviço definido no <code>docker-compose.yml</code> (<code>db</code>, no exemplo acima), já que, de dentro de um contentor, <code>localhost</code> refere-se ao próprio contentor, e não a outros contentores da mesma aplicação.</p>
+<p>Se o <code>phpMyAdmin</code> estiver disponível, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.2</span></a>, este mesmo teste pode ser feito de forma visual, sem escrever nenhum código: basta autenticar-se com as credenciais do <code>MySQL</code> e confirmar que a base de dados criada aparece listada.</p>
+<p>Com este teste bem-sucedido, o ambiente está pronto para o desenvolvimento de código PHP retomado no <a href="cap03.html#sec-03-linguagem" class="quarto-xref"><span>Secção 3.2</span></a>.</p>
+</section>
+<section id="sec-apA-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-apA-referencias">Referências</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap11.html" class="pagination-link" aria-label="Frameworks de Desenvolvimento Web">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Frameworks de Desenvolvimento Web</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/apendiceB.html" class="pagination-link" aria-label="Demos de Código das Aulas">
+        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Desenvolvimento de Aplicações Web I — UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

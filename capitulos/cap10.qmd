@@ -1,0 +1,140 @@
+---
+title: "Model-View-Controller (MVC)"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Porquê Separar Responsabilidades? {#sec-10-porque-separar}
+
+A mini aplicação CRUD construída no @sec-08-crud, com ficheiros como
+`index.php`, `add.php` ou `edit.php`, ilustra bem um problema muito
+concreto: em cada um desses ficheiros misturam-se, no mesmo lugar, a
+consulta à base de dados, a validação dos dados recebidos e o HTML
+apresentado ao utilizador. Numa aplicação pequena, com uma única tabela,
+isto é gerível. À medida que uma aplicação cresce, com mais entidades,
+mais regras de negócio e mais páginas, este estilo de código torna-se
+cada vez mais difícil de manter: uma alteração simples ao aspeto visual
+de uma página obriga a mexer no mesmo ficheiro que contém a lógica de
+acesso aos dados, e um erro numa consulta SQL pode, sem se perceber
+porquê, quebrar também a apresentação da página. É exatamente este
+problema que o padrão MVC, apresentado no @sec-02-mvc, resolve, separando
+a aplicação em Model, View e Controller.
+
+## Refazer o CRUD com MVC {#sec-10-crud-mvc}
+
+Aplicar o MVC à mini aplicação de contactos significa reorganizar o
+código, mantendo o mesmo comportamento, mas separando-o em ficheiros com
+responsabilidades bem definidas:
+
+- **Model** (`Contacto.php`): concentra toda a lógica de acesso à base
+  de dados relativa a contactos, com funções como `listarContactos()`,
+  `criarContacto($nome, $email)`, `atualizarContacto($id, $nome, $email)`
+  e `apagarContacto($id)`. Nenhuma destas funções produz HTML; devolvem
+  apenas dados.
+- **View** (`views/lista.php`, `views/formulario.php`): concentram
+  apenas HTML, com pequenos trechos de PHP para apresentar os dados que
+  lhes são fornecidos, sem qualquer acesso direto à base de dados.
+- **Controller** (`ContactoController.php`): recebe o pedido do
+  utilizador, decide que função do *Model* chamar consoante a ação
+  pedida, seja listar, criar, editar ou apagar, e escolhe a *View*
+  apropriada para mostrar o resultado.
+
+```php
+<?php
+// ContactoController.php (excerto)
+require "Contacto.php";
+
+function acaoListar() {
+    $contactos = listarContactos();
+    require "views/lista.php";  // a View usa $contactos
+}
+
+function acaoCriar() {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        criarContacto($_POST["nome"], $_POST["email"]);
+        header("Location: index.php");
+        exit;
+    }
+    require "views/formulario.php";
+}
+```
+
+O comportamento final, para quem usa a aplicação, é o mesmo de antes.
+O que mudou foi inteiramente interno: quem altera o aspeto visual mexe
+apenas nas *Views*, quem altera as regras de negócio mexe apenas no
+*Model*, e o *Controller* liga as duas partes sem depender dos detalhes
+internos de nenhuma delas.
+
+## Regras de Negócio no Model {#sec-10-regras-negocio}
+
+O *Model* não se limita a executar consultas SQL: é também o lugar
+natural para as regras de negócio da aplicação, a lógica que determina
+se uma operação é válida, independentemente de como os dados chegaram
+até ali. Considere-se a validação de um endereço de email antes de criar
+um novo contacto:
+
+```php
+<?php
+// Contacto.php (excerto)
+function criarContacto($nome, $email) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return ["sucesso" => false, "erro" => "Email inválido"];
+    }
+
+    global $conexao;
+    $stmt = $conexao->prepare("INSERT INTO contactos (nome, email) VALUES (?, ?)");
+    $stmt->bind_param("ss", $nome, $email);
+    $stmt->execute();
+
+    return ["sucesso" => true];
+}
+```
+
+Esta validação faz sentido no *Model*, e não no *Controller* ou na
+*View*, porque é uma regra sobre os dados em si, "um contacto tem de ter
+um email válido", que se aplica sempre que um contacto é criado,
+independentemente de o pedido ter vindo de um formulário web, de uma
+futura API, ou de um script de importação em lote. Colocar esta
+verificação no *Controller*, por comparação, obrigaria a repeti-la em
+cada novo ponto de entrada que viesse a criar contactos.
+
+## O Controlador Frontal (Front Controller) {#sec-10-front-controller}
+
+A mini aplicação original tinha um ficheiro PHP por cada ação:
+`index.php`, `add.php`, `edit.php`, `delete.php`. Uma alternativa comum,
+sobretudo à medida que o número de ações cresce, é o padrão de
+*controlador frontal* (*front controller*): em vez de vários pontos de
+entrada, existe um único ficheiro, normalmente também chamado
+`index.php`, que recebe todos os pedidos e decide, com base num
+parâmetro, que ação do *Controller* deve executar:
+
+```php
+<?php
+// index.php como controlador frontal
+require "ContactoController.php";
+
+$acao = $_GET["acao"] ?? "listar";
+
+switch ($acao) {
+    case "criar":
+        acaoCriar();
+        break;
+    case "editar":
+        acaoEditar();
+        break;
+    default:
+        acaoListar();
+}
+```
+
+Este padrão centraliza decisões que, de outra forma, teriam de ser
+repetidas em cada ficheiro, como verificar se o utilizador tem sessão
+iniciada antes de permitir qualquer ação. É também o mecanismo que a
+generalidade dos *frameworks* de desenvolvimento web, tema do próximo
+capítulo, usa por trás do seu sistema de rotas.
+
+## Referências {#sec-10-referencias .unnumbered}
+
+::: {#refs}
+:::

@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-PT" xml:lang="pt-PT"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+
+<title>7&nbsp; O Protocolo HTTP e Gestão de Estado – Desenvolvimento de Aplicações Web I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap08.html" rel="next">
+<link href="../capitulos/cap06.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap07.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O Protocolo HTTP e Gestão de Estado</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Desenvolvimento de Aplicações Web I</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Desenvolvimento de Software para o Ambiente Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Arquiteturas Web e Infraestruturas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Sintaxe, Variáveis e Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Funções, Datas e Includes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modelos de Comunicação e Redes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O Protocolo HTTP e Gestão de Estado</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bases de Dados e PHP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Segurança em Aplicações Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Model-View-Controller (MVC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Frameworks de Desenvolvimento Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Apêndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Configuração do Ambiente de Desenvolvimento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-07-http" id="toc-sec-07-http" class="nav-link active" data-scroll-target="#sec-07-http"><span class="header-section-number">7.1</span> O Protocolo HTTP</a></li>
+  <li><a href="#sec-07-processo" id="toc-sec-07-processo" class="nav-link" data-scroll-target="#sec-07-processo"><span class="header-section-number">7.2</span> O Que Acontece Quando se Escreve um URL</a></li>
+  <li><a href="#sec-07-mensagem-pedido" id="toc-sec-07-mensagem-pedido" class="nav-link" data-scroll-target="#sec-07-mensagem-pedido"><span class="header-section-number">7.3</span> A Mensagem de Pedido</a>
+  <ul class="collapse">
+  <li><a href="#sec-07-get" id="toc-sec-07-get" class="nav-link" data-scroll-target="#sec-07-get"><span class="header-section-number">7.3.1</span> O Método GET</a></li>
+  <li><a href="#sec-07-post" id="toc-sec-07-post" class="nav-link" data-scroll-target="#sec-07-post"><span class="header-section-number">7.3.2</span> O Método POST</a></li>
+  <li><a href="#sec-07-get-vs-post" id="toc-sec-07-get-vs-post" class="nav-link" data-scroll-target="#sec-07-get-vs-post"><span class="header-section-number">7.3.3</span> GET vs.&nbsp;POST</a></li>
+  <li><a href="#sec-07-recursos-virtuais" id="toc-sec-07-recursos-virtuais" class="nav-link" data-scroll-target="#sec-07-recursos-virtuais"><span class="header-section-number">7.3.4</span> Recursos Virtuais</a></li>
+  </ul></li>
+  <li><a href="#sec-07-cabecalhos" id="toc-sec-07-cabecalhos" class="nav-link" data-scroll-target="#sec-07-cabecalhos"><span class="header-section-number">7.4</span> Cabeçalhos HTTP</a></li>
+  <li><a href="#sec-07-resposta" id="toc-sec-07-resposta" class="nav-link" data-scroll-target="#sec-07-resposta"><span class="header-section-number">7.5</span> A Resposta do Servidor</a></li>
+  <li><a href="#sec-07-stateless" id="toc-sec-07-stateless" class="nav-link" data-scroll-target="#sec-07-stateless"><span class="header-section-number">7.6</span> HTTP é um Protocolo Stateless</a></li>
+  <li><a href="#sec-07-estado" id="toc-sec-07-estado" class="nav-link" data-scroll-target="#sec-07-estado"><span class="header-section-number">7.7</span> Gestão de Estado: Cookies e Sessões</a>
+  <ul class="collapse">
+  <li><a href="#sec-07-cookies" id="toc-sec-07-cookies" class="nav-link" data-scroll-target="#sec-07-cookies"><span class="header-section-number">7.7.1</span> Cookies</a></li>
+  <li><a href="#sec-07-sessoes" id="toc-sec-07-sessoes" class="nav-link" data-scroll-target="#sec-07-sessoes"><span class="header-section-number">7.7.2</span> Sessões</a></li>
+  </ul></li>
+  <li><a href="#sec-07-referencias" id="toc-sec-07-referencias" class="nav-link" data-scroll-target="#sec-07-referencias">Referências</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O Protocolo HTTP e Gestão de Estado</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 de agosto de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-07-http" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-07-http"><span class="header-section-number">7.1</span> O Protocolo HTTP</h2>
+<p><code>HTTP</code> (<em>Hypertext Transfer Protocol</em>) é o protocolo da camada de aplicação que permite que duas aplicações comuniquem entre si na Web. Na maior parte das vezes, uma dessas aplicações é um servidor web (como o <code>Apache</code>, o <code>Tomcat</code> ou o <code>GlassFish</code>) e a outra é um <em>browser</em> (como o <code>Chrome</code>, o <code>Firefox</code> ou o <code>Edge</code>). Funciona segundo um modelo de pedido-resposta: o cliente envia um pedido <code>HTTP</code> ao servidor, e o servidor devolve uma resposta <code>HTTP</code>.</p>
+</section>
+<section id="sec-07-processo" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sec-07-processo"><span class="header-section-number">7.2</span> O Que Acontece Quando se Escreve um URL</h2>
+<p>Vale a pena seguir, passo a passo, o que acontece entre o momento em que um utilizador escreve um endereço no <em>browser</em> e o momento em que a página aparece no ecrã, juntando tudo o que foi visto no capítulo anterior:</p>
+<ol type="1">
+<li>O <em>browser</em> extrai o nome do servidor (<em>hostname</em>) do URL, incluindo o número de porta, se indicado, e consulta o <code>DNS</code> para obter o seu endereço <code>IP</code>;</li>
+<li>Abre um <em>socket</em> <code>TCP</code>, especificando o <code>IP</code> de destino e a porta a usar, por omissão a porta 80 para uma página web comum;</li>
+<li>Escreve uma mensagem de pedido <code>HTTP</code> e envia-a através desse <em>socket</em> <code>TCP</code>; se não for indicado explicitamente o nome de uma página no URL, o servidor assume, por omissão, <code>index.html</code>;</li>
+<li>A camada <code>TCP</code> aceita a mensagem e garante a sua entrega fiável ao servidor, tal como descrito no <a href="cap06.html#sec-06-tcp" class="quarto-xref"><span>Secção 6.4.1</span></a>;</li>
+<li>O servidor responde, enviando uma mensagem de resposta que percorre o caminho inverso, através da mesma pilha de protocolos, até chegar de volta ao <em>browser</em>, que a interpreta e apresenta a página ao utilizador.</li>
+</ol>
+</section>
+<section id="sec-07-mensagem-pedido" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="sec-07-mensagem-pedido"><span class="header-section-number">7.3</span> A Mensagem de Pedido</h2>
+<p>Uma mensagem de pedido <code>HTTP</code> completa tem a seguinte estrutura geral:</p>
+<pre><code>[método] [URL] [versão]
+[cabeçalhos]
+
+[corpo]</code></pre>
+<p>O método indica a intenção do cliente. Os mais usados no desenvolvimento web são o <code>GET</code> e o <code>POST</code>.</p>
+<section id="sec-07-get" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="sec-07-get"><span class="header-section-number">7.3.1</span> O Método GET</h3>
+<p>O <code>GET</code> pede a obtenção de um recurso, sem que essa operação, por si só, altere nada no servidor. É o método usado sempre que se clica num <code>link</code> numa página:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"http://utad.pt/index.html"</span><span class="dt">&gt;</span>UTAD<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Este <code>link</code>, ao ser clicado, resulta na seguinte mensagem <code>GET</code>:</p>
+<pre><code>GET / HTTP/1.1
+Host: utad.pt</code></pre>
+<p>Por não alterar nada no servidor, a mensagem <code>GET</code> é considerada uma mensagem <strong>inócua</strong>. Esta é uma convenção do protocolo, não uma garantia técnica: um servidor mal concebido pode, tecnicamente, alterar dados como resposta a um <code>GET</code>, mas fazê-lo viola o comportamento esperado por qualquer cliente HTTP, e é considerado má prática.</p>
+<p>O <code>GET</code> pode também ser usado num contexto de formulário HTML, desde que o objetivo não seja alterar informação no servidor, apenas obter um resultado, como numa pesquisa:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/search"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"GET"</span><span class="dt">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"term"</span><span class="dt">&gt;</span>Procurar:<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"term"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"term"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Procurar!"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ao submeter este formulário com o termo “love”, o <em>browser</em> gera a seguinte mensagem:</p>
+<pre><code>GET /search?term=love HTTP/1.1
+Host: searchengine.com</code></pre>
+<p>Note-se como os dados do formulário aparecem diretamente na URL, depois do <code>?</code>, no formato <code>chave=valor</code>.</p>
+</section>
+<section id="sec-07-post" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-07-post"><span class="header-section-number">7.3.2</span> O Método POST</h3>
+<p>O <code>POST</code> envia dados para o servidor, tipicamente para criar ou alterar um recurso. O seu uso típico é também num formulário HTML:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/account/create"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"POST"</span><span class="dt">&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"firstName"</span><span class="dt">&gt;</span>Nome próprio<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"firstName"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"firstName"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"lastName"</span><span class="dt">&gt;</span>Apelido<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"lastName"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"lastName"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Registar!"</span><span class="dt">/&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Que resulta na seguinte mensagem:</p>
+<pre><code>POST /account/create HTTP/1.1
+Host: servername.com
+
+firstName=Scott&amp;lastName=Allen</code></pre>
+<p>Ao contrário do <code>GET</code>, os dados vão no corpo da mensagem, não na URL. Um cliente web envia tipicamente um pedido <code>POST</code> sempre que tem dados para enviar que vão produzir um efeito no servidor: por exemplo, ao clicar num botão “Adicionar ao carrinho” numa loja <em>online</em>, é enviado um <code>POST</code> com a informação do artigo escolhido. Ao contrário do <code>GET</code>, o <code>POST</code> <strong>não é uma mensagem inócua</strong>: tipicamente atualiza uma conta, regista um pedido ou altera de alguma outra forma o estado do servidor.</p>
+</section>
+<section id="sec-07-get-vs-post" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="sec-07-get-vs-post"><span class="header-section-number">7.3.3</span> GET vs.&nbsp;POST</h3>
+<p>A escolha entre <code>GET</code> e <code>POST</code> num formulário tem consequências práticas concretas:</p>
+<ul>
+<li><strong>Desvantagem do <code>GET</code></strong>: os valores dos campos do formulário ficam visíveis na URL do <em>browser</em>. Por esta razão, <strong>o <code>GET</code> nunca deve ser usado se os dados do formulário forem sensíveis</strong>, como uma palavra-passe, e não devam ser partilhados ou ficar registados no histórico do <em>browser</em>;</li>
+<li><strong>Vantagem do <code>GET</code></strong>: precisamente por os parâmetros ficarem na URL, esta pode ser marcada como favorita ou partilhada, permitindo voltar aos mesmos resultados sempre que necessário, algo que o <code>POST</code> não permite diretamente.</li>
+</ul>
+</section>
+<section id="sec-07-recursos-virtuais" class="level3" data-number="7.3.4">
+<h3 data-number="7.3.4" class="anchored" data-anchor-id="sec-07-recursos-virtuais"><span class="header-section-number">7.3.4</span> Recursos Virtuais</h3>
+<p>Nem todos os recursos acessíveis através da Web existem, como tal, num ficheiro no servidor. Muitos são criados, ou montados “na hora”, de acordo com o pedido específico do cliente, depois de o servidor recuperar os dados necessários de uma base de dados, tema do <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>. Um pedido a <code>pagina.php?id=5</code>, por exemplo, não corresponde a um ficheiro chamado literalmente assim; corresponde à execução do <em>script</em> <code>pagina.php</code>, que, com base no parâmetro <code>id</code>, gera dinamicamente o conteúdo a devolver.</p>
+</section>
+</section>
+<section id="sec-07-cabecalhos" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="sec-07-cabecalhos"><span class="header-section-number">7.4</span> Cabeçalhos HTTP</h2>
+<p>Tanto o pedido como a resposta incluem cabeçalhos, pares de chave e valor com informação adicional sobre a mensagem. O único cabeçalho obrigatório num pedido é o <code>Host</code>, que indica a que servidor o pedido se destina, essencial quando um mesmo endereço IP aloja vários domínios diferentes. Outro cabeçalho comum é o <code>Accept</code>, que indica ao servidor que tipos de conteúdo (formatos <code>MIME</code>) o <em>browser</em> prefere receber na resposta, por ordem de preferência, indicada por um valor de qualidade <code>q</code> entre 0 e 1 (o valor por omissão é 1, a preferência máxima).</p>
+</section>
+<section id="sec-07-resposta" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="sec-07-resposta"><span class="header-section-number">7.5</span> A Resposta do Servidor</h2>
+<p>A resposta do servidor segue uma estrutura semelhante à do pedido, mas começa por uma linha de estado, em vez de um método e um URL:</p>
+<pre><code>[versão] [código de estado] [frase de razão]
+[cabeçalhos]
+
+[corpo]</code></pre>
+<p>O código de estado é um número que resume o resultado do pedido, agrupado em cinco categorias:</p>
+<ul>
+<li><strong>1xx</strong>: informativo, usado raramente diretamente por quem programa aplicações web;</li>
+<li><strong>2xx</strong>: sucesso, como <code>200 OK</code>;</li>
+<li><strong>3xx</strong>: redireccionamento, como <code>301 Moved Permanently</code>, que indica que o recurso pedido passou a estar disponível noutro endereço;</li>
+<li><strong>4xx</strong>: erro do lado do cliente, como <code>404 Not Found</code>, quando o recurso pedido não existe, ou <code>403 Forbidden</code>, quando o acesso é negado;</li>
+<li><strong>5xx</strong>: erro do lado do servidor, como <code>500 Internal Server Error</code>, que indica uma falha na aplicação do lado do servidor, tipicamente um erro no próprio código PHP.</li>
+</ul>
+</section>
+<section id="sec-07-stateless" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="sec-07-stateless"><span class="header-section-number">7.6</span> HTTP é um Protocolo Stateless</h2>
+<p>O servidor HTTP não guarda, por si só, qualquer informação sobre o estado de ligações anteriores: depois de responder a um pedido, o servidor “esquece” essa ligação, uma propriedade chamada <em>stateless</em> (sem estado). Isto tem uma consequência prática relevante: uma única página web normalmente exige vários recursos, o próprio HTML, a folha de estilos CSS, o <em>script</em> JavaScript, eventuais imagens, e cada um destes recursos exige um pedido <code>HTTP</code> independente, cada um com o custo de estabelecer a sua própria ligação.</p>
+<p>Para atenuar este custo, os <em>browsers</em> recorrem a diferentes estratégias de gestão de ligações:</p>
+<ul>
+<li><strong>Ligações paralelas</strong>: ao detetar vários recursos numa página, o <em>browser</em> abre várias ligações em simultâneo para os carregar mais depressa, uma para o HTML, outra para o CSS, outra para o JavaScript, e assim por diante. O número de ligações paralelas é limitado, porque cada ligação adicional aumenta a carga sobre o servidor, o que, a partir de certo ponto, pode tornar o carregamento da página mais lento em vez de mais rápido;</li>
+<li><strong>Ligações persistentes</strong>: em vez de fechar o <em>socket</em> logo a seguir a cada resposta, o servidor mantém-no aberto para vários pedidos sucessivos. O <code>Apache</code>, por omissão, mantém uma ligação persistente aberta durante 5 segundos de inatividade antes de a fechar. Este período tem também de ser limitado por razões de segurança, para evitar ataques de negação de serviço (<em>DoS</em>, <em>Denial of Service</em>), em que um atacante mantém propositadamente muitas ligações abertas em simultâneo, impedindo o servidor de atender pedidos legítimos;</li>
+<li><strong>Ligações em rajada</strong> (<em>back-to-back</em>): desde o HTTP/1.1, um cliente pode enviar vários pedidos seguidos, sobre a mesma ligação, sem esperar pela resposta a cada um antes de enviar o seguinte, reduzindo ainda mais o tempo total de carregamento de uma página com muitos recursos.</li>
+</ul>
+</section>
+<section id="sec-07-estado" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="sec-07-estado"><span class="header-section-number">7.7</span> Gestão de Estado: Cookies e Sessões</h2>
+<p>Apesar de o HTTP ser, por natureza, <em>stateless</em>, o comportamento mais comum na Web é precisamente o oposto: um sítio de comércio eletrónico precisa de saber que artigos um utilizador colocou no seu carrinho, e um sistema de autenticação precisa de reconhecer um utilizador já autenticado, sem lhe pedir a palavra-passe em cada página que visita.</p>
+<p>Antigamente, este seguimento de utilizador podia ser feito com base no endereço IP do cliente: se um pedido vinha de um determinado IP, o servidor assumia tratar-se sempre da mesma sessão. Com a popularização do <code>NAT</code> (<em>Network Address Translation</em>), esta abordagem deixou de funcionar: numa rede doméstica típica, vários dispositivos, cada um com o seu IP privado, partilham um único IP público perante o resto da Internet, pelo que pedidos de utilizadores completamente diferentes podem chegar ao servidor com o mesmo endereço IP de origem.</p>
+<p>Surgiram então duas soluções, complementares, para manter o estado de uma sessão entre pedidos sucessivos: cookies e sessões.</p>
+<section id="sec-07-cookies" class="level3" data-number="7.7.1">
+<h3 data-number="7.7.1" class="anchored" data-anchor-id="sec-07-cookies"><span class="header-section-number">7.7.1</span> Cookies</h3>
+<p>Os <em>cookies</em> estão definidos na norma <code>RFC 6265</code>, <em>HTTP State Management Mechanism</em>. Funcionam da seguinte forma: na primeira vez que um utilizador acede a um sítio, o servidor pode enviar-lhe um <em>cookie</em> através de um cabeçalho da resposta <code>HTTP</code>. A partir desse momento, o <em>browser</em> passa a incluir esse <em>cookie</em> em todos os pedidos seguintes a esse mesmo servidor, permitindo-lhe reconhecer o cliente.</p>
+<pre><code>HTTP/1.1 200 OK
+Set-Cookie: GUID=00b38b9a6f949a8df5476999c876789e; domain=.msn.com; path=/</code></pre>
+<p>A partir daqui, o <em>browser</em> passa a enviar este cabeçalho em todos os pedidos seguintes a esse servidor:</p>
+<pre><code>GET http://www.msn.com HTTP/1.1
+Host: msn.com
+Cookie: GUID=00b38b9a6f949a8df5476999c876789e;</code></pre>
+<p>Um servidor pode definir vários <em>cookies</em> ao mesmo tempo, cada um com o seu próprio significado, por exemplo um identificador de sessão e a língua preferida do utilizador:</p>
+<pre><code>HTTP/1.1 200 OK
+Set-Cookie: SID=31d4d96e407aad42; Path=/; Secure; HttpOnly
+Set-Cookie: lang=pt-PT; Path=/; Domain=example.com</code></pre>
+<p>Um <em>cookie</em> definido pelo servidor pode incluir vários atributos, para além do par nome-valor:</p>
+<ul>
+<li><strong><code>Expires</code></strong> ou <strong><code>Max-Age</code></strong>: definem quando o <em>cookie</em> deve expirar (uma data concreta, ou um número de segundos, respetivamente); se ambos forem definidos, prevalece o <code>Max-Age</code>. Sem nenhum dos dois, o <em>cookie</em> expira quando o <em>browser</em> é fechado;</li>
+<li><strong><code>Domain</code></strong> e <strong><code>Path</code></strong>: restringem a que <em>host</em> e a que pasta do servidor o <em>cookie</em> é enviado;</li>
+<li><strong><code>Secure</code></strong>: o <em>browser</em> só envia este <em>cookie</em> por um canal seguro, <code>HTTPS</code>;</li>
+<li><strong><code>HttpOnly</code></strong>: o <em>cookie</em> só é trocado entre <em>browser</em> e servidor, sem ficar acessível a código JavaScript do lado do cliente, uma proteção importante contra ataques de <em>XSS</em>, tema do <a href="cap09.html#sec-09-codigo-proprio" class="quarto-xref"><span>Secção 9.1</span></a>.</li>
+</ul>
+<p>Para apagar um <em>cookie</em>, o servidor reenvia-o com uma data de expiração já no passado; a partir desse momento, o <em>browser</em> deixa de o incluir nos pedidos seguintes. Note-se ainda que os <em>cookies</em>, por si só, não constituem autenticação: apenas permitem reconhecer que um pedido vem do mesmo <em>browser</em> que recebeu o <em>cookie</em> anteriormente, e têm uma limitação de 4kB de informação cada. Em PHP, um <em>cookie</em> cria-se com a função <code>setcookie()</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setcookie</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"utilizador"</span><span class="ot">,</span>   <span class="co">// nome</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"joao"</span><span class="ot">,</span>         <span class="co">// valor</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">time</span>() <span class="op">+</span> <span class="dv">3600</span><span class="ot">,</span>  <span class="co">// expira em 1 hora</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/"</span><span class="ot">,</span>            <span class="co">// path</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">""</span><span class="ot">,</span>             <span class="co">// domain</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">true</span><span class="ot">,</span>           <span class="co">// secure</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">true</span>            <span class="co">// httponly</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-07-sessoes" class="level3" data-number="7.7.2">
+<h3 data-number="7.7.2" class="anchored" data-anchor-id="sec-07-sessoes"><span class="header-section-number">7.7.2</span> Sessões</h3>
+<p>As sessões vão mais longe do que os <em>cookies</em> simples: em vez de guardar os dados propriamente ditos no cliente, visíveis e alteráveis por quem tiver acesso ao <em>browser</em>, o servidor guarda os dados localmente, associados a um identificador único, e envia apenas esse identificador ao cliente, tipicamente através de um <em>cookie</em>. Em PHP, uma sessão inicia-se com <code>session_start()</code>, chamado no início de todas as páginas que a usem, e os seus dados ficam disponíveis através da supervariável <code>$_SESSION</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="st">"joao"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Noutra página, também com session_start() no início:</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"Bem-vindo, "</span> <span class="op">.</span> <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cookies e sessões são, assim, a solução de engenharia que permite simular continuidade numa aplicação web construída sobre um protocolo que, por natureza, não guarda memória de nada entre um pedido e o seguinte.</p>
+</section>
+</section>
+<section id="sec-07-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-07-referencias">Referências</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap06.html" class="pagination-link" aria-label="Modelos de Comunicação e Redes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modelos de Comunicação e Redes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap08.html" class="pagination-link" aria-label="Bases de Dados e PHP">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bases de Dados e PHP</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Desenvolvimento de Aplicações Web I — UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

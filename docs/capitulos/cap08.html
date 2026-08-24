@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-PT" xml:lang="pt-PT"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+
+<title>8&nbsp; Bases de Dados e PHP – Desenvolvimento de Aplicações Web I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap09.html" rel="next">
+<link href="../capitulos/cap07.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap08.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bases de Dados e PHP</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Desenvolvimento de Aplicações Web I</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Desenvolvimento de Software para o Ambiente Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Arquiteturas Web e Infraestruturas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Sintaxe, Variáveis e Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Funções, Datas e Includes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modelos de Comunicação e Redes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O Protocolo HTTP e Gestão de Estado</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bases de Dados e PHP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Segurança em Aplicações Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Model-View-Controller (MVC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Frameworks de Desenvolvimento Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Apêndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Configuração do Ambiente de Desenvolvimento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-08-dbms" id="toc-sec-08-dbms" class="nav-link active" data-scroll-target="#sec-08-dbms"><span class="header-section-number">8.1</span> Bases de Dados Relacionais e o DBMS</a></li>
+  <li><a href="#sec-08-sql" id="toc-sec-08-sql" class="nav-link" data-scroll-target="#sec-08-sql"><span class="header-section-number">8.2</span> Comandos SQL</a></li>
+  <li><a href="#sec-08-arquitetura-3camadas" id="toc-sec-08-arquitetura-3camadas" class="nav-link" data-scroll-target="#sec-08-arquitetura-3camadas"><span class="header-section-number">8.3</span> A Arquitetura em Três Camadas e o Papel do PHP</a></li>
+  <li><a href="#sec-08-ligacao" id="toc-sec-08-ligacao" class="nav-link" data-scroll-target="#sec-08-ligacao"><span class="header-section-number">8.4</span> Ligar o PHP ao MySQL</a></li>
+  <li><a href="#sec-08-criar-bd" id="toc-sec-08-criar-bd" class="nav-link" data-scroll-target="#sec-08-criar-bd"><span class="header-section-number">8.5</span> Criar Bases de Dados e Tabelas</a></li>
+  <li><a href="#sec-08-crud-sql" id="toc-sec-08-crud-sql" class="nav-link" data-scroll-target="#sec-08-crud-sql"><span class="header-section-number">8.6</span> Operações Fundamentais: CRUD em SQL</a></li>
+  <li><a href="#sec-08-prepared-statements" id="toc-sec-08-prepared-statements" class="nav-link" data-scroll-target="#sec-08-prepared-statements"><span class="header-section-number">8.7</span> Prepared Statements</a></li>
+  <li><a href="#sec-08-erros-boas-praticas" id="toc-sec-08-erros-boas-praticas" class="nav-link" data-scroll-target="#sec-08-erros-boas-praticas"><span class="header-section-number">8.8</span> Erros e Boas Práticas</a></li>
+  <li><a href="#sec-08-crud" id="toc-sec-08-crud" class="nav-link" data-scroll-target="#sec-08-crud"><span class="header-section-number">8.9</span> Uma Aplicação CRUD Completa</a></li>
+  <li><a href="#sec-08-referencias" id="toc-sec-08-referencias" class="nav-link" data-scroll-target="#sec-08-referencias">Referências</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bases de Dados e PHP</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 de agosto de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-08-dbms" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="sec-08-dbms"><span class="header-section-number">8.1</span> Bases de Dados Relacionais e o DBMS</h2>
+<p>Um <code>DBMS</code> (<em>Database Management System</em>, sistema de gestão de bases de dados) é o <em>software</em> que cria, organiza e gere bases de dados: controla o acesso, as consultas e as atualizações, garante a integridade, a segurança e o desempenho dos dados, e permite que aplicações, como as escritas em PHP, leiam e escrevam informação de forma persistente. Exemplos comuns de DBMS incluem o <code>MySQL</code>, o <code>MariaDB</code>, o <code>PostgreSQL</code>, o <code>Oracle</code>, o <code>SQL Server</code> e o <code>SQLite</code>.</p>
+<p>Numa base de dados relacional, como o <code>MySQL</code>, os dados organizam-se em tabelas, cada uma com colunas de tipo fixo, e linhas que representam registos individuais. É esta persistência que falta às variáveis PHP vistas até agora: uma variável existe apenas durante a execução de um <em>script</em>, enquanto uma base de dados guarda a informação entre pedidos diferentes, e entre utilizadores diferentes.</p>
+</section>
+<section id="sec-08-sql" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="sec-08-sql"><span class="header-section-number">8.2</span> Comandos SQL</h2>
+<p><code>SQL</code> (<em>Structured Query Language</em>) é a linguagem usada para interagir com um DBMS relacional. Os seus comandos dividem-se em quatro grupos principais:</p>
+<ul>
+<li><strong>DQL</strong> (<em>Data Query Language</em>): consultas que obtêm dados, com o comando <code>SELECT</code>;</li>
+<li><strong>DML</strong> (<em>Data Manipulation Language</em>): inserir, alterar e remover dados, com os comandos <code>INSERT</code>, <code>UPDATE</code> e <code>DELETE</code>;</li>
+<li><strong>DDL</strong> (<em>Data Definition Language</em>): criar e alterar estruturas da base de dados, com os comandos <code>CREATE</code>, <code>ALTER</code> e <code>DROP</code>;</li>
+<li><strong>DCL</strong> (<em>Data Control Language</em>): permissões e controlo de acesso, com os comandos <code>GRANT</code> e <code>REVOKE</code>.</li>
+</ul>
+<p>Um comando SQL segue uma estrutura previsível: uma palavra-chave (<code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>DELETE</code>), cláusulas que refinam a instrução (<code>FROM</code>, <code>WHERE</code>, <code>ORDER BY</code>, <code>VALUES</code>), expressões e condições (campos, valores e comparações, como <code>idade &gt; 18</code>), e um ponto e vírgula final:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> firstname, lastname <span class="kw">FROM</span> MyGuests <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">3</span>;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Um comando de atualização junta estas mesmas partes de forma um pouco diferente, comando mais tabela alvo, a ação de alterar valores, e uma condição que filtra que registos são afetados:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> Employees <span class="kw">SET</span> Salary <span class="op">=</span> Salary <span class="op">*</span> <span class="fl">1.02</span> <span class="kw">WHERE</span> Country <span class="op">=</span> <span class="st">'USA'</span>;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-08-arquitetura-3camadas" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="sec-08-arquitetura-3camadas"><span class="header-section-number">8.3</span> A Arquitetura em Três Camadas e o Papel do PHP</h2>
+<p>Retomando o <a href="cap02.html#sec-02-tres-camadas" class="quarto-xref"><span>Secção 2.1.3</span></a>, uma aplicação web organiza-se tipicamente em três camadas distintas: o cliente (<em>browser</em>), que mostra páginas e envia pedidos; o servidor, que processa a lógica da aplicação; e o DBMS, que guarda e gere os dados. Separar estas camadas aumenta a segurança, o desempenho e a organização da aplicação.</p>
+<p>Vale a pena seguir, passo a passo, como circula a informação neste modelo, com um exemplo concreto:</p>
+<ol type="1">
+<li>O cliente envia um pedido, por exemplo <code>GET /produtos?categoria=livros</code>;</li>
+<li>O servidor (PHP) interpreta o pedido e gera a instrução SQL correspondente: <code>SELECT * FROM produtos WHERE categoria = 'livros'</code>;</li>
+<li>O DBMS (MySQL) executa essa instrução e devolve os resultados ao servidor;</li>
+<li>O servidor insere esses dados num modelo (<em>template</em>) HTML;</li>
+<li>O servidor devolve ao <em>browser</em> a página final, já preenchida com os dados pedidos.</li>
+</ol>
+<p>Cada camada cumpre, assim, a sua própria missão: o <em>browser</em> pede, o servidor pensa, o DBMS guarda e responde, o servidor monta a página, e o <em>browser</em> mostra o resultado final ao utilizador. O PHP vive inteiramente na camada do servidor, sendo o responsável por receber os pedidos do cliente, construir as instruções SQL, comunicar com o DBMS, processar os resultados devolvidos, e gerar o HTML final enviado ao <em>browser</em>: é a ponte entre o pedido do utilizador e os dados guardados na base de dados.</p>
+</section>
+<section id="sec-08-ligacao" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="sec-08-ligacao"><span class="header-section-number">8.4</span> Ligar o PHP ao MySQL</h2>
+<p>O PHP liga-se a uma base de dados <code>MySQL</code> através da extensão <code>mysqli</code> (<em>MySQL Improved</em>), que suporta a ligação ao MySQL, permite executar consultas, <em>prepared statements</em> e transações, e pode ser usada em dois estilos: procedural ou orientado a objetos.</p>
+<p>No estilo procedural, <code>mysqli_connect()</code> cria a ligação e devolve <code>false</code> caso esta falhe, uma versão simples e direta, adequada a quem está a começar:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="fu">mysqli_connect</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"nome_bd"</span>)<span class="ot">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="va">$conexao</span>) {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="fu">mysqli_connect_error</span>())<span class="ot">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>No estilo orientado a objetos, <code>new mysqli()</code> cria um objeto de ligação, e os erros ficam expostos na propriedade <code>connect_error</code> desse objeto. É o estilo mais moderno, e o mais usado na prática:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"nome_bd"</span>)<span class="ot">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-08-criar-bd" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="sec-08-criar-bd"><span class="header-section-number">8.5</span> Criar Bases de Dados e Tabelas</h2>
+<p>Criar a base de dados e criar as tabelas são dois passos distintos: primeiro cria-se o “contentor” (a base de dados), só depois as estruturas internas (as tabelas). Tal como qualquer outra instrução SQL, ambos podem ser feitos a partir do PHP, através do método <code>query()</code>, que envia o comando SQL ao MySQL e devolve sucesso ou erro:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"CREATE DATABASE IF NOT EXISTS loja"</span>)<span class="ot">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;select_db(<span class="st">"loja"</span>)<span class="ot">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE IF NOT EXISTS contactos (</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">        id INT AUTO_INCREMENT PRIMARY KEY,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">        nome VARCHAR(100) NOT NULL,</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">        email VARCHAR(100) NOT NULL,</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Vale a pena perceber o significado de cada parte desta definição de tabela:</p>
+<ul>
+<li><strong><code>PRIMARY KEY</code></strong> (PK): identifica, de forma inequívoca, cada registo da tabela; nenhuma tabela relacional bem desenhada deve existir sem uma;</li>
+<li><strong><code>AUTO_INCREMENT</code></strong>: faz o valor deste campo aumentar automaticamente em uma unidade a cada novo registo inserido, sem que o programador precise de o calcular;</li>
+<li><strong><code>NOT NULL</code></strong>: obriga a que este campo tenha sempre um valor, impedindo que fique vazio;</li>
+<li><strong><code>DEFAULT CURRENT_TIMESTAMP</code></strong>: se não for indicado um valor explícito para este campo ao inserir um registo, o MySQL coloca automaticamente a data e hora atuais.</li>
+</ul>
+<p>Na prática, criar a base de dados e as tabelas a partir do PHP é um passo inicial e raro numa aplicação real: a estrutura da base de dados de uma aplicação já em produção é, tipicamente, criada e alterada uma única vez, através de ferramentas próprias de administração, não a cada execução do <em>script</em>.</p>
+</section>
+<section id="sec-08-crud-sql" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="sec-08-crud-sql"><span class="header-section-number">8.6</span> Operações Fundamentais: CRUD em SQL</h2>
+<p>As quatro operações fundamentais sobre dados persistentes, <code>CRUD</code> (<em>Create</em>, <em>Read</em>, <em>Update</em>, <em>Delete</em>), correspondem diretamente a quatro comandos SQL.</p>
+<p><strong>Inserir</strong> um novo registo (<em>Create</em>), com <code>INSERT</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"INSERT INTO contactos (nome, email) VALUES ('Ana Silva', 'ana@exemplo.pt')"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ler</strong> dados existentes (<em>Read</em>), com <code>SELECT</code>. A propriedade <code>num_rows</code> do resultado indica quantas linhas foram devolvidas, e o método <code>fetch_assoc()</code> devolve cada linha como um array associativo, tal como visto no <a href="cap03.html#sec-03-arrays-multidimensionais" class="quarto-xref"><span>Secção 3.6.3</span></a>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM contactos"</span>)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$resultado</span>-&gt;num_rows <span class="op">.</span> <span class="st">" contactos encontrados"</span><span class="ot">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"email"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Esta última construção, um <code>while</code> a percorrer os resultados linha a linha, é também a forma habitual de gerar uma tabela HTML dinamicamente a partir dos dados devolvidos pela base de dados, transformando cada linha da base de dados numa linha <code>&lt;tr&gt;</code> da página.</p>
+<p><strong>Atualizar</strong> (<em>Update</em>) e <strong>apagar</strong> (<em>Delete</em>) registos existentes, com <code>UPDATE</code> e <code>DELETE</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"UPDATE contactos SET email = 'novo@exemplo.pt' WHERE id = 3"</span>)<span class="ot">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM contactos WHERE id = 3"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Tanto o <code>UPDATE</code> como o <code>DELETE</code> <strong>exigem sempre uma cláusula <code>WHERE</code></strong>; esquecê-la é um dos erros mais graves e mais comuns que se pode cometer com uma base de dados, porque, sem uma condição que filtre os registos afetados, a instrução aplica-se a <strong>todas</strong> as linhas da tabela.</p>
+</section>
+<section id="sec-08-prepared-statements" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="sec-08-prepared-statements"><span class="header-section-number">8.7</span> Prepared Statements</h2>
+<p>Todos os exemplos acima, com valores fixos escritos diretamente no código, servem para perceber o fluxo básico, mas não são adequados a uma aplicação real. Construir uma instrução SQL concatenando diretamente valores vindos do utilizador, como os de <code>$_POST</code>, tem vários problemas: mistura dados com código, é vulnerável a um ataque de injeção de SQL (tema aprofundado no <a href="cap09.html#sec-09-codigo-proprio" class="quarto-xref"><span>Secção 9.1</span></a>), é mais propenso a erros de sintaxe, e é difícil de manter.</p>
+<p>A alternativa correta é usar <em>prepared statements</em>, que separam a instrução SQL, fixa, dos valores, que só são inseridos depois. Funcionam em duas fases: o servidor prepara a instrução, com pontos de interrogação (<code>?</code>) no lugar dos valores, e só depois o PHP envia os dados, de forma separada e segura. As vantagens são proteção contra injeção de SQL, melhor desempenho quando a mesma instrução é executada várias vezes, e um código mais limpo:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"INSERT INTO contactos (nome, email) VALUES (?, ?)"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"ss"</span><span class="ot">,</span> <span class="va">$nome</span><span class="ot">,</span> <span class="va">$email</span>)<span class="ot">;</span>  <span class="co">// "ss" = dois parâmetros string</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="va">$nome</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="va">$email</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"email"</span>]<span class="ot">;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O <code>bind_param()</code> precisa de saber o tipo de cada valor associado, indicado por uma letra:</p>
+<ul>
+<li><strong><code>s</code></strong>: <em>string</em>;</li>
+<li><strong><code>i</code></strong>: <em>integer</em>;</li>
+<li><strong><code>d</code></strong>: <em>double</em> (números com casas decimais);</li>
+<li><strong><code>b</code></strong>: <em>blob</em> (dados binários, como imagens ou ficheiros).</li>
+</ul>
+<p>Para consultar dados com <em>prepared statements</em>, o padrão é semelhante, terminando com <code>get_result()</code> para obter as linhas devolvidas:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT nome, email FROM contactos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span>  <span class="co">// "i" = um parâmetro integer</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"email"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O mesmo princípio aplica-se ao <code>UPDATE</code> e ao <code>DELETE</code>: usar <em>prepared statements</em> torna-os seguros, porque os valores nunca são interpretados como parte do próprio comando SQL, o que evita tanto a injeção de SQL como alterações acidentais.</p>
+</section>
+<section id="sec-08-erros-boas-praticas" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="sec-08-erros-boas-praticas"><span class="header-section-number">8.8</span> Erros e Boas Práticas</h2>
+<p>Trabalhar com bases de dados implica, inevitavelmente, lidar com erros. Os mais comuns dividem-se em três categorias:</p>
+<ul>
+<li><strong>Erros de ligação</strong>: credenciais incorretas, o servidor MySQL estar desligado, ou a base de dados indicada não existir;</li>
+<li><strong>Erros de SQL</strong>: sintaxe inválida, nomes de tabelas ou colunas errados, falta de aspas ou vírgulas na instrução;</li>
+<li><strong>Erros de execução no PHP</strong>: usar variáveis não definidas, ou chamar <code>fetch_assoc()</code> sobre um resultado vazio.</li>
+</ul>
+<p>Durante o desenvolvimento, é essencial ativar a exibição de todos os erros e avisos do PHP, algo que nunca deve ficar ativo num ambiente de produção, por razões de segurança:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O <code>mysqli</code> explica sempre o que falhou, bastando ler a informação correta: <code>connect_error</code> mostra problemas na própria ligação, e <code>error</code> mostra problemas vindos do MySQL relativos a uma consulta específica. Algumas boas práticas gerais, a manter sempre presentes ao trabalhar com bases de dados em PHP:</p>
+<ul>
+<li>Usar <em>prepared statements</em> sempre que houver dados vindos do utilizador;</li>
+<li>Validar e sanitizar as entradas antes de as usar;</li>
+<li>Separar claramente código PHP, SQL e HTML;</li>
+<li>Mostrar erros durante o desenvolvimento, mas ocultá-los em produção;</li>
+<li>Testar sempre com dados reais e também com dados propositadamente maliciosos.</li>
+</ul>
+</section>
+<section id="sec-08-crud" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="sec-08-crud"><span class="header-section-number">8.9</span> Uma Aplicação CRUD Completa</h2>
+<p>Juntando tudo o que foi visto neste capítulo, uma pequena aplicação de gestão de contactos, sobre uma tabela <code>contacts</code>, distribui-se tipicamente por vários ficheiros PHP, cada um responsável por uma operação:</p>
+<ul>
+<li><code>config.php</code>: estabelece a ligação à base de dados, e é incluído, com <code>require</code>, no início de todos os outros ficheiros, evitando repetir o código de ligação em cada um;</li>
+<li><code>index.php</code>: lista todos os contactos existentes (<em>Read</em>), e liga a todas as outras operações;</li>
+<li><code>add.php</code> e <code>insert.php</code>: <code>add.php</code> apresenta um formulário HTML, que envia os seus dados por <code>POST</code> para <code>insert.php</code>, o qual, com um <em>prepared statement</em>, insere o novo registo (<em>Create</em>) e redireciona de volta para <code>index.php</code>;</li>
+<li><code>edit.php</code> e <code>update.php</code>: <code>edit.php</code> apresenta um formulário pré-preenchido com os dados de um registo existente, e <code>update.php</code> grava as alterações (<em>Update</em>);</li>
+<li><code>delete.php</code>: remove um registo existente (<em>Delete</em>).</li>
+</ul>
+<p>Um detalhe merece atenção especial no <code>index.php</code>: cada <code>link</code> para editar ou apagar um contacto transporta o <code>id</code> desse contacto na própria URL, por exemplo <code>edit.php?id=7</code>, para que a página seguinte saiba exatamente a que registo se refere. Este <code>id</code>, por vir de um <code>GET</code> simples, sem dados sensíveis nem efeitos colaterais até ser efetivamente processado, não exige, aqui, um <em>prepared statement</em> na listagem; já em <code>edit.php</code>, ao ler esse mesmo <code>id</code> do <code>GET</code> para o incluir de novo no formulário, este tem de ser colocado num campo <code>hidden</code> do formulário, para que, ao ser submetido por <code>POST</code> para <code>update.php</code>, o <code>id</code> do registo a alterar viaje junto com os restantes dados.</p>
+<p>O fluxo completo da aplicação pode resumir-se assim: o utilizador navega entre páginas simples e independentes a partir de <code>index.php</code>; cada operação, <code>add</code>, <code>edit</code> ou <code>delete</code>, comunica com a base de dados através de <code>insert.php</code>, <code>update.php</code> ou diretamente em <code>delete.php</code>; e, depois de gravada a alteração, a aplicação redireciona sempre de volta para <code>index.php</code>, fechando o ciclo.</p>
+<p>Este pequeno projeto reúne, na prática, praticamente tudo o que foi visto até este ponto da UC: HTML e formulários do lado do cliente, supervariáveis para receber os dados submetidos, <em>prepared statements</em> para os gravar e ler em segurança, e uma aplicação organizada em várias páginas simples, cada uma com uma única responsabilidade, o padrão sobre o qual assenta a maioria das aplicações web dinâmicas.</p>
+</section>
+<section id="sec-08-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-08-referencias">Referências</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap07.html" class="pagination-link" aria-label="O Protocolo HTTP e Gestão de Estado">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">O Protocolo HTTP e Gestão de Estado</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap09.html" class="pagination-link" aria-label="Segurança em Aplicações Web">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Segurança em Aplicações Web</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Desenvolvimento de Aplicações Web I — UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

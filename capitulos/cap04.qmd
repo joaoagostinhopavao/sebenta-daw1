@@ -1,0 +1,253 @@
+---
+title: "PHP II: Condicionais, Loops e Supervariáveis"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Estruturas Condicionais {#sec-04-condicionais}
+
+Uma estrutura condicional é uma estrutura de controlo que permite tomar
+decisões com base em condições específicas: avalia se uma condição é
+verdadeira ou falsa, e executa o bloco de código correspondente,
+direcionando o fluxo do programa de acordo com o resultado dessa
+avaliação. Em PHP, a estrutura mais comum é o `if`/`else`:
+
+```php
+<?php
+$idade = 18;
+
+if ($idade >= 18) {
+    echo "É maior de idade.";
+} else {
+    echo "É menor de idade.";
+}
+```
+
+Quando há mais do que duas alternativas, encadeia-se `elseif`:
+
+```php
+<?php
+$nota = 12;
+
+if ($nota >= 18) {
+    echo "Excelente";
+} elseif ($nota >= 14) {
+    echo "Bom";
+} elseif ($nota >= 10) {
+    echo "Suficiente";
+} else {
+    echo "Reprovado";
+}
+```
+
+Quando se compara uma única variável com vários valores possíveis, é
+mais legível usar `switch`. Repare-se no uso do `break`: sem ele, a
+execução continuaria para o `case` seguinte mesmo depois de encontrar
+uma correspondência, um comportamento chamado *fallthrough*, por vezes
+usado propositadamente, como nas duas primeiras linhas do exemplo, para
+agrupar vários casos sob a mesma resposta:
+
+```php
+<?php
+switch ($dia_semana) {
+    case "Sábado":
+    case "Domingo":
+        echo "Fim de semana";
+        break;
+    case "Sexta":
+        echo "Quase fim de semana";
+        break;
+    default:
+        echo "Dia útil";
+}
+```
+
+### Operadores de Comparação {#sec-04-operadores-comparacao}
+
+As condições assentam em operadores de comparação, que avaliam dois
+valores e devolvem sempre um booleano, `true` ou `false`:
+
+| Operador | Significado |
+|----------|-------------|
+| `==`     | igual (compara apenas o valor) |
+| `===`    | idêntico (compara o valor e o tipo) |
+| `!=`     | diferente (compara apenas o valor) |
+| `!==`    | não idêntico (compara o valor e o tipo) |
+| `<`      | menor que |
+| `>`      | maior que |
+| `<=`     | menor ou igual a |
+| `>=`     | maior ou igual a |
+
+A distinção entre `==` e `===` é uma das fontes mais comuns de erros
+subtis em PHP, precisamente por o PHP converter automaticamente entre
+tipos ao usar `==`:
+
+```php
+<?php
+var_dump(0 == "abc");    // false na maioria das versões atuais do PHP
+var_dump(0 == "0");      // true: "0" é convertido para o número 0
+var_dump(0 === "0");     // false: tipos diferentes, integer vs string
+var_dump("10" == "1e1"); // true: ambos convertidos para o mesmo número
+var_dump("10" === "1e1");// false: são strings diferentes
+```
+
+Por esta razão, é boa prática usar `===` sempre que se quer garantir que
+dois valores são realmente iguais, tanto no valor como no tipo, evitando
+comparações que dependam de conversões automáticas nem sempre óbvias.
+
+### Operadores Lógicos {#sec-04-operadores-logicos}
+
+Condições podem ser compostas usando operadores lógicos, que combinam o
+resultado de duas ou mais condições:
+
+- **`and`** (ou `&&`): verdadeiro apenas se ambas as condições forem
+  verdadeiras;
+- **`or`** (ou `||`): verdadeiro se pelo menos uma das condições for
+  verdadeira;
+- **`xor`**: verdadeiro se exatamente uma das duas condições for
+  verdadeira, mas não ambas.
+
+```php
+<?php
+$idade = 20;
+$tem_carta = true;
+
+if ($idade >= 18 && $tem_carta) {
+    echo "Pode conduzir.";
+}
+```
+
+## Ciclos {#sec-04-ciclos}
+
+Um ciclo (ou *loop*) é uma estrutura de controlo que permite repetir a
+execução de um bloco de código várias vezes, até que uma condição
+especificada deixe de se verificar, ou até que um número predeterminado
+de repetições seja alcançado. O PHP disponibiliza quatro tipos de
+ciclos.
+
+### `for` {#sec-04-for}
+
+Usa-se quando se sabe, à partida, quantas repetições são necessárias,
+recebendo três parâmetros: o valor inicial, a condição de paragem, e o
+incremento aplicado a cada repetição:
+
+```php
+<?php
+for ($i = 1; $i <= 5; $i++) {
+    echo $i . " ";
+}
+// 1 2 3 4 5
+```
+
+### `while` {#sec-04-while}
+
+Recebe apenas uma condição, avaliada **antes** de cada repetição; se a
+condição for falsa logo à partida, o bloco de código nunca chega a
+executar:
+
+```php
+<?php
+$contador = 1;
+while ($contador <= 5) {
+    echo $contador . " ";
+    $contador++;
+}
+```
+
+### `do...while` {#sec-04-do-while}
+
+Muito semelhante ao `while`, mas com a condição avaliada **depois** de
+cada repetição, o que garante que o bloco de código executa sempre pelo
+menos uma vez, mesmo que a condição seja falsa logo à partida:
+
+```php
+<?php
+$contador = 10;
+do {
+    echo $contador . " ";
+    $contador++;
+} while ($contador <= 5);
+// 10 (executa uma vez, mesmo com a condição já falsa)
+```
+
+### `foreach` {#sec-04-foreach}
+
+Usado especificamente para percorrer arrays, sem necessidade de gerir um
+índice manualmente:
+
+```php
+<?php
+$frutas = ["Maçã", "Banana", "Laranja"];
+foreach ($frutas as $fruta) {
+    echo $fruta . "<br>";
+}
+```
+
+Com um array associativo, o `foreach` permite aceder simultaneamente à
+chave e ao valor de cada elemento:
+
+```php
+<?php
+$pessoa = ["nome" => "João", "idade" => 25, "cidade" => "Lisboa"];
+foreach ($pessoa as $chave => $valor) {
+    echo "$chave: $valor<br>";
+}
+```
+
+## Supervariáveis {#sec-04-supervariaveis}
+
+O PHP disponibiliza um conjunto de arrays predefinidos, conhecidos como
+supervariáveis (ou superglobais): variáveis automaticamente inicializadas
+pelo PHP, disponíveis em qualquer parte de um *script*, independentemente
+do contexto ou da função em que se esteja, sem necessidade de as
+declarar. São muito úteis para aceder a informação comum a toda a
+aplicação, como dados de formulários, *cookies*, sessões ou parâmetros
+da URL. As mais usadas são:
+
+- **`$_GET`**: contém os dados enviados através da URL, tipicamente por
+  um formulário com `method="get"`, ou por parâmetros escritos
+  diretamente no endereço, como `pagina.php?id=5`;
+- **`$_POST`**: contém os dados enviados no corpo de um pedido HTTP,
+  tipicamente por um formulário com `method="post"`, sem ficarem
+  visíveis na URL;
+- **`$_REQUEST`**: combina os dados de `$_GET`, `$_POST` e dos *cookies*
+  do pedido, útil quando não interessa saber por que método os dados
+  chegaram;
+- **`$_SESSION`**: guarda informação de sessão do utilizador, como o seu
+  estado de autenticação, ao longo de páginas diferentes, tema
+  aprofundado no @sec-07-sessoes;
+- **`$_COOKIE`**: contém os *cookies* enviados pelo cliente ao servidor,
+  tema aprofundado no @sec-07-cookies;
+- **`$_SERVER`**: contém informação sobre o servidor e sobre o pedido
+  atual, como o endereço do cliente, o método HTTP usado, ou o caminho
+  do próprio *script*.
+
+```php
+<?php
+// Um formulário HTML enviou um campo chamado "nome" por GET
+if (isset($_GET["nome"])) {
+    echo "Olá, " . $_GET["nome"] . "!";
+} else {
+    echo "Olá, visitante!";
+}
+```
+
+O uso de `isset()` no exemplo anterior não é acidental: aceder
+diretamente a uma chave de `$_GET` ou `$_POST` que não exista gera um
+aviso em PHP, pelo que é boa prática verificar sempre se um determinado
+campo foi de facto enviado antes de o usar.
+
+As supervariáveis são o ponto de ligação entre o HTML, do lado do
+cliente, e a lógica em PHP, do lado do servidor: um formulário preenchido
+pelo utilizador só produz efeito porque os seus campos chegam ao *script*
+PHP através de `$_GET` ou `$_POST`.
+
+O código completo da demonstração feita na aula sobre condicionais,
+ciclos e supervariáveis, incluindo o formulário HTML usado para testar
+`$_GET` e `$_POST`, está disponível no @sec-apB-condicionais-loops.
+
+## Referências {#sec-04-referencias .unnumbered}
+
+::: {#refs}
+:::
