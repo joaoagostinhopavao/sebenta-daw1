@@ -155,6 +155,75 @@ a um ficheiro chamado literalmente assim; corresponde à execução do
 *script* `pagina.php`, que, com base no parâmetro `id`, gera
 dinamicamente o conteúdo a devolver.
 
+## Supervariáveis {#sec-07-supervariaveis}
+
+Falta uma peça para fechar o círculo: como é que o *script* `pagina.php`
+do exemplo anterior chega, de facto, ao valor `5` do parâmetro `id`? O
+PHP disponibiliza, para isso, um conjunto de arrays predefinidos,
+conhecidos como supervariáveis (ou superglobais): variáveis
+automaticamente inicializadas pelo PHP, disponíveis em qualquer parte de
+um *script*, independentemente do contexto ou da função em que se
+esteja, sem necessidade de as declarar. É através delas que o código
+PHP tem acesso a tudo o que foi visto neste capítulo até aqui: os
+parâmetros de um pedido `GET`, os campos de um formulário `POST`, os
+*cookies*, a sessão. As mais usadas são:
+
+- **`$_GET`**: contém os dados enviados através da URL, exatamente o
+  parâmetro `id` de `pagina.php?id=5`, ou os campos de um formulário
+  submetido com `method="GET"`, como visto no @sec-07-get;
+- **`$_POST`**: contém os dados enviados no corpo de um pedido `POST`,
+  tipicamente por um formulário como o de registo visto no @sec-07-post;
+- **`$_REQUEST`**: combina os dados de `$_GET`, `$_POST` e dos *cookies*
+  do pedido, útil quando não interessa saber por que método os dados
+  chegaram;
+- **`$_SESSION`**: guarda informação de sessão do utilizador, tema
+  aprofundado mais adiante neste capítulo, no @sec-07-sessoes;
+- **`$_COOKIE`**: contém os *cookies* enviados pelo cliente ao servidor,
+  tema aprofundado no @sec-07-cookies;
+- **`$_SERVER`**: contém informação sobre o servidor e sobre o pedido
+  atual, como o endereço do cliente, o método `HTTP` usado, ou o
+  caminho do próprio *script*.
+
+No sítio da Contraponto, `$_GET` é exatamente o mecanismo que permite a
+um leitor filtrar os artigos por categoria, através de um endereço como
+`sitio.pt/artigos.php?categoria=Cultura`, substituindo finalmente, por
+dados reais de um pedido, a variável fixa usada no @sec-04-desafio:
+
+```php
+<?php
+// sitio.pt/artigos.php?categoria=Cultura
+if (isset($_GET["categoria"])) {
+    echo "A mostrar artigos da categoria: " . $_GET["categoria"];
+} else {
+    echo "A mostrar todos os artigos.";
+}
+```
+
+O uso de `isset()` no exemplo anterior não é acidental: aceder
+diretamente a uma chave de `$_GET` ou `$_POST` que não exista gera um
+aviso em PHP, pelo que é boa prática verificar sempre se um determinado
+campo foi de facto enviado antes de o usar, já que nem todos os leitores
+chegam ao sítio através de um endereço com esse parâmetro.
+
+O `$_POST`, por sua vez, é o que recebe o formulário de comentário
+esboçado no @sec-03-projeto, quando um leitor o submete:
+
+```php
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nome_comentario = $_POST["nome"];
+    $texto_comentario = $_POST["texto"];
+    echo "Comentário de $nome_comentario recebido: $texto_comentario";
+}
+```
+
+As supervariáveis são o ponto de ligação entre o `HTTP`, do lado da
+rede, e a lógica em PHP, do lado do servidor: a filtragem por categoria
+e o formulário de comentário só produzem efeito porque os seus dados
+chegam ao *script* PHP através de `$_GET` ou `$_POST`. O código completo
+desta demonstração, incluindo o formulário HTML usado para testar
+`$_GET` e `$_POST`, está disponível no @sec-apB-condicionais-loops.
+
 ## Cabeçalhos HTTP {#sec-07-cabecalhos}
 
 Tanto o pedido como a resposta incluem cabeçalhos, pares de chave e
@@ -345,6 +414,27 @@ Cookies e sessões são, assim, a solução de engenharia que permite
 simular continuidade numa aplicação web construída sobre um protocolo
 que, por natureza, não guarda memória de nada entre um pedido e o
 seguinte.
+
+## Desafio {#sec-07-desafio}
+
+Com o `HTTP` e as supervariáveis, o sítio da Contraponto deixa
+finalmente de depender de dados simulados. O desafio, a partir do
+ficheiro de arranque do @sec-05-desafio, é:
+
+1. Substituir a variável fixa `$categoria_escolhida`, usada no
+   @sec-04-desafio para simular o filtro, pelo valor real de
+   `$_GET["categoria"]`, com `isset()` a tratar o caso de nenhuma
+   categoria ser indicada;
+2. Confirmar, através dos *links* do menu em `header.php` (que já
+   apontam para `index.php?categoria=Cultura`,
+   `index.php?categoria=Tecnologia`, etc.), que a listagem de artigos
+   muda de facto consoante a categoria escolhida no *browser*;
+3. Tratar a submissão do formulário de comentário esboçado no
+   @sec-03-projeto: verificar se `$_SERVER["REQUEST_METHOD"]` é
+   `"POST"` e, nesse caso, ler `$_POST["nome"]` e `$_POST["texto"]`,
+   mostrando uma mensagem de confirmação ao leitor.
+
+O ficheiro de arranque está disponível no @sec-apC-cap07.
 
 ## Referências {#sec-07-referencias .unnumbered}
 

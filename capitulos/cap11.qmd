@@ -70,10 +70,10 @@ código PHP, versionável e partilhável entre toda a equipa:
 ```php
 // database/migrations/create_contactos_table.php
 Schema::create('contactos', function (Blueprint $table) {
-    $table->id();                    // equivalente a INT AUTO_INCREMENT PRIMARY KEY
+    $table->id();                    // INT AUTO_INCREMENT PRIMARY KEY
     $table->string('nome');
     $table->string('email');
-    $table->timestamps();            // equivalente a criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+    $table->timestamps();            // datas de criação/atualização automáticas
 });
 ```
 

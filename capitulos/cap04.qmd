@@ -1,5 +1,5 @@
 ---
-title: "PHP II: Condicionais, Loops e Supervariáveis"
+title: "PHP II: Condicionais e Ciclos"
 author: "João Pavão"
 date: 2026-08-24
 lang: pt-PT
@@ -7,66 +7,90 @@ lang: pt-PT
 
 ## Estruturas Condicionais {#sec-04-condicionais}
 
-Uma estrutura condicional é uma estrutura de controlo que permite tomar
-decisões com base em condições específicas: avalia se uma condição é
-verdadeira ou falsa, e executa o bloco de código correspondente,
-direcionando o fluxo do programa de acordo com o resultado dessa
-avaliação. Em PHP, a estrutura mais comum é o `if`/`else`:
+Com o catálogo de artigos completo, Tiago repara que nem tudo o que está
+no array `$artigos` deve ser tratado da mesma forma: um artigo pode
+estar pronto a publicar, ou pode ainda ser apenas um rascunho que Rita
+está a rever. Com o que sabe até aqui, o único código que consegue
+escrever é um `echo` direto, sempre executado da mesma maneira, sem
+nunca variar consoante os dados: não há forma de dizer "mostra isto
+**se** o artigo estiver publicado, mas não se ainda for rascunho". É
+exatamente este tipo de decisão que uma estrutura condicional permite
+tomar: avalia se uma condição é verdadeira ou falsa, e executa um bloco
+de código diferente consoante o resultado, direcionando o fluxo do
+programa de acordo com os dados. Em PHP, a estrutura mais comum é o
+`if`/`else`, e resolve bem o problema do estado do artigo:
 
 ```php
 <?php
-$idade = 18;
+$estado = "publicado";
 
-if ($idade >= 18) {
-    echo "É maior de idade.";
+if ($estado === "publicado") {
+    echo "Mostrar o artigo aos leitores.";
 } else {
-    echo "É menor de idade.";
+    echo "Artigo ainda em rascunho, não mostrar.";
 }
 ```
 
-Quando há mais do que duas alternativas, encadeia-se `elseif`:
+Isto resolve bem uma decisão de sim ou não. Mas Tiago tem outro
+problema parecido: quer que a página inicial destaque os artigos
+consoante o número de vistas que já tiveram, e desta vez há mais do que
+duas categorias possíveis, não apenas "viral" ou "não viral". Um único
+`if`/`else` só distingue dois casos; quando há mais do que duas
+alternativas, encadeia-se `elseif`:
 
 ```php
 <?php
-$nota = 12;
+$vistas = 850;
 
-if ($nota >= 18) {
-    echo "Excelente";
-} elseif ($nota >= 14) {
-    echo "Bom";
-} elseif ($nota >= 10) {
-    echo "Suficiente";
+if ($vistas >= 1000) {
+    echo "Viral";
+} elseif ($vistas >= 500) {
+    echo "Popular";
+} elseif ($vistas >= 100) {
+    echo "Normal";
 } else {
-    echo "Reprovado";
+    echo "Pouco lido";
 }
 ```
 
-Quando se compara uma única variável com vários valores possíveis, é
-mais legível usar `switch`. Repare-se no uso do `break`: sem ele, a
-execução continuaria para o `case` seguinte mesmo depois de encontrar
-uma correspondência, um comportamento chamado *fallthrough*, por vezes
+Este problema das vistas resolve-se bem com `elseif` porque cada
+alternativa depende de uma faixa diferente de valores. Mas quando Tiago
+quer decidir a secção do sítio a partir da categoria exata de um
+artigo, comparando sempre a mesma variável `$categoria` com vários
+valores possíveis, um a um, escrever um `elseif` para cada categoria
+começa a ficar repetitivo: `elseif ($categoria === "Cultura")`,
+`elseif ($categoria === "Música")`, e assim sucessivamente. Há uma
+outra maneira mais simples de Tiago fazer a mesma coisa, sempre que o
+que está em causa é comparar uma única variável com vários valores
+exatos: o `switch`. Repare-se no uso do `break`: sem ele, a execução
+continuaria para o `case` seguinte mesmo depois de encontrar uma
+correspondência, um comportamento chamado *fallthrough*, por vezes
 usado propositadamente, como nas duas primeiras linhas do exemplo, para
-agrupar vários casos sob a mesma resposta:
+agrupar vários casos sob a mesma secção do sítio:
 
 ```php
 <?php
-switch ($dia_semana) {
-    case "Sábado":
-    case "Domingo":
-        echo "Fim de semana";
+$categoria = "Música";
+
+switch ($categoria) {
+    case "Cultura":
+    case "Música":
+        echo "Secção Lazer";
         break;
-    case "Sexta":
-        echo "Quase fim de semana";
+    case "Tecnologia":
+        echo "Secção Inovação";
         break;
     default:
-        echo "Dia útil";
+        echo "Outras notícias";
 }
 ```
 
 ### Operadores de Comparação {#sec-04-operadores-comparacao}
 
-As condições assentam em operadores de comparação, que avaliam dois
-valores e devolvem sempre um booleano, `true` ou `false`:
+Ao testar o `if` do estado do artigo, Tiago tropeça num pormenor do PHP
+que vale a pena perceber bem antes de continuar. As condições assentam
+em operadores de comparação, que avaliam dois valores e devolvem sempre
+um booleano, `true` ou `false`:
 
 | Operador | Significado |
 |----------|-------------|
@@ -95,11 +119,20 @@ var_dump("10" === "1e1");// false: são strings diferentes
 Por esta razão, é boa prática usar `===` sempre que se quer garantir que
 dois valores são realmente iguais, tanto no valor como no tipo, evitando
 comparações que dependam de conversões automáticas nem sempre óbvias.
+Esta distinção vai ser particularmente relevante mais adiante no livro,
+quando Tiago começar a receber dados de pedidos HTTP reais, no
+@sec-07-supervariaveis: um identificador de artigo recebido pela URL
+chega sempre como *string*, mesmo que represente um número, e comparar
+essa *string* com um `id` guardado como `integer` pode ter resultados
+inesperados se se usar `==` em vez de `===`.
 
 ### Operadores Lógicos {#sec-04-operadores-logicos}
 
-Condições podem ser compostas usando operadores lógicos, que combinam o
-resultado de duas ou mais condições:
+Tiago percebe que mostrar um artigo, na prática, depende de duas
+condições ao mesmo tempo: o artigo tem de estar publicado, **e** a sua
+categoria não pode entretanto ter sido arquivada. Testar isto com dois
+`if` separados obrigaria a aninhar um dentro do outro; combinar as duas
+condições numa só é o papel dos operadores lógicos:
 
 - **`and`** (ou `&&`): verdadeiro apenas se ambas as condições forem
   verdadeiras;
@@ -110,11 +143,11 @@ resultado de duas ou mais condições:
 
 ```php
 <?php
-$idade = 20;
-$tem_carta = true;
+$publicado = true;
+$categoria_ativa = true;
 
-if ($idade >= 18 && $tem_carta) {
-    echo "Pode conduzir.";
+if ($publicado && $categoria_ativa) {
+    echo "Mostrar artigo.";
 }
 ```
 
@@ -134,24 +167,25 @@ incremento aplicado a cada repetição:
 
 ```php
 <?php
-for ($i = 1; $i <= 5; $i++) {
-    echo $i . " ";
+for ($pagina = 1; $pagina <= 5; $pagina++) {
+    echo "Página $pagina ";
 }
-// 1 2 3 4 5
+// Página 1 Página 2 Página 3 Página 4 Página 5
 ```
 
 ### `while` {#sec-04-while}
 
 Recebe apenas uma condição, avaliada **antes** de cada repetição; se a
 condição for falsa logo à partida, o bloco de código nunca chega a
-executar:
+executar. No painel de gestão da Contraponto, um editor pode usar um
+`while` para ir despachando, um a um, os comentários ainda por aprovar:
 
 ```php
 <?php
-$contador = 1;
-while ($contador <= 5) {
-    echo $contador . " ";
-    $contador++;
+$comentarios_pendentes = 5;
+while ($comentarios_pendentes > 0) {
+    echo "Comentário pendente: $comentarios_pendentes ";
+    $comentarios_pendentes--;
 }
 ```
 
@@ -159,93 +193,79 @@ while ($contador <= 5) {
 
 Muito semelhante ao `while`, mas com a condição avaliada **depois** de
 cada repetição, o que garante que o bloco de código executa sempre pelo
-menos uma vez, mesmo que a condição seja falsa logo à partida:
+menos uma vez, mesmo que a condição seja falsa logo à partida. É útil,
+por exemplo, para garantir que a página inicial mostra sempre algum
+artigo em destaque, mesmo nos dias em que nenhum foi explicitamente
+marcado como tal:
 
 ```php
 <?php
-$contador = 10;
+$artigos_destaque = 0;   // nenhum artigo marcado como destaque hoje
 do {
-    echo $contador . " ";
-    $contador++;
-} while ($contador <= 5);
-// 10 (executa uma vez, mesmo com a condição já falsa)
+    echo "A mostrar o artigo mais recente como destaque. ";
+    $artigos_destaque--;
+} while ($artigos_destaque > 0);
+// executa uma vez, mesmo com a condição já falsa à partida
 ```
 
 ### `foreach` {#sec-04-foreach}
 
 Usado especificamente para percorrer arrays, sem necessidade de gerir um
-índice manualmente:
+índice manualmente. É finalmente com um `foreach` que Tiago consegue
+transformar o array `$titulos`, esboçado no @sec-03-arrays-numericos,
+numa lista real de artigos na página do sítio, sem repetir `echo` uma
+vez por artigo:
 
 ```php
 <?php
-$frutas = ["Maçã", "Banana", "Laranja"];
-foreach ($frutas as $fruta) {
-    echo $fruta . "<br>";
+$titulos = [
+    "Entrevista: o futuro do jornalismo local",
+    "Crítica: a nova exposição do museu",
+    "Como nasceu a Contraponto"
+];
+
+foreach ($titulos as $titulo) {
+    echo $titulo . "<br>";
 }
 ```
 
 Com um array associativo, o `foreach` permite aceder simultaneamente à
-chave e ao valor de cada elemento:
+chave e ao valor de cada elemento, o que serve, por exemplo, para
+mostrar todos os campos de um único artigo sem escrever `echo` para
+cada propriedade em separado:
 
 ```php
 <?php
-$pessoa = ["nome" => "João", "idade" => 25, "cidade" => "Lisboa"];
-foreach ($pessoa as $chave => $valor) {
+$artigo = [
+    "titulo"    => "Entrevista: o futuro do jornalismo local",
+    "autor"     => "Rita Ferreira",
+    "categoria" => "Tecnologia"
+];
+
+foreach ($artigo as $chave => $valor) {
     echo "$chave: $valor<br>";
 }
 ```
 
-## Supervariáveis {#sec-04-supervariaveis}
+## Desafio {#sec-04-desafio}
 
-O PHP disponibiliza um conjunto de arrays predefinidos, conhecidos como
-supervariáveis (ou superglobais): variáveis automaticamente inicializadas
-pelo PHP, disponíveis em qualquer parte de um *script*, independentemente
-do contexto ou da função em que se esteja, sem necessidade de as
-declarar. São muito úteis para aceder a informação comum a toda a
-aplicação, como dados de formulários, *cookies*, sessões ou parâmetros
-da URL. As mais usadas são:
+Com condicionais e ciclos, Tiago já consegue transformar o catálogo
+estático de artigos numa página que reage aos dados. O desafio, a
+partir do catálogo `$artigos` completado no @sec-03-desafio, é:
 
-- **`$_GET`**: contém os dados enviados através da URL, tipicamente por
-  um formulário com `method="get"`, ou por parâmetros escritos
-  diretamente no endereço, como `pagina.php?id=5`;
-- **`$_POST`**: contém os dados enviados no corpo de um pedido HTTP,
-  tipicamente por um formulário com `method="post"`, sem ficarem
-  visíveis na URL;
-- **`$_REQUEST`**: combina os dados de `$_GET`, `$_POST` e dos *cookies*
-  do pedido, útil quando não interessa saber por que método os dados
-  chegaram;
-- **`$_SESSION`**: guarda informação de sessão do utilizador, como o seu
-  estado de autenticação, ao longo de páginas diferentes, tema
-  aprofundado no @sec-07-sessoes;
-- **`$_COOKIE`**: contém os *cookies* enviados pelo cliente ao servidor,
-  tema aprofundado no @sec-07-cookies;
-- **`$_SERVER`**: contém informação sobre o servidor e sobre o pedido
-  atual, como o endereço do cliente, o método HTTP usado, ou o caminho
-  do próprio *script*.
+1. Usar um `foreach` para percorrer `$artigos` e mostrar o título de
+   cada um;
+2. Dentro do mesmo `foreach`, usar um `if` para mostrar também o autor,
+   mas apenas dos artigos cuja categoria seja `"Cultura"`;
+3. Definir, no topo do ficheiro, uma variável
+   `$categoria_escolhida = "Tecnologia";`, a simular, por agora, a
+   categoria que o leitor quer ver, e usar um `if` para que o `foreach`
+   só mostre os artigos dessa categoria.
 
-```php
-<?php
-// Um formulário HTML enviou um campo chamado "nome" por GET
-if (isset($_GET["nome"])) {
-    echo "Olá, " . $_GET["nome"] . "!";
-} else {
-    echo "Olá, visitante!";
-}
-```
-
-O uso de `isset()` no exemplo anterior não é acidental: aceder
-diretamente a uma chave de `$_GET` ou `$_POST` que não exista gera um
-aviso em PHP, pelo que é boa prática verificar sempre se um determinado
-campo foi de facto enviado antes de o usar.
-
-As supervariáveis são o ponto de ligação entre o HTML, do lado do
-cliente, e a lógica em PHP, do lado do servidor: um formulário preenchido
-pelo utilizador só produz efeito porque os seus campos chegam ao *script*
-PHP através de `$_GET` ou `$_POST`.
-
-O código completo da demonstração feita na aula sobre condicionais,
-ciclos e supervariáveis, incluindo o formulário HTML usado para testar
-`$_GET` e `$_POST`, está disponível no @sec-apB-condicionais-loops.
+O ficheiro de arranque, já com o catálogo completo do capítulo anterior,
+está disponível no @sec-apC-cap04. Esta variável fixa é, propositadamente,
+uma simplificação: o @sec-07-supervariaveis mostra como substituí-la
+pelo valor real de um pedido do *browser*, através de `$_GET`.
 
 ## Referências {#sec-04-referencias .unnumbered}
 

@@ -194,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -260,6 +260,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -281,14 +287,16 @@ div.csl-indent {
   <li><a href="#sec-07-get-vs-post" id="toc-sec-07-get-vs-post" class="nav-link" data-scroll-target="#sec-07-get-vs-post"><span class="header-section-number">7.3.3</span> GET vs.&nbsp;POST</a></li>
   <li><a href="#sec-07-recursos-virtuais" id="toc-sec-07-recursos-virtuais" class="nav-link" data-scroll-target="#sec-07-recursos-virtuais"><span class="header-section-number">7.3.4</span> Recursos Virtuais</a></li>
   </ul></li>
-  <li><a href="#sec-07-cabecalhos" id="toc-sec-07-cabecalhos" class="nav-link" data-scroll-target="#sec-07-cabecalhos"><span class="header-section-number">7.4</span> Cabeçalhos HTTP</a></li>
-  <li><a href="#sec-07-resposta" id="toc-sec-07-resposta" class="nav-link" data-scroll-target="#sec-07-resposta"><span class="header-section-number">7.5</span> A Resposta do Servidor</a></li>
-  <li><a href="#sec-07-stateless" id="toc-sec-07-stateless" class="nav-link" data-scroll-target="#sec-07-stateless"><span class="header-section-number">7.6</span> HTTP é um Protocolo Stateless</a></li>
-  <li><a href="#sec-07-estado" id="toc-sec-07-estado" class="nav-link" data-scroll-target="#sec-07-estado"><span class="header-section-number">7.7</span> Gestão de Estado: Cookies e Sessões</a>
+  <li><a href="#sec-07-supervariaveis" id="toc-sec-07-supervariaveis" class="nav-link" data-scroll-target="#sec-07-supervariaveis"><span class="header-section-number">7.4</span> Supervariáveis</a></li>
+  <li><a href="#sec-07-cabecalhos" id="toc-sec-07-cabecalhos" class="nav-link" data-scroll-target="#sec-07-cabecalhos"><span class="header-section-number">7.5</span> Cabeçalhos HTTP</a></li>
+  <li><a href="#sec-07-resposta" id="toc-sec-07-resposta" class="nav-link" data-scroll-target="#sec-07-resposta"><span class="header-section-number">7.6</span> A Resposta do Servidor</a></li>
+  <li><a href="#sec-07-stateless" id="toc-sec-07-stateless" class="nav-link" data-scroll-target="#sec-07-stateless"><span class="header-section-number">7.7</span> HTTP é um Protocolo Stateless</a></li>
+  <li><a href="#sec-07-estado" id="toc-sec-07-estado" class="nav-link" data-scroll-target="#sec-07-estado"><span class="header-section-number">7.8</span> Gestão de Estado: Cookies e Sessões</a>
   <ul class="collapse">
-  <li><a href="#sec-07-cookies" id="toc-sec-07-cookies" class="nav-link" data-scroll-target="#sec-07-cookies"><span class="header-section-number">7.7.1</span> Cookies</a></li>
-  <li><a href="#sec-07-sessoes" id="toc-sec-07-sessoes" class="nav-link" data-scroll-target="#sec-07-sessoes"><span class="header-section-number">7.7.2</span> Sessões</a></li>
+  <li><a href="#sec-07-cookies" id="toc-sec-07-cookies" class="nav-link" data-scroll-target="#sec-07-cookies"><span class="header-section-number">7.8.1</span> Cookies</a></li>
+  <li><a href="#sec-07-sessoes" id="toc-sec-07-sessoes" class="nav-link" data-scroll-target="#sec-07-sessoes"><span class="header-section-number">7.8.2</span> Sessões</a></li>
   </ul></li>
+  <li><a href="#sec-07-desafio" id="toc-sec-07-desafio" class="nav-link" data-scroll-target="#sec-07-desafio"><span class="header-section-number">7.9</span> Desafio</a></li>
   <li><a href="#sec-07-referencias" id="toc-sec-07-referencias" class="nav-link" data-scroll-target="#sec-07-referencias">Referências</a></li>
   </ul>
 </nav>
@@ -353,17 +361,17 @@ div.csl-indent {
 <section id="sec-07-get" class="level3" data-number="7.3.1">
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="sec-07-get"><span class="header-section-number">7.3.1</span> O Método GET</h3>
 <p>O <code>GET</code> pede a obtenção de um recurso, sem que essa operação, por si só, altere nada no servidor. É o método usado sempre que se clica num <code>link</code> numa página:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"http://utad.pt/index.html"</span><span class="dt">&gt;</span>UTAD<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"http://utad.pt/index.html"</span><span class="dt">&gt;</span>UTAD<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Este <code>link</code>, ao ser clicado, resulta na seguinte mensagem <code>GET</code>:</p>
 <pre><code>GET / HTTP/1.1
 Host: utad.pt</code></pre>
 <p>Por não alterar nada no servidor, a mensagem <code>GET</code> é considerada uma mensagem <strong>inócua</strong>. Esta é uma convenção do protocolo, não uma garantia técnica: um servidor mal concebido pode, tecnicamente, alterar dados como resposta a um <code>GET</code>, mas fazê-lo viola o comportamento esperado por qualquer cliente HTTP, e é considerado má prática.</p>
 <p>O <code>GET</code> pode também ser usado num contexto de formulário HTML, desde que o objetivo não seja alterar informação no servidor, apenas obter um resultado, como numa pesquisa:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/search"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"GET"</span><span class="dt">&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"term"</span><span class="dt">&gt;</span>Procurar:<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"term"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"term"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Procurar!"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/search"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"GET"</span><span class="dt">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"term"</span><span class="dt">&gt;</span>Procurar:<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"term"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"term"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Procurar!"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Ao submeter este formulário com o termo “love”, o <em>browser</em> gera a seguinte mensagem:</p>
 <pre><code>GET /search?term=love HTTP/1.1
 Host: searchengine.com</code></pre>
@@ -372,13 +380,13 @@ Host: searchengine.com</code></pre>
 <section id="sec-07-post" class="level3" data-number="7.3.2">
 <h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-07-post"><span class="header-section-number">7.3.2</span> O Método POST</h3>
 <p>O <code>POST</code> envia dados para o servidor, tipicamente para criar ou alterar um recurso. O seu uso típico é também num formulário HTML:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/account/create"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"POST"</span><span class="dt">&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"firstName"</span><span class="dt">&gt;</span>Nome próprio<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"firstName"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"firstName"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"lastName"</span><span class="dt">&gt;</span>Apelido<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"lastName"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"lastName"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Registar!"</span><span class="dt">/&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/account/create"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"POST"</span><span class="dt">&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"firstName"</span><span class="dt">&gt;</span>Nome próprio<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"firstName"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"firstName"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"lastName"</span><span class="dt">&gt;</span>Apelido<span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"lastName"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"lastName"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Registar!"</span><span class="dt">/&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Que resulta na seguinte mensagem:</p>
 <pre><code>POST /account/create HTTP/1.1
 Host: servername.com
@@ -399,12 +407,41 @@ firstName=Scott&amp;lastName=Allen</code></pre>
 <p>Nem todos os recursos acessíveis através da Web existem, como tal, num ficheiro no servidor. Muitos são criados, ou montados “na hora”, de acordo com o pedido específico do cliente, depois de o servidor recuperar os dados necessários de uma base de dados, tema do <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>. Um pedido a <code>pagina.php?id=5</code>, por exemplo, não corresponde a um ficheiro chamado literalmente assim; corresponde à execução do <em>script</em> <code>pagina.php</code>, que, com base no parâmetro <code>id</code>, gera dinamicamente o conteúdo a devolver.</p>
 </section>
 </section>
-<section id="sec-07-cabecalhos" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="sec-07-cabecalhos"><span class="header-section-number">7.4</span> Cabeçalhos HTTP</h2>
+<section id="sec-07-supervariaveis" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="sec-07-supervariaveis"><span class="header-section-number">7.4</span> Supervariáveis</h2>
+<p>Falta uma peça para fechar o círculo: como é que o <em>script</em> <code>pagina.php</code> do exemplo anterior chega, de facto, ao valor <code>5</code> do parâmetro <code>id</code>? O PHP disponibiliza, para isso, um conjunto de arrays predefinidos, conhecidos como supervariáveis (ou superglobais): variáveis automaticamente inicializadas pelo PHP, disponíveis em qualquer parte de um <em>script</em>, independentemente do contexto ou da função em que se esteja, sem necessidade de as declarar. É através delas que o código PHP tem acesso a tudo o que foi visto neste capítulo até aqui: os parâmetros de um pedido <code>GET</code>, os campos de um formulário <code>POST</code>, os <em>cookies</em>, a sessão. As mais usadas são:</p>
+<ul>
+<li><strong><code>$_GET</code></strong>: contém os dados enviados através da URL, exatamente o parâmetro <code>id</code> de <code>pagina.php?id=5</code>, ou os campos de um formulário submetido com <code>method="GET"</code>, como visto no <a href="#sec-07-get" class="quarto-xref"><span>Secção 7.3.1</span></a>;</li>
+<li><strong><code>$_POST</code></strong>: contém os dados enviados no corpo de um pedido <code>POST</code>, tipicamente por um formulário como o de registo visto no <a href="#sec-07-post" class="quarto-xref"><span>Secção 7.3.2</span></a>;</li>
+<li><strong><code>$_REQUEST</code></strong>: combina os dados de <code>$_GET</code>, <code>$_POST</code> e dos <em>cookies</em> do pedido, útil quando não interessa saber por que método os dados chegaram;</li>
+<li><strong><code>$_SESSION</code></strong>: guarda informação de sessão do utilizador, tema aprofundado mais adiante neste capítulo, no <a href="#sec-07-sessoes" class="quarto-xref"><span>Secção 7.8.2</span></a>;</li>
+<li><strong><code>$_COOKIE</code></strong>: contém os <em>cookies</em> enviados pelo cliente ao servidor, tema aprofundado no <a href="#sec-07-cookies" class="quarto-xref"><span>Secção 7.8.1</span></a>;</li>
+<li><strong><code>$_SERVER</code></strong>: contém informação sobre o servidor e sobre o pedido atual, como o endereço do cliente, o método <code>HTTP</code> usado, ou o caminho do próprio <em>script</em>.</li>
+</ul>
+<p>No sítio da Contraponto, <code>$_GET</code> é exatamente o mecanismo que permite a um leitor filtrar os artigos por categoria, através de um endereço como <code>sitio.pt/artigos.php?categoria=Cultura</code>, substituindo finalmente, por dados reais de um pedido, a variável fixa usada no <a href="cap04.html#sec-04-desafio" class="quarto-xref"><span>Secção 4.3</span></a>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">// sitio.pt/artigos.php?categoria=Cultura</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="cf">if</span> (<span class="kw">isset</span>(<span class="va">$_GET</span>[<span class="st">"categoria"</span>])) {</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="kw">echo</span> <span class="st">"A mostrar artigos da categoria: "</span> <span class="op">.</span> <span class="va">$_GET</span>[<span class="st">"categoria"</span>]<span class="ot">;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>} <span class="cf">else</span> {</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="kw">echo</span> <span class="st">"A mostrar todos os artigos."</span><span class="ot">;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O uso de <code>isset()</code> no exemplo anterior não é acidental: aceder diretamente a uma chave de <code>$_GET</code> ou <code>$_POST</code> que não exista gera um aviso em PHP, pelo que é boa prática verificar sempre se um determinado campo foi de facto enviado antes de o usar, já que nem todos os leitores chegam ao sítio através de um endereço com esse parâmetro.</p>
+<p>O <code>$_POST</code>, por sua vez, é o que recebe o formulário de comentário esboçado no <a href="cap03.html#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>, quando um leitor o submete:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="cf">if</span> (<span class="va">$_SERVER</span>[<span class="st">"REQUEST_METHOD"</span>] <span class="op">===</span> <span class="st">"POST"</span>) {</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="va">$nome_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="va">$texto_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"texto"</span>]<span class="ot">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="kw">echo</span> <span class="st">"Comentário de </span><span class="va">$nome_comentario</span><span class="st"> recebido: </span><span class="va">$texto_comentario</span><span class="st">"</span><span class="ot">;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As supervariáveis são o ponto de ligação entre o <code>HTTP</code>, do lado da rede, e a lógica em PHP, do lado do servidor: a filtragem por categoria e o formulário de comentário só produzem efeito porque os seus dados chegam ao <em>script</em> PHP através de <code>$_GET</code> ou <code>$_POST</code>. O código completo desta demonstração, incluindo o formulário HTML usado para testar <code>$_GET</code> e <code>$_POST</code>, está disponível no <a href="apendiceB.html#sec-apB-condicionais-loops" class="quarto-xref"><span>Secção B.3</span></a>.</p>
+</section>
+<section id="sec-07-cabecalhos" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="sec-07-cabecalhos"><span class="header-section-number">7.5</span> Cabeçalhos HTTP</h2>
 <p>Tanto o pedido como a resposta incluem cabeçalhos, pares de chave e valor com informação adicional sobre a mensagem. O único cabeçalho obrigatório num pedido é o <code>Host</code>, que indica a que servidor o pedido se destina, essencial quando um mesmo endereço IP aloja vários domínios diferentes. Outro cabeçalho comum é o <code>Accept</code>, que indica ao servidor que tipos de conteúdo (formatos <code>MIME</code>) o <em>browser</em> prefere receber na resposta, por ordem de preferência, indicada por um valor de qualidade <code>q</code> entre 0 e 1 (o valor por omissão é 1, a preferência máxima).</p>
 </section>
-<section id="sec-07-resposta" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="sec-07-resposta"><span class="header-section-number">7.5</span> A Resposta do Servidor</h2>
+<section id="sec-07-resposta" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="sec-07-resposta"><span class="header-section-number">7.6</span> A Resposta do Servidor</h2>
 <p>A resposta do servidor segue uma estrutura semelhante à do pedido, mas começa por uma linha de estado, em vez de um método e um URL:</p>
 <pre><code>[versão] [código de estado] [frase de razão]
 [cabeçalhos]
@@ -419,8 +456,8 @@ firstName=Scott&amp;lastName=Allen</code></pre>
 <li><strong>5xx</strong>: erro do lado do servidor, como <code>500 Internal Server Error</code>, que indica uma falha na aplicação do lado do servidor, tipicamente um erro no próprio código PHP.</li>
 </ul>
 </section>
-<section id="sec-07-stateless" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="sec-07-stateless"><span class="header-section-number">7.6</span> HTTP é um Protocolo Stateless</h2>
+<section id="sec-07-stateless" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="sec-07-stateless"><span class="header-section-number">7.7</span> HTTP é um Protocolo Stateless</h2>
 <p>O servidor HTTP não guarda, por si só, qualquer informação sobre o estado de ligações anteriores: depois de responder a um pedido, o servidor “esquece” essa ligação, uma propriedade chamada <em>stateless</em> (sem estado). Isto tem uma consequência prática relevante: uma única página web normalmente exige vários recursos, o próprio HTML, a folha de estilos CSS, o <em>script</em> JavaScript, eventuais imagens, e cada um destes recursos exige um pedido <code>HTTP</code> independente, cada um com o custo de estabelecer a sua própria ligação.</p>
 <p>Para atenuar este custo, os <em>browsers</em> recorrem a diferentes estratégias de gestão de ligações:</p>
 <ul>
@@ -429,13 +466,13 @@ firstName=Scott&amp;lastName=Allen</code></pre>
 <li><strong>Ligações em rajada</strong> (<em>back-to-back</em>): desde o HTTP/1.1, um cliente pode enviar vários pedidos seguidos, sobre a mesma ligação, sem esperar pela resposta a cada um antes de enviar o seguinte, reduzindo ainda mais o tempo total de carregamento de uma página com muitos recursos.</li>
 </ul>
 </section>
-<section id="sec-07-estado" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="sec-07-estado"><span class="header-section-number">7.7</span> Gestão de Estado: Cookies e Sessões</h2>
+<section id="sec-07-estado" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="sec-07-estado"><span class="header-section-number">7.8</span> Gestão de Estado: Cookies e Sessões</h2>
 <p>Apesar de o HTTP ser, por natureza, <em>stateless</em>, o comportamento mais comum na Web é precisamente o oposto: um sítio de comércio eletrónico precisa de saber que artigos um utilizador colocou no seu carrinho, e um sistema de autenticação precisa de reconhecer um utilizador já autenticado, sem lhe pedir a palavra-passe em cada página que visita.</p>
 <p>Antigamente, este seguimento de utilizador podia ser feito com base no endereço IP do cliente: se um pedido vinha de um determinado IP, o servidor assumia tratar-se sempre da mesma sessão. Com a popularização do <code>NAT</code> (<em>Network Address Translation</em>), esta abordagem deixou de funcionar: numa rede doméstica típica, vários dispositivos, cada um com o seu IP privado, partilham um único IP público perante o resto da Internet, pelo que pedidos de utilizadores completamente diferentes podem chegar ao servidor com o mesmo endereço IP de origem.</p>
 <p>Surgiram então duas soluções, complementares, para manter o estado de uma sessão entre pedidos sucessivos: cookies e sessões.</p>
-<section id="sec-07-cookies" class="level3" data-number="7.7.1">
-<h3 data-number="7.7.1" class="anchored" data-anchor-id="sec-07-cookies"><span class="header-section-number">7.7.1</span> Cookies</h3>
+<section id="sec-07-cookies" class="level3" data-number="7.8.1">
+<h3 data-number="7.8.1" class="anchored" data-anchor-id="sec-07-cookies"><span class="header-section-number">7.8.1</span> Cookies</h3>
 <p>Os <em>cookies</em> estão definidos na norma <code>RFC 6265</code>, <em>HTTP State Management Mechanism</em>. Funcionam da seguinte forma: na primeira vez que um utilizador acede a um sítio, o servidor pode enviar-lhe um <em>cookie</em> através de um cabeçalho da resposta <code>HTTP</code>. A partir desse momento, o <em>browser</em> passa a incluir esse <em>cookie</em> em todos os pedidos seguintes a esse mesmo servidor, permitindo-lhe reconhecer o cliente.</p>
 <pre><code>HTTP/1.1 200 OK
 Set-Cookie: GUID=00b38b9a6f949a8df5476999c876789e; domain=.msn.com; path=/</code></pre>
@@ -455,29 +492,39 @@ Set-Cookie: lang=pt-PT; Path=/; Domain=example.com</code></pre>
 <li><strong><code>HttpOnly</code></strong>: o <em>cookie</em> só é trocado entre <em>browser</em> e servidor, sem ficar acessível a código JavaScript do lado do cliente, uma proteção importante contra ataques de <em>XSS</em>, tema do <a href="cap09.html#sec-09-codigo-proprio" class="quarto-xref"><span>Secção 9.1</span></a>.</li>
 </ul>
 <p>Para apagar um <em>cookie</em>, o servidor reenvia-o com uma data de expiração já no passado; a partir desse momento, o <em>browser</em> deixa de o incluir nos pedidos seguintes. Note-se ainda que os <em>cookies</em>, por si só, não constituem autenticação: apenas permitem reconhecer que um pedido vem do mesmo <em>browser</em> que recebeu o <em>cookie</em> anteriormente, e têm uma limitação de 4kB de informação cada. Em PHP, um <em>cookie</em> cria-se com a função <code>setcookie()</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setcookie</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"utilizador"</span><span class="ot">,</span>   <span class="co">// nome</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"joao"</span><span class="ot">,</span>         <span class="co">// valor</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">time</span>() <span class="op">+</span> <span class="dv">3600</span><span class="ot">,</span>  <span class="co">// expira em 1 hora</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"/"</span><span class="ot">,</span>            <span class="co">// path</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">""</span><span class="ot">,</span>             <span class="co">// domain</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">true</span><span class="ot">,</span>           <span class="co">// secure</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">true</span>            <span class="co">// httponly</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">setcookie</span>(</span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="st">"utilizador"</span><span class="ot">,</span>   <span class="co">// nome</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="st">"joao"</span><span class="ot">,</span>         <span class="co">// valor</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="fu">time</span>() <span class="op">+</span> <span class="dv">3600</span><span class="ot">,</span>  <span class="co">// expira em 1 hora</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>    <span class="st">"/"</span><span class="ot">,</span>            <span class="co">// path</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>    <span class="st">""</span><span class="ot">,</span>             <span class="co">// domain</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>    <span class="kw">true</span><span class="ot">,</span>           <span class="co">// secure</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>    <span class="kw">true</span>            <span class="co">// httponly</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="sec-07-sessoes" class="level3" data-number="7.7.2">
-<h3 data-number="7.7.2" class="anchored" data-anchor-id="sec-07-sessoes"><span class="header-section-number">7.7.2</span> Sessões</h3>
+<section id="sec-07-sessoes" class="level3" data-number="7.8.2">
+<h3 data-number="7.8.2" class="anchored" data-anchor-id="sec-07-sessoes"><span class="header-section-number">7.8.2</span> Sessões</h3>
 <p>As sessões vão mais longe do que os <em>cookies</em> simples: em vez de guardar os dados propriamente ditos no cliente, visíveis e alteráveis por quem tiver acesso ao <em>browser</em>, o servidor guarda os dados localmente, associados a um identificador único, e envia apenas esse identificador ao cliente, tipicamente através de um <em>cookie</em>. Em PHP, uma sessão inicia-se com <code>session_start()</code>, chamado no início de todas as páginas que a usem, e os seus dados ficam disponíveis através da supervariável <code>$_SESSION</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="st">"joao"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Noutra página, também com session_start() no início:</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"Bem-vindo, "</span> <span class="op">.</span> <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="st">"joao"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="co">// Noutra página, também com session_start() no início:</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="kw">echo</span> <span class="st">"Bem-vindo, "</span> <span class="op">.</span> <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Cookies e sessões são, assim, a solução de engenharia que permite simular continuidade numa aplicação web construída sobre um protocolo que, por natureza, não guarda memória de nada entre um pedido e o seguinte.</p>
 </section>
+</section>
+<section id="sec-07-desafio" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="sec-07-desafio"><span class="header-section-number">7.9</span> Desafio</h2>
+<p>Com o <code>HTTP</code> e as supervariáveis, o sítio da Contraponto deixa finalmente de depender de dados simulados. O desafio, a partir do ficheiro de arranque do <a href="cap05.html#sec-05-desafio" class="quarto-xref"><span>Secção 5.4</span></a>, é:</p>
+<ol type="1">
+<li>Substituir a variável fixa <code>$categoria_escolhida</code>, usada no <a href="cap04.html#sec-04-desafio" class="quarto-xref"><span>Secção 4.3</span></a> para simular o filtro, pelo valor real de <code>$_GET["categoria"]</code>, com <code>isset()</code> a tratar o caso de nenhuma categoria ser indicada;</li>
+<li>Confirmar, através dos <em>links</em> do menu em <code>header.php</code> (que já apontam para <code>index.php?categoria=Cultura</code>, <code>index.php?categoria=Tecnologia</code>, etc.), que a listagem de artigos muda de facto consoante a categoria escolhida no <em>browser</em>;</li>
+<li>Tratar a submissão do formulário de comentário esboçado no <a href="cap03.html#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>: verificar se <code>$_SERVER["REQUEST_METHOD"]</code> é <code>"POST"</code> e, nesse caso, ler <code>$_POST["nome"]</code> e <code>$_POST["texto"]</code>, mostrando uma mensagem de confirmação ao leitor.</li>
+</ol>
+<p>O ficheiro de arranque está disponível no <a href="apendiceC.html#sec-apC-cap07" class="quarto-xref"><span>Secção C.5</span></a>.</p>
 </section>
 <section id="sec-07-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-07-referencias">Referências</h2>

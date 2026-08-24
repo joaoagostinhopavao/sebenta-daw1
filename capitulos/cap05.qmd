@@ -7,66 +7,87 @@ lang: pt-PT
 
 ## Funções {#sec-05-funcoes}
 
-Uma função é um conjunto de instruções nomeado, a que se dá um nome, que
-pode ser chamado num programa para realizar uma tarefa específica. As
-funções ajudam a organizar e a reutilizar código, melhorando a
-legibilidade e a manutenção do programa: em vez de repetir o mesmo
-bloco de instruções em vários pontos de um *script*, escreve-se uma vez,
-dentro de uma função, e chama-se essa função sempre que necessário. Uma
-função pode aceitar parâmetros (dados de entrada) e devolver um valor
-(dado de saída), ambos opcionais.
+À medida que o sítio da Contraponto cresce, Tiago repara que está a
+escrever o mesmo tipo de código em vários sítios diferentes: sempre que
+mostra um artigo, seja na listagem, seja na página do próprio artigo,
+tem de juntar o autor à categoria no mesmo formato, "por Rita Ferreira,
+em Tecnologia". Copiar essa linha para cada novo sítio onde é precisa
+é, mais cedo ou mais tarde, uma fonte de inconsistências: se um dia
+mudar o formato, tem de se lembrar de o mudar em todos os sítios onde o
+copiou. Uma função resolve exatamente este problema: é um conjunto de
+instruções nomeado, escrito uma única vez, que pode ser chamado sempre
+que for necessário. Uma função pode aceitar parâmetros (dados de
+entrada) e devolver um valor (dado de saída), ambos opcionais:
 
 ```php
 <?php
-function saudacao($nome) {
-    return "Olá, " . $nome . "!";
+function formatarAutoria($autor, $categoria) {
+    return "por " . $autor . ", em " . $categoria;
 }
 
-echo saudacao("Ana");   // Olá, Ana!
-echo saudacao("Rui");   // Olá, Rui!
+echo formatarAutoria("Rita Ferreira", "Tecnologia");
+echo formatarAutoria("Marco Antunes", "Cultura");
 ```
 
 Uma função pode receber vários parâmetros, e pode definir-lhes um valor
-por omissão, usado quando esse parâmetro não é indicado na chamada:
+por omissão, usado quando esse parâmetro não é indicado na chamada. É
+o que Tiago usa para estimar o tempo de leitura de um artigo, uma
+funcionalidade comum em sítios de conteúdos: por omissão assume-se que
+um leitor lê 200 palavras por minuto, mas essa velocidade pode ser
+ajustada quando se souber melhor:
 
 ```php
 <?php
-function somar($a, $b = 10) {
-    return $a + $b;
+function tempoLeitura($palavras, $palavras_por_minuto = 200) {
+    return ceil($palavras / $palavras_por_minuto);
 }
 
-echo somar(5);      // 15, usa o valor por omissão de $b
-echo somar(5, 20);  // 25, o valor indicado sobrepõe-se ao valor por omissão
+echo tempoLeitura(600);       // 3, usa o valor por omissão (200 palavras/minuto)
+echo tempoLeitura(600, 300);  // 2, o valor indicado sobrepõe-se ao por omissão
 ```
 
 Uma função pode ainda não devolver nada, limitando-se a produzir um
-efeito, como mostrar diretamente algo no ecrã:
+efeito, como mostrar diretamente algo no ecrã. É assim que Tiago
+resume, num único sítio, como se mostra o teaser de um artigo na
+listagem do sítio:
 
 ```php
 <?php
-function mostrarLinha($texto) {
-    echo "<p>" . $texto . "</p>";
+function mostrarTeaser($titulo, $resumo) {
+    echo "<h3>" . $titulo . "</h3><p>" . $resumo . "</p>";
 }
 
-mostrarLinha("Primeira linha");
-mostrarLinha("Segunda linha");
+mostrarTeaser(
+    "Entrevista: o futuro do jornalismo local",
+    "Uma conversa sobre os desafios do jornalismo de proximidade."
+);
+mostrarTeaser(
+    "Como nasceu a Contraponto",
+    "A história da revista, contada pela sua diretora."
+);
 ```
 
 Uma variável definida dentro de uma função é local a essa função, e não
 é visível fora dela, mesmo que uma variável com o mesmo nome exista
 também fora da função; a única forma de uma função comunicar um
 resultado para o resto do *script* é através do valor que devolve com
-`return`:
+`return`. Repare-se, no exemplo seguinte, como a formatação do número
+de vistas trata corretamente o caso singular sem que Tiago tenha de se
+lembrar disso em cada sítio onde mostra esse número:
 
 ```php
 <?php
-function calcularIVA($preco) {
-    $taxa = 0.23;              // $taxa só existe dentro desta função
-    return $preco * (1 + $taxa);
+function formatarVistas($vistas) {
+    $sufixo = "vistas";     // $sufixo só existe dentro desta função
+    if ($vistas === 1) {
+        $sufixo = "vista";
+    }
+    return $vistas . " " . $sufixo;
 }
 
-echo calcularIVA(10);  // 12.3
-// echo $taxa;         // erro: $taxa não está definida aqui fora
+echo formatarVistas(850);  // 850 vistas
+echo formatarVistas(1);    // 1 vista
+// echo $sufixo;           // erro: $sufixo não está definida aqui fora
 ```
 
 O código completo da demonstração feita na aula sobre funções está
@@ -74,10 +95,13 @@ disponível no @sec-apB-funcoes.
 
 ## Datas {#sec-05-datas}
 
-O PHP oferece funções dedicadas à manipulação de datas e horas,
-particularmente relevantes numa aplicação web, onde é comum registar
-quando um contacto foi criado, calcular prazos, ou apresentar uma data
-num formato legível. Há três operações comuns sobre datas em PHP.
+O esboço do artigo proposto no @sec-03-projeto inclui uma data de
+publicação, um campo que nenhum dos exemplos anteriores ainda usou.
+Tiago precisa de a mostrar de forma legível ao leitor, de calcular há
+quanto tempo um artigo foi publicado, e de permitir a Rita agendar um
+artigo para uma data futura. O PHP oferece funções dedicadas à
+manipulação de datas e horas para este tipo de necessidade. Há três
+operações comuns.
 
 ### Obter a Data e Hora Atuais {#sec-05-data-atual}
 
@@ -85,7 +109,8 @@ A função `date()` formata a data e hora atuais do servidor de acordo
 com um padrão indicado como parâmetro, usando letras com significados
 predefinidos, como `d` para o dia, `m` para o mês, `Y` para o ano com
 quatro dígitos, `H` para a hora, `i` para os minutos e `s` para os
-segundos:
+segundos. É esta função que Tiago usa para registar a data no momento
+em que um novo artigo é criado:
 
 ```php
 <?php
@@ -98,15 +123,17 @@ echo date("l, d \d\e F");  // segunda-feira, 24 de Agosto (com localização)
 
 Como se vê nos exemplos anteriores, o mesmo instante pode ser apresentado
 de formas muito diferentes, apenas mudando o formato pedido a `date()`,
-o que é útil para adaptar a apresentação de uma data ao contexto: um
-formato compacto para uma tabela, ou um formato por extenso para o
-cabeçalho de um artigo.
+o que é útil para adaptar a apresentação da data de publicação ao
+contexto: um formato compacto na listagem de artigos, ou um formato por
+extenso no cabeçalho da página de um único artigo.
 
 ### Fusos Horários {#sec-05-fusos-horarios}
 
 Por omissão, o PHP usa o fuso horário configurado no servidor, que pode
-não corresponder ao fuso horário dos utilizadores da aplicação. Pode
-definir-se explicitamente o fuso horário a usar com
+não corresponder ao fuso horário dos leitores da Contraponto. Se o
+servidor estiver alojado fora de Portugal, a data de publicação mostrada
+podia sair errada sem que ninguém percebesse porquê; para evitar isso,
+define-se explicitamente o fuso horário a usar com
 `date_default_timezone_set()`, logo no início do *script*:
 
 ```php
@@ -115,20 +142,26 @@ date_default_timezone_set("Europe/Lisbon");
 echo date("H:i:s");  // hora local em Portugal, independentemente do fuso do servidor
 ```
 
-Para operações mais complexas sobre datas, como calcular a diferença
-entre duas datas ou adicionar um intervalo de tempo a uma data, o PHP
-disponibiliza a classe `DateTime`, orientada a objetos:
+Para operações mais complexas sobre datas, o PHP disponibiliza a classe
+`DateTime`, orientada a objetos, já referida no @sec-03-linguagem. Ao
+contrário de `date()`, que recebe tudo como parâmetros de uma função,
+aqui cria-se primeiro um objeto que representa a própria data, com
+`new DateTime(...)`, e chamam-se depois os seus métodos através de uma
+seta (`->`) para o consultar ou modificar, como `->modify()` ou
+`->format()`. É com esta ferramenta que Tiago resolve dois problemas
+concretos da Contraponto: mostrar há quantos dias um artigo foi
+publicado, e agendar a publicação de um artigo para uma data futura:
 
 ```php
 <?php
-$data = new DateTime("2026-08-24");
-$data->modify("+7 days");
-echo $data->format("d/m/Y");  // 31/08/2026
+$data_publicacao = new DateTime("2026-08-20");
+$hoje = new DateTime();
+$diferenca = $data_publicacao->diff($hoje);
+echo $diferenca->days . " dias desde a publicação";  // ex: 4 dias
 
-$inicio = new DateTime("2026-08-01");
-$fim = new DateTime("2026-08-24");
-$diferenca = $inicio->diff($fim);
-echo $diferenca->days . " dias";  // 23 dias
+$data_agendada = new DateTime();
+$data_agendada->modify("+7 days");
+echo "Publicação agendada para " . $data_agendada->format("d/m/Y");
 ```
 
 O código completo da demonstração feita na aula sobre datas, incluindo
@@ -136,11 +169,15 @@ o cálculo de anos bissextos, está disponível no @sec-apB-datas.
 
 ## Manipulação do Fluxo de Páginas: Includes {#sec-05-includes}
 
-À medida que um sítio cresce, torna-se comum que várias páginas partilhem
-os mesmos elementos, como o cabeçalho ou o rodapé. Em vez de repetir esse
-código em cada ficheiro, o PHP permite incluir o conteúdo de um ficheiro
-dentro de outro, através de duas instruções muito semelhantes: `include`
-e `require`.
+O sítio da Contraponto vai ter várias páginas, a listagem de artigos, a
+página de um artigo, o formulário de comentário, mas todas partilham o
+mesmo cabeçalho, com o logótipo e o menu de categorias, e o mesmo
+rodapé, com os direitos de autor. Copiar esse HTML para cada nova
+página seria tão frágil como repetir a lógica de uma função: se Rita
+pedir para mudar o menu, Tiago teria de se lembrar de alterar todas as
+páginas, uma a uma. Em vez de repetir esse código em cada ficheiro, o
+PHP permite incluir o conteúdo de um ficheiro dentro de outro, através
+de duas instruções muito semelhantes: `include` e `require`.
 
 **`include`**: inclui o conteúdo de um ficheiro dentro do ficheiro
 atual. Se o ficheiro indicado não for encontrado, o PHP emite um aviso,
@@ -159,7 +196,8 @@ a executar o resto do *script*.
 require "header.php";
 ?>
 
-<p>Conteúdo específico desta página.</p>
+<h2>Últimos Artigos</h2>
+<p>Aqui aparece a listagem de artigos da Contraponto.</p>
 
 <?php
 require "footer.php";
@@ -182,6 +220,24 @@ mais profundidade no @sec-02-mvc e no @sec-10-porque-separar.
 
 O código completo dos três ficheiros desta demonstração está disponível
 no @sec-apB-includes.
+
+## Desafio {#sec-05-desafio}
+
+Com funções, datas e *includes*, Tiago já tem as peças para organizar o
+código do sítio em vez de o repetir. O desafio, a partir do catálogo
+`$artigos` e do filtro por categoria do @sec-04-desafio, é:
+
+1. Escrever uma função `formatarArtigo($artigo)` que recebe um artigo
+   (um elemento do array `$artigos`) e devolve uma *string* com o
+   título e a autoria formatada, por exemplo `"Título — por Autor"`;
+2. Usar essa função dentro do `foreach` que já percorre `$artigos`, em
+   vez de escrever a formatação diretamente lá dentro;
+3. Criar dois ficheiros, `header.php` e `footer.php`, com um cabeçalho
+   e um rodapé simples do sítio, e usar `require` para os incluir antes
+   e depois da listagem de artigos.
+
+O ficheiro de arranque, com o catálogo e o filtro por categoria já
+prontos, está disponível no @sec-apC-cap05.
 
 ## Referências {#sec-05-referencias .unnumbered}
 

@@ -1,0 +1,285 @@
+---
+title: "Desafios de Programação"
+author: "João Pavão"
+date: 2026-08-24
+lang: pt-PT
+---
+
+## Introdução {#sec-apC-intro}
+
+No final de cada capítulo, uma secção "Desafio" propõe um pequeno
+exercício que aplica, ao projeto da Revista Contraponto apresentado no
+@sec-03-projeto, apenas as ferramentas da linguagem já vistas até esse
+ponto do livro. Este apêndice reúne o ficheiro de arranque de cada um
+desses desafios, com parte do código já escrito e o resto assinalado
+com comentários `TODO`, para que o trabalho de cada aluno seja
+completar e estender o que já está feito, em vez de começar sempre do
+zero.
+
+## Desafio do Capítulo 3: Completar o Catálogo de Artigos {#sec-apC-cap03}
+
+Ficheiro de arranque para o desafio do @sec-03-desafio. Os dois
+primeiros artigos já estão completos, seguindo o mesmo formato usado no
+@sec-03-arrays; os restantes pontos ficam por completar.
+
+```php
+<?php
+// Desafio do Capítulo 3: completar o catálogo de artigos da Contraponto
+//
+// 1. Acrescentar mais artigos a $artigos, até teres pelo menos cinco;
+// 2. Mostrar o título do terceiro artigo do catálogo (índice 2);
+// 3. Construir $categorias a partir de $artigos, sem repetições,
+//    ordenado por ordem alfabética;
+// 4. Verificar, com in_array(), se a categoria "Entrevistas" já está
+//    representada em $categorias.
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+
+    // TODO 1: acrescentar mais artigos aqui, seguindo o mesmo formato
+);
+
+// TODO 2: mostrar o título do terceiro artigo (índice 2)
+
+
+// TODO 3: construir $categorias a partir de $artigos, sem repetições,
+// e ordená-lo por ordem alfabética
+
+
+// TODO 4: verificar com in_array() se "Entrevistas" já está em $categorias
+```
+
+## Desafio do Capítulo 4: Listar e Filtrar Artigos {#sec-apC-cap04}
+
+Ficheiro de arranque para o desafio do @sec-04-desafio. O array
+`$artigos`, aqui já completo com cinco artigos, dá continuidade ao
+catálogo do desafio anterior; o trabalho deste capítulo é percorrê-lo e
+filtrá-lo, não voltar a construí-lo.
+
+```php
+<?php
+// Desafio do Capítulo 4: listar e filtrar os artigos da Contraponto
+//
+// 1. Usar um foreach para percorrer $artigos e mostrar o título de
+//    cada um;
+// 2. Dentro do mesmo foreach, mostrar também o autor, mas apenas dos
+//    artigos cuja categoria seja "Cultura";
+// 3. Usar um if para que o foreach só mostre os artigos da categoria
+//    indicada em $categoria_escolhida.
+
+// Simula, por agora, a categoria escolhida pelo leitor
+$categoria_escolhida = "Tecnologia";
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1, 2 e 3: percorrer $artigos com foreach, mostrando o título de
+// cada um, o autor apenas dos artigos de categoria "Cultura", e
+// filtrando pelo valor de $categoria_escolhida
+```
+
+## Desafio do Capítulo 5: Função de Formatação e Includes {#sec-apC-cap05}
+
+Ficheiro de arranque para o desafio do @sec-05-desafio. O `header.php` e
+o `footer.php` já vêm prontos, com um cabeçalho e um rodapé simples do
+sítio; o `index.php` retoma o catálogo `$artigos` e o filtro por
+categoria do desafio anterior, faltando apenas a função
+`formatarArtigo()` e a sua integração no `foreach`.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Contraponto</h1>
+    <nav>
+        <a href="index.php">Início</a> |
+        <a href="index.php?categoria=Cultura">Cultura</a> |
+        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+        <a href="index.php?categoria=Música">Música</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+</footer>
+```
+
+```php
+<!-- index.php -->
+<?php
+// Desafio do Capítulo 5: função de formatação e includes
+//
+// 1. Escrever uma função formatarArtigo($artigo) que devolva uma
+//    string como "Título — por Autor";
+// 2. Usar essa função dentro do foreach, em vez de formatar o artigo
+//    diretamente lá dentro;
+// 3. Incluir header.php antes da listagem, e footer.php depois.
+
+// Simula, por agora, a categoria escolhida pelo leitor
+$categoria_escolhida = "Tecnologia";
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1: escrever a função formatarArtigo($artigo)
+
+
+// TODO 2 e 3: incluir header.php, percorrer $artigos com foreach
+// chamando formatarArtigo() e respeitando $categoria_escolhida, e
+// incluir footer.php no final
+```
+
+## Desafio do Capítulo 7: Pedidos Reais com GET e POST {#sec-apC-cap07}
+
+Ficheiro de arranque para o desafio do @sec-07-desafio. O `header.php` e
+o `footer.php` mantêm-se iguais aos do capítulo anterior; o `index.php`
+já tem a função `formatarArtigo()` completa, tal como resolvida no
+@sec-05-desafio, faltando apenas substituir a variável fixa pelo valor
+real de `$_GET["categoria"]`, e tratar a submissão do formulário de
+comentário.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Contraponto</h1>
+    <nav>
+        <a href="index.php">Início</a> |
+        <a href="index.php?categoria=Cultura">Cultura</a> |
+        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+        <a href="index.php?categoria=Música">Música</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+</footer>
+```
+
+```php
+<!-- index.php -->
+<?php
+// Desafio do Capítulo 7: pedidos reais com $_GET e $_POST
+//
+// 1. Substituir a linha de $categoria_escolhida pelo valor real de
+//    $_GET["categoria"], com isset() a tratar o caso de não existir
+//    (nesse caso, mostrar todos os artigos);
+// 2. Tratar a submissão do formulário de comentário: verificar se
+//    $_SERVER["REQUEST_METHOD"] é "POST" e, nesse caso, mostrar uma
+//    mensagem de confirmação com $_POST["nome"] e $_POST["texto"].
+
+function formatarArtigo($artigo) {
+    return $artigo["titulo"] . " — por " . $artigo["autor"];
+}
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1: substituir esta linha pela leitura de $_GET["categoria"]
+$categoria_escolhida = "Tecnologia";
+
+require "header.php";
+
+foreach ($artigos as $artigo) {
+    if ($artigo["categoria"] === $categoria_escolhida) {
+        echo "<p>" . formatarArtigo($artigo) . "</p>";
+    }
+}
+
+// TODO 2: tratar a submissão do formulário de comentário, por POST
+
+require "footer.php";
+```
+
+## Referências {#sec-apC-referencias .unnumbered}
+
+::: {#refs}
+:::

@@ -195,7 +195,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -259,6 +259,12 @@ div.csl-indent {
   <div class="sidebar-item-container"> 
   <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
       </ul>
@@ -327,26 +333,26 @@ div.csl-indent {
 <section id="sec-11-laravel" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="sec-11-laravel"><span class="header-section-number">11.2</span> O Laravel</h2>
 <p>O Laravel inclui, entre outros, o <code>Eloquent</code>, o seu ORM nativo, e o <code>Blade</code>, o seu motor de <em>templates</em>. Uma consulta que, com <code>mysqli</code>, exigiria escrever a instrução SQL explicitamente, escreve-se, em Eloquent, como uma chamada de método sobre uma classe que representa a tabela:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Com mysqli (capítulo 8)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT * FROM contactos WHERE id = ?"</span>)<span class="ot">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Com Eloquent (Laravel)</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="va">$contacto</span> <span class="op">=</span> Contacto::find(<span class="va">$id</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">// Com mysqli (capítulo 8)</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT * FROM contactos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">// Com Eloquent (Laravel)</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="va">$contacto</span> <span class="op">=</span> Contacto::find(<span class="va">$id</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O sistema de rotas do Laravel substitui diretamente o <code>switch</code> manual do controlador frontal construído no <a href="cap10.html#sec-10-front-controller" class="quarto-xref"><span>Secção 10.4</span></a>, associando um endereço a uma função de forma declarativa:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// routes/web.php</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">'/contactos'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'listar'</span>])<span class="ot">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Route::post(<span class="st">'/contactos'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'criar'</span>])<span class="ot">;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Route::get(<span class="st">'/contactos/{id}/editar'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'editar'</span>])<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">// routes/web.php</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>Route::get(<span class="st">'/contactos'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'listar'</span>])<span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>Route::post(<span class="st">'/contactos'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'criar'</span>])<span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>Route::get(<span class="st">'/contactos/{id}/editar'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'editar'</span>])<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As migrações substituem, por sua vez, as instruções <code>CREATE TABLE</code> escritas à mão no <a href="cap08.html#sec-08-criar-bd" class="quarto-xref"><span>Secção 8.5</span></a>, descrevendo a estrutura da tabela em código PHP, versionável e partilhável entre toda a equipa:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// database/migrations/create_contactos_table.php</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Schema::create(<span class="st">'contactos'</span><span class="ot">,</span> <span class="kw">function</span> (Blueprint <span class="va">$table</span>) {</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;id()<span class="ot">;</span>                    <span class="co">// equivalente a INT AUTO_INCREMENT PRIMARY KEY</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'nome'</span>)<span class="ot">;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'email'</span>)<span class="ot">;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">$table</span>-&gt;timestamps()<span class="ot">;</span>            <span class="co">// equivalente a criado_em DATETIME DEFAULT CURRENT_TIMESTAMP</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>})<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">// database/migrations/create_contactos_table.php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>Schema::create(<span class="st">'contactos'</span><span class="ot">,</span> <span class="kw">function</span> (Blueprint <span class="va">$table</span>) {</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="va">$table</span>-&gt;id()<span class="ot">;</span>                    <span class="co">// INT AUTO_INCREMENT PRIMARY KEY</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'nome'</span>)<span class="ot">;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'email'</span>)<span class="ot">;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="va">$table</span>-&gt;timestamps()<span class="ot">;</span>            <span class="co">// datas de criação/atualização automáticas</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>})<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O Laravel gera, também, automaticamente, grande parte da estrutura de pastas que foi construída manualmente ao longo desta UC: uma pasta <code>app/Models</code> para as classes do <em>Model</em>, uma pasta <code>resources/views</code> para as <em>Views</em> em Blade, e uma pasta <code>routes</code> para declarar as rotas da aplicação. A curva de aprendizagem inicial de um <em>framework</em> como o Laravel é mais exigente do que escrever PHP simples, porque exige compreender as suas convenções próprias, mas paga-se rapidamente à medida que uma aplicação cresce, evitando que cada equipa reinvente, à sua maneira, os mesmos mecanismos de ligação à base de dados, autenticação ou geração de páginas.</p>
 </section>
 <section id="sec-11-outros" class="level2" data-number="11.3">

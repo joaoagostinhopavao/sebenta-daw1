@@ -194,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -260,6 +260,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -280,6 +286,7 @@ div.csl-indent {
   <li><a href="#sec-05-fusos-horarios" id="toc-sec-05-fusos-horarios" class="nav-link" data-scroll-target="#sec-05-fusos-horarios"><span class="header-section-number">5.2.3</span> Fusos Horários</a></li>
   </ul></li>
   <li><a href="#sec-05-includes" id="toc-sec-05-includes" class="nav-link" data-scroll-target="#sec-05-includes"><span class="header-section-number">5.3</span> Manipulação do Fluxo de Páginas: Includes</a></li>
+  <li><a href="#sec-05-desafio" id="toc-sec-05-desafio" class="nav-link" data-scroll-target="#sec-05-desafio"><span class="header-section-number">5.4</span> Desafio</a></li>
   <li><a href="#sec-05-referencias" id="toc-sec-05-referencias" class="nav-link" data-scroll-target="#sec-05-referencias">Referências</a></li>
   </ul>
 </nav>
@@ -320,92 +327,113 @@ div.csl-indent {
 
 <section id="sec-05-funcoes" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="sec-05-funcoes"><span class="header-section-number">5.1</span> Funções</h2>
-<p>Uma função é um conjunto de instruções nomeado, a que se dá um nome, que pode ser chamado num programa para realizar uma tarefa específica. As funções ajudam a organizar e a reutilizar código, melhorando a legibilidade e a manutenção do programa: em vez de repetir o mesmo bloco de instruções em vários pontos de um <em>script</em>, escreve-se uma vez, dentro de uma função, e chama-se essa função sempre que necessário. Uma função pode aceitar parâmetros (dados de entrada) e devolver um valor (dado de saída), ambos opcionais.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> saudacao(<span class="va">$nome</span>) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Olá, "</span> <span class="op">.</span> <span class="va">$nome</span> <span class="op">.</span> <span class="st">"!"</span><span class="ot">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> saudacao(<span class="st">"Ana"</span>)<span class="ot">;</span>   <span class="co">// Olá, Ana!</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> saudacao(<span class="st">"Rui"</span>)<span class="ot">;</span>   <span class="co">// Olá, Rui!</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Uma função pode receber vários parâmetros, e pode definir-lhes um valor por omissão, usado quando esse parâmetro não é indicado na chamada:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> somar(<span class="va">$a</span><span class="ot">,</span> <span class="va">$b</span> <span class="op">=</span> <span class="dv">10</span>) {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">$a</span> <span class="op">+</span> <span class="va">$b</span><span class="ot">;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> somar(<span class="dv">5</span>)<span class="ot">;</span>      <span class="co">// 15, usa o valor por omissão de $b</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> somar(<span class="dv">5</span><span class="ot">,</span> <span class="dv">20</span>)<span class="ot">;</span>  <span class="co">// 25, o valor indicado sobrepõe-se ao valor por omissão</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Uma função pode ainda não devolver nada, limitando-se a produzir um efeito, como mostrar diretamente algo no ecrã:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> mostrarLinha(<span class="va">$texto</span>) {</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$texto</span> <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>mostrarLinha(<span class="st">"Primeira linha"</span>)<span class="ot">;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mostrarLinha(<span class="st">"Segunda linha"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Uma variável definida dentro de uma função é local a essa função, e não é visível fora dela, mesmo que uma variável com o mesmo nome exista também fora da função; a única forma de uma função comunicar um resultado para o resto do <em>script</em> é através do valor que devolve com <code>return</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> calcularIVA(<span class="va">$preco</span>) {</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">$taxa</span> <span class="op">=</span> <span class="fl">0.23</span><span class="ot">;</span>              <span class="co">// $taxa só existe dentro desta função</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">$preco</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> <span class="va">$taxa</span>)<span class="ot">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> calcularIVA(<span class="dv">10</span>)<span class="ot">;</span>  <span class="co">// 12.3</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">// echo $taxa;         // erro: $taxa não está definida aqui fora</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>À medida que o sítio da Contraponto cresce, Tiago repara que está a escrever o mesmo tipo de código em vários sítios diferentes: sempre que mostra um artigo, seja na listagem, seja na página do próprio artigo, tem de juntar o autor à categoria no mesmo formato, “por Rita Ferreira, em Tecnologia”. Copiar essa linha para cada novo sítio onde é precisa é, mais cedo ou mais tarde, uma fonte de inconsistências: se um dia mudar o formato, tem de se lembrar de o mudar em todos os sítios onde o copiou. Uma função resolve exatamente este problema: é um conjunto de instruções nomeado, escrito uma única vez, que pode ser chamado sempre que for necessário. Uma função pode aceitar parâmetros (dados de entrada) e devolver um valor (dado de saída), ambos opcionais:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">function</span> formatarAutoria(<span class="va">$autor</span><span class="ot">,</span> <span class="va">$categoria</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="cf">return</span> <span class="st">"por "</span> <span class="op">.</span> <span class="va">$autor</span> <span class="op">.</span> <span class="st">", em "</span> <span class="op">.</span> <span class="va">$categoria</span><span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">echo</span> formatarAutoria(<span class="st">"Rita Ferreira"</span><span class="ot">,</span> <span class="st">"Tecnologia"</span>)<span class="ot">;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">echo</span> formatarAutoria(<span class="st">"Marco Antunes"</span><span class="ot">,</span> <span class="st">"Cultura"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Uma função pode receber vários parâmetros, e pode definir-lhes um valor por omissão, usado quando esse parâmetro não é indicado na chamada. É o que Tiago usa para estimar o tempo de leitura de um artigo, uma funcionalidade comum em sítios de conteúdos: por omissão assume-se que um leitor lê 200 palavras por minuto, mas essa velocidade pode ser ajustada quando se souber melhor:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">function</span> tempoLeitura(<span class="va">$palavras</span><span class="ot">,</span> <span class="va">$palavras_por_minuto</span> <span class="op">=</span> <span class="dv">200</span>) {</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="cf">return</span> <span class="fu">ceil</span>(<span class="va">$palavras</span> <span class="op">/</span> <span class="va">$palavras_por_minuto</span>)<span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">echo</span> tempoLeitura(<span class="dv">600</span>)<span class="ot">;</span>       <span class="co">// 3, usa o valor por omissão (200 palavras/minuto)</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">echo</span> tempoLeitura(<span class="dv">600</span><span class="ot">,</span> <span class="dv">300</span>)<span class="ot">;</span>  <span class="co">// 2, o valor indicado sobrepõe-se ao por omissão</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Uma função pode ainda não devolver nada, limitando-se a produzir um efeito, como mostrar diretamente algo no ecrã. É assim que Tiago resume, num único sítio, como se mostra o teaser de um artigo na listagem do sítio:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">function</span> mostrarTeaser(<span class="va">$titulo</span><span class="ot">,</span> <span class="va">$resumo</span>) {</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">echo</span> <span class="st">"&lt;h3&gt;"</span> <span class="op">.</span> <span class="va">$titulo</span> <span class="op">.</span> <span class="st">"&lt;/h3&gt;&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$resumo</span> <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>mostrarTeaser(</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="st">"Uma conversa sobre os desafios do jornalismo de proximidade."</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>)<span class="ot">;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>mostrarTeaser(</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>    <span class="st">"A história da revista, contada pela sua diretora."</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Uma variável definida dentro de uma função é local a essa função, e não é visível fora dela, mesmo que uma variável com o mesmo nome exista também fora da função; a única forma de uma função comunicar um resultado para o resto do <em>script</em> é através do valor que devolve com <code>return</code>. Repare-se, no exemplo seguinte, como a formatação do número de vistas trata corretamente o caso singular sem que Tiago tenha de se lembrar disso em cada sítio onde mostra esse número:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">function</span> formatarVistas(<span class="va">$vistas</span>) {</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="va">$sufixo</span> <span class="op">=</span> <span class="st">"vistas"</span><span class="ot">;</span>     <span class="co">// $sufixo só existe dentro desta função</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="cf">if</span> (<span class="va">$vistas</span> <span class="op">===</span> <span class="dv">1</span>) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="va">$sufixo</span> <span class="op">=</span> <span class="st">"vista"</span><span class="ot">;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>    }</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="cf">return</span> <span class="va">$vistas</span> <span class="op">.</span> <span class="st">" "</span> <span class="op">.</span> <span class="va">$sufixo</span><span class="ot">;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="kw">echo</span> formatarVistas(<span class="dv">850</span>)<span class="ot">;</span>  <span class="co">// 850 vistas</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="kw">echo</span> formatarVistas(<span class="dv">1</span>)<span class="ot">;</span>    <span class="co">// 1 vista</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">// echo $sufixo;           // erro: $sufixo não está definida aqui fora</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O código completo da demonstração feita na aula sobre funções está disponível no <a href="apendiceB.html#sec-apB-funcoes" class="quarto-xref"><span>Secção B.4</span></a>.</p>
 </section>
 <section id="sec-05-datas" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="sec-05-datas"><span class="header-section-number">5.2</span> Datas</h2>
-<p>O PHP oferece funções dedicadas à manipulação de datas e horas, particularmente relevantes numa aplicação web, onde é comum registar quando um contacto foi criado, calcular prazos, ou apresentar uma data num formato legível. Há três operações comuns sobre datas em PHP.</p>
+<p>O esboço do artigo proposto no <a href="cap03.html#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a> inclui uma data de publicação, um campo que nenhum dos exemplos anteriores ainda usou. Tiago precisa de a mostrar de forma legível ao leitor, de calcular há quanto tempo um artigo foi publicado, e de permitir a Rita agendar um artigo para uma data futura. O PHP oferece funções dedicadas à manipulação de datas e horas para este tipo de necessidade. Há três operações comuns.</p>
 <section id="sec-05-data-atual" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="sec-05-data-atual"><span class="header-section-number">5.2.1</span> Obter a Data e Hora Atuais</h3>
-<p>A função <code>date()</code> formata a data e hora atuais do servidor de acordo com um padrão indicado como parâmetro, usando letras com significados predefinidos, como <code>d</code> para o dia, <code>m</code> para o mês, <code>Y</code> para o ano com quatro dígitos, <code>H</code> para a hora, <code>i</code> para os minutos e <code>s</code> para os segundos:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"d/m/Y"</span>)<span class="ot">;</span>        <span class="co">// 24/08/2026</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"d/m/Y H:i:s"</span>)<span class="ot">;</span>  <span class="co">// 24/08/2026 15:42:07</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"l, d \d</span><span class="sc">\e</span><span class="st"> F"</span>)<span class="ot">;</span>  <span class="co">// segunda-feira, 24 de Agosto (com localização)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A função <code>date()</code> formata a data e hora atuais do servidor de acordo com um padrão indicado como parâmetro, usando letras com significados predefinidos, como <code>d</code> para o dia, <code>m</code> para o mês, <code>Y</code> para o ano com quatro dígitos, <code>H</code> para a hora, <code>i</code> para os minutos e <code>s</code> para os segundos. É esta função que Tiago usa para registar a data no momento em que um novo artigo é criado:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"d/m/Y"</span>)<span class="ot">;</span>        <span class="co">// 24/08/2026</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"d/m/Y H:i:s"</span>)<span class="ot">;</span>  <span class="co">// 24/08/2026 15:42:07</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"l, d \d</span><span class="sc">\e</span><span class="st"> F"</span>)<span class="ot">;</span>  <span class="co">// segunda-feira, 24 de Agosto (com localização)</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-05-formatacao-datas" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="sec-05-formatacao-datas"><span class="header-section-number">5.2.2</span> Formatação Personalizada</h3>
-<p>Como se vê nos exemplos anteriores, o mesmo instante pode ser apresentado de formas muito diferentes, apenas mudando o formato pedido a <code>date()</code>, o que é útil para adaptar a apresentação de uma data ao contexto: um formato compacto para uma tabela, ou um formato por extenso para o cabeçalho de um artigo.</p>
+<p>Como se vê nos exemplos anteriores, o mesmo instante pode ser apresentado de formas muito diferentes, apenas mudando o formato pedido a <code>date()</code>, o que é útil para adaptar a apresentação da data de publicação ao contexto: um formato compacto na listagem de artigos, ou um formato por extenso no cabeçalho da página de um único artigo.</p>
 </section>
 <section id="sec-05-fusos-horarios" class="level3" data-number="5.2.3">
 <h3 data-number="5.2.3" class="anchored" data-anchor-id="sec-05-fusos-horarios"><span class="header-section-number">5.2.3</span> Fusos Horários</h3>
-<p>Por omissão, o PHP usa o fuso horário configurado no servidor, que pode não corresponder ao fuso horário dos utilizadores da aplicação. Pode definir-se explicitamente o fuso horário a usar com <code>date_default_timezone_set()</code>, logo no início do <em>script</em>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">date_default_timezone_set</span>(<span class="st">"Europe/Lisbon"</span>)<span class="ot">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"H:i:s"</span>)<span class="ot">;</span>  <span class="co">// hora local em Portugal, independentemente do fuso do servidor</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Para operações mais complexas sobre datas, como calcular a diferença entre duas datas ou adicionar um intervalo de tempo a uma data, o PHP disponibiliza a classe <code>DateTime</code>, orientada a objetos:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">$data</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>(<span class="st">"2026-08-24"</span>)<span class="ot">;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">$data</span>-&gt;modify(<span class="st">"+7 days"</span>)<span class="ot">;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$data</span>-&gt;format(<span class="st">"d/m/Y"</span>)<span class="ot">;</span>  <span class="co">// 31/08/2026</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="va">$inicio</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>(<span class="st">"2026-08-01"</span>)<span class="ot">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="va">$fim</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>(<span class="st">"2026-08-24"</span>)<span class="ot">;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="va">$diferenca</span> <span class="op">=</span> <span class="va">$inicio</span>-&gt;diff(<span class="va">$fim</span>)<span class="ot">;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$diferenca</span>-&gt;days <span class="op">.</span> <span class="st">" dias"</span><span class="ot">;</span>  <span class="co">// 23 dias</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Por omissão, o PHP usa o fuso horário configurado no servidor, que pode não corresponder ao fuso horário dos leitores da Contraponto. Se o servidor estiver alojado fora de Portugal, a data de publicação mostrada podia sair errada sem que ninguém percebesse porquê; para evitar isso, define-se explicitamente o fuso horário a usar com <code>date_default_timezone_set()</code>, logo no início do <em>script</em>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">date_default_timezone_set</span>(<span class="st">"Europe/Lisbon"</span>)<span class="ot">;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"H:i:s"</span>)<span class="ot">;</span>  <span class="co">// hora local em Portugal, independentemente do fuso do servidor</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Para operações mais complexas sobre datas, o PHP disponibiliza a classe <code>DateTime</code>, orientada a objetos, já referida no <a href="cap03.html#sec-03-linguagem" class="quarto-xref"><span>Secção 3.4</span></a>. Ao contrário de <code>date()</code>, que recebe tudo como parâmetros de uma função, aqui cria-se primeiro um objeto que representa a própria data, com <code>new DateTime(...)</code>, e chamam-se depois os seus métodos através de uma seta (<code>-&gt;</code>) para o consultar ou modificar, como <code>-&gt;modify()</code> ou <code>-&gt;format()</code>. É com esta ferramenta que Tiago resolve dois problemas concretos da Contraponto: mostrar há quantos dias um artigo foi publicado, e agendar a publicação de um artigo para uma data futura:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$data_publicacao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>(<span class="st">"2026-08-20"</span>)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="va">$hoje</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="va">$diferenca</span> <span class="op">=</span> <span class="va">$data_publicacao</span>-&gt;diff(<span class="va">$hoje</span>)<span class="ot">;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="kw">echo</span> <span class="va">$diferenca</span>-&gt;days <span class="op">.</span> <span class="st">" dias desde a publicação"</span><span class="ot">;</span>  <span class="co">// ex: 4 dias</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="va">$data_agendada</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="va">$data_agendada</span>-&gt;modify(<span class="st">"+7 days"</span>)<span class="ot">;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="kw">echo</span> <span class="st">"Publicação agendada para "</span> <span class="op">.</span> <span class="va">$data_agendada</span>-&gt;format(<span class="st">"d/m/Y"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O código completo da demonstração feita na aula sobre datas, incluindo o cálculo de anos bissextos, está disponível no <a href="apendiceB.html#sec-apB-datas" class="quarto-xref"><span>Secção B.5</span></a>.</p>
 </section>
 </section>
 <section id="sec-05-includes" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="sec-05-includes"><span class="header-section-number">5.3</span> Manipulação do Fluxo de Páginas: Includes</h2>
-<p>À medida que um sítio cresce, torna-se comum que várias páginas partilhem os mesmos elementos, como o cabeçalho ou o rodapé. Em vez de repetir esse código em cada ficheiro, o PHP permite incluir o conteúdo de um ficheiro dentro de outro, através de duas instruções muito semelhantes: <code>include</code> e <code>require</code>.</p>
+<p>O sítio da Contraponto vai ter várias páginas, a listagem de artigos, a página de um artigo, o formulário de comentário, mas todas partilham o mesmo cabeçalho, com o logótipo e o menu de categorias, e o mesmo rodapé, com os direitos de autor. Copiar esse HTML para cada nova página seria tão frágil como repetir a lógica de uma função: se Rita pedir para mudar o menu, Tiago teria de se lembrar de alterar todas as páginas, uma a uma. Em vez de repetir esse código em cada ficheiro, o PHP permite incluir o conteúdo de um ficheiro dentro de outro, através de duas instruções muito semelhantes: <code>include</code> e <code>require</code>.</p>
 <p><strong><code>include</code></strong>: inclui o conteúdo de um ficheiro dentro do ficheiro atual. Se o ficheiro indicado não for encontrado, o PHP emite um aviso, mas o <em>script</em> continua a ser executado. É útil quando se quer incluir ficheiros opcionais, não críticos para o funcionamento do <em>script</em>.</p>
 <p><strong><code>require</code></strong>: funciona de forma semelhante ao <code>include</code>, mas é usado quando o ficheiro incluído é essencial para o funcionamento do <em>script</em>. Se o ficheiro indicado não for encontrado, o PHP emite um erro fatal e interrompe imediatamente a execução. É útil quando se quer garantir que um ficheiro fundamental está disponível antes de continuar a executar o resto do <em>script</em>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">?&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>p<span class="op">&gt;</span>Conteúdo específico desta página<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="kw">?&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">?&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="op">&lt;</span>h2<span class="op">&gt;</span>Últimos Artigos<span class="op">&lt;/</span>h2<span class="op">&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="op">&lt;</span>p<span class="op">&gt;</span>Aqui aparece a listagem de artigos da Contraponto<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="kw">?&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Como o cabeçalho e o rodapé costumam ser essenciais à estrutura visual de uma página, sem os quais o resultado ficaria incompleto ou quebrado, é comum preferir-se <code>require</code> a <code>include</code> para os incluir. Existem ainda as variantes <code>include_once</code> e <code>require_once</code>, que garantem que um mesmo ficheiro só é incluído uma vez, mesmo que a instrução apareça, direta ou indiretamente, mais do que uma vez no fluxo de execução, evitando erros como a redefinição de uma mesma função.</p>
 <p>Este padrão, ficheiros <code>header.php</code> e <code>footer.php</code> incluídos em cada página do sítio, é o primeiro passo prático para pensar numa aplicação web como um conjunto de componentes reutilizáveis, em vez de páginas HTML independentes e desligadas umas das outras, uma ideia retomada com mais profundidade no <a href="cap02.html#sec-02-mvc" class="quarto-xref"><span>Secção 2.1.2</span></a> e no <a href="cap10.html#sec-10-porque-separar" class="quarto-xref"><span>Secção 10.1</span></a>.</p>
 <p>O código completo dos três ficheiros desta demonstração está disponível no <a href="apendiceB.html#sec-apB-includes" class="quarto-xref"><span>Secção B.6</span></a>.</p>
+</section>
+<section id="sec-05-desafio" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="sec-05-desafio"><span class="header-section-number">5.4</span> Desafio</h2>
+<p>Com funções, datas e <em>includes</em>, Tiago já tem as peças para organizar o código do sítio em vez de o repetir. O desafio, a partir do catálogo <code>$artigos</code> e do filtro por categoria do <a href="cap04.html#sec-04-desafio" class="quarto-xref"><span>Secção 4.3</span></a>, é:</p>
+<ol type="1">
+<li>Escrever uma função <code>formatarArtigo($artigo)</code> que recebe um artigo (um elemento do array <code>$artigos</code>) e devolve uma <em>string</em> com o título e a autoria formatada, por exemplo <code>"Título — por Autor"</code>;</li>
+<li>Usar essa função dentro do <code>foreach</code> que já percorre <code>$artigos</code>, em vez de escrever a formatação diretamente lá dentro;</li>
+<li>Criar dois ficheiros, <code>header.php</code> e <code>footer.php</code>, com um cabeçalho e um rodapé simples do sítio, e usar <code>require</code> para os incluir antes e depois da listagem de artigos.</li>
+</ol>
+<p>O ficheiro de arranque, com o catálogo e o filtro por categoria já prontos, está disponível no <a href="apendiceC.html#sec-apC-cap05" class="quarto-xref"><span>Secção C.4</span></a>.</p>
 </section>
 <section id="sec-05-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-05-referencias">Referências</h2>
@@ -980,8 +1008,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Condicionais, Loops e Supervariáveis">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span>
+      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Condicionais e Ciclos">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

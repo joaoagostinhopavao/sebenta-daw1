@@ -77,7 +77,7 @@ echo "<p>Terceiro sedan: " . $carros["sedans"][2] . "</p>";
 ## Demo: Condicionais, Loops e Supervariáveis {#sec-apB-condicionais-loops}
 
 Demonstração usada no @sec-04-condicionais, no @sec-04-ciclos e no
-@sec-04-supervariaveis. A parte de `$_POST` requer um pequeno formulário
+@sec-07-supervariaveis. A parte de `$_POST` requer um pequeno formulário
 HTML na mesma página, submetido para si próprio (`action=""`).
 
 ```php

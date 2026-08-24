@@ -145,12 +145,23 @@ body {
   line-height: 1.75;
 }
 
-/* Blocos de código */
-pre.sourceCode {
+/* Blocos de código
+   A decoração (fundo, borda, padding) vai no div.sourceCode exterior,
+   não no pre.sourceCode interior: o Quarto posiciona os números de
+   linha com deslocamentos negativos relativos ao próprio <pre>, e um
+   padding/borda aplicado ali por cima fazia os números sobrepor-se à
+   borda verde. */
+div.sourceCode {
   border-left: 3px solid #0e8a4d;
   background-color: #eefaf3;
   padding: 1rem;
   border-radius: 4px;
+}
+
+pre.sourceCode {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 
 /* ============================================================

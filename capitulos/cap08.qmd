@@ -171,7 +171,9 @@ quatro comandos SQL.
 
 ```php
 <?php
-$conexao->query("INSERT INTO contactos (nome, email) VALUES ('Ana Silva', 'ana@exemplo.pt')");
+$conexao->query(
+    "INSERT INTO contactos (nome, email) VALUES ('Ana Silva', 'ana@exemplo.pt')"
+);
 ```
 
 **Ler** dados existentes (*Read*), com `SELECT`. A propriedade

@@ -194,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -258,6 +258,12 @@ div.csl-indent {
   <div class="sidebar-item-container"> 
   <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
       </ul>
@@ -334,9 +340,9 @@ div.csl-indent {
 <li><strong>DCL</strong> (<em>Data Control Language</em>): permissões e controlo de acesso, com os comandos <code>GRANT</code> e <code>REVOKE</code>.</li>
 </ul>
 <p>Um comando SQL segue uma estrutura previsível: uma palavra-chave (<code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>DELETE</code>), cláusulas que refinam a instrução (<code>FROM</code>, <code>WHERE</code>, <code>ORDER BY</code>, <code>VALUES</code>), expressões e condições (campos, valores e comparações, como <code>idade &gt; 18</code>), e um ponto e vírgula final:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> firstname, lastname <span class="kw">FROM</span> MyGuests <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">3</span>;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">SELECT</span> firstname, lastname <span class="kw">FROM</span> MyGuests <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">3</span>;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Um comando de atualização junta estas mesmas partes de forma um pouco diferente, comando mais tabela alvo, a ação de alterar valores, e uma condição que filtra que registos são afetados:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> Employees <span class="kw">SET</span> Salary <span class="op">=</span> Salary <span class="op">*</span> <span class="fl">1.02</span> <span class="kw">WHERE</span> Country <span class="op">=</span> <span class="st">'USA'</span>;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">UPDATE</span> Employees <span class="kw">SET</span> Salary <span class="op">=</span> Salary <span class="op">*</span> <span class="fl">1.02</span> <span class="kw">WHERE</span> Country <span class="op">=</span> <span class="st">'USA'</span>;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-08-arquitetura-3camadas" class="level2" data-number="8.3">
 <h2 data-number="8.3" class="anchored" data-anchor-id="sec-08-arquitetura-3camadas"><span class="header-section-number">8.3</span> A Arquitetura em Três Camadas e o Papel do PHP</h2>
@@ -355,35 +361,35 @@ div.csl-indent {
 <h2 data-number="8.4" class="anchored" data-anchor-id="sec-08-ligacao"><span class="header-section-number">8.4</span> Ligar o PHP ao MySQL</h2>
 <p>O PHP liga-se a uma base de dados <code>MySQL</code> através da extensão <code>mysqli</code> (<em>MySQL Improved</em>), que suporta a ligação ao MySQL, permite executar consultas, <em>prepared statements</em> e transações, e pode ser usada em dois estilos: procedural ou orientado a objetos.</p>
 <p>No estilo procedural, <code>mysqli_connect()</code> cria a ligação e devolve <code>false</code> caso esta falhe, uma versão simples e direta, adequada a quem está a começar:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="fu">mysqli_connect</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"nome_bd"</span>)<span class="ot">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="va">$conexao</span>) {</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="fu">mysqli_connect_error</span>())<span class="ot">;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="fu">mysqli_connect</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"nome_bd"</span>)<span class="ot">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="cf">if</span> (<span class="op">!</span><span class="va">$conexao</span>) {</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="fu">mysqli_connect_error</span>())<span class="ot">;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>No estilo orientado a objetos, <code>new mysqli()</code> cria um objeto de ligação, e os erros ficam expostos na propriedade <code>connect_error</code> desse objeto. É o estilo mais moderno, e o mais usado na prática:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"nome_bd"</span>)<span class="ot">;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"nome_bd"</span>)<span class="ot">;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-08-criar-bd" class="level2" data-number="8.5">
 <h2 data-number="8.5" class="anchored" data-anchor-id="sec-08-criar-bd"><span class="header-section-number">8.5</span> Criar Bases de Dados e Tabelas</h2>
 <p>Criar a base de dados e criar as tabelas são dois passos distintos: primeiro cria-se o “contentor” (a base de dados), só depois as estruturas internas (as tabelas). Tal como qualquer outra instrução SQL, ambos podem ser feitos a partir do PHP, através do método <code>query()</code>, que envia o comando SQL ao MySQL e devolve sucesso ou erro:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"CREATE DATABASE IF NOT EXISTS loja"</span>)<span class="ot">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;select_db(<span class="st">"loja"</span>)<span class="ot">;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE IF NOT EXISTS contactos (</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">        id INT AUTO_INCREMENT PRIMARY KEY,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">        nome VARCHAR(100) NOT NULL,</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">        email VARCHAR(100) NOT NULL,</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"CREATE DATABASE IF NOT EXISTS loja"</span>)<span class="ot">;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="va">$conexao</span>-&gt;select_db(<span class="st">"loja"</span>)<span class="ot">;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="st">    CREATE TABLE IF NOT EXISTS contactos (</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="st">        id INT AUTO_INCREMENT PRIMARY KEY,</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="st">        nome VARCHAR(100) NOT NULL,</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="st">        email VARCHAR(100) NOT NULL,</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="st">        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="st">    )</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="st">"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Vale a pena perceber o significado de cada parte desta definição de tabela:</p>
 <ul>
 <li><strong><code>PRIMARY KEY</code></strong> (PK): identifica, de forma inequívoca, cada registo da tabela; nenhuma tabela relacional bem desenhada deve existir sem uma;</li>
@@ -397,36 +403,38 @@ div.csl-indent {
 <h2 data-number="8.6" class="anchored" data-anchor-id="sec-08-crud-sql"><span class="header-section-number">8.6</span> Operações Fundamentais: CRUD em SQL</h2>
 <p>As quatro operações fundamentais sobre dados persistentes, <code>CRUD</code> (<em>Create</em>, <em>Read</em>, <em>Update</em>, <em>Delete</em>), correspondem diretamente a quatro comandos SQL.</p>
 <p><strong>Inserir</strong> um novo registo (<em>Create</em>), com <code>INSERT</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"INSERT INTO contactos (nome, email) VALUES ('Ana Silva', 'ana@exemplo.pt')"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Ler</strong> dados existentes (<em>Read</em>), com <code>SELECT</code>. A propriedade <code>num_rows</code> do resultado indica quantas linhas foram devolvidas, e o método <code>fetch_assoc()</code> devolve cada linha como um array associativo, tal como visto no <a href="cap03.html#sec-03-arrays-multidimensionais" class="quarto-xref"><span>Secção 3.6.3</span></a>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM contactos"</span>)<span class="ot">;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$resultado</span>-&gt;num_rows <span class="op">.</span> <span class="st">" contactos encontrados"</span><span class="ot">;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"email"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="va">$conexao</span>-&gt;query(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="st">"INSERT INTO contactos (nome, email) VALUES ('Ana Silva', 'ana@exemplo.pt')"</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Ler</strong> dados existentes (<em>Read</em>), com <code>SELECT</code>. A propriedade <code>num_rows</code> do resultado indica quantas linhas foram devolvidas, e o método <code>fetch_assoc()</code> devolve cada linha como um array associativo, tal como visto no <a href="cap03.html#sec-03-arrays-multidimensionais" class="quarto-xref"><span>Secção 3.8.3</span></a>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM contactos"</span>)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">echo</span> <span class="va">$resultado</span>-&gt;num_rows <span class="op">.</span> <span class="st">" contactos encontrados"</span><span class="ot">;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb7-6"><a href="#cb7-6"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"email"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Esta última construção, um <code>while</code> a percorrer os resultados linha a linha, é também a forma habitual de gerar uma tabela HTML dinamicamente a partir dos dados devolvidos pela base de dados, transformando cada linha da base de dados numa linha <code>&lt;tr&gt;</code> da página.</p>
 <p><strong>Atualizar</strong> (<em>Update</em>) e <strong>apagar</strong> (<em>Delete</em>) registos existentes, com <code>UPDATE</code> e <code>DELETE</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"UPDATE contactos SET email = 'novo@exemplo.pt' WHERE id = 3"</span>)<span class="ot">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM contactos WHERE id = 3"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"UPDATE contactos SET email = 'novo@exemplo.pt' WHERE id = 3"</span>)<span class="ot">;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM contactos WHERE id = 3"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Tanto o <code>UPDATE</code> como o <code>DELETE</code> <strong>exigem sempre uma cláusula <code>WHERE</code></strong>; esquecê-la é um dos erros mais graves e mais comuns que se pode cometer com uma base de dados, porque, sem uma condição que filtre os registos afetados, a instrução aplica-se a <strong>todas</strong> as linhas da tabela.</p>
 </section>
 <section id="sec-08-prepared-statements" class="level2" data-number="8.7">
 <h2 data-number="8.7" class="anchored" data-anchor-id="sec-08-prepared-statements"><span class="header-section-number">8.7</span> Prepared Statements</h2>
 <p>Todos os exemplos acima, com valores fixos escritos diretamente no código, servem para perceber o fluxo básico, mas não são adequados a uma aplicação real. Construir uma instrução SQL concatenando diretamente valores vindos do utilizador, como os de <code>$_POST</code>, tem vários problemas: mistura dados com código, é vulnerável a um ataque de injeção de SQL (tema aprofundado no <a href="cap09.html#sec-09-codigo-proprio" class="quarto-xref"><span>Secção 9.1</span></a>), é mais propenso a erros de sintaxe, e é difícil de manter.</p>
 <p>A alternativa correta é usar <em>prepared statements</em>, que separam a instrução SQL, fixa, dos valores, que só são inseridos depois. Funcionam em duas fases: o servidor prepara a instrução, com pontos de interrogação (<code>?</code>) no lugar dos valores, e só depois o PHP envia os dados, de forma separada e segura. As vantagens são proteção contra injeção de SQL, melhor desempenho quando a mesma instrução é executada várias vezes, e um código mais limpo:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"INSERT INTO contactos (nome, email) VALUES (?, ?)"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"ss"</span><span class="ot">,</span> <span class="va">$nome</span><span class="ot">,</span> <span class="va">$email</span>)<span class="ot">;</span>  <span class="co">// "ss" = dois parâmetros string</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="va">$nome</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="va">$email</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"email"</span>]<span class="ot">;</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">"INSERT INTO contactos (nome, email) VALUES (?, ?)"</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>)<span class="ot">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"ss"</span><span class="ot">,</span> <span class="va">$nome</span><span class="ot">,</span> <span class="va">$email</span>)<span class="ot">;</span>  <span class="co">// "ss" = dois parâmetros string</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="va">$nome</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">;</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="va">$email</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"email"</span>]<span class="ot">;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O <code>bind_param()</code> precisa de saber o tipo de cada valor associado, indicado por uma letra:</p>
 <ul>
 <li><strong><code>s</code></strong>: <em>string</em>;</li>
@@ -435,16 +443,16 @@ div.csl-indent {
 <li><strong><code>b</code></strong>: <em>blob</em> (dados binários, como imagens ou ficheiros).</li>
 </ul>
 <p>Para consultar dados com <em>prepared statements</em>, o padrão é semelhante, terminando com <code>get_result()</code> para obter as linhas devolvidas:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT nome, email FROM contactos WHERE id = ?"</span>)<span class="ot">;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span>  <span class="co">// "i" = um parâmetro integer</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"email"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT nome, email FROM contactos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span>  <span class="co">// "i" = um parâmetro integer</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"email"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O mesmo princípio aplica-se ao <code>UPDATE</code> e ao <code>DELETE</code>: usar <em>prepared statements</em> torna-os seguros, porque os valores nunca são interpretados como parte do próprio comando SQL, o que evita tanto a injeção de SQL como alterações acidentais.</p>
 </section>
 <section id="sec-08-erros-boas-praticas" class="level2" data-number="8.8">
@@ -456,9 +464,9 @@ div.csl-indent {
 <li><strong>Erros de execução no PHP</strong>: usar variáveis não definidas, ou chamar <code>fetch_assoc()</code> sobre um resultado vazio.</li>
 </ul>
 <p>Durante o desenvolvimento, é essencial ativar a exibição de todos os erros e avisos do PHP, algo que nunca deve ficar ativo num ambiente de produção, por razões de segurança:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O <code>mysqli</code> explica sempre o que falhou, bastando ler a informação correta: <code>connect_error</code> mostra problemas na própria ligação, e <code>error</code> mostra problemas vindos do MySQL relativos a uma consulta específica. Algumas boas práticas gerais, a manter sempre presentes ao trabalhar com bases de dados em PHP:</p>
 <ul>
 <li>Usar <em>prepared statements</em> sempre que houver dados vindos do utilizador;</li>

@@ -42,6 +42,7 @@ book:
   appendices:
     - capitulos/apendiceA.qmd
     - capitulos/apendiceB.qmd
+    - capitulos/apendiceC.qmd
 
   sidebar:
     search: true
@@ -63,6 +64,7 @@ format:
     highlight-style: github
     code-fold: false
     code-tools: false
+    code-line-numbers: true
     fig-align: center
 
   pdf:
@@ -73,6 +75,7 @@ format:
     toc: true
     toc-depth: 3
     number-sections: true
+    code-line-numbers: true
     colorlinks: true
     linkcolor: "NavyBlue"
     urlcolor: "NavyBlue"

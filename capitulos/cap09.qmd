@@ -27,7 +27,8 @@ autenticação implementado de forma insegura, por concatenação direta:
 $utilizador = $_POST["utilizador"];
 $password = $_POST["password"];
 
-$sql = "SELECT * FROM utilizadores WHERE utilizador = '$utilizador' AND password = '$password'";
+$sql = "SELECT * FROM utilizadores WHERE utilizador = '$utilizador' "
+     . "AND password = '$password'";
 $resultado = $conexao->query($sql);
 ```
 
@@ -35,7 +36,8 @@ Se um atacante escrever, no campo `utilizador`, o texto
 `' OR '1'='1' -- `, a instrução SQL efetivamente executada passa a ser:
 
 ```sql
-SELECT * FROM utilizadores WHERE utilizador = '' OR '1'='1' -- ' AND password = '...'
+SELECT * FROM utilizadores
+WHERE utilizador = '' OR '1'='1' -- ' AND password = '...'
 ```
 
 Como `'1'='1'` é sempre verdadeiro, e o `--` transforma o resto da linha

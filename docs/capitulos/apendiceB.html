@@ -84,6 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../capitulos/apendiceC.html" rel="next">
 <link href="../capitulos/apendiceA.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -193,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais, Loops e Supervariáveis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -259,6 +260,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Demos de Código das Aulas</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -321,229 +328,229 @@ div.csl-indent {
 </section>
 <section id="sec-apB-variaveis" class="level2" data-number="B.2">
 <h2 data-number="B.2" class="anchored" data-anchor-id="sec-apB-variaveis"><span class="header-section-number">B.2</span> Demo: Variáveis e Arrays</h2>
-<p>Demonstração usada no <a href="cap03.html#sec-03-variaveis" class="quarto-xref"><span>Secção 3.4</span></a> e no <a href="cap03.html#sec-03-arrays" class="quarto-xref"><span>Secção 3.6</span></a>, com exemplos dos quatro tipos de arrays vistos nesse capítulo: numérico, associativo e multidimensional.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Declarar variáveis de tipos diferentes</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">$idade</span> <span class="op">=</span> <span class="dv">19</span><span class="ot">;</span>                     <span class="co">// Inteiro</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">$preco_do_almoco</span> <span class="op">=</span> <span class="fl">10.5</span><span class="ot">;</span>         <span class="co">// Float</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">$texto</span> <span class="op">=</span> <span class="st">"Olá, Mundo!"</span><span class="ot">;</span>          <span class="co">// String</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">$porta_aberta</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">;</span>            <span class="co">// Booleano</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="va">$arraySimples</span> <span class="op">=</span> <span class="dt">array</span>(<span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">3</span>)<span class="ot">;</span>  <span class="co">// Array</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Mostrar os valores de forma legível</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Idade:&lt;/strong&gt; </span><span class="va">$idade</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Preço do almoço:&lt;/strong&gt; </span><span class="va">$preco_do_almoco</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Texto:&lt;/strong&gt; </span><span class="va">$texto</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">// echo de um booleano mostra "1" para true e nada para false;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">// para mostrar um texto legível, usa-se uma expressão ternária</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Porta aberta:&lt;/strong&gt; "</span> <span class="op">.</span> (<span class="va">$porta_aberta</span> <span class="ot">?</span> <span class="st">'true'</span> <span class="ot">:</span> <span class="st">'false'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">// echo direto de um array produz um Warning; usa-se print_r() ou var_dump()</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Array simples:&lt;/strong&gt; "</span><span class="ot">;</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$arraySimples</span>)<span class="ot">;</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">// Array indexado</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="va">$frutas</span> <span class="op">=</span> <span class="dt">array</span>(<span class="st">"Maçã"</span><span class="ot">,</span> <span class="st">"Banana"</span><span class="ot">,</span> <span class="st">"Laranja"</span>)<span class="ot">;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Primeira fruta: "</span> <span class="op">.</span> <span class="va">$frutas</span>[<span class="dv">0</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Segunda fruta: "</span> <span class="op">.</span> <span class="va">$frutas</span>[<span class="dv">1</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Terceira fruta: "</span> <span class="op">.</span> <span class="va">$frutas</span>[<span class="dv">2</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">// Array associativo</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="va">$pessoa</span> <span class="op">=</span> <span class="dt">array</span>(</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nome"</span>   =&gt; <span class="st">"João"</span><span class="ot">,</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"idade"</span>  =&gt; <span class="dv">25</span><span class="ot">,</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cidade"</span> =&gt; <span class="st">"Lisboa"</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Nome: "</span> <span class="op">.</span> <span class="va">$pessoa</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Idade: "</span> <span class="op">.</span> <span class="va">$pessoa</span>[<span class="st">"idade"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Cidade: "</span> <span class="op">.</span> <span class="va">$pessoa</span>[<span class="st">"cidade"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">// Array multidimensional</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="va">$carros</span> <span class="op">=</span> <span class="dt">array</span>(</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"desportivos"</span> =&gt; <span class="dt">array</span>(<span class="st">"Ferrari"</span><span class="ot">,</span> <span class="st">"Lamborghini"</span><span class="ot">,</span> <span class="st">"Porsche"</span>)<span class="ot">,</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"suv"</span>         =&gt; <span class="dt">array</span>(<span class="st">"BMW X5"</span><span class="ot">,</span> <span class="st">"Audi Q7"</span><span class="ot">,</span> <span class="st">"Mercedes GLE"</span>)<span class="ot">,</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sedans"</span>      =&gt; <span class="dt">array</span>(<span class="st">"Toyota Camry"</span><span class="ot">,</span> <span class="st">"Honda Accord"</span><span class="ot">,</span> <span class="st">"Hyundai Elantra"</span>)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Primeiro carro desportivo: "</span> <span class="op">.</span> <span class="va">$carros</span>[<span class="st">"desportivos"</span>][<span class="dv">0</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Segundo SUV: "</span> <span class="op">.</span> <span class="va">$carros</span>[<span class="st">"suv"</span>][<span class="dv">1</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Terceiro sedan: "</span> <span class="op">.</span> <span class="va">$carros</span>[<span class="st">"sedans"</span>][<span class="dv">2</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Demonstração usada no <a href="cap03.html#sec-03-variaveis" class="quarto-xref"><span>Secção 3.6</span></a> e no <a href="cap03.html#sec-03-arrays" class="quarto-xref"><span>Secção 3.8</span></a>, com exemplos dos quatro tipos de arrays vistos nesse capítulo: numérico, associativo e multidimensional.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">// Declarar variáveis de tipos diferentes</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="va">$idade</span> <span class="op">=</span> <span class="dv">19</span><span class="ot">;</span>                     <span class="co">// Inteiro</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="va">$preco_do_almoco</span> <span class="op">=</span> <span class="fl">10.5</span><span class="ot">;</span>         <span class="co">// Float</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="va">$texto</span> <span class="op">=</span> <span class="st">"Olá, Mundo!"</span><span class="ot">;</span>          <span class="co">// String</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="va">$porta_aberta</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">;</span>            <span class="co">// Booleano</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="va">$arraySimples</span> <span class="op">=</span> <span class="dt">array</span>(<span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">3</span>)<span class="ot">;</span>  <span class="co">// Array</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">// Mostrar os valores de forma legível</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Idade:&lt;/strong&gt; </span><span class="va">$idade</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Preço do almoço:&lt;/strong&gt; </span><span class="va">$preco_do_almoco</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Texto:&lt;/strong&gt; </span><span class="va">$texto</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">// echo de um booleano mostra "1" para true e nada para false;</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">// para mostrar um texto legível, usa-se uma expressão ternária</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Porta aberta:&lt;/strong&gt; "</span> <span class="op">.</span> (<span class="va">$porta_aberta</span> <span class="ot">?</span> <span class="st">'true'</span> <span class="ot">:</span> <span class="st">'false'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co">// echo direto de um array produz um Warning; usa-se print_r() ou var_dump()</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;&lt;strong&gt;Array simples:&lt;/strong&gt; "</span><span class="ot">;</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="fu">print_r</span>(<span class="va">$arraySimples</span>)<span class="ot">;</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="kw">echo</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="co">// Array indexado</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a><span class="va">$frutas</span> <span class="op">=</span> <span class="dt">array</span>(<span class="st">"Maçã"</span><span class="ot">,</span> <span class="st">"Banana"</span><span class="ot">,</span> <span class="st">"Laranja"</span>)<span class="ot">;</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Primeira fruta: "</span> <span class="op">.</span> <span class="va">$frutas</span>[<span class="dv">0</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Segunda fruta: "</span> <span class="op">.</span> <span class="va">$frutas</span>[<span class="dv">1</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Terceira fruta: "</span> <span class="op">.</span> <span class="va">$frutas</span>[<span class="dv">2</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a></span>
+<span id="cb1-29"><a href="#cb1-29"></a><span class="co">// Array associativo</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a><span class="va">$pessoa</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb1-31"><a href="#cb1-31"></a>    <span class="st">"nome"</span>   =&gt; <span class="st">"João"</span><span class="ot">,</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>    <span class="st">"idade"</span>  =&gt; <span class="dv">25</span><span class="ot">,</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>    <span class="st">"cidade"</span> =&gt; <span class="st">"Lisboa"</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>)<span class="ot">;</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Nome: "</span> <span class="op">.</span> <span class="va">$pessoa</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Idade: "</span> <span class="op">.</span> <span class="va">$pessoa</span>[<span class="st">"idade"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-37"><a href="#cb1-37"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Cidade: "</span> <span class="op">.</span> <span class="va">$pessoa</span>[<span class="st">"cidade"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-38"><a href="#cb1-38"></a></span>
+<span id="cb1-39"><a href="#cb1-39"></a><span class="co">// Array multidimensional</span></span>
+<span id="cb1-40"><a href="#cb1-40"></a><span class="va">$carros</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb1-41"><a href="#cb1-41"></a>    <span class="st">"desportivos"</span> =&gt; <span class="dt">array</span>(<span class="st">"Ferrari"</span><span class="ot">,</span> <span class="st">"Lamborghini"</span><span class="ot">,</span> <span class="st">"Porsche"</span>)<span class="ot">,</span></span>
+<span id="cb1-42"><a href="#cb1-42"></a>    <span class="st">"suv"</span>         =&gt; <span class="dt">array</span>(<span class="st">"BMW X5"</span><span class="ot">,</span> <span class="st">"Audi Q7"</span><span class="ot">,</span> <span class="st">"Mercedes GLE"</span>)<span class="ot">,</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a>    <span class="st">"sedans"</span>      =&gt; <span class="dt">array</span>(<span class="st">"Toyota Camry"</span><span class="ot">,</span> <span class="st">"Honda Accord"</span><span class="ot">,</span> <span class="st">"Hyundai Elantra"</span>)</span>
+<span id="cb1-44"><a href="#cb1-44"></a>)<span class="ot">;</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Primeiro carro desportivo: "</span> <span class="op">.</span> <span class="va">$carros</span>[<span class="st">"desportivos"</span>][<span class="dv">0</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Segundo SUV: "</span> <span class="op">.</span> <span class="va">$carros</span>[<span class="st">"suv"</span>][<span class="dv">1</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-47"><a href="#cb1-47"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Terceiro sedan: "</span> <span class="op">.</span> <span class="va">$carros</span>[<span class="st">"sedans"</span>][<span class="dv">2</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-apB-condicionais-loops" class="level2" data-number="B.3">
 <h2 data-number="B.3" class="anchored" data-anchor-id="sec-apB-condicionais-loops"><span class="header-section-number">B.3</span> Demo: Condicionais, Loops e Supervariáveis</h2>
-<p>Demonstração usada no <a href="cap04.html#sec-04-condicionais" class="quarto-xref"><span>Secção 4.1</span></a>, no <a href="cap04.html#sec-04-ciclos" class="quarto-xref"><span>Secção 4.2</span></a> e no <a href="cap04.html#sec-04-supervariaveis" class="quarto-xref"><span>Secção 4.3</span></a>. A parte de <code>$_POST</code> requer um pequeno formulário HTML na mesma página, submetido para si próprio (<code>action=""</code>).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">// --- Condicionais ---</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">$idade</span> <span class="op">=</span> <span class="dv">18</span><span class="ot">;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="va">$idade</span> <span class="op">&gt;=</span> <span class="dv">18</span>) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;É maior de idade.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;É menor de idade.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="va">$cor</span> <span class="op">=</span> <span class="st">"vermelho"</span><span class="ot">;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> (<span class="va">$cor</span>) {</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">"azul"</span><span class="ot">:</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;A cor é azul.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span><span class="ot">;</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">"vermelho"</span><span class="ot">:</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;A cor é vermelho.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span><span class="ot">;</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="ot">:</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;A cor não é azul nem vermelho.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">// --- Loops ---</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;h3&gt;Loop for&lt;/h3&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="va">$i</span> <span class="op">=</span> <span class="dv">1</span><span class="ot">;</span> <span class="va">$i</span> <span class="op">&lt;=</span> <span class="dv">5</span><span class="ot">;</span> <span class="va">$i</span><span class="op">++</span>) {</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Iteração </span><span class="va">$i</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;h3&gt;Loop while&lt;/h3&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="va">$contador</span> <span class="op">=</span> <span class="dv">1</span><span class="ot">;</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="va">$contador</span> <span class="op">&lt;=</span> <span class="dv">3</span>) {</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Contagem: </span><span class="va">$contador</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="va">$contador</span><span class="op">++</span><span class="ot">;</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;h3&gt;Loop foreach&lt;/h3&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="va">$frutas</span> <span class="op">=</span> <span class="dt">array</span>(<span class="st">"Maçã"</span><span class="ot">,</span> <span class="st">"Banana"</span><span class="ot">,</span> <span class="st">"Laranja"</span>)<span class="ot">;</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="cf">foreach</span> (<span class="va">$frutas</span> <span class="kw">as</span> <span class="va">$fruta</span>) {</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Fruta: </span><span class="va">$fruta</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">?&gt;</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;!--</span> <span class="op">---</span> Supervariáveis<span class="ot">:</span> <span class="va">$_GET</span><span class="ot">,</span> <span class="va">$_POST</span><span class="ot">,</span> <span class="va">$_SERVER</span> <span class="op">---</span> <span class="op">-</span>-&gt;</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>form method<span class="op">=</span><span class="st">"post"</span> action<span class="op">=</span><span class="st">""</span><span class="op">&gt;</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"nome"</span><span class="op">&gt;</span>Nome<span class="ot">:</span><span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"text"</span> id<span class="op">=</span><span class="st">"nome"</span> name<span class="op">=</span><span class="st">"nome"</span><span class="op">&gt;</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"submit"</span> value<span class="op">=</span><span class="st">"Enviar"</span><span class="op">&gt;</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="co">// $_GET: dados vindos de um parâmetro na URL (ex: ?nome=Ana)</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Valor de 'nome' via GET: "</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>   <span class="op">.</span> (<span class="kw">isset</span>(<span class="va">$_GET</span>[<span class="st">'nome'</span>]) <span class="ot">?</span> <span class="va">$_GET</span>[<span class="st">'nome'</span>] <span class="ot">:</span> <span class="st">'não fornecido'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co">// $_POST: dados vindos do formulário acima, submetido por POST</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="va">$_SERVER</span>[<span class="st">"REQUEST_METHOD"</span>] <span class="op">===</span> <span class="st">"POST"</span>) {</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Nome enviado via POST: "</span> <span class="op">.</span> <span class="fu">htmlspecialchars</span>(<span class="va">$_POST</span>[<span class="st">'nome'</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co">// $_SERVER: informação sobre o próprio servidor e o pedido</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Nome do servidor: "</span> <span class="op">.</span> <span class="va">$_SERVER</span>[<span class="st">'SERVER_NAME'</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Demonstração usada no <a href="cap04.html#sec-04-condicionais" class="quarto-xref"><span>Secção 4.1</span></a>, no <a href="cap04.html#sec-04-ciclos" class="quarto-xref"><span>Secção 4.2</span></a> e no <a href="cap07.html#sec-07-supervariaveis" class="quarto-xref"><span>Secção 7.4</span></a>. A parte de <code>$_POST</code> requer um pequeno formulário HTML na mesma página, submetido para si próprio (<code>action=""</code>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">// --- Condicionais ---</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="va">$idade</span> <span class="op">=</span> <span class="dv">18</span><span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="cf">if</span> (<span class="va">$idade</span> <span class="op">&gt;=</span> <span class="dv">18</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;É maior de idade.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>} <span class="cf">else</span> {</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;É menor de idade.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>}</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="va">$cor</span> <span class="op">=</span> <span class="st">"vermelho"</span><span class="ot">;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="cf">switch</span> (<span class="va">$cor</span>) {</span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="cf">case</span> <span class="st">"azul"</span><span class="ot">:</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;A cor é azul.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>        <span class="cf">break</span><span class="ot">;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="cf">case</span> <span class="st">"vermelho"</span><span class="ot">:</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;A cor é vermelho.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>        <span class="cf">break</span><span class="ot">;</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>    <span class="cf">default</span><span class="ot">:</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;A cor não é azul nem vermelho.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>}</span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="co">// --- Loops ---</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a><span class="kw">echo</span> <span class="st">"&lt;h3&gt;Loop for&lt;/h3&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="cf">for</span> (<span class="va">$i</span> <span class="op">=</span> <span class="dv">1</span><span class="ot">;</span> <span class="va">$i</span> <span class="op">&lt;=</span> <span class="dv">5</span><span class="ot">;</span> <span class="va">$i</span><span class="op">++</span>) {</span>
+<span id="cb2-27"><a href="#cb2-27"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Iteração </span><span class="va">$i</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a>}</span>
+<span id="cb2-29"><a href="#cb2-29"></a></span>
+<span id="cb2-30"><a href="#cb2-30"></a><span class="kw">echo</span> <span class="st">"&lt;h3&gt;Loop while&lt;/h3&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a><span class="va">$contador</span> <span class="op">=</span> <span class="dv">1</span><span class="ot">;</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="cf">while</span> (<span class="va">$contador</span> <span class="op">&lt;=</span> <span class="dv">3</span>) {</span>
+<span id="cb2-33"><a href="#cb2-33"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Contagem: </span><span class="va">$contador</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a>    <span class="va">$contador</span><span class="op">++</span><span class="ot">;</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a>}</span>
+<span id="cb2-36"><a href="#cb2-36"></a></span>
+<span id="cb2-37"><a href="#cb2-37"></a><span class="kw">echo</span> <span class="st">"&lt;h3&gt;Loop foreach&lt;/h3&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a><span class="va">$frutas</span> <span class="op">=</span> <span class="dt">array</span>(<span class="st">"Maçã"</span><span class="ot">,</span> <span class="st">"Banana"</span><span class="ot">,</span> <span class="st">"Laranja"</span>)<span class="ot">;</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a><span class="cf">foreach</span> (<span class="va">$frutas</span> <span class="kw">as</span> <span class="va">$fruta</span>) {</span>
+<span id="cb2-40"><a href="#cb2-40"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Fruta: </span><span class="va">$fruta</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a>}</span>
+<span id="cb2-42"><a href="#cb2-42"></a><span class="kw">?&gt;</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a></span>
+<span id="cb2-44"><a href="#cb2-44"></a><span class="op">&lt;!--</span> <span class="op">---</span> Supervariáveis<span class="ot">:</span> <span class="va">$_GET</span><span class="ot">,</span> <span class="va">$_POST</span><span class="ot">,</span> <span class="va">$_SERVER</span> <span class="op">---</span> <span class="op">-</span>-&gt;</span>
+<span id="cb2-45"><a href="#cb2-45"></a><span class="op">&lt;</span>form method<span class="op">=</span><span class="st">"post"</span> action<span class="op">=</span><span class="st">""</span><span class="op">&gt;</span></span>
+<span id="cb2-46"><a href="#cb2-46"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"nome"</span><span class="op">&gt;</span>Nome<span class="ot">:</span><span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a>    <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"text"</span> id<span class="op">=</span><span class="st">"nome"</span> name<span class="op">=</span><span class="st">"nome"</span><span class="op">&gt;</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>    <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"submit"</span> value<span class="op">=</span><span class="st">"Enviar"</span><span class="op">&gt;</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a></span>
+<span id="cb2-51"><a href="#cb2-51"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb2-52"><a href="#cb2-52"></a><span class="co">// $_GET: dados vindos de um parâmetro na URL (ex: ?nome=Ana)</span></span>
+<span id="cb2-53"><a href="#cb2-53"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Valor de 'nome' via GET: "</span></span>
+<span id="cb2-54"><a href="#cb2-54"></a>   <span class="op">.</span> (<span class="kw">isset</span>(<span class="va">$_GET</span>[<span class="st">'nome'</span>]) <span class="ot">?</span> <span class="va">$_GET</span>[<span class="st">'nome'</span>] <span class="ot">:</span> <span class="st">'não fornecido'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-55"><a href="#cb2-55"></a></span>
+<span id="cb2-56"><a href="#cb2-56"></a><span class="co">// $_POST: dados vindos do formulário acima, submetido por POST</span></span>
+<span id="cb2-57"><a href="#cb2-57"></a><span class="cf">if</span> (<span class="va">$_SERVER</span>[<span class="st">"REQUEST_METHOD"</span>] <span class="op">===</span> <span class="st">"POST"</span>) {</span>
+<span id="cb2-58"><a href="#cb2-58"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Nome enviado via POST: "</span> <span class="op">.</span> <span class="fu">htmlspecialchars</span>(<span class="va">$_POST</span>[<span class="st">'nome'</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb2-59"><a href="#cb2-59"></a>}</span>
+<span id="cb2-60"><a href="#cb2-60"></a></span>
+<span id="cb2-61"><a href="#cb2-61"></a><span class="co">// $_SERVER: informação sobre o próprio servidor e o pedido</span></span>
+<span id="cb2-62"><a href="#cb2-62"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Nome do servidor: "</span> <span class="op">.</span> <span class="va">$_SERVER</span>[<span class="st">'SERVER_NAME'</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-apB-funcoes" class="level2" data-number="B.4">
 <h2 data-number="B.4" class="anchored" data-anchor-id="sec-apB-funcoes"><span class="header-section-number">B.4</span> Demo: Funções</h2>
 <p>Demonstração usada no <a href="cap05.html#sec-05-funcoes" class="quarto-xref"><span>Secção 5.1</span></a>, com quatro variantes de função (sem parâmetros nem retorno, com parâmetros, com retorno, e com parâmetro opcional).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Sem parâmetros e sem retorno</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> exibirSaudacao() {</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Bem-vindo ao sistema!&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Com parâmetros e sem retorno</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> enviarEmail(<span class="va">$destinatario</span><span class="ot">,</span> <span class="va">$assunto</span><span class="ot">,</span> <span class="va">$mensagem</span>) {</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Email enviado para: </span><span class="va">$destinatario</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Assunto: </span><span class="va">$assunto</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Mensagem: </span><span class="va">$mensagem</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">// Com parâmetros e com retorno</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> calcularDesconto(<span class="va">$preco</span><span class="ot">,</span> <span class="va">$descontoPercentual</span>) {</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="va">$desconto</span> <span class="op">=</span> <span class="va">$preco</span> <span class="op">*</span> (<span class="va">$descontoPercentual</span> <span class="op">/</span> <span class="dv">100</span>)<span class="ot">;</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">$preco</span> <span class="op">-</span> <span class="va">$desconto</span><span class="ot">;</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">// Com parâmetro opcional (valor por omissão)</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> criarUtilizador(<span class="va">$nome</span><span class="ot">,</span> <span class="va">$email</span><span class="ot">,</span> <span class="va">$senha</span><span class="ot">,</span> <span class="va">$role</span> <span class="op">=</span> <span class="st">'user'</span>) {</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Utilizador </span><span class="va">$nome</span><span class="st"> criado com a função de </span><span class="va">$role</span><span class="st">.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> volume(<span class="va">$largura</span><span class="ot">,</span> <span class="va">$altura</span><span class="ot">,</span> <span class="va">$comprimento</span>) {</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">$largura</span> <span class="op">*</span> <span class="va">$altura</span> <span class="op">*</span> <span class="va">$comprimento</span><span class="ot">;</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">// --- Chamadas ---</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="va">$volume_da_sala</span> <span class="op">=</span> volume(<span class="dv">5</span><span class="ot">,</span> <span class="dv">3</span><span class="ot">,</span> <span class="dv">10</span>)<span class="ot">;</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;O volume da sala é de </span><span class="va">$volume_da_sala</span><span class="st"> m3.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>exibirSaudacao()<span class="ot">;</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>enviarEmail(<span class="st">"cliente@example.com"</span><span class="ot">,</span> <span class="st">"Bem-vindo"</span><span class="ot">,</span> <span class="st">"Obrigado por se registar!"</span>)<span class="ot">;</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="va">$precoComDesconto</span> <span class="op">=</span> calcularDesconto(<span class="dv">100</span><span class="ot">,</span> <span class="dv">10</span>)<span class="ot">;</span> <span class="co">// 10% de desconto</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Preço final com desconto: </span><span class="va">$precoComDesconto</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>criarUtilizador(<span class="st">"José"</span><span class="ot">,</span> <span class="st">"jose@example.com"</span><span class="ot">,</span> <span class="st">"123456"</span>)<span class="ot">;</span>        <span class="co">// sem 'role': usa 'user'</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>criarUtilizador(<span class="st">"Ana"</span><span class="ot">,</span> <span class="st">"ana@example.com"</span><span class="ot">,</span> <span class="st">"789123"</span><span class="ot">,</span> <span class="st">"admin"</span>)<span class="ot">;</span> <span class="co">// 'role' explícito</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">// Sem parâmetros e sem retorno</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">function</span> exibirSaudacao() {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Bem-vindo ao sistema!&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co">// Com parâmetros e sem retorno</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="kw">function</span> enviarEmail(<span class="va">$destinatario</span><span class="ot">,</span> <span class="va">$assunto</span><span class="ot">,</span> <span class="va">$mensagem</span>) {</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Email enviado para: </span><span class="va">$destinatario</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Assunto: </span><span class="va">$assunto</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Mensagem: </span><span class="va">$mensagem</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>}</span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="co">// Com parâmetros e com retorno</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="kw">function</span> calcularDesconto(<span class="va">$preco</span><span class="ot">,</span> <span class="va">$descontoPercentual</span>) {</span>
+<span id="cb3-16"><a href="#cb3-16"></a>    <span class="va">$desconto</span> <span class="op">=</span> <span class="va">$preco</span> <span class="op">*</span> (<span class="va">$descontoPercentual</span> <span class="op">/</span> <span class="dv">100</span>)<span class="ot">;</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>    <span class="cf">return</span> <span class="va">$preco</span> <span class="op">-</span> <span class="va">$desconto</span><span class="ot">;</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>}</span>
+<span id="cb3-19"><a href="#cb3-19"></a></span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="co">// Com parâmetro opcional (valor por omissão)</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a><span class="kw">function</span> criarUtilizador(<span class="va">$nome</span><span class="ot">,</span> <span class="va">$email</span><span class="ot">,</span> <span class="va">$senha</span><span class="ot">,</span> <span class="va">$role</span> <span class="op">=</span> <span class="st">'user'</span>) {</span>
+<span id="cb3-22"><a href="#cb3-22"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;Utilizador </span><span class="va">$nome</span><span class="st"> criado com a função de </span><span class="va">$role</span><span class="st">.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>}</span>
+<span id="cb3-24"><a href="#cb3-24"></a></span>
+<span id="cb3-25"><a href="#cb3-25"></a><span class="kw">function</span> volume(<span class="va">$largura</span><span class="ot">,</span> <span class="va">$altura</span><span class="ot">,</span> <span class="va">$comprimento</span>) {</span>
+<span id="cb3-26"><a href="#cb3-26"></a>    <span class="cf">return</span> <span class="va">$largura</span> <span class="op">*</span> <span class="va">$altura</span> <span class="op">*</span> <span class="va">$comprimento</span><span class="ot">;</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a>}</span>
+<span id="cb3-28"><a href="#cb3-28"></a></span>
+<span id="cb3-29"><a href="#cb3-29"></a><span class="co">// --- Chamadas ---</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a><span class="va">$volume_da_sala</span> <span class="op">=</span> volume(<span class="dv">5</span><span class="ot">,</span> <span class="dv">3</span><span class="ot">,</span> <span class="dv">10</span>)<span class="ot">;</span></span>
+<span id="cb3-31"><a href="#cb3-31"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;O volume da sala é de </span><span class="va">$volume_da_sala</span><span class="st"> m3.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a></span>
+<span id="cb3-33"><a href="#cb3-33"></a>exibirSaudacao()<span class="ot">;</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a></span>
+<span id="cb3-35"><a href="#cb3-35"></a>enviarEmail(<span class="st">"cliente@example.com"</span><span class="ot">,</span> <span class="st">"Bem-vindo"</span><span class="ot">,</span> <span class="st">"Obrigado por se registar!"</span>)<span class="ot">;</span></span>
+<span id="cb3-36"><a href="#cb3-36"></a></span>
+<span id="cb3-37"><a href="#cb3-37"></a><span class="va">$precoComDesconto</span> <span class="op">=</span> calcularDesconto(<span class="dv">100</span><span class="ot">,</span> <span class="dv">10</span>)<span class="ot">;</span> <span class="co">// 10% de desconto</span></span>
+<span id="cb3-38"><a href="#cb3-38"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Preço final com desconto: </span><span class="va">$precoComDesconto</span><span class="st">&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-39"><a href="#cb3-39"></a></span>
+<span id="cb3-40"><a href="#cb3-40"></a>criarUtilizador(<span class="st">"José"</span><span class="ot">,</span> <span class="st">"jose@example.com"</span><span class="ot">,</span> <span class="st">"123456"</span>)<span class="ot">;</span>        <span class="co">// sem 'role': usa 'user'</span></span>
+<span id="cb3-41"><a href="#cb3-41"></a>criarUtilizador(<span class="st">"Ana"</span><span class="ot">,</span> <span class="st">"ana@example.com"</span><span class="ot">,</span> <span class="st">"789123"</span><span class="ot">,</span> <span class="st">"admin"</span>)<span class="ot">;</span> <span class="co">// 'role' explícito</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-apB-datas" class="level2" data-number="B.5">
 <h2 data-number="B.5" class="anchored" data-anchor-id="sec-apB-datas"><span class="header-section-number">B.5</span> Demo: Datas</h2>
 <p>Demonstração usada no <a href="cap05.html#sec-05-datas" class="quarto-xref"><span>Secção 5.2</span></a>, desta vez com a classe <code>DateTime</code>, orientada a objetos, em vez da função <code>date()</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Criar e mostrar a data e hora atuais</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">$dataAtual</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data e hora atuais: "</span> <span class="op">.</span> <span class="va">$dataAtual</span>-&gt;format(<span class="st">'d-m-Y H:i:s'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Somar dias a uma data (clonar para não alterar o objeto original)</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="va">$dataFutura</span> <span class="op">=</span> <span class="kw">clone</span> <span class="va">$dataAtual</span><span class="ot">;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="va">$dataFutura</span>-&gt;modify(<span class="st">'+150 days'</span>)<span class="ot">;</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data daqui a 150 dias: "</span> <span class="op">.</span> <span class="va">$dataFutura</span>-&gt;format(<span class="st">'Y-m-d'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Subtrair dias a uma data</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="va">$dataPassada</span> <span class="op">=</span> <span class="kw">clone</span> <span class="va">$dataAtual</span><span class="ot">;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="va">$dataPassada</span>-&gt;modify(<span class="st">'-10 days'</span>)<span class="ot">;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data há 10 dias: "</span> <span class="op">.</span> <span class="va">$dataPassada</span>-&gt;format(<span class="st">'Y-m-d'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">// Diferença entre duas datas</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="va">$intervalo</span> <span class="op">=</span> <span class="va">$dataAtual</span>-&gt;diff(<span class="va">$dataPassada</span>)<span class="ot">;</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Diferença: "</span> <span class="op">.</span> <span class="va">$intervalo</span>-&gt;days <span class="op">.</span> <span class="st">" dias&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">// Criar uma data a partir de uma string, num formato específico</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="va">$dataEspecifica</span> <span class="op">=</span> <span class="bu">DateTime</span>::createFromFormat(<span class="st">'Y-m-d'</span><span class="ot">,</span> <span class="st">'2024-12-25'</span>)<span class="ot">;</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data específica (Natal): "</span> <span class="op">.</span> <span class="va">$dataEspecifica</span>-&gt;format(<span class="st">'Y-m-d'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">// Verificar se um ano é bissexto</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="va">$ano</span> <span class="op">=</span> (<span class="dt">int</span>) <span class="va">$dataEspecifica</span>-&gt;format(<span class="st">'Y'</span>)<span class="ot">;</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="va">$ano</span> <span class="op">%</span> <span class="dv">4</span> <span class="op">===</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> (<span class="va">$ano</span> <span class="op">%</span> <span class="dv">100</span> <span class="op">!==</span> <span class="dv">0</span> <span class="op">||</span> <span class="va">$ano</span> <span class="op">%</span> <span class="dv">400</span> <span class="op">===</span> <span class="dv">0</span>)) {</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;</span><span class="va">$ano</span><span class="st"> é um ano bissexto.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;</span><span class="va">$ano</span><span class="st"> não é um ano bissexto.&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">// Criar e mostrar a data e hora atuais</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="va">$dataAtual</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data e hora atuais: "</span> <span class="op">.</span> <span class="va">$dataAtual</span>-&gt;format(<span class="st">'d-m-Y H:i:s'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">// Somar dias a uma data (clonar para não alterar o objeto original)</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="va">$dataFutura</span> <span class="op">=</span> <span class="kw">clone</span> <span class="va">$dataAtual</span><span class="ot">;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="va">$dataFutura</span>-&gt;modify(<span class="st">'+150 days'</span>)<span class="ot">;</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data daqui a 150 dias: "</span> <span class="op">.</span> <span class="va">$dataFutura</span>-&gt;format(<span class="st">'Y-m-d'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">// Subtrair dias a uma data</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="va">$dataPassada</span> <span class="op">=</span> <span class="kw">clone</span> <span class="va">$dataAtual</span><span class="ot">;</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="va">$dataPassada</span>-&gt;modify(<span class="st">'-10 days'</span>)<span class="ot">;</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data há 10 dias: "</span> <span class="op">.</span> <span class="va">$dataPassada</span>-&gt;format(<span class="st">'Y-m-d'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">// Diferença entre duas datas</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="va">$intervalo</span> <span class="op">=</span> <span class="va">$dataAtual</span>-&gt;diff(<span class="va">$dataPassada</span>)<span class="ot">;</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Diferença: "</span> <span class="op">.</span> <span class="va">$intervalo</span>-&gt;days <span class="op">.</span> <span class="st">" dias&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">// Criar uma data a partir de uma string, num formato específico</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="va">$dataEspecifica</span> <span class="op">=</span> <span class="bu">DateTime</span>::createFromFormat(<span class="st">'Y-m-d'</span><span class="ot">,</span> <span class="st">'2024-12-25'</span>)<span class="ot">;</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;Data específica (Natal): "</span> <span class="op">.</span> <span class="va">$dataEspecifica</span>-&gt;format(<span class="st">'Y-m-d'</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co">// Verificar se um ano é bissexto</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="va">$ano</span> <span class="op">=</span> (<span class="dt">int</span>) <span class="va">$dataEspecifica</span>-&gt;format(<span class="st">'Y'</span>)<span class="ot">;</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="cf">if</span> (<span class="va">$ano</span> <span class="op">%</span> <span class="dv">4</span> <span class="op">===</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> (<span class="va">$ano</span> <span class="op">%</span> <span class="dv">100</span> <span class="op">!==</span> <span class="dv">0</span> <span class="op">||</span> <span class="va">$ano</span> <span class="op">%</span> <span class="dv">400</span> <span class="op">===</span> <span class="dv">0</span>)) {</span>
+<span id="cb4-27"><a href="#cb4-27"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;</span><span class="va">$ano</span><span class="st"> é um ano bissexto.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a>} <span class="cf">else</span> {</span>
+<span id="cb4-29"><a href="#cb4-29"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;</span><span class="va">$ano</span><span class="st"> não é um ano bissexto.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-apB-includes" class="level2" data-number="B.6">
 <h2 data-number="B.6" class="anchored" data-anchor-id="sec-apB-includes"><span class="header-section-number">B.6</span> Demo: Includes (Header e Footer)</h2>
 <p>Demonstração usada no <a href="cap05.html#sec-05-includes" class="quarto-xref"><span>Secção 5.3</span></a>, com três ficheiros: um <code>header.php</code> e um <code>footer.php</code> reutilizáveis, incluídos por uma página principal.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;!--</span> <span class="fu">header</span><span class="op">.</span>php <span class="op">-</span>-&gt;</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span><span class="fu">header</span><span class="op">&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>h1<span class="op">&gt;</span>Bem<span class="op">-</span>vindo à minha aplicação<span class="op">!&lt;/</span>h1<span class="op">&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>nav<span class="op">&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php"</span><span class="op">&gt;</span>Home<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"sobre.php"</span><span class="op">&gt;</span>Sobre<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"contacto.php"</span><span class="op">&gt;</span>Contacto<span class="op">&lt;/</span>a<span class="op">&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;/</span>nav<span class="op">&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;/</span><span class="fu">header</span><span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;!--</span> footer<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>footer<span class="op">&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>p<span class="op">&gt;&amp;</span><span class="fu">copy</span><span class="ot">;</span> <span class="dv">2026</span> <span class="cn">A</span> Minha Aplicação<span class="op">.</span> Todos os direitos reservados<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;/</span>footer<span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;!--</span> index<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">// include: se header.php não existir, é apenas um Warning; a página continua</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">include</span> <span class="st">'header.php'</span><span class="ot">;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">?&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>h2<span class="op">&gt;</span>Página Principal<span class="op">&lt;/</span>h2<span class="op">&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>p<span class="op">&gt;</span>Conteúdo específico desta página<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">// require: se footer.php não existir, é um erro fatal; a página para aqui</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">require</span> <span class="st">'footer.php'</span><span class="ot">;</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">?&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="op">&lt;!--</span> <span class="fu">header</span><span class="op">.</span>php <span class="op">-</span>-&gt;</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="op">&lt;</span><span class="fu">header</span><span class="op">&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="op">&lt;</span>h1<span class="op">&gt;</span>Bem<span class="op">-</span>vindo à minha aplicação<span class="op">!&lt;/</span>h1<span class="op">&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="op">&lt;</span>nav<span class="op">&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php"</span><span class="op">&gt;</span>Home<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"sobre.php"</span><span class="op">&gt;</span>Sobre<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"contacto.php"</span><span class="op">&gt;</span>Contacto<span class="op">&lt;/</span>a<span class="op">&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="op">&lt;/</span>nav<span class="op">&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="op">&lt;/</span><span class="fu">header</span><span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="op">&lt;!--</span> footer<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="op">&lt;</span>footer<span class="op">&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="op">&lt;</span>p<span class="op">&gt;&amp;</span><span class="fu">copy</span><span class="ot">;</span> <span class="dv">2026</span> <span class="cn">A</span> Minha Aplicação<span class="op">.</span> Todos os direitos reservados<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="op">&lt;/</span>footer<span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="op">&lt;!--</span> index<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">// include: se header.php não existir, é apenas um Warning; a página continua</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="kw">include</span> <span class="st">'header.php'</span><span class="ot">;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="kw">?&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="op">&lt;</span>h2<span class="op">&gt;</span>Página Principal<span class="op">&lt;/</span>h2<span class="op">&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="op">&lt;</span>p<span class="op">&gt;</span>Conteúdo específico desta página<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">// require: se footer.php não existir, é um erro fatal; a página para aqui</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="kw">require</span> <span class="st">'footer.php'</span><span class="ot">;</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="kw">?&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-apB-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-apB-referencias">Referências</h2>
@@ -1123,6 +1130,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../capitulos/apendiceC.html" class="pagination-link" aria-label="Desafios de Programação">
+        <span class="nav-page-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

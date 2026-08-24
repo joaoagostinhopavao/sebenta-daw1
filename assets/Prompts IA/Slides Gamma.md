@@ -29,6 +29,23 @@ Cor de destaque: verde (#0e8a4d ou similar) para o Bloco 1; adaptar à cor do bl
 Melhorar diagramas existentes com gpt-image-2-mini (imageEditContent), mantendo estrutura e substituindo apenas as cores
 Exemplos de diagramas deste bloco: Perfis de Programador Web (frontend/backend/full stack), Panorama de Frameworks de Servidor, Bases de Dados Relacionais vs. Não Relacionais
 
+👥 PERSONAGENS RECORRENTES
+
+O projeto-fio-condutor da UC acompanha dois personagens fixos que aparecem ao longo de todos os decks:
+
+Tiago Correia — estudante universitário de Comunicação e Multimédia, 20–22 anos, a frequentar a UC de DAW1. É quem planeia e executa o projeto de modernização da revista Contraponto. Visual: jovem do sexo masculino, hoodie ou t-shirt casual, cabelo ligeiramente despenteado, expressão simpática e focada.
+
+Rita Ferreira — diretora da revista cultural Contraponto, 40–45 anos. É quem dita os requisitos da aplicação. Visual: mulher, blazer ou casaco estruturado, cabelo arranjado, expressão confiante e calorosa.
+
+Estilo dos retratos: isometric illustration, flat colors, paleta da cor do bloco e branco, fundo branco (transparente), sem sombras, linhas nítidas. Modelo: ideogram-v4-turbo.
+Formato padrão: busto. Usar corpo inteiro apenas quando o contexto o justifique (ex.: slide de apresentação do projeto).
+
+Os URLs canónicos dos retratos gerados para o Bloco 2 (Cornflower) são:
+
+    Tiago: https://cdn.gamma.app/1kxjdnnwjfumddc/generated-images/YiPiIqGKeiPlr6QA.png
+    Rita: https://cdn.gamma.app/1kxjdnnwjfumddc/generated-images/SAqkIJw_tjX4Su8S.png
+
+
 📄 LAYOUT DOS SLIDES
 
 O primeiro slide terá que ter obrigatóriamente uma imagem que "resuma" o tema do deck. Essa imagem serºa inserida no slide 1; para além disso deve ser feita uma segunda cópia dessa imagem no formato 16:9 e colocada na pasta de média.

@@ -27,6 +27,81 @@ e ver o resultado da sua execução. Com este ambiente preparado, está
 reunido tudo o que é necessário para começar, finalmente, a escrever e
 a testar código PHP.
 
+## O Projeto: Revista Contraponto {#sec-03-projeto}
+
+Ao longo deste e dos próximos capítulos, os exemplos de código acompanham
+um mesmo projeto, para que cada conceito novo se veja aplicado a um
+problema real, em vez de exemplos soltos e sem ligação entre si.
+
+Rita Ferreira dirige há mais de dez anos a Contraponto, uma revista
+cultural em papel, e quer agora uma versão digital: um sítio onde os
+artigos da revista fiquem disponíveis online, organizados por categoria,
+com espaço para os leitores comentarem. Tiago Correia, finalista de
+Comunicação e Multimédia, aceita o desafio de construir esse sítio ao
+longo do semestre, aplicando o que vai aprendendo nesta UC.
+
+Antes de escrever a primeira linha de código, Tiago propõe a Rita um
+esboço simples dos dados que o sítio vai precisar de guardar:
+
+- **Artigo**: cada peça de conteúdo publicada (título, resumo, texto,
+  autor, categoria, data de publicação);
+- **Autor**: quem escreve os artigos da revista;
+- **Categoria**: o tema de cada artigo, por exemplo Cultura, Tecnologia
+  ou Música;
+- **Comentário**: o que os leitores escrevem sobre um artigo.
+
+Este esboço não é ainda uma base de dados, apenas um mapa do problema:
+a implementação, capítulo a capítulo, começa pelas partes mais simples,
+e só junta complexidade nova à medida que Tiago aprende novas
+ferramentas da linguagem, dos arrays vistos no @sec-03-arrays às
+tabelas de uma base de dados a partir do @sec-08-dbms.
+
+## Arquitetura e Atribuição de Responsabilidades {#sec-03-arquitetura}
+
+Antes de decidir com que linguagem programar o sítio da Contraponto,
+importa perceber onde é que cada peça do problema se encaixa. A
+arquitetura em três camadas, já apresentada no @sec-02-tres-camadas,
+distribui uma aplicação como esta em três partes: apresentação, lógica
+e dados. A figura seguinte aplica esta distribuição ao projeto esboçado
+no @sec-03-projeto:
+
+```{mermaid}
+%%| echo: false
+%%| fig-align: center
+flowchart TB
+    A["Camada de Apresentação<br/>HTML / CSS / JS"]
+    B["Camada de Lógica<br/>PHP"]
+    C[("Camada de Dados<br/>MySQL")]
+
+    A -- "pedido HTTP" --> B
+    B -- "HTML gerado" --> A
+    B -- "consulta / regista dados" --> C
+    C -- "resultado" --> B
+
+    classDef layer fill:#eef2ff,stroke:#4338ca,stroke-width:1px,color:#1e1b4b;
+    class A,B,C layer;
+```
+
+A camada de apresentação é o que Tiago já domina desde o primeiro ano do
+curso: o HTML estrutura cada página do sítio, a lista de artigos, a
+página de um artigo, o formulário de comentário, a CSS trata da sua
+apresentação visual, e o JavaScript pode, mais tarde, tornar a interface
+mais dinâmica. Nada disto muda nesta UC; é o ponto de partida sobre o
+qual todo o trabalho seguinte se constrói.
+
+O que falta a Tiago é a camada de lógica: o código que corre no
+servidor, decide que artigos mostrar, e valida o comentário submetido
+por um leitor antes de o passar à camada de dados. Como visto no
+@sec-01-linguagens, esta camada pode ser escrita em qualquer uma de
+várias linguagens de servidor, `Node.js`, `Python` ou `PHP`, entre
+outras; esta UC escolhe o PHP, uma das mais usadas neste papel. A
+camada de dados, a que a lógica recorre para consultar ou guardar
+artigos, autores, categorias e comentários, só é introduzida a partir
+do @sec-08-dbms; até lá, é a própria camada de lógica que guarda estes
+dados, em memória, tal como se vê já na secção seguinte. É a partir
+daqui que o resto deste capítulo, e de todos os seguintes, se dedica a
+construir a camada de lógica da Contraponto.
+
 ## A Linguagem PHP {#sec-03-linguagem}
 
 `PHP` (*Hypertext Preprocessor*) é uma linguagem de *script* que corre do
@@ -61,6 +136,16 @@ necessário:
 </body>
 </html>
 ```
+
+O PHP suporta dois estilos de programação: o procedimental, uma
+sequência de instruções e chamadas a funções, que é o que este livro
+segue como base, e o orientado a objetos, em que dados e comportamento
+se agrupam em objetos, criados com `new` e manipulados através de
+métodos, chamados com uma seta (`->`). O PHP recorre a objetos nalgumas
+das suas próprias ferramentas internas, como a classe `DateTime`, vista
+no @sec-05-datas; nesses casos, introduz-se apenas a sintaxe necessária
+para os usar, sem que seja preciso, para já, saber construir os
+próprios objetos.
 
 ## Sintaxe Básica {#sec-03-sintaxe}
 
@@ -228,135 +313,137 @@ erro, apenas produzindo um resultado inesperado.
 
 ## Arrays {#sec-03-arrays}
 
-Imagine-se uma pequena empresa agrícola que quer construir uma aplicação
-PHP para gerir as frutas que produz. Uma primeira tentativa, talvez a
-mais óbvia para quem começa a programar, seria criar uma variável para
-cada fruta:
+Tiago começa pela parte mais visível do sítio da Contraponto: a lista de
+artigos publicados. Uma primeira tentativa, talvez a mais óbvia para
+quem começa a programar, seria criar uma variável para cada título:
 
 ```php
 <?php
-$fruta1 = "Maçã";
-$fruta2 = "Banana";
-$fruta3 = "Laranja";
+$artigo1 = "Entrevista: o futuro do jornalismo local";
+$artigo2 = "Crítica: a nova exposição do museu";
+$artigo3 = "Como nasceu a Contraponto";
 ```
 
-Esta abordagem funciona enquanto a empresa produzir três frutas, mas
-torna-se rapidamente insustentável: e se a empresa passar a produzir
-vinte tipos de fruta diferentes? E se deixar de produzir uma delas, ou
-passar a produzir mais uma? Seria necessário criar, apagar ou renomear
-variáveis uma a uma, e qualquer código que precisasse de percorrer
-"todas as frutas" teria de ser reescrito cada vez que o número de
-frutas mudasse. Faltam ainda, a esta abordagem, respostas simples a
-perguntas do dia a dia de uma empresa deste tipo: quantas frutas
-diferentes produz? Qual a lista de produtos, por ordem alfabética?
-Nenhuma destas perguntas tem resposta fácil com variáveis separadas.
+Esta abordagem funciona enquanto a revista tiver três artigos, mas
+torna-se rapidamente insustentável: e se a revista publicar cinquenta
+artigos? E se um artigo for retirado do ar, ou for publicado um novo?
+Seria necessário criar, apagar ou renomear variáveis uma a uma, e
+qualquer código que precisasse de percorrer "todos os artigos" teria de
+ser reescrito cada vez que o número de artigos mudasse. Faltam ainda, a
+esta abordagem, respostas simples a perguntas do dia a dia de um sítio
+deste tipo: quantos artigos estão publicados? Qual a lista de títulos,
+por ordem alfabética? Nenhuma destas perguntas tem resposta fácil com
+variáveis separadas.
 
 A solução é um array: uma estrutura de dados que permite armazenar
 múltiplos valores relacionados numa única variável, acessíveis através
 de índices numéricos ou de chaves associativas, em vez de se criar uma
 variável separada para cada valor. O PHP disponibiliza três tipos de
 arrays, cada um mais adequado a um tipo diferente de problema, como as
-próximas secções mostram, retomando sempre o exemplo da empresa
-agrícola.
+próximas secções mostram, retomando sempre o sítio da Contraponto.
 
 ### Arrays Indexados {#sec-03-arrays-numericos}
 
 O tipo mais simples de array é o array indexado (ou numérico), em que
 cada valor é acedido através de um índice inteiro, que começa sempre em
-0. É a estrutura certa para o problema das frutas da empresa, já que
-não há necessidade de dar um nome próprio a cada uma, apenas de as
-guardar todas juntas:
+0. É a estrutura certa para o problema dos títulos da Contraponto, já
+que não há necessidade de dar um nome próprio a cada artigo, apenas de
+os guardar todos juntos:
 
 ```php
 <?php
-$frutas = array("Maçã", "Banana", "Laranja");
+$titulos = array(
+    "Entrevista: o futuro do jornalismo local",
+    "Crítica: a nova exposição do museu",
+    "Como nasceu a Contraponto"
+);
 
-echo $frutas[0];  // Maçã
-echo $frutas[1];  // Banana
-echo $frutas[2];  // Laranja
+echo $titulos[0];  // Entrevista: o futuro do jornalismo local
+echo $titulos[1];  // Crítica: a nova exposição do museu
+echo $titulos[2];  // Como nasceu a Contraponto
 
-$frutas[] = "Kiwi";       // acrescenta um novo elemento ao fim
-echo count($frutas);      // 4, o número de elementos do array
+$titulos[] = "Roteiro cultural de outubro";  // acrescenta um novo elemento ao fim
+echo count($titulos);                        // 4, o número de elementos do array
 ```
 
-Duas das perguntas da empresa ficam já resolvidas com muito pouco
-código: acrescentar um novo produto ao catálogo é uma única instrução,
-`$frutas[] = "Kiwi"`, sem necessidade de declarar mais nenhuma
-variável; e saber quantas frutas a empresa produz é apenas
-`count($frutas)`, o número de elementos do array, que se mantém sempre
-correto por muitas frutas que sejam acrescentadas ou removidas.
+Duas das perguntas de Tiago ficam já resolvidas com muito pouco código:
+publicar um novo artigo é uma única instrução,
+`$titulos[] = "Roteiro cultural de outubro"`, sem necessidade de
+declarar mais nenhuma variável; e saber quantos artigos estão publicados
+é apenas `count($titulos)`, o número de elementos do array, que se
+mantém sempre correto por muitos artigos que sejam publicados ou
+retirados.
 
-A partir do PHP 5.4, `array("Maçã", "Banana")` pode também ser escrito
-com a sintaxe abreviada `["Maçã", "Banana"]`, hoje a forma mais comum de
-o encontrar em código PHP recente.
+A partir do PHP 5.4, `array("...", "...")` pode também ser escrito com a
+sintaxe abreviada `["...", "..."]`, hoje a forma mais comum de o
+encontrar em código PHP recente.
 
-Falta ainda responder à terceira pergunta da empresa: qual a lista de
-produtos, por ordem alfabética? Para além de `count()`, o PHP
+Falta ainda responder à terceira pergunta de Tiago: qual a lista de
+artigos, por ordem alfabética? Para além de `count()`, o PHP
 disponibiliza várias outras funções para trabalhar com o conteúdo de um
 array indexado, sem ter de percorrer os seus elementos manualmente:
 
 ```php
 <?php
-$notas = [14, 18, 9, 16];
+$categorias = ["Tecnologia", "Cultura", "Música", "Cinema"];
 
-array_push($notas, 12);        // acrescenta 12 ao fim, tal como $notas[] = 12
-$ultima = array_pop($notas);   // remove e devolve o último elemento (12)
+array_push($categorias, "Entrevistas");   // acrescenta ao fim
+$ultima = array_pop($categorias);         // remove o último elemento
 
-sort($notas);                  // ordena por ordem crescente, reindexando o array
-print_r($notas);               // [9, 14, 16, 18]
+sort($categorias);                        // ordena por ordem alfabética
+print_r($categorias);                     // [Cinema, Cultura, Música, Tecnologia]
 
-if (in_array(16, $notas)) {
-    echo "Encontrada uma nota de 16 valores";
+if (in_array("Música", $categorias)) {
+    echo "A categoria Música já existe";
 }
 
-$posicao = array_search(14, $notas);   // devolve o índice onde está o 14
+$posicao = array_search("Cultura", $categorias);   // índice de "Cultura"
 echo $posicao;
 ```
 
-Neste exemplo com notas, `sort()` é exatamente a função que resolveria
-o pedido da empresa agrícola: aplicada ao array `$frutas`,
-`sort($frutas)` reordenaria as frutas por ordem alfabética, tal como
-ordena os números do exemplo por ordem crescente, já que o PHP usa o
-mesmo mecanismo de comparação para texto e para números, apenas com
-critérios de ordenação diferentes consoante o tipo de valor. As
-restantes funções também respondem a necessidades comuns de gestão de
-uma lista: `in_array()` verifica se um produto já existe no catálogo
-antes de o acrescentar de novo, e `array_search()` devolve a posição de
-um produto específico, útil, por exemplo, para o remover mais tarde.
+Aplicada ao problema inicial, `sort($titulos)` reordenaria os títulos
+dos artigos por ordem alfabética, tal como este exemplo ordena as
+categorias, já que o PHP usa o mesmo mecanismo de comparação para texto
+e para números, apenas com critérios de ordenação diferentes consoante
+o tipo de valor. As restantes funções também respondem a necessidades
+comuns de gestão de uma lista: `in_array()` verifica se uma categoria já
+existe antes de a acrescentar de novo, e `array_search()` devolve a
+posição de uma categoria específica, útil, por exemplo, para a remover
+mais tarde.
 
 ### Arrays Associativos {#sec-03-arrays-associativos}
 
-Um array indexado resolve bem uma simples lista de produtos, mas a
-empresa agrícola vai rapidamente precisar de guardar mais informação
-sobre cada fruta, não apenas o seu nome: o preço por quilo, o stock
-disponível, a proveniência. Guardar toda esta informação num array
-indexado obrigaria a memorizar que o índice `0` corresponde sempre ao
-preço, o `1` ao stock, e assim sucessivamente, um código difícil de ler
-e fácil de errar. Um array associativo resolve exatamente este
-problema: cada valor é acedido através de uma chave à escolha,
-tipicamente uma *string*, em vez de um índice numérico, o que torna o
-código muito mais legível quando cada valor tem um significado próprio:
+Um array indexado resolve bem uma simples lista de títulos, mas o sítio
+da Contraponto vai rapidamente precisar de guardar mais informação sobre
+cada artigo, não apenas o seu título: o autor, a categoria, o resumo.
+Guardar toda esta informação num array indexado obrigaria a memorizar
+que o índice `0` corresponde sempre ao título, o `1` ao autor, e assim
+sucessivamente, um código difícil de ler e fácil de errar. Um array
+associativo resolve exatamente este problema: cada valor é acedido
+através de uma chave à escolha, tipicamente uma *string*, em vez de um
+índice numérico, o que torna o código muito mais legível quando cada
+valor tem um significado próprio:
 
 ```php
 <?php
-$pessoa = array(
-    "nome"   => "João",
-    "idade"  => 25,
-    "cidade" => "Lisboa"
+$artigo = array(
+    "titulo"    => "Entrevista: o futuro do jornalismo local",
+    "autor"     => "Rita Ferreira",
+    "categoria" => "Tecnologia"
 );
 
-echo $pessoa["nome"];    // João
-echo $pessoa["idade"];   // 25
+echo $artigo["titulo"];   // Entrevista: o futuro do jornalismo local
+echo $artigo["autor"];    // Rita Ferreira
 
-$pessoa["profissao"] = "Programador";  // acrescenta uma nova chave
+// acrescenta uma nova chave
+$artigo["resumo"] = "Uma conversa sobre os desafios do jornalismo de proximidade.";
 ```
 
-Aplicado ao exemplo da empresa, uma fruta deixaria de ser apenas um
-texto solto dentro do array `$frutas`, e passaria a ser, ela própria, um
-array associativo com todas as suas propriedades, algo como
-`["nome" => "Maçã", "preco" => 1.20, "stock" => 350]`. Esta ideia, um
-array associativo dentro de outro array, é precisamente o tema da
-secção seguinte.
+Um artigo da Contraponto deixa, assim, de ser apenas um texto solto
+dentro do array `$titulos`, e passa a ser, ele próprio, um array
+associativo com todas as suas propriedades. Esta ideia, um array
+associativo dentro de outro array, é precisamente o tema da secção
+seguinte.
 
 ### Arrays Multidimensionais {#sec-03-arrays-multidimensionais}
 
@@ -368,35 +455,46 @@ anterior:
 
 ```php
 <?php
-$carros = array(
-    "desportivos" => array("Ferrari", "Lamborghini", "Porsche"),
-    "suv"         => array("BMW X5", "Audi Q7", "Mercedes GLE"),
-    "sedans"      => array("Toyota Camry", "Honda Accord", "Hyundai Elantra")
+$revistas_concorrentes = array(
+    "generalistas" => array("Visão", "Sábado", "Expresso"),
+    "culturais"    => array("Ler", "Blimunda", "Time Out")
 );
 
-echo $carros["desportivos"][0];  // Ferrari
-echo $carros["suv"][1];          // Audi Q7
+echo $revistas_concorrentes["generalistas"][0];  // Visão
+echo $revistas_concorrentes["culturais"][1];     // Blimunda
 
-// Um array de registos, cada um por sua vez um array associativo
-$alunos = array(
-    array("nome" => "Ana",  "nota" => 16),
-    array("nome" => "Rui",  "nota" => 14),
-    array("nome" => "Sara", "nota" => 18)
+// Um array de registos, cada um por sua vez um array associativo:
+// exatamente o esboço de "Artigo" proposto por Tiago no @sec-03-projeto
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    )
 );
 
-echo $alunos[0]["nome"];  // Ana
-echo $alunos[2]["nota"];  // 18
+echo $artigos[0]["titulo"];  // Entrevista: o futuro do jornalismo local
+echo $artigos[2]["autor"];   // Rita Ferreira
 ```
 
-O array `$alunos` é a estrutura que finalmente resolveria por completo o
-problema da empresa agrícola: substituindo "aluno" por "fruta" e "nota"
-pelas restantes propriedades de cada produto, obtém-se um catálogo
-completo, algo como
-`[["nome" => "Maçã", "preco" => 1.20, "stock" => 350], ["nome" => "Banana", "preco" => 0.90, "stock" => 500]]`,
-em que cada elemento é um produto com toda a sua informação, e a lista
-inteira continua a poder ser percorrida, contada e ordenada com as
-mesmas funções vistas na @sec-03-arrays-numericos. Este último exemplo,
-um array de arrays associativos, é de resto a forma mais comum de
+O array `$artigos` é a estrutura que finalmente dá corpo ao modelo
+proposto no @sec-03-projeto: cada elemento é um artigo completo, com
+toda a sua informação, e a lista inteira continua a poder ser
+percorrida, contada e ordenada com as mesmas funções vistas na
+@sec-03-arrays-numericos. É também com este mesmo array, em memória,
+que Tiago vai construir as primeiras páginas do sítio, muito antes de
+ligar a aplicação a uma base de dados real; este último exemplo, um
+array de arrays associativos, é de resto a forma mais comum de
 representar, em memória, um conjunto de registos vindos de uma base de
 dados, tema retomado com mais detalhe no @sec-08-dbms.
 
@@ -406,45 +504,65 @@ a função `print_r()`, que mostra a sua estrutura completa, incluindo
 arrays aninhados, ou `var_dump()`, que mostra ainda o tipo e o
 comprimento de cada valor.
 
-### Exemplo Completo: Média de um Aluno {#sec-03-exemplo-completo}
+### Exemplo Completo: Vistas de um Autor {#sec-03-exemplo-completo}
 
 Um pequeno exemplo, juntando variáveis, tipos, conversão e arrays
 multidimensionais, mostra bem como estes conceitos se combinam na
-prática: calcular a média de um aluno a partir de um array de notas,
-guardado dentro de um array associativo com os seus dados:
+prática: calcular a média de vistas dos últimos artigos de um autor,
+guardadas dentro de um array associativo com os seus dados:
 
 ```php
 <?php
-$aluno = [
-    "nome"  => "Marta",
-    "notas" => [15, 12, 18, 14]
+$autor = [
+    "nome"   => "Rita Ferreira",
+    "vistas" => [1200, 850, 430, 610]
 ];
 
-$soma = array_sum($aluno["notas"]);      # <1>
-$numero_notas = count($aluno["notas"]);  # <2>
-$media = $soma / $numero_notas;          # <3>
+$soma = array_sum($autor["vistas"]);        # <1>
+$numero_artigos = count($autor["vistas"]);  # <2>
+$media = $soma / $numero_artigos;           # <3>
 
-echo $aluno["nome"] . " tem média de " . $media;
+echo $autor["nome"] . " tem uma média de " . $media . " vistas por artigo";
 
-if ($media >= 10) {                      # <4>
-    echo ", está aprovado.";
+if ($media >= 500) {                        # <4>
+    echo ", um alcance acima da média da revista.";
 } else {
-    echo ", está reprovado.";
+    echo ", um alcance abaixo da média da revista.";
 }
 ```
-1. Soma todas as notas do array `notas`: 15 + 12 + 18 + 14 = 59.
-2. Conta quantas notas existem: 4.
-3. Divide a soma pelo número de notas, obtendo a média: 59 / 4 = 14,75.
-4. Compara a média com o valor mínimo de aprovação, decidindo o resultado final.
+1. Soma as vistas dos últimos artigos: 1200 + 850 + 430 + 610 = 3090.
+2. Conta quantos artigos foram somados: 4.
+3. Divide a soma pelo número de artigos, obtendo a média: 3090 / 4 = 772,5.
+4. Compara a média com o valor de referência da revista, decidindo o resultado final.
 
 Note-se que `array_sum()` devolve um `float` sempre que a divisão não é
-exata, mesmo que todas as notas somadas sejam inteiros, o que é
+exata, mesmo que todas as vistas somadas sejam inteiras, o que é
 consistente com o comportamento de tipagem dinâmica visto na
 @sec-03-tipos: o PHP escolhe automaticamente o tipo mais adequado ao
 resultado de cada operação.
 
 O código completo da demonstração feita na aula sobre variáveis e
 arrays, pronto a copiar, está disponível no @sec-apB-variaveis.
+
+## Desafio {#sec-03-desafio}
+
+Tiago já sabe representar um artigo, e uma lista de artigos, em arrays.
+Antes de avançar para o próximo capítulo, o desafio é pôr esse
+conhecimento à prova, completando o catálogo de artigos da Contraponto,
+usando apenas o que já foi visto neste capítulo, sem ciclos nem
+condicionais:
+
+1. Completar o array `$artigos` com pelo menos cinco artigos, cada um
+   com título, autor e categoria;
+2. Mostrar o título do terceiro artigo do catálogo;
+3. Construir um array `$categorias` com as categorias já usadas nos
+   artigos, sem repetições, e ordená-lo por ordem alfabética com
+   `sort()`;
+4. Verificar, com `in_array()`, se a categoria `"Entrevistas"` já está
+   representada no catálogo.
+
+O ficheiro de arranque, com o array `$artigos` parcialmente preenchido,
+está disponível no @sec-apC-cap03.
 
 ## Referências {#sec-03-referencias .unnumbered}
 
