@@ -31,6 +31,45 @@ exemplo; o objetivo deste apêndice é apenas garantir que qualquer aluno
 consegue, por si só, chegar a um ambiente funcional, com o `Apache`, o
 `PHP` e o `MySQL` prontos a usar.
 
+### Máquina Virtual ou Contentores? {#sec-apA-abordagens}
+
+Há duas abordagens possíveis para este ambiente, ambas já introduzidas
+no @sec-02-virtualizacao:
+
+**Máquina virtual**: é a abordagem seguida por omissão nesta UC, já
+apresentada no @sec-02-ambiente-uc: uma máquina virtual `VirtualBox` com
+Ubuntu, onde se instalam o servidor `Apache`, o `MySQL` e o `PHP`,
+individualmente ou através de um pacote pré-configurado, consoante o
+sistema operativo do computador de cada aluno. Todo o desenvolvimento,
+desde a edição do código até ao teste no *browser*, acontece dentro
+desta máquina virtual, que se comporta, para efeitos práticos, como um
+pequeno servidor próprio e isolado do resto do computador.
+
+**Contentores (Docker)**: uma alternativa é usar o `Docker` para correr
+o `Apache`, o `PHP` e o `MySQL` cada um no seu próprio contentor, em vez
+de os instalar dentro de uma máquina virtual completa. É uma opção mais
+leve, com arranque mais rápido, especialmente adequada a quem já tem
+alguma experiência com `Docker`, ou a um computador com menos recursos
+disponíveis para correr uma máquina virtual inteira.
+
+### O Que Se Pretende Obter {#sec-apA-resultado}
+
+Seja qual for a abordagem escolhida, e seja o ambiente fornecido pelo
+professor ou construído do zero, o resultado final é o mesmo:
+
+- Um servidor `Apache` a correr, capaz de interpretar código PHP;
+- Um servidor `MySQL` a correr, acessível a partir do código PHP;
+- Um editor de código, tipicamente o `Visual Studio Code`, com acesso
+  direto aos ficheiros do projeto;
+- A possibilidade de abrir um ficheiro `.php` num *browser*, através de
+  um endereço como `http://localhost`, e ver o resultado da sua
+  execução.
+
+As secções seguintes descrevem como chegar a este resultado, seja
+através de uma imagem fornecida pelo professor (@sec-apA-vm-fornecida e
+@sec-apA-docker-fornecido), seja construindo o ambiente do zero
+(@sec-apA-zero).
+
 ### Sistemas Operativos dos Computadores dos Alunos {#sec-apA-sistemas}
 
 Antes de descarregar qualquer *software*, é importante saber qual das
@@ -190,7 +229,7 @@ O professor pode distribuir o ambiente de duas formas distintas:
   ```
 
 Em qualquer dos casos, o resultado esperado é o mesmo referido no
-@sec-03-ambiente-docker: um contentor com o `Apache` e o `PHP`, e outro
+@sec-apA-abordagens: um contentor com o `Apache` e o `PHP`, e outro
 contentor, separado, com o `MySQL`, ambos a correr e a comunicar entre
 si.
 

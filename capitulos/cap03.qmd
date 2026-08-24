@@ -7,70 +7,23 @@ lang: pt-PT
 
 ## Preparar o Ambiente de Desenvolvimento {#sec-03-ambiente}
 
-Antes de escrever a primeira linha de código PHP, é necessário preparar
-um ambiente onde esse código possa ser executado: um servidor web capaz
-de interpretar PHP, ligado a um sistema de gestão de bases de dados.
-Como visto no @sec-02-virtualizacao, há duas abordagens principais para
-isolar este ambiente do sistema operativo do computador de cada aluno,
-evitando que o resultado de um trabalho dependa de particularidades
-desse computador: máquinas virtuais e contentores. Esta secção descreve,
-de forma resumida, como cada uma destas abordagens se aplica
-especificamente ao desenvolvimento em PHP; os passos completos de
-instalação e configuração, com todos os comandos necessários, ficam
-reservados para o @sec-apA-intro, já que são detalhes de configuração,
-não de programação, e podem variar consoante o sistema operativo do
-computador de cada aluno e a versão exata de cada ferramenta. Note-se
-ainda que o professor das aulas práticas pode implementar este ambiente
-com especificações mais concretas do que as aqui descritas; o objetivo
-desta secção é apenas garantir que o ambiente de programação em PHP fica
-claro em termos gerais, independentemente desses detalhes finais.
+Antes de escrever a primeira linha de código PHP, é necessário um
+ambiente onde esse código possa ser executado: um servidor `Apache`
+capaz de interpretar PHP, ligado a um `MySQL`, tal como visto no
+@sec-02-ambiente-uc. Na prática, não é necessário que cada aluno
+construa este ambiente do zero: o professor da componente prática
+disponibiliza normalmente uma imagem já preparada, seja de uma máquina
+virtual, seja de contentores `Docker`, prontos a importar e a usar. Os
+passos completos de preparação deste ambiente, por qualquer uma das
+duas vias, ficam reservados para o @sec-apA-intro, já que são detalhes
+de configuração, não de programação, e podem variar consoante o
+sistema operativo do computador de cada aluno.
 
-Na prática, não é necessário que cada aluno construa este ambiente do
-zero: o professor da componente prática disponibiliza normalmente uma
-imagem já preparada, seja de uma máquina virtual completa, seja de um
-ou mais contentores `Docker` (por exemplo, um contentor para o `Apache`
-e o `PHP`, e outro separado para o `MySQL`), prontos a importar e a
-usar. As duas opções descritas de seguida, com os passos completos no
-@sec-apA-intro, destinam-se sobretudo a quem prefere montar o próprio
-ambiente, por exemplo num computador pessoal fora do contexto da aula,
-ou a quem simplesmente quer compreender, em detalhe, do que é feito o
-ambiente que lhe é disponibilizado.
-
-### Opção 1: Máquina Virtual {#sec-03-ambiente-vm}
-
-É a abordagem seguida por omissão nesta UC, já apresentada no
-@sec-02-ambiente-uc: uma máquina virtual `VirtualBox` com Ubuntu, onde
-se instalam o servidor `Apache`, o `MySQL` e o `PHP`, individualmente ou
-através de um pacote pré-configurado, consoante o sistema operativo do
-computador de cada aluno. Todo o desenvolvimento, desde a edição do
-código até ao teste no *browser*, acontece dentro desta máquina virtual,
-que se comporta, para efeitos práticos, como um pequeno servidor próprio
-e isolado do resto do computador.
-
-### Opção 2: Contentores (Docker) {#sec-03-ambiente-docker}
-
-Uma alternativa é usar o `Docker`, referido no @sec-02-virtualizacao,
-para correr o Apache, o PHP e o MySQL cada um no seu próprio contentor,
-em vez de os instalar dentro de uma máquina virtual completa. É uma
-opção mais leve, com arranque mais rápido, especialmente adequada a
-quem já tem alguma experiência com `Docker`, ou a um computador com
-menos recursos disponíveis para correr uma máquina virtual inteira.
-
-### O Que Se Pretende Obter {#sec-03-ambiente-resultado}
-
-Seja qual for a opção escolhida, o resultado final é o mesmo, e é isso
-que importa reter para o resto deste capítulo:
-
-- Um servidor `Apache` a correr, capaz de interpretar código PHP;
-- Um servidor `MySQL` a correr, acessível a partir do código PHP;
-- Um editor de código, tipicamente o `Visual Studio Code`, com acesso
-  direto aos ficheiros do projeto;
-- A possibilidade de abrir um ficheiro `.php` num *browser*, através de
-  um endereço como `http://localhost`, e ver o resultado da sua
-  execução.
-
-Com este ambiente preparado, seja através da imagem fornecida pelo
-professor, seja seguindo os passos detalhados no @sec-apA-intro, está
+O que importa reter, para o resto deste capítulo, é apenas o resultado:
+um `Apache` a correr, capaz de interpretar PHP, ligado a um `MySQL`, um
+editor de código como o `Visual Studio Code` com acesso aos ficheiros
+do projeto, e a possibilidade de abrir um ficheiro `.php` num *browser*
+e ver o resultado da sua execução. Com este ambiente preparado, está
 reunido tudo o que é necessário para começar, finalmente, a escrever e
 a testar código PHP.
 
@@ -275,15 +228,44 @@ erro, apenas produzindo um resultado inesperado.
 
 ## Arrays {#sec-03-arrays}
 
-Um array é uma estrutura de dados que permite armazenar múltiplos
-valores relacionados numa única variável, acessíveis através de índices
-numéricos ou de chaves associativas, em vez de se criar uma variável
-separada para cada valor. O PHP disponibiliza três tipos de arrays.
+Imagine-se uma pequena empresa agrícola que quer construir uma aplicação
+PHP para gerir as frutas que produz. Uma primeira tentativa, talvez a
+mais óbvia para quem começa a programar, seria criar uma variável para
+cada fruta:
+
+```php
+<?php
+$fruta1 = "Maçã";
+$fruta2 = "Banana";
+$fruta3 = "Laranja";
+```
+
+Esta abordagem funciona enquanto a empresa produzir três frutas, mas
+torna-se rapidamente insustentável: e se a empresa passar a produzir
+vinte tipos de fruta diferentes? E se deixar de produzir uma delas, ou
+passar a produzir mais uma? Seria necessário criar, apagar ou renomear
+variáveis uma a uma, e qualquer código que precisasse de percorrer
+"todas as frutas" teria de ser reescrito cada vez que o número de
+frutas mudasse. Faltam ainda, a esta abordagem, respostas simples a
+perguntas do dia a dia de uma empresa deste tipo: quantas frutas
+diferentes produz? Qual a lista de produtos, por ordem alfabética?
+Nenhuma destas perguntas tem resposta fácil com variáveis separadas.
+
+A solução é um array: uma estrutura de dados que permite armazenar
+múltiplos valores relacionados numa única variável, acessíveis através
+de índices numéricos ou de chaves associativas, em vez de se criar uma
+variável separada para cada valor. O PHP disponibiliza três tipos de
+arrays, cada um mais adequado a um tipo diferente de problema, como as
+próximas secções mostram, retomando sempre o exemplo da empresa
+agrícola.
 
 ### Arrays Indexados {#sec-03-arrays-numericos}
 
-Num array indexado (ou numérico), cada valor é acedido através de um
-índice inteiro, que começa sempre em 0:
+O tipo mais simples de array é o array indexado (ou numérico), em que
+cada valor é acedido através de um índice inteiro, que começa sempre em
+0. É a estrutura certa para o problema das frutas da empresa, já que
+não há necessidade de dar um nome próprio a cada uma, apenas de as
+guardar todas juntas:
 
 ```php
 <?php
@@ -297,13 +279,21 @@ $frutas[] = "Kiwi";       // acrescenta um novo elemento ao fim
 echo count($frutas);      // 4, o número de elementos do array
 ```
 
+Duas das perguntas da empresa ficam já resolvidas com muito pouco
+código: acrescentar um novo produto ao catálogo é uma única instrução,
+`$frutas[] = "Kiwi"`, sem necessidade de declarar mais nenhuma
+variável; e saber quantas frutas a empresa produz é apenas
+`count($frutas)`, o número de elementos do array, que se mantém sempre
+correto por muitas frutas que sejam acrescentadas ou removidas.
+
 A partir do PHP 5.4, `array("Maçã", "Banana")` pode também ser escrito
 com a sintaxe abreviada `["Maçã", "Banana"]`, hoje a forma mais comum de
 o encontrar em código PHP recente.
 
-Para além de `count()`, o PHP disponibiliza várias funções para
-trabalhar com o conteúdo de um array indexado, sem ter de percorrer os
-seus elementos manualmente:
+Falta ainda responder à terceira pergunta da empresa: qual a lista de
+produtos, por ordem alfabética? Para além de `count()`, o PHP
+disponibiliza várias outras funções para trabalhar com o conteúdo de um
+array indexado, sem ter de percorrer os seus elementos manualmente:
 
 ```php
 <?php
@@ -323,12 +313,29 @@ $posicao = array_search(14, $notas);   // devolve o índice onde está o 14
 echo $posicao;
 ```
 
+Neste exemplo com notas, `sort()` é exatamente a função que resolveria
+o pedido da empresa agrícola: aplicada ao array `$frutas`,
+`sort($frutas)` reordenaria as frutas por ordem alfabética, tal como
+ordena os números do exemplo por ordem crescente, já que o PHP usa o
+mesmo mecanismo de comparação para texto e para números, apenas com
+critérios de ordenação diferentes consoante o tipo de valor. As
+restantes funções também respondem a necessidades comuns de gestão de
+uma lista: `in_array()` verifica se um produto já existe no catálogo
+antes de o acrescentar de novo, e `array_search()` devolve a posição de
+um produto específico, útil, por exemplo, para o remover mais tarde.
+
 ### Arrays Associativos {#sec-03-arrays-associativos}
 
-Num array associativo, cada valor é acedido através de uma chave à
-escolha, tipicamente uma *string*, em vez de um índice numérico, o que
-torna o código mais legível quando cada valor tem um significado
-próprio:
+Um array indexado resolve bem uma simples lista de produtos, mas a
+empresa agrícola vai rapidamente precisar de guardar mais informação
+sobre cada fruta, não apenas o seu nome: o preço por quilo, o stock
+disponível, a proveniência. Guardar toda esta informação num array
+indexado obrigaria a memorizar que o índice `0` corresponde sempre ao
+preço, o `1` ao stock, e assim sucessivamente, um código difícil de ler
+e fácil de errar. Um array associativo resolve exatamente este
+problema: cada valor é acedido através de uma chave à escolha,
+tipicamente uma *string*, em vez de um índice numérico, o que torna o
+código muito mais legível quando cada valor tem um significado próprio:
 
 ```php
 <?php
@@ -344,18 +351,27 @@ echo $pessoa["idade"];   // 25
 $pessoa["profissao"] = "Programador";  // acrescenta uma nova chave
 ```
 
+Aplicado ao exemplo da empresa, uma fruta deixaria de ser apenas um
+texto solto dentro do array `$frutas`, e passaria a ser, ela própria, um
+array associativo com todas as suas propriedades, algo como
+`["nome" => "Maçã", "preco" => 1.20, "stock" => 350]`. Esta ideia, um
+array associativo dentro de outro array, é precisamente o tema da
+secção seguinte.
+
 ### Arrays Multidimensionais {#sec-03-arrays-multidimensionais}
 
 Um array multidimensional é um array cujos valores são, eles próprios,
 outros arrays, o que permite representar dados mais estruturados, como
 categorias com listas de itens, ou uma lista de registos, cada um com
-vários campos:
+vários campos, exatamente o problema levantado no final da secção
+anterior:
 
 ```php
 <?php
 $carros = array(
     "desportivos" => array("Ferrari", "Lamborghini", "Porsche"),
-    "suv"         => array("BMW X5", "Audi Q7", "Mercedes GLE")
+    "suv"         => array("BMW X5", "Audi Q7", "Mercedes GLE"),
+    "sedans"      => array("Toyota Camry", "Honda Accord", "Hyundai Elantra")
 );
 
 echo $carros["desportivos"][0];  // Ferrari
@@ -372,9 +388,17 @@ echo $alunos[0]["nome"];  // Ana
 echo $alunos[2]["nota"];  // 18
 ```
 
-Este último exemplo, um array de arrays associativos, é a forma mais
-comum de representar, em memória, um conjunto de registos vindos de uma
-base de dados, tema retomado com mais detalhe no @sec-08-dbms.
+O array `$alunos` é a estrutura que finalmente resolveria por completo o
+problema da empresa agrícola: substituindo "aluno" por "fruta" e "nota"
+pelas restantes propriedades de cada produto, obtém-se um catálogo
+completo, algo como
+`[["nome" => "Maçã", "preco" => 1.20, "stock" => 350], ["nome" => "Banana", "preco" => 0.90, "stock" => 500]]`,
+em que cada elemento é um produto com toda a sua informação, e a lista
+inteira continua a poder ser percorrida, contada e ordenada com as
+mesmas funções vistas na @sec-03-arrays-numericos. Este último exemplo,
+um array de arrays associativos, é de resto a forma mais comum de
+representar, em memória, um conjunto de registos vindos de uma base de
+dados, tema retomado com mais detalhe no @sec-08-dbms.
 
 Para inspecionar rapidamente o conteúdo de um array durante o
 desenvolvimento, sem ter de aceder a cada elemento individualmente, usa-se
@@ -396,18 +420,22 @@ $aluno = [
     "notas" => [15, 12, 18, 14]
 ];
 
-$soma = array_sum($aluno["notas"]);           // 59
-$numero_notas = count($aluno["notas"]);       // 4
-$media = $soma / $numero_notas;               // 14.75
+$soma = array_sum($aluno["notas"]);      # <1>
+$numero_notas = count($aluno["notas"]);  # <2>
+$media = $soma / $numero_notas;          # <3>
 
 echo $aluno["nome"] . " tem média de " . $media;
 
-if ($media >= 10) {
+if ($media >= 10) {                      # <4>
     echo ", está aprovado.";
 } else {
     echo ", está reprovado.";
 }
 ```
+1. Soma todas as notas do array `notas`: 15 + 12 + 18 + 14 = 59.
+2. Conta quantas notas existem: 4.
+3. Divide a soma pelo número de notas, obtendo a média: 59 / 4 = 14,75.
+4. Compara a média com o valor mínimo de aprovação, decidindo o resultado final.
 
 Note-se que `array_sum()` devolve um `float` sempre que a divisão não é
 exata, mesmo que todas as notas somadas sejam inteiros, o que é
