@@ -5,6 +5,31 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap07.jpg');">
+  <div class="hero-badge">Capítulo 7</div>
+  <h1>O Protocolo HTTP e Gestão de Estado</h1>
+</div>
+```
+
+## Os Componentes da Web {#sec-07-componentes-web}
+
+Tudo o que foi visto no capítulo anterior, camadas, encapsulamento,
+portas, endereços e DNS, é a infraestrutura sobre a qual assenta a
+própria Web. A Web, como sistema, assenta em três componentes
+fundamentais:
+
+- Uma linguagem de apresentação: o `HTML`;
+- Um esquema de endereçamento: o `URI`/`URL`;
+- Um protocolo de comunicação entre cliente e servidor: o `HTTP`.
+
+Um URL (*Uniform Resource Locator*) identifica, de forma única, um
+recurso na Web, combinando o protocolo a usar (`http`, `https`), o nome
+do servidor (que o DNS traduz para um IP), a porta, e o
+caminho para o recurso pretendido dentro desse servidor. É precisamente
+o protocolo HTTP, construído sobre toda essa infraestrutura, que é o
+tema deste capítulo.
+
 ## O Protocolo HTTP {#sec-07-http}
 
 `HTTP` (*Hypertext Transfer Protocol*) é o protocolo da camada de
@@ -13,26 +38,28 @@ Na maior parte das vezes, uma dessas aplicações é um servidor web (como
 o `Apache`, o `Tomcat` ou o `GlassFish`) e a outra é um *browser* (como
 o `Chrome`, o `Firefox` ou o `Edge`). Funciona segundo um modelo de
 pedido-resposta: o cliente envia um pedido `HTTP` ao servidor, e o
-servidor devolve uma resposta `HTTP`.
+servidor devolve uma resposta `HTTP`. É este protocolo que o *browser*
+do leitor da Contraponto usa sempre que pede uma página ao servidor da
+revista.
 
 ## O Que Acontece Quando se Escreve um URL {#sec-07-processo}
 
 Vale a pena seguir, passo a passo, o que acontece entre o momento em que
-um utilizador escreve um endereço no *browser* e o momento em que a
-página aparece no ecrã, juntando tudo o que foi visto no capítulo
-anterior:
+o leitor da Contraponto escreve `contraponto.pt` no *browser* e o
+momento em que a página inicial da revista aparece no ecrã, juntando
+tudo o que foi visto no capítulo anterior:
 
 1. O *browser* extrai o nome do servidor (*hostname*) do URL, incluindo
    o número de porta, se indicado, e consulta o `DNS` para obter o seu
    endereço `IP`;
-2. Abre um *socket* `TCP`, especificando o `IP` de destino e a porta a
-   usar, por omissão a porta 80 para uma página web comum;
-3. Escreve uma mensagem de pedido `HTTP` e envia-a através desse
+2. De seguida o *browser* abre um *socket* `TCP`, especificando o `IP` de destino e a porta a
+   usar (por omissão a porta 80 para uma página web comum);
+3. Escreve uma **mensagem de pedido `HTTP`**  e envia-a através desse
    *socket* `TCP`; se não for indicado explicitamente o nome de uma
-   página no URL, o servidor assume, por omissão, `index.html`;
-4. A camada `TCP` aceita a mensagem e garante a sua entrega fiável ao
-   servidor, tal como descrito no @sec-06-tcp;
-5. O servidor responde, enviando uma mensagem de resposta que percorre o
+   página web no URL, o servidor assume, por omissão, `index.html` (se esta não existir, procura outras páginas por omissão, como `index.php`, `default.html`, etc.);
+4. A camada `TCP` **aceita a mensagem** e garante a sua entrega fiável ao
+   servidor, tal como descrito na @sec-06-tcp;
+5. O servidor responde, enviando uma **mensagem de resposta** que percorre o
    caminho inverso, através da mesma pilha de protocolos, até chegar de
    volta ao *browser*, que a interpreta e apresenta a página ao
    utilizador.
@@ -41,8 +68,8 @@ anterior:
 
 Uma mensagem de pedido `HTTP` completa tem a seguinte estrutura geral:
 
-```
-[método] [URL] [versão]
+```bash
+[método] [URL] [versão do http em uso]
 [cabeçalhos]
 
 [corpo]
@@ -54,80 +81,40 @@ web são o `GET` e o `POST`.
 ### O Método GET {#sec-07-get}
 
 O `GET` pede a obtenção de um recurso, sem que essa operação, por si só,
-altere nada no servidor. É o método usado sempre que se clica num
-`link` numa página:
+altere nada no servidor: é o método usado sempre que se clica num
+*link*, como o que leva o leitor da Contraponto aos artigos de uma
+categoria:
 
 ```html
-<a href="http://utad.pt/index.html">UTAD</a>
+<a href="contraponto.pt/artigos.php?categoria=Cultura">Cultura</a>
 ```
 
-Este `link`, ao ser clicado, resulta na seguinte mensagem `GET`:
+Pela mesma razão, o `GET` também pode ser usado num formulário, desde
+que o objetivo seja apenas obter um resultado, nunca alterar algo no
+servidor, como aconteceria se este mesmo filtro por categoria fosse
+feito através de um menu em vez de um *link* direto. É precisamente
+este pedido que a @sec-07-supervariaveis retoma, do lado do servidor.
 
-```
-GET / HTTP/1.1
-Host: utad.pt
-```
-
-Por não alterar nada no servidor, a mensagem `GET` é considerada uma
-mensagem **inócua**. Esta é uma convenção do protocolo, não uma garantia
-técnica: um servidor mal concebido pode, tecnicamente, alterar dados
-como resposta a um `GET`, mas fazê-lo viola o comportamento esperado
-por qualquer cliente HTTP, e é considerado má prática.
-
-O `GET` pode também ser usado num contexto de formulário HTML, desde
-que o objetivo não seja alterar informação no servidor, apenas obter um
-resultado, como numa pesquisa:
-
-```html
-<form action="/search" method="GET">
-    <label for="term">Procurar:</label>
-    <input id="term" name="term" type="text" />
-    <input type="submit" value="Procurar!" />
-</form>
-```
-
-Ao submeter este formulário com o termo "love", o *browser* gera a
-seguinte mensagem:
-
-```
-GET /search?term=love HTTP/1.1
-Host: searchengine.com
-```
-
-Note-se como os dados do formulário aparecem diretamente na URL, depois
-do `?`, no formato `chave=valor`.
+::: {.callout-note}
+A sintaxe exata de uma mensagem `GET`, incluindo o significado de cada
+uma das suas partes, está detalhada na @sec-apE-get.
+:::
 
 ### O Método POST {#sec-07-post}
 
-O `POST` envia dados para o servidor, tipicamente para criar ou alterar
-um recurso. O seu uso típico é também num formulário HTML:
+O `POST` envia dados para o servidor, tipicamente para **criar** ou
+**alterar** um recurso: é o método usado, por exemplo, pelo formulário
+de comentário da Contraponto esboçado na @sec-03-projeto. Ao contrário
+do `GET`, os dados vão no corpo da mensagem, não na URL, e o pedido
+**não é considerado inócuo**: normalmente regista algo ou altera de
+alguma forma o estado do servidor. É também este pedido que a
+@sec-07-supervariaveis retoma, mostrando como o PHP recebe os dados que
+o leitor submeteu.
 
-```html
-<form action="/account/create" method="POST">
-    <label for="firstName">Nome próprio</label>
-    <input id="firstName" name="firstName" type="text" />
-    <label for="lastName">Apelido</label>
-    <input id="lastName" name="lastName" type="text" />
-</form>
-<input type="submit" value="Registar!"/>
-```
-
-Que resulta na seguinte mensagem:
-
-```
-POST /account/create HTTP/1.1
-Host: servername.com
-
-firstName=Scott&lastName=Allen
-```
-
-Ao contrário do `GET`, os dados vão no corpo da mensagem, não na URL. Um
-cliente web envia tipicamente um pedido `POST` sempre que tem dados para
-enviar que vão produzir um efeito no servidor: por exemplo, ao clicar
-num botão "Adicionar ao carrinho" numa loja *online*, é enviado um
-`POST` com a informação do artigo escolhido. Ao contrário do `GET`, o
-`POST` **não é uma mensagem inócua**: tipicamente atualiza uma conta,
-regista um pedido ou altera de alguma outra forma o estado do servidor.
+::: {.callout-note}
+A estrutura completa de um formulário HTML e da mensagem `POST`
+correspondente está detalhada na @sec-apE-post.
+:::
 
 ### GET vs. POST {#sec-07-get-vs-post}
 
@@ -141,57 +128,58 @@ práticas concretas:
   histórico do *browser*;
 - **Vantagem do `GET`**: precisamente por os parâmetros ficarem na URL,
   esta pode ser marcada como favorita ou partilhada, permitindo voltar
-  aos mesmos resultados sempre que necessário, algo que o `POST` não
-  permite diretamente.
+  aos mesmos resultados sempre que necessário, tal como o próprio
+  *link* de categoria da Contraponto visto na @sec-07-get; o `POST` não
+  permite isto diretamente, porque os dados não ficam visíveis na URL.
 
 ### Recursos Virtuais {#sec-07-recursos-virtuais}
 
 Nem todos os recursos acessíveis através da Web existem, como tal, num
 ficheiro no servidor. Muitos são criados, ou montados "na hora", de
 acordo com o pedido específico do cliente, depois de o servidor
-recuperar os dados necessários de uma base de dados, tema do
-@sec-08-dbms. Um pedido a `pagina.php?id=5`, por exemplo, não corresponde
+recuperar os dados necessários de uma base de dados, tema da secção
+@sec-08-dbms. Um pedido a `artigos.php?id=5`, por exemplo, não corresponde
 a um ficheiro chamado literalmente assim; corresponde à execução do
-*script* `pagina.php`, que, com base no parâmetro `id`, gera
+*script* `artigos.php`, que, com base no parâmetro `id`, gera
 dinamicamente o conteúdo a devolver.
 
 ## Supervariáveis {#sec-07-supervariaveis}
 
-Falta uma peça para fechar o círculo: como é que o *script* `pagina.php`
+Falta uma peça para fechar o círculo: como é que o *script* `artigos.php`
 do exemplo anterior chega, de facto, ao valor `5` do parâmetro `id`? O
-PHP disponibiliza, para isso, um conjunto de arrays predefinidos,
+PHP disponibiliza automaticamente, para isso, um conjunto de arrays predefinidos,
 conhecidos como supervariáveis (ou superglobais): variáveis
 automaticamente inicializadas pelo PHP, disponíveis em qualquer parte de
 um *script*, independentemente do contexto ou da função em que se
-esteja, sem necessidade de as declarar. É através delas que o código
+esteja, sem necessidade de as declarar. **É através delas que o código
 PHP tem acesso a tudo o que foi visto neste capítulo até aqui: os
 parâmetros de um pedido `GET`, os campos de um formulário `POST`, os
-*cookies*, a sessão. As mais usadas são:
+*cookies*, a sessão**. As mais usadas são:
 
 - **`$_GET`**: contém os dados enviados através da URL, exatamente o
-  parâmetro `id` de `pagina.php?id=5`, ou os campos de um formulário
-  submetido com `method="GET"`, como visto no @sec-07-get;
+  parâmetro `id` de `artigos.php?id=5`, ou os campos de um formulário
+  submetido com `method="GET"`, como visto na @sec-07-get;
 - **`$_POST`**: contém os dados enviados no corpo de um pedido `POST`,
-  tipicamente por um formulário como o de registo visto no @sec-07-post;
+  tipicamente por um formulário como o de comentário visto na @sec-07-post;
 - **`$_REQUEST`**: combina os dados de `$_GET`, `$_POST` e dos *cookies*
   do pedido, útil quando não interessa saber por que método os dados
   chegaram;
 - **`$_SESSION`**: guarda informação de sessão do utilizador, tema
-  aprofundado mais adiante neste capítulo, no @sec-07-sessoes;
+  aprofundado mais adiante neste capítulo, na @sec-07-sessoes;
 - **`$_COOKIE`**: contém os *cookies* enviados pelo cliente ao servidor,
-  tema aprofundado no @sec-07-cookies;
+  tema aprofundado na @sec-07-cookies;
 - **`$_SERVER`**: contém informação sobre o servidor e sobre o pedido
   atual, como o endereço do cliente, o método `HTTP` usado, ou o
   caminho do próprio *script*.
 
 No sítio da Contraponto, `$_GET` é exatamente o mecanismo que permite a
 um leitor filtrar os artigos por categoria, através de um endereço como
-`sitio.pt/artigos.php?categoria=Cultura`, substituindo finalmente, por
-dados reais de um pedido, a variável fixa usada no @sec-04-desafio:
+`contraponto.pt/artigos.php?categoria=Cultura`, substituindo finalmente, por
+dados reais de um pedido, a variável fixa usada na @sec-04-desafio:
 
 ```php
 <?php
-// sitio.pt/artigos.php?categoria=Cultura
+// contraponto.pt/artigos.php?categoria=Cultura
 if (isset($_GET["categoria"])) {
     echo "A mostrar artigos da categoria: " . $_GET["categoria"];
 } else {
@@ -206,7 +194,7 @@ campo foi de facto enviado antes de o usar, já que nem todos os leitores
 chegam ao sítio através de um endereço com esse parâmetro.
 
 O `$_POST`, por sua vez, é o que recebe o formulário de comentário
-esboçado no @sec-03-projeto, quando um leitor o submete:
+esboçado na @sec-03-projeto, quando um leitor o submete:
 
 ```php
 <?php
@@ -222,25 +210,28 @@ rede, e a lógica em PHP, do lado do servidor: a filtragem por categoria
 e o formulário de comentário só produzem efeito porque os seus dados
 chegam ao *script* PHP através de `$_GET` ou `$_POST`. O código completo
 desta demonstração, incluindo o formulário HTML usado para testar
-`$_GET` e `$_POST`, está disponível no @sec-apB-condicionais-loops.
+`$_GET` e `$_POST`, está disponível na @sec-apB-condicionais-loops.
 
 ## Cabeçalhos HTTP {#sec-07-cabecalhos}
 
-Tanto o pedido como a resposta incluem cabeçalhos, pares de chave e
-valor com informação adicional sobre a mensagem. O único cabeçalho
-obrigatório num pedido é o `Host`, que indica a que servidor o pedido se
-destina, essencial quando um mesmo endereço IP aloja vários domínios
-diferentes. Outro cabeçalho comum é o `Accept`, que indica ao servidor
-que tipos de conteúdo (formatos `MIME`) o *browser* prefere receber na
-resposta, por ordem de preferência, indicada por um valor de qualidade
-`q` entre 0 e 1 (o valor por omissão é 1, a preferência máxima).
+Tanto o pedido como a resposta incluem **cabeçalhos**, pares de chave e
+valor com informação adicional sobre a mensagem, já presentes na
+estrutura genérica apresentada na @sec-07-mensagem-pedido. O único
+cabeçalho obrigatório num pedido é o `Host`, que indica a que servidor
+o pedido se destina, essencial quando um mesmo endereço IP aloja vários
+domínios diferentes, como o próprio servidor da Contraponto.
+
+::: {.callout-note}
+Outros cabeçalhos comuns, como o `Accept`, estão descritos na
+@sec-apE-cabecalhos.
+:::
 
 ## A Resposta do Servidor {#sec-07-resposta}
 
 A resposta do servidor segue uma estrutura semelhante à do pedido, mas
 começa por uma linha de estado, em vez de um método e um URL:
 
-```
+```bash
 [versão] [código de estado] [frase de razão]
 [cabeçalhos]
 
@@ -262,6 +253,8 @@ agrupado em cinco categorias:
   que indica uma falha na aplicação do lado do servidor, tipicamente um
   erro no próprio código PHP.
 
+---colocar aqui a tabela com o resumo dos códigos tal como nos slides originais
+
 ## HTTP é um Protocolo Stateless {#sec-07-stateless}
 
 O servidor HTTP não guarda, por si só, qualquer informação sobre o
@@ -271,120 +264,63 @@ servidor "esquece" essa ligação, uma propriedade chamada *stateless*
 página web normalmente exige vários recursos, o próprio HTML, a folha de
 estilos CSS, o *script* JavaScript, eventuais imagens, e cada um destes
 recursos exige um pedido `HTTP` independente, cada um com o custo de
-estabelecer a sua própria ligação.
+estabelecer a sua própria ligação. Os *browsers* atenuam este custo com
+várias estratégias de gestão de ligações, mas o princípio mantém-se:
+cada pedido é, por si só, independente de todos os outros.
 
-Para atenuar este custo, os *browsers* recorrem a diferentes
-estratégias de gestão de ligações:
+Se cada página tem mais do que um recurso e o servidor não guarda estado, como é que um sítio de comércio eletrónico sabe que artigos um utilizador colocou no seu carrinho, ou como é que a Contraponto reconhece um leitor que já comentou antes, sem lhe pedir de novo o nome em cada comentário? Para isso, o HTTP recorre a mecanismos de gestão de estado, como *cookies* e sessões, tema da secção @sec-07-estado.
 
-- **Ligações paralelas**: ao detetar vários recursos numa página, o
-  *browser* abre várias ligações em simultâneo para os carregar mais
-  depressa, uma para o HTML, outra para o CSS, outra para o JavaScript,
-  e assim por diante. O número de ligações paralelas é limitado, porque
-  cada ligação adicional aumenta a carga sobre o servidor, o que, a
-  partir de certo ponto, pode tornar o carregamento da página mais lento
-  em vez de mais rápido;
-- **Ligações persistentes**: em vez de fechar o *socket* logo a seguir a
-  cada resposta, o servidor mantém-no aberto para vários pedidos
-  sucessivos. O `Apache`, por omissão, mantém uma ligação persistente
-  aberta durante 5 segundos de inatividade antes de a fechar. Este
-  período tem também de ser limitado por razões de segurança, para
-  evitar ataques de negação de serviço (*DoS*, *Denial of Service*), em
-  que um atacante mantém propositadamente muitas ligações abertas em
-  simultâneo, impedindo o servidor de atender pedidos legítimos;
-- **Ligações em rajada** (*back-to-back*): desde o HTTP/1.1, um cliente
-  pode enviar vários pedidos seguidos, sobre a mesma ligação, sem
-  esperar pela resposta a cada um antes de enviar o seguinte, reduzindo
-  ainda mais o tempo total de carregamento de uma página com muitos
-  recursos.
+::: {.callout-note}
+As estratégias concretas usadas pelos *browsers* para atenuar este
+custo, ligações paralelas, persistentes e em rajada, estão descritas na
+@sec-apE-ligacoes.
+:::
 
 ## Gestão de Estado: Cookies e Sessões {#sec-07-estado}
 
 Apesar de o HTTP ser, por natureza, *stateless*, o comportamento mais
 comum na Web é precisamente o oposto: um sítio de comércio eletrónico
-precisa de saber que artigos um utilizador colocou no seu carrinho, e um
-sistema de autenticação precisa de reconhecer um utilizador já
-autenticado, sem lhe pedir a palavra-passe em cada página que visita.
+precisa de saber que artigos um utilizador colocou no seu carrinho, e a
+Contraponto, por exemplo, precisaria de reconhecer um leitor que já
+comentou antes, sem lhe pedir de novo o nome em cada comentário.
 
 Antigamente, este seguimento de utilizador podia ser feito com base no
-endereço IP do cliente: se um pedido vinha de um determinado IP, o
-servidor assumia tratar-se sempre da mesma sessão. Com a popularização
-do `NAT` (*Network Address Translation*), esta abordagem deixou de
-funcionar: numa rede doméstica típica, vários dispositivos, cada um com
-o seu IP privado, partilham um único IP público perante o resto da
-Internet, pelo que pedidos de utilizadores completamente diferentes
-podem chegar ao servidor com o mesmo endereço IP de origem.
+endereço IP do cliente; com a popularização de redes onde vários
+dispositivos partilham um único IP público perante o resto da Internet
+(`NAT`, *Network Address Translation*), essa abordagem deixou de ser
+fiável, já que pedidos de utilizadores completamente diferentes podem
+chegar ao servidor com o mesmo endereço IP de origem.
 
 Surgiram então duas soluções, complementares, para manter o estado de
 uma sessão entre pedidos sucessivos: cookies e sessões.
 
 ### Cookies {#sec-07-cookies}
 
-Os *cookies* estão definidos na norma `RFC 6265`, *HTTP State Management
-Mechanism*. Funcionam da seguinte forma: na primeira vez que um
-utilizador acede a um sítio, o servidor pode enviar-lhe um *cookie*
-através de um cabeçalho da resposta `HTTP`. A partir desse momento, o
-*browser* passa a incluir esse *cookie* em todos os pedidos seguintes a
-esse mesmo servidor, permitindo-lhe reconhecer o cliente.
+Um *cookie* é um pequeno pedaço de informação que o servidor pede ao
+*browser* para guardar, inserido num cabeçalho da resposta `HTTP`, e
+que o *browser* passa a incluir automaticamente em todos os pedidos
+seguintes a esse mesmo servidor, permitindo a este reconhecer o cliente:
 
-```
+```bash
 HTTP/1.1 200 OK
-Set-Cookie: GUID=00b38b9a6f949a8df5476999c876789e; domain=.msn.com; path=/
+Set-Cookie: sessao=00b38b9a6f949a8df5476999c876789e; Path=/
 ```
 
-A partir daqui, o *browser* passa a enviar este cabeçalho em todos os
-pedidos seguintes a esse servidor:
-
-```
-GET http://www.msn.com HTTP/1.1
-Host: msn.com
-Cookie: GUID=00b38b9a6f949a8df5476999c876789e;
-```
-
-Um servidor pode definir vários *cookies* ao mesmo tempo, cada um com o
-seu próprio significado, por exemplo um identificador de sessão e a
-língua preferida do utilizador:
-
-```
-HTTP/1.1 200 OK
-Set-Cookie: SID=31d4d96e407aad42; Path=/; Secure; HttpOnly
-Set-Cookie: lang=pt-PT; Path=/; Domain=example.com
-```
-
-Um *cookie* definido pelo servidor pode incluir vários atributos, para
-além do par nome-valor:
-
-- **`Expires`** ou **`Max-Age`**: definem quando o *cookie* deve
-  expirar (uma data concreta, ou um número de segundos, respetivamente);
-  se ambos forem definidos, prevalece o `Max-Age`. Sem nenhum dos dois,
-  o *cookie* expira quando o *browser* é fechado;
-- **`Domain`** e **`Path`**: restringem a que *host* e a que pasta do
-  servidor o *cookie* é enviado;
-- **`Secure`**: o *browser* só envia este *cookie* por um canal seguro,
-  `HTTPS`;
-- **`HttpOnly`**: o *cookie* só é trocado entre *browser* e servidor,
-  sem ficar acessível a código JavaScript do lado do cliente, uma
-  proteção importante contra ataques de *XSS*, tema do @sec-09-codigo-proprio.
-
-Para apagar um *cookie*, o servidor reenvia-o com uma data de expiração
-já no passado; a partir desse momento, o *browser* deixa de o incluir
-nos pedidos seguintes. Note-se ainda que os *cookies*, por si só, não
-constituem autenticação: apenas permitem reconhecer que um pedido vem do
-mesmo *browser* que recebeu o *cookie* anteriormente, e têm uma
-limitação de 4kB de informação cada. Em PHP, um *cookie* cria-se com a
-função `setcookie()`:
+Em PHP, um *cookie* cria-se com a função `setcookie()`:
 
 ```php
 <?php
-setcookie(
-    "utilizador",   // nome
-    "joao",         // valor
-    time() + 3600,  // expira em 1 hora
-    "/",            // path
-    "",             // domain
-    true,           // secure
-    true            // httponly
-);
+setcookie("utilizador", "joao", time() + 3600);
 ```
+Um *cookie*, por si só, não constitui autenticação: apenas permite
+reconhecer que um pedido vem do mesmo *browser* que o recebeu
+anteriormente.
+
+::: {.callout-note}
+Os atributos que controlam a validade, o âmbito e a segurança de um
+*cookie* (`Expires`, `Domain`, `Secure`, `HttpOnly`, entre outros), bem
+como a norma que os define, estão detalhados na @sec-apE-cookies.
+:::
 
 ### Sessões {#sec-07-sessoes}
 
@@ -419,9 +355,9 @@ seguinte.
 
 Com o `HTTP` e as supervariáveis, o sítio da Contraponto deixa
 finalmente de depender de dados simulados. O desafio, a partir do
-ficheiro de arranque do @sec-05-desafio, é:
+ficheiro de arranque da @sec-05-desafio, é:
 
-1. Substituir a variável fixa `$categoria_escolhida`, usada no
+1. Substituir a variável fixa `$categoria_escolhida`, usada na
    @sec-04-desafio para simular o filtro, pelo valor real de
    `$_GET["categoria"]`, com `isset()` a tratar o caso de nenhuma
    categoria ser indicada;
@@ -429,12 +365,12 @@ ficheiro de arranque do @sec-05-desafio, é:
    apontam para `index.php?categoria=Cultura`,
    `index.php?categoria=Tecnologia`, etc.), que a listagem de artigos
    muda de facto consoante a categoria escolhida no *browser*;
-3. Tratar a submissão do formulário de comentário esboçado no
-   @sec-03-projeto: verificar se `$_SERVER["REQUEST_METHOD"]` é
+3. Tratar a submissão do formulário de comentário, já incluído no
+   ficheiro de arranque: verificar se `$_SERVER["REQUEST_METHOD"]` é
    `"POST"` e, nesse caso, ler `$_POST["nome"]` e `$_POST["texto"]`,
    mostrando uma mensagem de confirmação ao leitor.
 
-O ficheiro de arranque está disponível no @sec-apC-cap07.
+O ficheiro de arranque está disponível na @sec-apC-cap07.
 
 ## Referências {#sec-07-referencias .unnumbered}
 

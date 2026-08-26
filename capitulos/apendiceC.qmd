@@ -8,7 +8,7 @@ lang: pt-PT
 ## Introdução {#sec-apC-intro}
 
 No final de cada capítulo, uma secção "Desafio" propõe um pequeno
-exercício que aplica, ao projeto da Revista Contraponto apresentado no
+exercício que aplica, ao projeto da Revista Contraponto apresentado na
 @sec-03-projeto, apenas as ferramentas da linguagem já vistas até esse
 ponto do livro. Este apêndice reúne o ficheiro de arranque de cada um
 desses desafios, com parte do código já escrito e o resto assinalado
@@ -18,8 +18,8 @@ zero.
 
 ## Desafio do Capítulo 3: Completar o Catálogo de Artigos {#sec-apC-cap03}
 
-Ficheiro de arranque para o desafio do @sec-03-desafio. Os dois
-primeiros artigos já estão completos, seguindo o mesmo formato usado no
+Ficheiro de arranque para o desafio da @sec-03-desafio. Os dois
+primeiros artigos já estão completos, seguindo o mesmo formato usado na
 @sec-03-arrays; os restantes pontos ficam por completar.
 
 ```php
@@ -60,7 +60,7 @@ $artigos = array(
 
 ## Desafio do Capítulo 4: Listar e Filtrar Artigos {#sec-apC-cap04}
 
-Ficheiro de arranque para o desafio do @sec-04-desafio. O array
+Ficheiro de arranque para o desafio da @sec-04-desafio. O array
 `$artigos`, aqui já completo com cinco artigos, dá continuidade ao
 catálogo do desafio anterior; o trabalho deste capítulo é percorrê-lo e
 filtrá-lo, não voltar a construí-lo.
@@ -114,30 +114,39 @@ $artigos = array(
 
 ## Desafio do Capítulo 5: Função de Formatação e Includes {#sec-apC-cap05}
 
-Ficheiro de arranque para o desafio do @sec-05-desafio. O `header.php` e
-o `footer.php` já vêm prontos, com um cabeçalho e um rodapé simples do
-sítio; o `index.php` retoma o catálogo `$artigos` e o filtro por
-categoria do desafio anterior, faltando apenas a função
-`formatarArtigo()` e a sua integração no `foreach`.
+Ficheiro de arranque para o desafio da @sec-05-desafio. O `header.php` e
+o `footer.php` ficam por escrever, com um exemplo de estrutura sugerido
+em comentário, para orientar; o `index.php` retoma o catálogo
+`$artigos` e o filtro por categoria do desafio anterior, faltando
+apenas a função `formatarArtigo()` e a sua integração no `foreach`.
 
 ```php
 <!-- header.php -->
-<header>
-    <h1>Contraponto</h1>
-    <nav>
-        <a href="index.php">Início</a> |
-        <a href="index.php?categoria=Cultura">Cultura</a> |
-        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
-        <a href="index.php?categoria=Música">Música</a>
-    </nav>
-</header>
+<!-- TODO: escrever aqui um cabeçalho simples para o sítio da
+     Contraponto, com o nome da revista e um menu de navegação por
+     categoria. Exemplo de estrutura possível:
+
+     <header>
+         <h1>Contraponto</h1>
+         <nav>
+             <a href="index.php">Início</a> |
+             <a href="index.php?categoria=Cultura">Cultura</a> |
+             <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+             <a href="index.php?categoria=Música">Música</a>
+         </nav>
+     </header>
+-->
 ```
 
 ```php
 <!-- footer.php -->
-<footer>
-    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
-</footer>
+<!-- TODO: escrever aqui um rodapé simples para o sítio da Contraponto,
+     por exemplo com os direitos de autor:
+
+     <footer>
+         <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+     </footer>
+-->
 ```
 
 ```php
@@ -192,12 +201,13 @@ $artigos = array(
 
 ## Desafio do Capítulo 7: Pedidos Reais com GET e POST {#sec-apC-cap07}
 
-Ficheiro de arranque para o desafio do @sec-07-desafio. O `header.php` e
-o `footer.php` mantêm-se iguais aos do capítulo anterior; o `index.php`
-já tem a função `formatarArtigo()` completa, tal como resolvida no
-@sec-05-desafio, faltando apenas substituir a variável fixa pelo valor
-real de `$_GET["categoria"]`, e tratar a submissão do formulário de
-comentário.
+Ficheiro de arranque para o desafio da @sec-07-desafio. O `header.php` e
+o `footer.php` aparecem aqui já completos, tal como ficariam depois de
+resolvido o desafio anterior; o `index.php` já tem a função
+`formatarArtigo()` completa, tal como resolvida na @sec-05-desafio, e
+já inclui o formulário HTML de comentário, faltando apenas substituir a
+variável fixa pelo valor real de `$_GET["categoria"]`, e tratar a
+submissão desse formulário.
 
 ```php
 <!-- header.php -->
@@ -227,9 +237,10 @@ comentário.
 // 1. Substituir a linha de $categoria_escolhida pelo valor real de
 //    $_GET["categoria"], com isset() a tratar o caso de não existir
 //    (nesse caso, mostrar todos os artigos);
-// 2. Tratar a submissão do formulário de comentário: verificar se
-//    $_SERVER["REQUEST_METHOD"] é "POST" e, nesse caso, mostrar uma
-//    mensagem de confirmação com $_POST["nome"] e $_POST["texto"].
+// 2. Tratar a submissão do formulário de comentário, já incluído mais
+//    abaixo: verificar se $_SERVER["REQUEST_METHOD"] é "POST" e, nesse
+//    caso, mostrar uma mensagem de confirmação com $_POST["nome"] e
+//    $_POST["texto"].
 
 function formatarArtigo($artigo) {
     return $artigo["titulo"] . " — por " . $artigo["autor"];
@@ -274,7 +285,155 @@ foreach ($artigos as $artigo) {
     }
 }
 
-// TODO 2: tratar a submissão do formulário de comentário, por POST
+// TODO 2: tratar a submissão do formulário de comentário abaixo, por POST
+?>
+
+<form action="index.php" method="POST">
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" type="text" />
+    <label for="texto">Comentário</label>
+    <textarea id="texto" name="texto"></textarea>
+    <input type="submit" value="Comentar" />
+</form>
+
+<?php
+require "footer.php";
+```
+
+## Desafio do Capítulo 8: Migrar o Catálogo para uma Base de Dados {#sec-apC-cap08}
+
+Ficheiro de arranque para o desafio da @sec-08-desafio. O `header.php` e
+o `footer.php` mantêm-se iguais aos dos capítulos anteriores; o
+`config.php` já estabelece a ligação ao MySQL, faltando criar a base de
+dados e a tabela; o `seed.php` retoma o catálogo `$artigos` de sempre,
+para o migrar, uma única vez, para a tabela; e o `index.php` ainda
+percorre o array em memória, tal como no desafio anterior, faltando
+substituir esse `foreach` por uma consulta à base de dados.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Contraponto</h1>
+    <nav>
+        <a href="index.php">Início</a> |
+        <a href="index.php?categoria=Cultura">Cultura</a> |
+        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+        <a href="index.php?categoria=Música">Música</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+</footer>
+```
+
+```php
+<!-- config.php -->
+<?php
+$conexao = new mysqli("localhost", "utilizador", "password", "contraponto");
+
+if ($conexao->connect_error) {
+    die("Ligação falhou: " . $conexao->connect_error);
+}
+```
+
+```php
+<!-- seed.php: script único para migrar o catálogo original para a tabela -->
+<?php
+// Desafio do Capítulo 8: migrar o catálogo de artigos para o MySQL
+//
+// 1. Criar a base de dados contraponto e a tabela artigos, com a
+//    estrutura definida na Secção 8.5;
+// 2. Percorrer $artigos com foreach, inserindo cada um na tabela
+//    artigos através de um prepared statement. Este ficheiro só
+//    precisa de ser executado uma vez.
+
+require "config.php";
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1: criar a base de dados contraponto e a tabela artigos, se
+// ainda não existirem
+
+
+// TODO 2: percorrer $artigos com foreach, inserindo cada um na tabela
+// artigos através de um prepared statement
+```
+
+```php
+<!-- index.php -->
+<?php
+require "config.php";
+
+$categoria_escolhida = $_GET["categoria"] ?? null;
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+require "header.php";
+
+// TODO 3: substituir este bloco por uma consulta à tabela artigos, com
+// um prepared statement, filtrando por $categoria_escolhida quando
+// esta existir, e devolvendo todos os artigos quando não existir
+foreach ($artigos as $artigo) {
+    if ($categoria_escolhida === null || $artigo["categoria"] === $categoria_escolhida) {
+        echo "<p>" . $artigo["titulo"] . " — por " . $artigo["autor"] . "</p>";
+    }
+}
 
 require "footer.php";
 ```

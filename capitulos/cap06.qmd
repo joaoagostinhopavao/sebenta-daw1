@@ -5,35 +5,42 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap06.jpg');">
+  <div class="hero-badge">Capítulo 6</div>
+  <h1>Modelos de Comunicação e Redes</h1>
+</div>
+```
+
 ## Porque Organizar a Comunicação em Camadas? {#sec-06-porque-camadas}
 
-Antes de um pedido HTTP, tema do próximo capítulo, poder sair do
-*browser* e chegar a um servidor, é preciso que uma pilha inteira de
-protocolos funcione corretamente por baixo dele: encontrar o endereço
-do servidor, estabelecer uma ligação fiável, converter os dados em
-sinais elétricos ou impulsos de rádio, e fazer tudo isto sem que quem
-escreve uma aplicação web precise de pensar em nenhum destes detalhes.
-Esta separação é conseguida organizando a comunicação em rede em
-camadas.
+Antes de um leitor da Contraponto conseguir sequer ver a página inicial da revista, o pedido que o *browser* envia ao servidor só lá chega depois de uma série de operações:
 
-Numa arquitetura em camadas, cada camada é um módulo que depende das
-camadas abaixo de si, e é completamente independente das camadas acima
-de si. Cada camada presta um **serviço** à camada imediatamente
-superior, sem que esta precise de saber como esse serviço é
-implementado por baixo. Esta organização pode ser usada em modo
-estrito, em que cada camada só comunica com a camada imediatamente
-abaixo de si, ou num modo mais flexível, em que uma camada pode aceder
-a qualquer uma das camadas inferiores.
+- encontrar o endereço do servidor da revista;
+- determinar o caminho que os dados têm de percorrer até lá;
+- estabelecer uma ligação fiável;
+- converter os dados em sinais elétricos ou impulsos de rádio.
 
-A vantagem principal desta organização é a independência entre
-camadas: o protocolo HTTP, na camada de aplicação, não precisa de saber
-se os dados vão viajar por um cabo de cobre, por fibra ótica ou por
-Wi-Fi, isso é um problema das camadas inferiores; e a camada responsável
-pelo meio físico não precisa de perceber nada de HTTP, apenas de
-transportar bits de um lado para o outro. Isto permite que cada camada
-evolua, seja substituída ou seja otimizada de forma independente das
-restantes, desde que o serviço que presta às camadas acima de si se
-mantenha o mesmo.
+Este conjunto de operações é regido por regras que governa cada uma destas operações — o formato das mensagens, a ordem das trocas, o tratamento de erros — é precisamente o que se chama um protocolo de comunicação. Sem ele, dois dispositivos não conseguem entender-se.
+
+O *browser* faz tudo isto sem que o Tiago, do lado do servidor, precise de pensar em nenhum destes detalhes. Antes de um pedido poder sair do *browser* e chegar a um servidor, há uma pilha inteira de protocolos que tem de funcionar corretamente por baixo dessa comunicação.
+
+O que é, exatamente, um **protocolo**? E o que é uma pilha protocolar? Um **protocolo** é um conjunto de regras acordadas entre duas partes (dois dispositivos) que querem comunicar: define o formato exato das mensagens trocadas e a ordem em que devem ser enviadas, para que ambas se entendam sem ambiguidade. Pode pensar-se num protocolo como um contrato entre dois dispositivos remotos numa rede, que define as regras de como eles vão comunicar à distância.
+
+Nenhum protocolo, sozinho, resolve todos os problemas de fazer uma mensagem chegar de um computador a outro: são precisos vários, cada um a tratar de uma parte diferente do problema, as mesmas quatro operações já referidas acima.
+
+Esse conjunto de protocolos está organizado de modo a que cada um, quando precisa de uma funcionalidade oferecida por outro, recorra a esse outro protocolo para a obter. Essa relação define uma hierarquia em que os protocolos que usam outros estão "em cima" e os que são usados estão "em baixo". Chama-se a este arranjo uma **pilha protocolar** (*protocol stack*), ou arquitetura em camadas.
+
+É esta pilha, e não um único protocolo isolado, que o pedido do leitor da Contraponto tem de atravessar, sem que o utilizador disso se aperceba, antes de sequer chegar ao servidor.
+
+Numa arquitetura em camadas, cada camada é um módulo que depende das camadas abaixo de si, mas é completamente independente das camadas acima de si: só precisa de saber como usar a camada imediatamente abaixo dela, não como funcionam as camadas acima. Isto permite que cada uma seja desenvolvida, otimizada ou substituída de forma independente das restantes, desde que o serviço que presta às camadas acima de si se mantenha o mesmo. A esse serviço que uma camada presta à camada imediatamente superior, sem que esta precise de saber como é implementado por baixo, chama-se precisamente um **serviço**.
+
+Um **serviço**, tal como um protocolo, também pode ser pensado como uma espécie de contrato, mas com uma diferença essencial: um protocolo é um contrato entre dois dispositivos remotos, que define como eles comunicam à distância; um serviço é um contrato entre camadas dentro de um mesmo dispositivo, que define como funcionam entre si, localmente. Ou seja, um serviço tem uma ação local, enquanto um protocolo tem uma ação remota.
+
+![Protocolos (setas horizontais) ligam camadas correspondentes em
+dispositivos diferentes; serviços (setas verticais) ligam camadas
+adjacentes dentro do mesmo
+dispositivo.](../assets/images/cap06/protocolo-vs-servico.png){#fig-06-protocolo-servico width="70%"}
 
 ## Os Dois Modelos: OSI e TCP/IP {#sec-06-osi-tcpip}
 
@@ -49,12 +56,15 @@ comunicação em camadas, com origens diferentes:
   jure* (por lei, ou seja, formalmente instituído).
 - **TCP/IP** (também chamado modelo DoD, por ter as suas origens no
   Departamento de Defesa dos EUA): um modelo mais simples, com apenas
-  quatro camadas, aplicação, transporte, rede e acesso à rede, que
+  quatro camadas, aplicação, transporte, rede (ou internet) e acesso à rede, que
   nasceu diretamente da implementação prática da ARPANET, a precursora
   da Internet. Por se ter tornado o modelo efetivamente usado, através
   da sua adoção generalizada, antes de qualquer normalização formal
   internacional, o TCP/IP é conhecido como o padrão *de facto* (de
   facto, ou seja, imposto pela prática e pelo uso corrente).
+
+![O modelo OSI, com as suas sete camadas, da aplicação (a mais próxima
+do utilizador) até à física (o meio de transmissão em si).](../assets/images/cap06/Mix_ modelo-osi + modelo-TCP-IP.png){#fig-06-modelo-osi width="45%"}
 
 Na prática, a Internet de hoje funciona sobre o modelo TCP/IP, não sobre
 o OSI: o OSI continua a ser usado, sobretudo, como ferramenta pedagógica,
@@ -70,30 +80,15 @@ interessam sobretudo três camadas do modelo TCP/IP:
 - **Rede**: responsável por encaminhar os dados entre redes diferentes,
   até ao seu destino, através do protocolo `IP`.
 
-## Serviços e Protocolos {#sec-06-servicos-protocolos}
+Cada uma destas camadas comunica com a sua camada par (no dispositivo remoto) através de um **protocolo** (como se viu na @fig-06-protocolo-servico): um
+conjunto de regras que define como os dados são trocados entre duas
+entidades da mesma camada, uma do lado do cliente e outra do lado do
+servidor. É o protocolo da camada de Aplicação do modelo TCP/IP, conhecido como `HTTP`, que define as regras de como um
+*browser* pede uma página a um servidor. O `HTTP`será o tema a estudar no próximo capítulo. 
 
-Dois conceitos são centrais para perceber como as camadas comunicam
-entre si: serviços e protocolos.
-
-Um **serviço** representa um conjunto de funções oferecidas a um
-utilizador por um fornecedor. Esse serviço é disponibilizado através de
-**Pontos de Acesso ao Serviço** (*SAPs*, *Service Access Points*): da
-perspetiva de quem usa o serviço, todas as suas características ficam
-completamente definidas pela interface no SAP, o que significa que quem
-fornece o serviço pode ser tratado como uma entidade completamente
-abstrata, sem que se precise de saber como esse serviço é implementado
-por dentro. É exatamente este princípio que permite a um programador de
-aplicações web usar o TCP sem precisar de perceber como este garante,
-internamente, a entrega fiável dos dados.
-
-Um **protocolo**, por sua vez, é uma família de normas para a troca de
-informação: um conjunto de regras que definem as ligações físicas, os
-formatos de dados, os modelos de transmissão, e os meios usados para
-assegurar a correção de erros e falhas na transmissão de dados. Enquanto
-o serviço descreve *o quê* uma camada oferece à camada acima de si, o
-protocolo descreve *como* duas entidades da mesma camada, uma do lado do
-cliente e outra do lado do servidor, comunicam entre si para
-implementar esse serviço.
+::: {.callout-note}
+Para ver que outros protocolos reais correm em cada camada, e o formalismo mais preciso por trás da distinção entre serviço e protocolo, ver a @sec-apD-protocolos-camada e a @sec-apD-servicos-protocolos.
+:::
 
 ## O Percurso dos Dados: Encapsulamento {#sec-06-encapsulamento}
 
@@ -101,115 +96,138 @@ Quando uma aplicação envia dados, estes atravessam cada camada do
 modelo TCP/IP, e cada camada acrescenta a sua própria informação de
 controlo, num processo chamado encapsulamento. Vale a pena seguir este
 percurso passo a passo, das camadas superiores até ao meio físico.
+ 
+A figura seguinte resume todo o percurso: os dados de uma mensagem
+`HTTP` saem da camada de aplicação, passam por um *socket* (o ponto de ligação entre a camada de aplicação e a pilha protocolar), e descem as camadas
+de transporte, rede e ligação, cada uma aplicando o seu protocolo e encapsulando os dados que recebe da camada superior, até chegarem à placa de rede (`NIC`,
+*Network Interface Controller*) que os converte, finalmente, num sinal
+elétrico ou de rádio:
+
+![O percurso dos dados desde a aplicação até ao meio físico, camada a
+camada, até à placa de rede
+(NIC).](../assets/images/cap06/emissao-dos-dados-com-nic.png){#fig-06-emissao-nic width="55%"}
+
+::: {.callout-note}
+Não confundir a **camada de aplicação** com a **aplicação** em si: a camada de aplicação é apenas uma das camadas do modelo TCP/IP, que define como os dados são trocados entre duas aplicações remotas; a aplicação é o programa que o utilizador usa diretamente, como um *browser* ou um *email client*, que usa a camada de aplicação para enviar e receber dados. Na @fig-06-emissao-nic o *browser* ou o *email client* estão representados pelo retângulo **DADOS**, que é a aplicação que envia os dados. 
+:::
 
 ### A Camada de Transporte: TCP {#sec-06-tcp}
 
 O *payload* (nome técnico dado aos dados, neste caso, por exemplo, uma
-mensagem HTTP) é passado à camada de transporte pela aplicação, através
-de um *socket*. É-lhe adicionado um cabeçalho `TCP`, cuja informação
-mais importante são as **portas de origem e de destino**. As portas
-variam entre 0 e 65535, e as chamadas *well-known ports*, entre 0 e
-1023, estão reservadas para serviços conhecidos, como:
+mensagem HTTP) é passado à camada de transporte pela camada de aplicação, através
+de um *socket*, que lhe acrescenta um cabeçalho `TCP` com as **portas
+de origem e de destino**. São dois endereços que permitem identificar as **aplicações** que estão a enviar e receber os dados - um *browser* ou um *email client*.
 
-- **80**: HTTP;
-- **443**: HTTPS;
-- **21**: FTP;
-- **23**: Telnet;
-- **25**: SMTP (correio eletrónico).
+As portas variam entre 0 e 65535, e as
+chamadas *well-known ports*, entre 0 e 1023, estão reservadas para
+serviços conhecidos, como a porta 80 para o HTTP ou a 443 para o
+HTTPS. A @tbl-06-portas-comuns mostra as portas mais comuns para alguns
+protocolos conhecidos.
 
-Quando o conjunto de dados a enviar é muito extenso, o TCP divide-o em
-segmentos, cada um com um comprimento máximo de 64kB, e atribui a cada
-segmento um número sequencial. O TCP do lado recetor pode assim ordenar
-os segmentos pela ordem correta, verificar se todos chegaram, e montar
-de novo o conjunto de dados original, mesmo que os segmentos tenham
-chegado fora de ordem pela rede.
+| Porta | Protocolo | Serviço |
+|-------|-----------|---------|
+| 80    | HTTP      | Páginas web (sem cifragem) |
+| 443   | HTTPS     | Páginas web (com cifragem TLS) |
+| 21    | FTP       | Transferência de ficheiros |
+| 25    | SMTP      | Envio de correio eletrónico |
+| 53    | DNS       | Resolução de nomes de domínio |
 
-Sempre que o TCP recetor recebe um segmento, confirma ao TCP emissor que
-o recebeu, indicando o seu número sequencial; esta confirmação pode ser
-feita segmento a segmento, ou em grupos de vários segmentos de cada vez.
-Se um determinado segmento não for confirmado dentro de um prazo, o TCP
-emissor volta a enviá-lo, o que garante a entrega fiável dos dados,
-mesmo que a rede por baixo perca ocasionalmente algum pacote.
+: Portas *well-known* de alguns protocolos comuns. {#tbl-06-portas-comuns}
 
-O TCP usa ainda um mecanismo de **janela** (*window*) para controlar o
-fluxo e a congestão: uma janela é um conjunto de segmentos que pode ser
-enviado de uma só vez, por exemplo 100 segmentos, sem esperar por uma
-confirmação individual de cada um antes de enviar o seguinte. Se o
-recetor demorar muito tempo a confirmar a receção, ou se a rede
-começar a apresentar sinais de congestionamento, o tamanho da janela é
-reduzido automaticamente, diminuindo a velocidade de envio; quando a
-rede volta a estar livre, o tamanho da janela aumenta de novo. Desta
-forma, o TCP ajusta-se sozinho às condições da rede em cada momento,
-sem que a aplicação que o usa precise de fazer nada.
+O TCP garante ainda que os dados chegam de forma fiável e pela
+ordem correta: divide-os em segmentos numerados, e reenvia qualquer
+segmento que não seja confirmado pelo recetor dentro de um espaço de tempo bem determinado.
+
+::: {.callout-note}
+A
+estrutura exata do cabeçalho TCP, e os mecanismos que garantem essa
+fiabilidade, são aprofundados na @sec-apD-tcp, para os alunos mais curiosos.
+:::
+
+
 
 ### A Camada de Rede: IP {#sec-06-ip}
 
-A seguir, os dados passam para a camada de rede (a camada Internet), à
-qual é adicionado um cabeçalho `IP`. A informação mais importante deste
-cabeçalho são os **endereços IP de origem e de destino**. Um endereço
-`IPv4` tem a forma `(0-255).(0-255).(0-255).(0-255)`, como em
-`192.168.24.36`; um mesmo computador pode ter vários endereços IP, um
-por cada interface de rede que possuir.
+A seguir, os dados passam para a camada de rede, à qual é adicionado
+um cabeçalho `IP` com os **endereços IP de origem e de destino**. Um
+endereço `IPv4` tem a forma `(0-255).(0-255).(0-255).(0-255)`, como em
+`192.168.24.36`; este endereço indentifica cada computador mesmo que estejam em redes diferentes.
 
-O cabeçalho IP inclui ainda vários outros campos com funções
-específicas, entre os quais se destacam:
+Um mesmo computador pode ter vários endereços IP, um
+por cada interface de rede que possuir. É o exemplo da @fig-06-emissao-nic em que há dois dispositivos de rede: a placa de rede Wi-Fi e a placa de rede Ethernet, cada uma com o seu próprio endereço IP.
 
-- **Número de saltos** (*TTL*, *Time To Live*): o número máximo de
-  saltos (passagens por um *router*) que um pacote pode dar antes de
-  ser descartado, um mecanismo de segurança para evitar que um pacote
-  mal encaminhado circule indefinidamente pela rede;
-- **Fragmentação**: cada rede tem um tamanho máximo de pacote que
-  consegue transportar (o *MTU*, *Maximum Transmission Unit*); se um
-  pacote IP ultrapassar esse tamanho, é fragmentado em partes menores,
-  um processo realizado pelos nós intermédios da rede;
-- **Protocolo**: indica se o conteúdo do pacote, na sua secção de
-  dados, é um segmento TCP ou um datagrama UDP, informando a camada de
-  transporte, do lado recetor, como deve interpretar o que se segue.
+::: {.callout-note}
+A estrutura completa do cabeçalho IP é aprofundada na
+@sec-apD-ip.
+:::
 
 ### A Camada de Ligação: Ethernet e Endereços MAC {#sec-06-ethernet}
 
 Depois da camada de rede vem a camada de ligação de dados, cuja tarefa
 é entregar um pacote a uma máquina dentro da mesma rede local. Esta
-camada adiciona os **endereços MAC** de origem e de destino, formando
+camada adiciona os **endereços MAC** (MAC significa Medium Access Control) de origem e de destino, formando
 uma trama (*frame*), tipicamente segundo a norma `IEEE 802.3` (Ethernet)
-ou o equivalente para redes sem fios.
+ou o equivalente para redes sem fios. Estes endereços apenas identificam dispositivos **dentro da mesma rede** local, e são atribuídos pelo fabricante da placa de rede, sendo únicos em todo o mundo. Um endereço MAC tem a forma `XX:XX:XX:XX:XX:XX`, como em `00:1A:2B:3C:4D:5E`.  
+
+::: {.callout-note}
+A estrutura completa de uma trama
+Ethernet é aprofundada na @sec-apD-ethernet.
+:::
 
 ### O Meio Físico {#sec-06-fisico}
 
 Por fim, na camada física, os bits são convertidos em sinais elétricos,
 impulsos de luz (fibra ótica) ou ondas de rádio (Wi-Fi), e transmitidos
-pelo canal físico correspondente. É apenas neste último passo que os
-dados deixam, de facto, de ser informação abstrata e passam a ser um
-sinal físico a viajar por um cabo ou pelo ar.
+pelo canal físico correspondente. Do lado recetor, este processo
+acontece exatamente ao contrário, camada a camada, até restarem apenas
+os dados originais da aplicação; o percurso completo, em ambas as
+direções, é aprofundado na @sec-apD-recepcao e na @sec-apD-vista-conjunto.
 
-### A Receção dos Dados {#sec-06-recepcao}
+Todos estes endereços não são abstrações teóricas: qualquer
+computador, telemóvel ou tablet ligado a uma rede tem, nesse preciso
+momento, um endereço MAC e um endereço IP atribuídos, visíveis nas
+suas próprias definições de rede. A captura de ecrã seguinte mostra as
+definições de Wi-Fi de um iPhone ligado à rede `eduroam`, com o seu
+endereço MAC (identificado como "Endereço Wi-Fi"), o seu endereço IP,
+a máscara de sub-rede e o endereço do *router*:
 
-Do lado recetor, este processo acontece exatamente ao contrário, camada
-a camada: a camada física deteta um sinal com o endereço Ethernet
-correspondente à interface de rede local, e passa a informação à camada
-de ligação; esta verifica se o endereço MAC de destino é o seu e, em
-caso afirmativo, passa a informação à camada de rede; esta verifica se
-o endereço IP de destino é o seu e, em caso afirmativo, passa a
-informação à camada de transporte; e esta, por fim, verifica se existe
-alguma aplicação registada na porta de destino indicada e, em caso
-afirmativo, entrega-lhe finalmente os dados. Cada camada remove o
-cabeçalho que a camada correspondente lhe tinha acrescentado do lado do
-emissor, até restarem apenas os dados originais da aplicação.
+![As definições de Wi-Fi de um telemóvel mostram, na prática, o
+endereço MAC e o endereço IP atribuídos a esse
+dispositivo.](../assets/images/cap06/exemplo-iphone-wifi.png){#fig-06-exemplo-iphone width="35%"}
+
+A @tbl-06-enderecos-camada resume os diferentes tipos de endereço acrescentados ao longo do percurso dos dados, desde a aplicação até ao meio físico: cada camada do modelo TCP/IP junta o seu próprio endereço, e cada um identifica uma coisa diferente.
+
+| Camada      | Protocolo  | Endereço de origem            | Endereço de destino            |
+|-------------|------------|--------------------------------|---------------------------------|
+| Transporte  | TCP        | Porta da aplicação que envia  | Porta da aplicação que recebe  |
+| Rede        | IP         | IP do computador que envia    | IP do computador que recebe    |
+| Ligação     | Ethernet   | MAC da placa de rede que envia | MAC da placa de rede que recebe |
+
+: Os diferentes tipos de endereço usados ao longo do percurso dos dados. {#tbl-06-enderecos-camada}
+
+É precisamente por existirem estes três níveis que duas aplicações, em dois computadores diferentes, só conseguem comunicar entre si quando os três endereços estão identificados: a porta, que garante que os dados chegam à aplicação certa, dentro do computador certo; o endereço IP, que garante que chegam ao computador certo, dentro da rede certa; e o endereço MAC, que garante que chegam à placa de rede certa, dentro da rede local. Falta qualquer um destes três, e a comunicação não se completa.
 
 ## Encaminhamento (Routing) {#sec-06-routing}
 
-Quando um computador recebe um pacote cujo endereço IP de destino não é
-o seu, uma de duas coisas pode acontecer: ou assume que houve um
-engano e descarta o pacote, ou, se tiver capacidade para tal,
-reencaminha-o para outra rede. A este segundo tipo de equipamento
-chama-se **router**.
+Até aqui, os dados moveram-se sempre dentro da mesma rede local,
+identificados pelo endereço MAC. Mas a Internet é, no fundo, uma
+enorme rede de redes: milhares de redes locais diferentes, ligadas
+entre si. É essa ligação entre redes que permite, por exemplo, que o
+leitor da Contraponto, a partir de sua casa, consiga chegar ao
+servidor da revista, que está numa rede completamente diferente. O
+equipamento responsável por essa ligação chama-se **router**: a sua
+função é receber pacotes vindos de uma rede e reencaminhá-los para a
+rede seguinte, no caminho certo até ao destino.
 
-Um exemplo típico: alguém, em casa, escreve uma pesquisa no `Google`. O
-pacote formado tem como IP de destino o IP dos servidores do `Google`.
-O *router* de casa recebe esse pacote, reconhece que o IP de destino não
-é o seu, e reencaminha-o para a rede pública; de router em router, de
-salto em salto, o pacote acaba por chegar ao computador de destino, com
-o IP pretendido. Para decidir para onde reencaminhar cada pacote, cada
+Um router reconhece, pelo endereço IP de destino de cada pacote, que
+este não se destina à sua própria rede local, e decide para que rede o
+deve reencaminhar a seguir. Um exemplo típico: alguém, em casa, escreve
+uma pesquisa no `Google`. O pacote formado tem como IP de destino o IP
+dos servidores do `Google`. O *router* de casa recebe esse pacote,
+reconhece que o IP de destino não pertence à sua rede, e reencaminha-o
+para a rede pública; de router em router, de salto em salto, o pacote
+acaba por chegar ao computador de destino, com o IP pretendido. Para
+decidir para onde reencaminhar cada pacote, cada
 router mantém uma **tabela de encaminhamento** (*routing table*), com
 regras que associam destinos possíveis à interface de rede por onde o
 pacote deve seguir.
@@ -223,12 +241,14 @@ Google no exemplo anterior, passa sempre por, pelo menos, um router.
 
 ## Portas, Endereços e URLs {#sec-06-portas-enderecos}
 
-Um endereço como `http://www.utad.pt` esconde, na verdade, duas
+Um endereço como `http://www.utad.pt` esconde, na verdade, várias informações: o protocolo a usar (`http`), o nome do servidor (`www.utad.pt`), opcionalmente, a porta a usar e o recurso a que quer aceder (ou seja, o nome da página web). O *browser* precisa de todas estas
 informações distintas: o endereço do servidor e a porta a usar. Quando
 nenhuma porta é indicada explicitamente, assume-se a porta bem
 conhecida do protocolo em causa, a porta 80 no caso do HTTP, pelo que
 `http://www.utad.pt` e `http://www.utad.pt:80` são, na prática,
 equivalentes.
+
+![O URL escrito na barra de endereços do *browser* é o ponto de partida de todo o percurso descrito neste capítulo.](../assets/images/cap06/pc-com-url.png){#fig-06-pc-url width="55%"}
 
 Como os humanos memorizam mais facilmente texto do que números, o
 endereço escrito num URL tem sempre a forma de um nome de domínio, como
@@ -246,6 +266,8 @@ domínio, e o sistema de nomes responde com o número IP, que o *browser*
 passa então a usar no cabeçalho IP de todos os pacotes seguintes para
 esse destino.
 
+![O sistema de nomes de domínio organiza-se numa hierarquia, do domínio de raiz (`ROOT`) até aos domínios de topo (`TLD`) e aos domínios de cada organização.](../assets/images/cap06/dns.png){#fig-06-dns width="70%"}
+
 O DNS não é, contudo, um único servidor, mas um sistema hierárquico e
 distribuído de servidores, organizado por domínios e subdomínios: um
 servidor pode não saber diretamente o IP de `www.utad.pt`, mas sabe a
@@ -256,22 +278,7 @@ enviado ao servidor de destino, o que faz da resolução DNS um passo
 obrigatório, e por vezes o mais lento, sempre que se acede pela primeira
 vez a um determinado sítio.
 
-## Os Componentes da Web {#sec-06-componentes-web}
-
-Tudo o que foi visto neste capítulo, camadas, encapsulamento, portas,
-endereços e DNS, é a infraestrutura sobre a qual assenta a própria Web.
-A Web, como sistema, assenta em três componentes fundamentais:
-
-- Uma linguagem de apresentação: o `HTML`;
-- Um esquema de endereçamento: o `URI`/`URL`;
-- Um protocolo de comunicação entre cliente e servidor: o `HTTP`.
-
-Um URL (*Uniform Resource Locator*) identifica, de forma única, um
-recurso na Web, combinando o protocolo a usar (`http`, `https`), o nome
-do servidor (que o DNS traduz para um IP), opcionalmente a porta, e o
-caminho para o recurso pretendido dentro desse servidor. É precisamente
-o protocolo HTTP, construído sobre toda a infraestrutura vista neste
-capítulo, que é o tema do próximo.
+![O processo de resolução de `www.utad.pt`: o *browser* pergunta ao servidor de DNS local, que vai perguntando, sucessivamente, ao servidor de raiz, ao servidor do domínio `.pt` e, por fim, ao servidor de `utad.pt`, até obter o endereço IP correspondente.](../assets/images/cap06/dns2.png){#fig-06-dns-resolucao width="90%"}
 
 ## Referências {#sec-06-referencias .unnumbered}
 

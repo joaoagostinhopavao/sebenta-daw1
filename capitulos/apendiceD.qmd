@@ -1,0 +1,197 @@
+---
+title: "Complementos de Redes de Computadores"
+author: "João Pavão"
+date: 2026-08-25
+lang: pt-PT
+---
+
+## Introdução {#sec-apD-intro}
+
+A @sec-06-porque-camadas dá a um programador de aplicações web o que
+precisa de saber sobre redes de computadores para perceber o capítulo
+seguinte e os que se lhe seguem: que a comunicação está organizada em camadas,
+que essas camadas têm nomes e responsabilidades, e que conceitos como
+IP, porta, MAC ou DNS não são abstrações soltas, mas peças concretas
+desse sistema. Este apêndice aprofunda essa matéria além do que é
+estritamente necessário para desenvolver aplicações web, tal como um
+pintor não precisa de saber compor a sua própria tinta para pintar um
+quadro, mas beneficia de perceber como ela é feita. Aqui fica, para
+quem quiser esse aprofundamento, o formalismo completo dos serviços e
+protocolos, a estrutura exata, campo a campo, dos cabeçalhos TCP, IP e
+Ethernet, e o processo completo de encapsulamento no modelo OSI.
+
+## Os Protocolos Reais por Camada {#sec-apD-protocolos-camada}
+
+A @sec-06-osi-tcpip apresenta os dois modelos de referência, OSI e
+TCP/IP, e as três camadas do TCP/IP que mais interessam a um
+programador web. A figura seguinte junta os dois modelos, mostrando
+como as camadas do OSI se agrupam nas quatro camadas do TCP/IP, e
+alguns dos protocolos concretos que correm em cada uma: o `HTTP`,
+usado pela Contraponto, partilha a camada de aplicação com o `SMTP`
+(correio eletrónico), o `FTP` (transferência de ficheiros) ou o `DNS`,
+tema aprofundado na @sec-06-dns; a camada de transporte é dominada
+pelo `TCP` e pelo `UDP`; e a camada de rede pelo `IP`.
+
+![Os dois modelos lado a lado, com os protocolos mais comuns em cada
+camada.](../assets/images/cap06/osi-tcpip-protocolos.png){#fig-apD-osi-tcpip-protocolos width="85%"}
+
+## Serviços e Protocolos {#sec-apD-servicos-protocolos}
+
+Dois conceitos são centrais para perceber, em detalhe, como as camadas
+comunicam entre si: serviços e protocolos.
+
+Um **serviço** representa um conjunto de funções oferecidas a um
+utilizador por um fornecedor. Esse serviço é disponibilizado através de
+**Pontos de Acesso ao Serviço** (*SAPs*, *Service Access Points*): da
+perspetiva de quem usa o serviço, todas as suas características ficam
+completamente definidas pela interface no SAP, o que significa que quem
+fornece o serviço pode ser tratado como uma entidade completamente
+abstrata, sem que se precise de saber como esse serviço é implementado
+por dentro. É exatamente este princípio que permite a um programador de
+aplicações web usar o TCP sem precisar de perceber como este garante,
+internamente, a entrega fiável dos dados.
+
+![À esquerda, o utilizador de um serviço troca mensagens com o
+fornecedor desse serviço através de um SAP, sem conhecer a sua
+implementação interna; à direita, o mesmo princípio aplicado às camadas
+do OSI e do TCP/IP.](../assets/images/cap06/servicos-sap-osi.png){#fig-apD-servicos-sap width="90%"}
+
+Um **protocolo**, por sua vez, é uma família de normas para a troca de
+informação: um conjunto de regras que definem as ligações físicas, os
+formatos de dados, os modelos de transmissão, e os meios usados para
+assegurar a correção de erros e falhas na transmissão de dados. Enquanto
+o serviço descreve *o quê* uma camada oferece à camada acima de si, o
+protocolo descreve *como* duas entidades da mesma camada, uma do lado do
+cliente e outra do lado do servidor, comunicam entre si para
+implementar esse serviço.
+
+## A Estrutura dos Cabeçalhos {#sec-apD-cabecalhos}
+
+A @sec-06-encapsulamento explica que cada camada acrescenta a sua
+própria informação de controlo aos dados, num processo chamado
+encapsulamento, e resume o que cada uma acrescenta: o TCP as portas, o
+IP os endereços, o MAC os endereços físicos. Vale a pena ver, com
+detalhe, a estrutura exata de cada um destes cabeçalhos, campo a campo.
+
+### TCP {#sec-apD-tcp}
+
+O cabeçalho `TCP` inclui, para além das portas de origem e destino, do
+número sequencial e do número de confirmação:
+
+![A estrutura, campo a campo, de um segmento
+TCP.](../assets/images/cap06/segmento-tcp.png){#fig-apD-segmento-tcp width="95%"}
+
+- **Flags**: seis indicadores de um único *bit* cada, que assinalam o
+  papel de um segmento na comunicação. O `SYN` inicia uma nova ligação,
+  o `FIN` termina-a de forma ordeira, o `ACK` assinala que o campo de
+  confirmação é válido, o `RST` interrompe a ligação abruptamente
+  (tipicamente por erro), o `PSH` pede que os dados sejam entregues
+  imediatamente à aplicação, sem esperar para os agrupar com outros, e
+  o `URG` assinala dados urgentes;
+- **Janela** (*Window Size*): o tamanho da janela de controlo de
+  fluxo. Uma janela é um conjunto de segmentos que pode ser enviado de
+  uma só vez, por exemplo 100 segmentos, sem esperar por uma
+  confirmação individual de cada um antes de enviar o seguinte. Se o
+  recetor demorar muito tempo a confirmar a receção, ou se a rede
+  começar a apresentar sinais de congestionamento, o tamanho da janela
+  é reduzido automaticamente, diminuindo a velocidade de envio; quando
+  a rede volta a estar livre, o tamanho da janela aumenta de novo.
+  Desta forma, o TCP ajusta-se sozinho às condições da rede em cada
+  momento, sem que a aplicação que o usa precise de fazer nada;
+- **Checksum**: um valor calculado a partir do conteúdo do segmento,
+  que permite ao recetor detetar se os dados foram corrompidos durante
+  a transmissão;
+- **Opções**: um campo de tamanho variável, usado por extensões do
+  protocolo TCP não previstas no cabeçalho básico.
+
+### IP {#sec-apD-ip}
+
+O cabeçalho `IP` inclui, para além dos endereços de origem e destino:
+
+![A estrutura, campo a campo, de um pacote
+IP.](../assets/images/cap06/pacote-ip.png){#fig-apD-pacote-ip width="95%"}
+
+- **Versão**: o protocolo IP em uso (`4` ou `6`);
+- **IHL** (*Internet Header Length*): o comprimento do próprio
+  cabeçalho, já que este pode variar consoante as opções presentes;
+- **Comprimento total** do pacote;
+- **Identificação**: um número usado para associar entre si todos os
+  fragmentos resultantes de um mesmo pacote original, quando este é
+  fragmentado;
+- **Número de saltos** (*TTL*, *Time To Live*): o número máximo de
+  saltos (passagens por um *router*) que um pacote pode dar antes de
+  ser descartado, um mecanismo de segurança para evitar que um pacote
+  mal encaminhado circule indefinidamente pela rede;
+- **Fragmentação**: cada rede tem um tamanho máximo de pacote que
+  consegue transportar (o *MTU*, *Maximum Transmission Unit*); se um
+  pacote IP ultrapassar esse tamanho, é fragmentado em partes menores,
+  um processo realizado pelos nós intermédios da rede;
+- **Protocolo**: indica se o conteúdo do pacote, na sua secção de
+  dados, é um segmento TCP ou um datagrama UDP, informando a camada de
+  transporte, do lado recetor, como deve interpretar o que se segue.
+
+### Ethernet {#sec-apD-ethernet}
+
+Uma trama Ethernet completa, segundo a norma `IEEE 802.3`, tem a
+seguinte estrutura:
+
+![A estrutura de uma trama Ethernet, segundo a norma IEEE
+802.3.](../assets/images/cap06/frame-ethernet.png){#fig-apD-frame-ethernet width="100%"}
+
+Para além dos endereços de destino (`DA`) e de origem (`SA`), a trama
+inclui um **preâmbulo**, uma sequência fixa de *bits* que permite às
+interfaces de rede recetoras sincronizar-se com o início da
+transmissão; um campo de **comprimento**, com o tamanho dos dados
+transportados; um **FCS** (*Frame Check Sequence*), semelhante em
+propósito ao *checksum* do TCP, que permite detetar tramas corrompidas;
+e um **intervalo entre tramas** (*interframe gap*), uma pequena pausa
+obrigatória antes da trama seguinte poder ser transmitida.
+
+## A Receção dos Dados, em Detalhe {#sec-apD-recepcao}
+
+A @sec-06-encapsulamento descreve, de forma resumida, o processo de
+receção: cada camada remove o cabeçalho que a camada correspondente
+lhe tinha acrescentado do lado do emissor, até restarem apenas os
+dados originais da aplicação. Em detalhe, camada a camada: a camada
+física deteta um sinal com o endereço Ethernet correspondente à
+interface de rede local, e passa a informação à camada de ligação;
+esta verifica se o endereço MAC de destino é o seu e, em caso
+afirmativo, passa a informação à camada de rede; esta verifica se o
+endereço IP de destino é o seu e, em caso afirmativo, passa a
+informação à camada de transporte; e esta, por fim, verifica se existe
+alguma aplicação registada na porta de destino indicada e, em caso
+afirmativo, entrega-lhe finalmente os dados.
+
+![O percurso inverso ao da emissão: o sinal chega pela placa de rede e
+sobe as camadas, uma a uma, até à
+aplicação.](../assets/images/cap06/rececao-de-dados.png){#fig-apD-rececao-dados width="45%"}
+
+## Uma Vista de Conjunto {#sec-apD-vista-conjunto}
+
+O mesmo princípio de encapsulamento e desencapsulamento aplica-se, de
+forma ainda mais fina, ao modelo OSI completo, com as suas sete
+camadas: em cada uma, do lado do emissor, é acrescentado um novo
+cabeçalho (`AH` na aplicação, `PH` na apresentação, `SH` na sessão, e
+assim sucessivamente); do lado do recetor, cada camada remove o
+cabeçalho que lhe corresponde, num processo em tudo semelhante ao já
+visto para o TCP/IP, apenas com mais camadas envolvidas:
+
+![O processo completo de encapsulamento e desencapsulamento no modelo
+OSI, do emissor ao
+recetor.](../assets/images/cap06/encapsulamento-bidirecional.png){#fig-apD-encapsulamento-osi width="95%"}
+
+Vale a pena rever, de forma resumida, que endereço é acrescentado por
+cada camada ao longo deste percurso: a camada de transporte acrescenta
+as portas de origem e destino, a camada de rede os endereços IP de
+origem e destino, e a camada de ligação os endereços MAC de origem e
+destino, cada um envolvendo os dados já preparados pela camada
+anterior:
+
+![Os diferentes tipos de endereço acrescentados em cada camada: porta
+(transporte), IP (rede) e MAC
+(ligação).](../assets/images/cap06/diferentes-tipos-enderecos.png){#fig-apD-enderecos-camada width="85%"}
+
+## Referências {#sec-apD-referencias .unnumbered}
+
+::: {#refs}
+:::

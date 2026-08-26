@@ -195,7 +195,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -267,6 +267,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -279,7 +291,7 @@ div.csl-indent {
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#sec-09-codigo-proprio" id="toc-sec-09-codigo-proprio" class="nav-link active" data-scroll-target="#sec-09-codigo-proprio"><span class="header-section-number">9.1</span> Vulnerabilidades no Código Próprio</a>
+  <li><a href="#sec-09-codigo-proprio" id="toc-sec-09-codigo-proprio" class="nav-link active" data-scroll-target="#sec-09-codigo-proprio"><span class="header-section-number">9.1</span> Vulnerabilidades no Próprio Código</a>
   <ul class="collapse">
   <li><a href="#sec-09-sql-injection" id="toc-sec-09-sql-injection" class="nav-link" data-scroll-target="#sec-09-sql-injection"><span class="header-section-number">9.1.1</span> SQL Injection</a></li>
   <li><a href="#sec-09-xss" id="toc-sec-09-xss" class="nav-link" data-scroll-target="#sec-09-xss"><span class="header-section-number">9.1.2</span> XSS (Cross-Site Scripting)</a></li>
@@ -325,8 +337,12 @@ div.csl-indent {
 </header>
 
 
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap09.jpg');">
+  <div class="hero-badge">Capítulo 9</div>
+  <h1>Segurança em Aplicações Web</h1>
+</div>
 <section id="sec-09-codigo-proprio" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="sec-09-codigo-proprio"><span class="header-section-number">9.1</span> Vulnerabilidades no Código Próprio</h2>
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-09-codigo-proprio"><span class="header-section-number">9.1</span> Vulnerabilidades no Próprio Código</h2>
 <p>A referência mais usada para classificar vulnerabilidades de aplicações web é o <code>OWASP Top 10</code>, uma lista dos riscos de segurança mais críticos, mantida pela <em>Open Worldwide Application Security Project</em> e atualizada periodicamente com base na análise de dezenas de milhares de vulnerabilidades reais <span class="citation" data-cites="owasp_top10_2025">(<a href="cap01.html#ref-owasp_top10_2025" role="doc-biblioref">OWASP Foundation 2026</a>)</span>. Três destas vulnerabilidades são particularmente relevantes para uma aplicação PHP como as desenvolvidas nesta UC:</p>
 <section id="sec-09-sql-injection" class="level3" data-number="9.1.1">
 <h3 data-number="9.1.1" class="anchored" data-anchor-id="sec-09-sql-injection"><span class="header-section-number">9.1.1</span> SQL Injection</h3>
@@ -341,7 +357,7 @@ div.csl-indent {
 <p>Se um atacante escrever, no campo <code>utilizador</code>, o texto <code>' OR '1'='1' --</code>, a instrução SQL efetivamente executada passa a ser:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> utilizadores</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">WHERE</span> utilizador <span class="op">=</span> <span class="st">''</span> <span class="kw">OR</span> <span class="st">'1'</span><span class="op">=</span><span class="st">'1'</span> <span class="co">-- ' AND password = '...'</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Como <code>'1'='1'</code> é sempre verdadeiro, e o <code>--</code> transforma o resto da linha num comentário SQL, ignorando a verificação da password, esta consulta devolve o primeiro utilizador da tabela, permitindo ao atacante iniciar sessão sem conhecer nenhuma password válida. É evitada usando sempre <em>prepared statements</em>, como visto no <a href="cap08.html#sec-08-prepared-statements" class="quarto-xref"><span>Secção 8.7</span></a>, que tratam o conteúdo de <code>$_POST</code> sempre como um valor, nunca como parte do comando SQL, independentemente do que esse valor contenha.</p>
+<p>Como <code>'1'='1'</code> é sempre verdadeiro, e o <code>--</code> transforma o resto da linha num comentário SQL, ignorando a verificação da password, esta consulta devolve o primeiro utilizador da tabela, permitindo ao atacante iniciar sessão sem conhecer nenhuma password válida. É evitada usando sempre <em>prepared statements</em>, como visto na <a href="cap08.html#sec-08-prepared-statements" class="quarto-xref"><span>Secção 8.7</span></a>, que tratam o conteúdo de <code>$_POST</code> sempre como um valor, nunca como parte do comando SQL, independentemente do que esse valor contenha.</p>
 </section>
 <section id="sec-09-xss" class="level3" data-number="9.1.2">
 <h3 data-number="9.1.2" class="anchored" data-anchor-id="sec-09-xss"><span class="header-section-number">9.1.2</span> XSS (Cross-Site Scripting)</h3>
@@ -355,9 +371,9 @@ div.csl-indent {
 </section>
 <section id="sec-09-csrf" class="level3" data-number="9.1.3">
 <h3 data-number="9.1.3" class="anchored" data-anchor-id="sec-09-csrf"><span class="header-section-number">9.1.3</span> CSRF (Cross-Site Request Forgery)</h3>
-<p>O CSRF ocorre quando um atacante induz o <em>browser</em> de um utilizador já autenticado a enviar, sem que este se aperceba, um pedido a uma aplicação onde tem sessão iniciada, explorando o facto de o <em>browser</em> enviar automaticamente os <em>cookies</em> de sessão em qualquer pedido a esse domínio, tal como visto no <a href="cap07.html#sec-07-cookies" class="quarto-xref"><span>Secção 7.8.1</span></a>. Imagine-se uma aplicação bancária com uma transferência implementada como um simples pedido <code>GET</code>:</p>
+<p>O CSRF ocorre quando um atacante induz o <em>browser</em> de um utilizador já autenticado a enviar, sem que este se aperceba, um pedido a uma aplicação onde tem sessão iniciada, explorando o facto de o <em>browser</em> enviar automaticamente os <em>cookies</em> de sessão em qualquer pedido a esse domínio, tal como visto na <a href="cap07.html#sec-07-cookies" class="quarto-xref"><span>Secção 7.9.1</span></a>. Imagine-se uma aplicação bancária com uma transferência implementada como um simples pedido <code>GET</code>:</p>
 <pre><code>GET /transferir?destino=1234&amp;valor=500</code></pre>
-<p>Se um utilizador, autenticado nesse banco, visitar, noutro separador do <em>browser</em>, uma página maliciosa que contenha <code>&lt;img src="https://banco.com/transferir?destino=1234&amp;valor=500"&gt;</code>, o <em>browser</em> tenta carregar essa “imagem”, enviando automaticamente o pedido ao banco, junto com o <em>cookie</em> de sessão válido do utilizador, sem que este tenha clicado em nada. É evitada de duas formas complementares: nunca implementar operações que alterem dados como um simples <code>GET</code>, tal como já recomendado no <a href="cap07.html#sec-07-get-vs-post" class="quarto-xref"><span>Secção 7.3.3</span></a>, e incluir, em cada formulário sensível, um token único e imprevisível, gerado pelo servidor e verificado antes de processar o pedido, que uma página maliciosa, alojada noutro domínio, não tem forma de conhecer nem reproduzir.</p>
+<p>Se um utilizador, autenticado nesse banco, visitar, noutro separador do <em>browser</em>, uma página maliciosa que contenha <code>&lt;img src="https://banco.com/transferir?destino=1234&amp;valor=500"&gt;</code>, o <em>browser</em> tenta carregar essa “imagem”, enviando automaticamente o pedido ao banco, junto com o <em>cookie</em> de sessão válido do utilizador, sem que este tenha clicado em nada. É evitada de duas formas complementares: nunca implementar operações que alterem dados como um simples <code>GET</code>, tal como já recomendado na <a href="cap07.html#sec-07-get-vs-post" class="quarto-xref"><span>Secção 7.4.3</span></a>, e incluir, em cada formulário sensível, um token único e imprevisível, gerado pelo servidor e verificado antes de processar o pedido, que uma página maliciosa, alojada noutro domínio, não tem forma de conhecer nem reproduzir.</p>
 <p>Em todos estes casos, o princípio subjacente é o mesmo: nunca confiar em dados vindos do cliente, seja de um formulário, de um parâmetro na URL ou de um <em>cookie</em>, sem primeiro os validar e tratar adequadamente.</p>
 </section>
 </section>

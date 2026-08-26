@@ -8,7 +8,7 @@ lang: pt-PT
 ## Introdução {#sec-apA-intro}
 
 Este apêndice descreve, passo a passo, a configuração do ambiente de
-desenvolvimento apresentado no @sec-03-ambiente, tanto por máquina
+desenvolvimento apresentado na @sec-03-ambiente, tanto por máquina
 virtual como por contentores. Há, para cada uma destas duas abordagens,
 dois cenários possíveis:
 
@@ -34,10 +34,10 @@ consegue, por si só, chegar a um ambiente funcional, com o `Apache`, o
 ### Máquina Virtual ou Contentores? {#sec-apA-abordagens}
 
 Há duas abordagens possíveis para este ambiente, ambas já introduzidas
-no @sec-02-virtualizacao:
+na @sec-02-virtualizacao:
 
 **Máquina virtual**: é a abordagem seguida por omissão nesta UC, já
-apresentada no @sec-02-ambiente-uc: uma máquina virtual `VirtualBox` com
+apresentada na @sec-02-ambiente-uc: uma máquina virtual `VirtualBox` com
 Ubuntu, onde se instalam o servidor `Apache`, o `MySQL` e o `PHP`,
 individualmente ou através de um pacote pré-configurado, consoante o
 sistema operativo do computador de cada aluno. Todo o desenvolvimento,
@@ -66,9 +66,9 @@ professor ou construído do zero, o resultado final é o mesmo:
   execução.
 
 As secções seguintes descrevem como chegar a este resultado, seja
-através de uma imagem fornecida pelo professor (@sec-apA-vm-fornecida e
-@sec-apA-docker-fornecido), seja construindo o ambiente do zero
-(@sec-apA-zero).
+através de uma imagem fornecida pelo professor (ver a
+@sec-apA-vm-fornecida e a @sec-apA-docker-fornecido), seja construindo
+o ambiente do zero (ver a @sec-apA-zero).
 
 ### Sistemas Operativos dos Computadores dos Alunos {#sec-apA-sistemas}
 
@@ -118,7 +118,7 @@ o `VirtualBox`, disponível gratuitamente em
 onde aparecem pacotes de instalação separados consoante o sistema
 operativo do computador: `Windows hosts`, `macOS / Intel hosts` e
 `macOS / Apple Silicon hosts`, correspondendo às três variantes
-descritas no @sec-apA-sistemas. A máquina virtual em si, com o `Ubuntu`
+descritas na @sec-apA-sistemas. A máquina virtual em si, com o `Ubuntu`
 e toda a *stack* de desenvolvimento já instalados e configurados, é
 fornecida separadamente pelo professor, como um ficheiro `.ova`.
 
@@ -173,14 +173,14 @@ a ligação à base de dados, seja diretamente no terminal:
 mysql -u root -p
 ```
 
-seja através de um pequeno *script* PHP como o apresentado no
+seja através de um pequeno *script* PHP como o apresentado na
 @sec-apA-verificacao, que confirma que o `PHP` consegue efetivamente
 comunicar com o `MySQL`, e não apenas que os dois serviços estão, cada
 um por si, a correr.
 
 Se a máquina virtual fornecida pelo professor incluir também o
 `phpMyAdmin`, uma ferramenta de administração do `MySQL` através do
-*browser*, referida no @sec-apA-phpmyadmin, é essa a forma mais
+*browser*, referida na @sec-apA-phpmyadmin, é essa a forma mais
 simples de confirmar visualmente que a base de dados está acessível,
 sem ser necessário usar a linha de comandos: basta abrir
 `http://localhost/phpmyadmin` (ou o endereço indicado pelo professor) e
@@ -228,7 +228,7 @@ O professor pode distribuir o ambiente de duas formas distintas:
   docker compose up -d
   ```
 
-Em qualquer dos casos, o resultado esperado é o mesmo referido no
+Em qualquer dos casos, o resultado esperado é o mesmo referido na
 @sec-apA-abordagens: um contentor com o `Apache` e o `PHP`, e outro
 contentor, separado, com o `MySQL`, ambos a correr e a comunicar entre
 si.
@@ -261,11 +261,11 @@ diretamente a partir do contentor:
 docker exec -it <nome_do_contentor_db> mysql -u root -p
 ```
 
-seja através do pequeno *script* PHP apresentado no
+seja através do pequeno *script* PHP apresentado na
 @sec-apA-verificacao, tal como no cenário da máquina virtual.
 
 Se o professor incluir também um contentor com o `phpMyAdmin`, referido
-no @sec-apA-phpmyadmin, este fica normalmente acessível num endereço
+na @sec-apA-phpmyadmin, este fica normalmente acessível num endereço
 próprio (por exemplo, `http://localhost:8081`), oferecendo uma forma
 visual, através do *browser*, de confirmar o conteúdo da base de dados,
 sem ser necessário `docker exec` para entrar no contentor do `MySQL`.
@@ -274,7 +274,7 @@ sem ser necessário `docker exec` para entrar no contentor do `MySQL`.
 
 As duas secções seguintes destinam-se a quem não vai usar o ambiente
 fornecido pelo professor, e prefere construir, ele próprio, cada uma das
-duas abordagens descritas no @sec-03-ambiente, desde a instalação do
+duas abordagens descritas na @sec-03-ambiente, desde a instalação do
 `VirtualBox` ou do `Docker` até ao `Apache`, ao `MySQL` e ao `PHP`
 prontos a usar.
 
@@ -282,7 +282,7 @@ prontos a usar.
 
 #### Criar a Máquina Virtual {#sec-apA-vm-criar}
 
-1. Instalar o `VirtualBox`, tal como descrito no
+1. Instalar o `VirtualBox`, tal como descrito na
    @sec-apA-vm-fornecida-instalar;
 2. Obter uma imagem `.iso` do `Ubuntu`, disponível em
    [ubuntu.com/download](https://ubuntu.com/download) (a versão
@@ -372,7 +372,7 @@ sudo rm /var/www/html/info.php
 
 #### Instalar o phpMyAdmin (Opcional) {#sec-apA-vm-phpmyadmin}
 
-O `phpMyAdmin`, referido no @sec-apA-phpmyadmin, é uma ferramenta de
+O `phpMyAdmin`, referido na @sec-apA-phpmyadmin, é uma ferramenta de
 administração do `MySQL` através do *browser*, útil sobretudo enquanto
 se aprende, para ver rapidamente o conteúdo de uma tabela sem escrever
 uma única instrução SQL. Instala-se com:
@@ -422,7 +422,7 @@ instalado no computador anfitrião, mantendo os ficheiros acessíveis ao
 
 #### Definir os Serviços com Docker Compose {#sec-apA-docker-compose}
 
-Com o `Docker` instalado, tal como descrito no
+Com o `Docker` instalado, tal como descrito na
 @sec-apA-docker-fornecido-instalar, em vez de instalar o `Apache`, o
 `PHP` e o `MySQL` manualmente, como na opção anterior, descreve-se, num
 ficheiro `docker-compose.yml`, os contentores necessários e como
@@ -486,7 +486,7 @@ anfitrião em `http://localhost:8080`, e o `MySQL`, dentro do contentor
 
 #### Adicionar o phpMyAdmin (Opcional) {#sec-apA-docker-phpmyadmin}
 
-O `phpMyAdmin`, referido no @sec-apA-phpmyadmin, também está disponível
+O `phpMyAdmin`, referido na @sec-apA-phpmyadmin, também está disponível
 como imagem oficial no `Docker Hub`
 ([hub.docker.com/_/phpmyadmin](https://hub.docker.com/_/phpmyadmin)),
 bastando acrescentar mais um serviço ao mesmo `docker-compose.yml`,
@@ -551,13 +551,13 @@ o nome do serviço definido no `docker-compose.yml` (`db`, no exemplo
 acima), já que, de dentro de um contentor, `localhost` refere-se ao
 próprio contentor, e não a outros contentores da mesma aplicação.
 
-Se o `phpMyAdmin` estiver disponível, referido no @sec-apA-phpmyadmin,
+Se o `phpMyAdmin` estiver disponível, referido na @sec-apA-phpmyadmin,
 este mesmo teste pode ser feito de forma visual, sem escrever nenhum
 código: basta autenticar-se com as credenciais do `MySQL` e confirmar
 que a base de dados criada aparece listada.
 
 Com este teste bem-sucedido, o ambiente está pronto para o
-desenvolvimento de código PHP retomado no @sec-03-linguagem.
+desenvolvimento de código PHP retomado na @sec-03-linguagem.
 
 ## Referências {#sec-apA-referencias .unnumbered}
 

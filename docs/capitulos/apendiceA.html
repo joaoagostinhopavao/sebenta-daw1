@@ -194,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -264,6 +264,18 @@ div.csl-indent {
   <div class="sidebar-item-container"> 
   <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
   </div>
 </li>
       </ul>
@@ -343,7 +355,7 @@ div.csl-indent {
 
 <section id="sec-apA-intro" class="level2" data-number="A.1">
 <h2 data-number="A.1" class="anchored" data-anchor-id="sec-apA-intro"><span class="header-section-number">A.1</span> Introdução</h2>
-<p>Este apêndice descreve, passo a passo, a configuração do ambiente de desenvolvimento apresentado no <a href="cap03.html#sec-03-ambiente" class="quarto-xref"><span>Secção 3.1</span></a>, tanto por máquina virtual como por contentores. Há, para cada uma destas duas abordagens, dois cenários possíveis:</p>
+<p>Este apêndice descreve, passo a passo, a configuração do ambiente de desenvolvimento apresentado na <a href="cap03.html#sec-03-ambiente" class="quarto-xref"><span>Secção 3.1</span></a>, tanto por máquina virtual como por contentores. Há, para cada uma destas duas abordagens, dois cenários possíveis:</p>
 <ul>
 <li><strong>O professor fornece o ambiente já preparado</strong>: uma máquina virtual já instalada e configurada, distribuída como ficheiro <code>.ova</code>, ou um conjunto de contentores já definidos, distribuídos como ficheiros de configuração ou como imagens já construídas. Este é o cenário mais comum, e o único que a maioria dos alunos precisa de seguir.</li>
 <li><strong>O aluno constrói o ambiente do zero</strong>: instalando e configurando ele próprio o <code>Apache</code>, o <code>MySQL</code> e o <code>PHP</code>, ou escrevendo o seu próprio <code>Dockerfile</code> e <code>docker-compose.yml</code>. É útil para quem quer usar o mesmo ambiente num computador pessoal fora do contexto da aula, ou simplesmente compreender, em detalhe, do que é feito o ambiente que lhe é disponibilizado.</li>
@@ -351,8 +363,8 @@ div.csl-indent {
 <p>Nenhuma destas descrições substitui as instruções concretas que possam vir a ser dadas nas aulas práticas, que podem especificar versões, configurações de rede ou credenciais diferentes das aqui usadas como exemplo; o objetivo deste apêndice é apenas garantir que qualquer aluno consegue, por si só, chegar a um ambiente funcional, com o <code>Apache</code>, o <code>PHP</code> e o <code>MySQL</code> prontos a usar.</p>
 <section id="sec-apA-abordagens" class="level3" data-number="A.1.1">
 <h3 data-number="A.1.1" class="anchored" data-anchor-id="sec-apA-abordagens"><span class="header-section-number">A.1.1</span> Máquina Virtual ou Contentores?</h3>
-<p>Há duas abordagens possíveis para este ambiente, ambas já introduzidas no <a href="cap02.html#sec-02-virtualizacao" class="quarto-xref"><span>Secção 2.2.3</span></a>:</p>
-<p><strong>Máquina virtual</strong>: é a abordagem seguida por omissão nesta UC, já apresentada no <a href="cap02.html#sec-02-ambiente-uc" class="quarto-xref"><span>Secção 2.2.4</span></a>: uma máquina virtual <code>VirtualBox</code> com Ubuntu, onde se instalam o servidor <code>Apache</code>, o <code>MySQL</code> e o <code>PHP</code>, individualmente ou através de um pacote pré-configurado, consoante o sistema operativo do computador de cada aluno. Todo o desenvolvimento, desde a edição do código até ao teste no <em>browser</em>, acontece dentro desta máquina virtual, que se comporta, para efeitos práticos, como um pequeno servidor próprio e isolado do resto do computador.</p>
+<p>Há duas abordagens possíveis para este ambiente, ambas já introduzidas na <a href="cap02.html#sec-02-virtualizacao" class="quarto-xref"><span>Secção 2.2.3</span></a>:</p>
+<p><strong>Máquina virtual</strong>: é a abordagem seguida por omissão nesta UC, já apresentada na <a href="cap02.html#sec-02-ambiente-uc" class="quarto-xref"><span>Secção 2.2.4</span></a>: uma máquina virtual <code>VirtualBox</code> com Ubuntu, onde se instalam o servidor <code>Apache</code>, o <code>MySQL</code> e o <code>PHP</code>, individualmente ou através de um pacote pré-configurado, consoante o sistema operativo do computador de cada aluno. Todo o desenvolvimento, desde a edição do código até ao teste no <em>browser</em>, acontece dentro desta máquina virtual, que se comporta, para efeitos práticos, como um pequeno servidor próprio e isolado do resto do computador.</p>
 <p><strong>Contentores (Docker)</strong>: uma alternativa é usar o <code>Docker</code> para correr o <code>Apache</code>, o <code>PHP</code> e o <code>MySQL</code> cada um no seu próprio contentor, em vez de os instalar dentro de uma máquina virtual completa. É uma opção mais leve, com arranque mais rápido, especialmente adequada a quem já tem alguma experiência com <code>Docker</code>, ou a um computador com menos recursos disponíveis para correr uma máquina virtual inteira.</p>
 </section>
 <section id="sec-apA-resultado" class="level3" data-number="A.1.2">
@@ -364,7 +376,7 @@ div.csl-indent {
 <li>Um editor de código, tipicamente o <code>Visual Studio Code</code>, com acesso direto aos ficheiros do projeto;</li>
 <li>A possibilidade de abrir um ficheiro <code>.php</code> num <em>browser</em>, através de um endereço como <code>http://localhost</code>, e ver o resultado da sua execução.</li>
 </ul>
-<p>As secções seguintes descrevem como chegar a este resultado, seja através de uma imagem fornecida pelo professor (<a href="#sec-apA-vm-fornecida" class="quarto-xref"><span>Secção A.2</span></a> e <a href="#sec-apA-docker-fornecido" class="quarto-xref"><span>Secção A.3</span></a>), seja construindo o ambiente do zero (<a href="#sec-apA-zero" class="quarto-xref"><span>Secção A.4</span></a>).</p>
+<p>As secções seguintes descrevem como chegar a este resultado, seja através de uma imagem fornecida pelo professor (ver a <a href="#sec-apA-vm-fornecida" class="quarto-xref"><span>Secção A.2</span></a> e a <a href="#sec-apA-docker-fornecido" class="quarto-xref"><span>Secção A.3</span></a>), seja construindo o ambiente do zero (ver a <a href="#sec-apA-zero" class="quarto-xref"><span>Secção A.4</span></a>).</p>
 </section>
 <section id="sec-apA-sistemas" class="level3" data-number="A.1.3">
 <h3 data-number="A.1.3" class="anchored" data-anchor-id="sec-apA-sistemas"><span class="header-section-number">A.1.3</span> Sistemas Operativos dos Computadores dos Alunos</h3>
@@ -385,7 +397,7 @@ div.csl-indent {
 <h2 data-number="A.2" class="anchored" data-anchor-id="sec-apA-vm-fornecida"><span class="header-section-number">A.2</span> Máquina Virtual Fornecida pelo Professor</h2>
 <section id="sec-apA-vm-fornecida-instalar" class="level3" data-number="A.2.1">
 <h3 data-number="A.2.1" class="anchored" data-anchor-id="sec-apA-vm-fornecida-instalar"><span class="header-section-number">A.2.1</span> Instalar o VirtualBox</h3>
-<p>O único <em>software</em> que cada aluno precisa de instalar, neste cenário, é o <code>VirtualBox</code>, disponível gratuitamente em <a href="https://www.virtualbox.org/wiki/Downloads">virtualbox.org/wiki/Downloads</a>, onde aparecem pacotes de instalação separados consoante o sistema operativo do computador: <code>Windows hosts</code>, <code>macOS / Intel hosts</code> e <code>macOS / Apple Silicon hosts</code>, correspondendo às três variantes descritas no <a href="#sec-apA-sistemas" class="quarto-xref"><span>Secção A.1.3</span></a>. A máquina virtual em si, com o <code>Ubuntu</code> e toda a <em>stack</em> de desenvolvimento já instalados e configurados, é fornecida separadamente pelo professor, como um ficheiro <code>.ova</code>.</p>
+<p>O único <em>software</em> que cada aluno precisa de instalar, neste cenário, é o <code>VirtualBox</code>, disponível gratuitamente em <a href="https://www.virtualbox.org/wiki/Downloads">virtualbox.org/wiki/Downloads</a>, onde aparecem pacotes de instalação separados consoante o sistema operativo do computador: <code>Windows hosts</code>, <code>macOS / Intel hosts</code> e <code>macOS / Apple Silicon hosts</code>, correspondendo às três variantes descritas na <a href="#sec-apA-sistemas" class="quarto-xref"><span>Secção A.1.3</span></a>. A máquina virtual em si, com o <code>Ubuntu</code> e toda a <em>stack</em> de desenvolvimento já instalados e configurados, é fornecida separadamente pelo professor, como um ficheiro <code>.ova</code>.</p>
 </section>
 <section id="sec-apA-vm-fornecida-importar" class="level3" data-number="A.2.2">
 <h3 data-number="A.2.2" class="anchored" data-anchor-id="sec-apA-vm-fornecida-importar"><span class="header-section-number">A.2.2</span> Importar o Ficheiro .ova</h3>
@@ -407,8 +419,8 @@ div.csl-indent {
 <span id="cb1-3"><a href="#cb1-3"></a><span class="ex">mysql</span> <span class="at">--version</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>De seguida, testa-se a ligação ao <code>PHP</code> através do <em>browser</em>: abrindo o endereço indicado pelo professor (dentro da máquina virtual, tipicamente <code>http://localhost</code>; a partir do computador anfitrião, consoante a configuração de rede da máquina virtual), deve aparecer uma página servida pelo <code>Apache</code> e processada pelo <code>PHP</code>. Por fim, testa-se a ligação à base de dados, seja diretamente no terminal:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">mysql</span> <span class="at">-u</span> root <span class="at">-p</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>seja através de um pequeno <em>script</em> PHP como o apresentado no <a href="#sec-apA-verificacao" class="quarto-xref"><span>Secção A.5</span></a>, que confirma que o <code>PHP</code> consegue efetivamente comunicar com o <code>MySQL</code>, e não apenas que os dois serviços estão, cada um por si, a correr.</p>
-<p>Se a máquina virtual fornecida pelo professor incluir também o <code>phpMyAdmin</code>, uma ferramenta de administração do <code>MySQL</code> através do <em>browser</em>, referida no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, é essa a forma mais simples de confirmar visualmente que a base de dados está acessível, sem ser necessário usar a linha de comandos: basta abrir <code>http://localhost/phpmyadmin</code> (ou o endereço indicado pelo professor) e autenticar-se com as credenciais do <code>MySQL</code>.</p>
+<p>seja através de um pequeno <em>script</em> PHP como o apresentado na <a href="#sec-apA-verificacao" class="quarto-xref"><span>Secção A.5</span></a>, que confirma que o <code>PHP</code> consegue efetivamente comunicar com o <code>MySQL</code>, e não apenas que os dois serviços estão, cada um por si, a correr.</p>
+<p>Se a máquina virtual fornecida pelo professor incluir também o <code>phpMyAdmin</code>, uma ferramenta de administração do <code>MySQL</code> através do <em>browser</em>, referida na <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, é essa a forma mais simples de confirmar visualmente que a base de dados está acessível, sem ser necessário usar a linha de comandos: basta abrir <code>http://localhost/phpmyadmin</code> (ou o endereço indicado pelo professor) e autenticar-se com as credenciais do <code>MySQL</code>.</p>
 </section>
 </section>
 <section id="sec-apA-docker-fornecido" class="level2" data-number="A.3">
@@ -430,7 +442,7 @@ div.csl-indent {
 <span id="cb5-2"><a href="#cb5-2"></a><span class="ex">docker</span> load <span class="at">-i</span> imagem-mysql.tar</span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
-<p>Em qualquer dos casos, o resultado esperado é o mesmo referido no <a href="#sec-apA-abordagens" class="quarto-xref"><span>Secção A.1.1</span></a>: um contentor com o <code>Apache</code> e o <code>PHP</code>, e outro contentor, separado, com o <code>MySQL</code>, ambos a correr e a comunicar entre si.</p>
+<p>Em qualquer dos casos, o resultado esperado é o mesmo referido na <a href="#sec-apA-abordagens" class="quarto-xref"><span>Secção A.1.1</span></a>: um contentor com o <code>Apache</code> e o <code>PHP</code>, e outro contentor, separado, com o <code>MySQL</code>, ambos a correr e a comunicar entre si.</p>
 </section>
 <section id="sec-apA-docker-fornecido-testes" class="level3" data-number="A.3.3">
 <h3 data-number="A.3.3" class="anchored" data-anchor-id="sec-apA-docker-fornecido-testes"><span class="header-section-number">A.3.3</span> Primeiros Testes</h3>
@@ -441,19 +453,19 @@ div.csl-indent {
 <span id="cb7-2"><a href="#cb7-2"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>nome_do_contentor_db<span class="op">&gt;</span> mysql <span class="at">--version</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Testa-se, de seguida, a ligação ao <code>PHP</code> através do <em>browser</em>, no endereço e porta indicados pelo professor (por exemplo, <code>http://localhost:8080</code>), e, por fim, a ligação à base de dados, seja diretamente a partir do contentor:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>nome_do_contentor_db<span class="op">&gt;</span> mysql <span class="at">-u</span> root <span class="at">-p</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>seja através do pequeno <em>script</em> PHP apresentado no <a href="#sec-apA-verificacao" class="quarto-xref"><span>Secção A.5</span></a>, tal como no cenário da máquina virtual.</p>
-<p>Se o professor incluir também um contentor com o <code>phpMyAdmin</code>, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, este fica normalmente acessível num endereço próprio (por exemplo, <code>http://localhost:8081</code>), oferecendo uma forma visual, através do <em>browser</em>, de confirmar o conteúdo da base de dados, sem ser necessário <code>docker exec</code> para entrar no contentor do <code>MySQL</code>.</p>
+<p>seja através do pequeno <em>script</em> PHP apresentado na <a href="#sec-apA-verificacao" class="quarto-xref"><span>Secção A.5</span></a>, tal como no cenário da máquina virtual.</p>
+<p>Se o professor incluir também um contentor com o <code>phpMyAdmin</code>, referido na <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, este fica normalmente acessível num endereço próprio (por exemplo, <code>http://localhost:8081</code>), oferecendo uma forma visual, através do <em>browser</em>, de confirmar o conteúdo da base de dados, sem ser necessário <code>docker exec</code> para entrar no contentor do <code>MySQL</code>.</p>
 </section>
 </section>
 <section id="sec-apA-zero" class="level2" data-number="A.4">
 <h2 data-number="A.4" class="anchored" data-anchor-id="sec-apA-zero"><span class="header-section-number">A.4</span> Construir o Ambiente a Partir do Zero</h2>
-<p>As duas secções seguintes destinam-se a quem não vai usar o ambiente fornecido pelo professor, e prefere construir, ele próprio, cada uma das duas abordagens descritas no <a href="cap03.html#sec-03-ambiente" class="quarto-xref"><span>Secção 3.1</span></a>, desde a instalação do <code>VirtualBox</code> ou do <code>Docker</code> até ao <code>Apache</code>, ao <code>MySQL</code> e ao <code>PHP</code> prontos a usar.</p>
+<p>As duas secções seguintes destinam-se a quem não vai usar o ambiente fornecido pelo professor, e prefere construir, ele próprio, cada uma das duas abordagens descritas na <a href="cap03.html#sec-03-ambiente" class="quarto-xref"><span>Secção 3.1</span></a>, desde a instalação do <code>VirtualBox</code> ou do <code>Docker</code> até ao <code>Apache</code>, ao <code>MySQL</code> e ao <code>PHP</code> prontos a usar.</p>
 <section id="sec-apA-vm" class="level3" data-number="A.4.1">
 <h3 data-number="A.4.1" class="anchored" data-anchor-id="sec-apA-vm"><span class="header-section-number">A.4.1</span> Opção 1: Máquina Virtual com VirtualBox</h3>
 <section id="sec-apA-vm-criar" class="level4">
 <h4 class="anchored" data-anchor-id="sec-apA-vm-criar">Criar a Máquina Virtual</h4>
 <ol type="1">
-<li>Instalar o <code>VirtualBox</code>, tal como descrito no <a href="#sec-apA-vm-fornecida-instalar" class="quarto-xref"><span>Secção A.2.1</span></a>;</li>
+<li>Instalar o <code>VirtualBox</code>, tal como descrito na <a href="#sec-apA-vm-fornecida-instalar" class="quarto-xref"><span>Secção A.2.1</span></a>;</li>
 <li>Obter uma imagem <code>.iso</code> do <code>Ubuntu</code>, disponível em <a href="https://ubuntu.com/download">ubuntu.com/download</a> (a versão <em>Desktop</em>, mais simples de usar para quem começa, ou a versão <em>Server</em>, mais leve, para quem já tem alguma experiência com a linha de comandos);</li>
 <li>No <code>VirtualBox</code>, criar uma nova máquina virtual, indicando o tipo <code>Linux</code> e a versão <code>Ubuntu (64-bit)</code>;</li>
 <li>Atribuir à máquina virtual pelo menos 4 GB de memória RAM, e um disco virtual de tamanho dinamicamente alocado, com pelo menos 25 GB, para acomodar o sistema operativo, os pacotes instalados e os projetos desenvolvidos ao longo da UC;</li>
@@ -486,7 +498,7 @@ div.csl-indent {
 </section>
 <section id="sec-apA-vm-phpmyadmin" class="level4">
 <h4 class="anchored" data-anchor-id="sec-apA-vm-phpmyadmin">Instalar o phpMyAdmin (Opcional)</h4>
-<p>O <code>phpMyAdmin</code>, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, é uma ferramenta de administração do <code>MySQL</code> através do <em>browser</em>, útil sobretudo enquanto se aprende, para ver rapidamente o conteúdo de uma tabela sem escrever uma única instrução SQL. Instala-se com:</p>
+<p>O <code>phpMyAdmin</code>, referido na <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, é uma ferramenta de administração do <code>MySQL</code> através do <em>browser</em>, útil sobretudo enquanto se aprende, para ver rapidamente o conteúdo de uma tabela sem escrever uma única instrução SQL. Instala-se com:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">sudo</span> apt install phpmyadmin <span class="at">-y</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Durante a instalação, o <code>apt</code> pergunta qual o servidor web a configurar automaticamente: seleciona-se <code>apache2</code> com a barra de espaços, e confirma-se com <code>Tab</code> e <code>Enter</code>. Pergunta ainda se deve configurar a base de dados do próprio <code>phpMyAdmin</code> com <code>dbconfig-common</code>, ao que se responde afirmativamente, definindo uma password para essa configuração interna. Concluída a instalação, o <code>phpMyAdmin</code> fica acessível em <code>http://localhost/phpmyadmin</code>, onde se entra com o utilizador e a password já criados no <code>MySQL</code>. Se o <code>Apache</code> não for configurado automaticamente, pode ser necessário acrescentar manualmente a linha <code>Include /etc/phpmyadmin/apache.conf</code> à sua configuração, e reiniciá-lo:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a><span class="bu">echo</span> <span class="st">"Include /etc/phpmyadmin/apache.conf"</span> <span class="kw">|</span> <span class="fu">sudo</span> tee <span class="at">-a</span> /etc/apache2/apache2.conf</span>
@@ -505,7 +517,7 @@ div.csl-indent {
 <h3 data-number="A.4.2" class="anchored" data-anchor-id="sec-apA-docker"><span class="header-section-number">A.4.2</span> Opção 2: Contentores com Docker</h3>
 <section id="sec-apA-docker-compose" class="level4">
 <h4 class="anchored" data-anchor-id="sec-apA-docker-compose">Definir os Serviços com Docker Compose</h4>
-<p>Com o <code>Docker</code> instalado, tal como descrito no <a href="#sec-apA-docker-fornecido-instalar" class="quarto-xref"><span>Secção A.3.1</span></a>, em vez de instalar o <code>Apache</code>, o <code>PHP</code> e o <code>MySQL</code> manualmente, como na opção anterior, descreve-se, num ficheiro <code>docker-compose.yml</code>, os contentores necessários e como comunicam entre si, a partir da imagem oficial do <code>PHP</code> (<a href="https://hub.docker.com/_/php">hub.docker.com/_/php</a>) e da imagem oficial do <code>MySQL</code> (<a href="https://hub.docker.com/_/mysql">hub.docker.com/_/mysql</a>). A imagem oficial do <code>PHP</code> com <code>Apache</code> não inclui, por omissão, a extensão de ligação ao <code>MySQL</code>, pelo que é necessário um pequeno <code>Dockerfile</code> próprio para a acrescentar:</p>
+<p>Com o <code>Docker</code> instalado, tal como descrito na <a href="#sec-apA-docker-fornecido-instalar" class="quarto-xref"><span>Secção A.3.1</span></a>, em vez de instalar o <code>Apache</code>, o <code>PHP</code> e o <code>MySQL</code> manualmente, como na opção anterior, descreve-se, num ficheiro <code>docker-compose.yml</code>, os contentores necessários e como comunicam entre si, a partir da imagem oficial do <code>PHP</code> (<a href="https://hub.docker.com/_/php">hub.docker.com/_/php</a>) e da imagem oficial do <code>MySQL</code> (<a href="https://hub.docker.com/_/mysql">hub.docker.com/_/mysql</a>). A imagem oficial do <code>PHP</code> com <code>Apache</code> não inclui, por omissão, a extensão de ligação ao <code>MySQL</code>, pelo que é necessário um pequeno <code>Dockerfile</code> próprio para a acrescentar:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Dockerfile</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a><span class="kw">FROM</span> php:8.3-apache</span>
 <span id="cb18-3"><a href="#cb18-3"></a><span class="kw">RUN</span> <span class="ex">docker-php-ext-install</span> mysqli pdo_mysql</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -537,7 +549,7 @@ div.csl-indent {
 </section>
 <section id="sec-apA-docker-phpmyadmin" class="level4">
 <h4 class="anchored" data-anchor-id="sec-apA-docker-phpmyadmin">Adicionar o phpMyAdmin (Opcional)</h4>
-<p>O <code>phpMyAdmin</code>, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, também está disponível como imagem oficial no <code>Docker Hub</code> (<a href="https://hub.docker.com/_/phpmyadmin">hub.docker.com/_/phpmyadmin</a>), bastando acrescentar mais um serviço ao mesmo <code>docker-compose.yml</code>, ligado ao contentor <code>db</code> através da variável <code>PMA_HOST</code>:</p>
+<p>O <code>phpMyAdmin</code>, referido na <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, também está disponível como imagem oficial no <code>Docker Hub</code> (<a href="https://hub.docker.com/_/phpmyadmin">hub.docker.com/_/phpmyadmin</a>), bastando acrescentar mais um serviço ao mesmo <code>docker-compose.yml</code>, ligado ao contentor <code>db</code> através da variável <code>PMA_HOST</code>:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># docker-compose.yml (serviço adicional)</span></span>
 <span id="cb21-2"><a href="#cb21-2"></a><span class="at">  </span><span class="fu">phpmyadmin</span><span class="kw">:</span></span>
 <span id="cb21-3"><a href="#cb21-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> phpmyadmin:latest</span></span>
@@ -567,8 +579,8 @@ div.csl-indent {
 <span id="cb22-7"><a href="#cb22-7"></a>    <span class="kw">echo</span> <span class="st">"Erro ao ligar: "</span> <span class="op">.</span> <span class="fu">mysqli_connect_error</span>()<span class="ot">;</span></span>
 <span id="cb22-8"><a href="#cb22-8"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Ao abrir este ficheiro no <em>browser</em>, deve aparecer a mensagem de sucesso. Se aparecer, em alternativa, uma mensagem de erro, os motivos mais comuns são o <code>MySQL</code> ainda não ter arrancado por completo, a password indicada não corresponder à definida durante a instalação, ou, no caso dos contentores, o nome do servidor não ser <code>localhost</code> mas sim o nome do serviço definido no <code>docker-compose.yml</code> (<code>db</code>, no exemplo acima), já que, de dentro de um contentor, <code>localhost</code> refere-se ao próprio contentor, e não a outros contentores da mesma aplicação.</p>
-<p>Se o <code>phpMyAdmin</code> estiver disponível, referido no <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, este mesmo teste pode ser feito de forma visual, sem escrever nenhum código: basta autenticar-se com as credenciais do <code>MySQL</code> e confirmar que a base de dados criada aparece listada.</p>
-<p>Com este teste bem-sucedido, o ambiente está pronto para o desenvolvimento de código PHP retomado no <a href="cap03.html#sec-03-linguagem" class="quarto-xref"><span>Secção 3.4</span></a>.</p>
+<p>Se o <code>phpMyAdmin</code> estiver disponível, referido na <a href="#sec-apA-phpmyadmin" class="quarto-xref"><span>Secção A.1.4</span></a>, este mesmo teste pode ser feito de forma visual, sem escrever nenhum código: basta autenticar-se com as credenciais do <code>MySQL</code> e confirmar que a base de dados criada aparece listada.</p>
+<p>Com este teste bem-sucedido, o ambiente está pronto para o desenvolvimento de código PHP retomado na <a href="cap03.html#sec-03-linguagem" class="quarto-xref"><span>Secção 3.4</span></a>.</p>
 </section>
 <section id="sec-apA-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-apA-referencias">Referências</h2>

@@ -1,9 +1,16 @@
 ---
-title: "PHP II: Condicionais e Ciclos"
+title: "PHP II: Condicionais e Loops"
 author: "João Pavão"
 date: 2026-08-24
 lang: pt-PT
 ---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap04.jpg');">
+  <div class="hero-badge">Capítulo 4</div>
+  <h1>PHP II: Condicionais e Loops</h1>
+</div>
+```
 
 ## Estruturas Condicionais {#sec-04-condicionais}
 
@@ -120,7 +127,7 @@ Por esta razão, é boa prática usar `===` sempre que se quer garantir que
 dois valores são realmente iguais, tanto no valor como no tipo, evitando
 comparações que dependam de conversões automáticas nem sempre óbvias.
 Esta distinção vai ser particularmente relevante mais adiante no livro,
-quando Tiago começar a receber dados de pedidos HTTP reais, no
+quando Tiago começar a receber dados de pedidos HTTP reais, na
 @sec-07-supervariaveis: um identificador de artigo recebido pela URL
 chega sempre como *string*, mesmo que represente um número, e comparar
 essa *string* com um `id` guardado como `integer` pode ter resultados
@@ -212,7 +219,7 @@ do {
 
 Usado especificamente para percorrer arrays, sem necessidade de gerir um
 índice manualmente. É finalmente com um `foreach` que Tiago consegue
-transformar o array `$titulos`, esboçado no @sec-03-arrays-numericos,
+transformar o array `$titulos`, esboçado na @sec-03-arrays-numericos,
 numa lista real de artigos na página do sítio, sem repetir `echo` uma
 vez por artigo:
 
@@ -251,7 +258,7 @@ foreach ($artigo as $chave => $valor) {
 
 Com condicionais e ciclos, Tiago já consegue transformar o catálogo
 estático de artigos numa página que reage aos dados. O desafio, a
-partir do catálogo `$artigos` completado no @sec-03-desafio, é:
+partir do catálogo `$artigos` completado na @sec-03-desafio, é:
 
 1. Usar um `foreach` para percorrer `$artigos` e mostrar o título de
    cada um;
@@ -263,8 +270,8 @@ partir do catálogo `$artigos` completado no @sec-03-desafio, é:
    só mostre os artigos dessa categoria.
 
 O ficheiro de arranque, já com o catálogo completo do capítulo anterior,
-está disponível no @sec-apC-cap04. Esta variável fixa é, propositadamente,
-uma simplificação: o @sec-07-supervariaveis mostra como substituí-la
+está disponível na @sec-apC-cap04. Esta variável fixa é, propositadamente,
+uma simplificação: a @sec-07-supervariaveis mostra como substituí-la
 pelo valor real de um pedido do *browser*, através de `$_GET`.
 
 ## Referências {#sec-04-referencias .unnumbered}

@@ -1,6 +1,7 @@
 # Quarto
 .quarto/
 _book/
+docs/*.pdf
 
 # macOS
 .DS_Store

@@ -5,7 +5,14 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
-## Vulnerabilidades no Código Próprio {#sec-09-codigo-proprio}
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap09.jpg');">
+  <div class="hero-badge">Capítulo 9</div>
+  <h1>Segurança em Aplicações Web</h1>
+</div>
+```
+
+## Vulnerabilidades no Próprio Código  {#sec-09-codigo-proprio}
 
 A referência mais usada para classificar vulnerabilidades de aplicações
 web é o `OWASP Top 10`, uma lista dos riscos de segurança mais críticos,
@@ -44,7 +51,7 @@ Como `'1'='1'` é sempre verdadeiro, e o `--` transforma o resto da linha
 num comentário SQL, ignorando a verificação da password, esta consulta
 devolve o primeiro utilizador da tabela, permitindo ao atacante iniciar
 sessão sem conhecer nenhuma password válida. É evitada usando sempre
-*prepared statements*, como visto no @sec-08-prepared-statements, que
+*prepared statements*, como visto na @sec-08-prepared-statements, que
 tratam o conteúdo de `$_POST` sempre como um valor, nunca como parte do
 comando SQL, independentemente do que esse valor contenha.
 
@@ -85,7 +92,7 @@ O CSRF ocorre quando um atacante induz o *browser* de um utilizador já
 autenticado a enviar, sem que este se aperceba, um pedido a uma
 aplicação onde tem sessão iniciada, explorando o facto de o *browser*
 enviar automaticamente os *cookies* de sessão em qualquer pedido a esse
-domínio, tal como visto no @sec-07-cookies. Imagine-se uma aplicação
+domínio, tal como visto na @sec-07-cookies. Imagine-se uma aplicação
 bancária com uma transferência implementada como um simples pedido
 `GET`:
 
@@ -100,7 +107,7 @@ Se um utilizador, autenticado nesse banco, visitar, noutro separador do
 pedido ao banco, junto com o *cookie* de sessão válido do utilizador,
 sem que este tenha clicado em nada. É evitada de duas formas
 complementares: nunca implementar operações que alterem dados como um
-simples `GET`, tal como já recomendado no @sec-07-get-vs-post, e
+simples `GET`, tal como já recomendado na @sec-07-get-vs-post, e
 incluir, em cada formulário sensível, um token único e imprevisível,
 gerado pelo servidor e verificado antes de processar o pedido, que uma
 página maliciosa, alojada noutro domínio, não tem forma de conhecer nem

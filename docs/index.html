@@ -140,7 +140,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -212,6 +212,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -278,10 +290,10 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="prefácio" class="level1 unnumbered">
 <h1 class="unnumbered">Prefácio</h1>
-<div class="hero">
+<div class="hero hero-cover" style="background-image: linear-gradient(90deg, rgba(4,23,12,0.88) 0%, rgba(14,138,77,0.55) 45%, rgba(75,224,138,0.15) 100%), url('assets/images/capa/Web/capa-web-16-9.png');">
   <div class="hero-badge">UTAD · 2026/2027</div>
   <h1>Desenvolvimento de Aplicações Web I</h1>
-  <h2 class="anchored" data-anchor-id="prefácio">Sebenta de estudo</h2>
+  <h2 class="anchored" data-anchor-id="prefácio">Texto de estudo da UC</h2>
   <p>Universidade de Trás-os-Montes e Alto Douro</p>
   <div class="hero-meta">
     <span>João Pavão</span>
@@ -294,24 +306,24 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="unnumbered anchored" data-anchor-id="organização-do-documento">Organização do documento</h2>
 <p>O texto está organizado em cinco blocos temáticos, que seguem o programa oficial da UC:</p>
 <ol type="1">
-<li><strong>Fundamentos e Panorama da Web</strong> — o processo de desenvolvimento de uma aplicação web e os diferentes tipos de servidores e infraestruturas</li>
-<li><strong>Programação em PHP</strong> — sintaxe, controlo de fluxo, funções e organização de código</li>
-<li><strong>Comunicação e Estado na Web</strong> — modelos de rede, o protocolo HTTP e a gestão de estado com cookies e sessões</li>
-<li><strong>Dados e Segurança</strong> — bases de dados com PHP e segurança de aplicações web</li>
-<li><strong>Arquitetura e Ferramentas</strong> — o padrão Model-View-Controller e frameworks de desenvolvimento web</li>
+<li><strong>Fundamentos e Panorama da Web</strong> — contendo os capítulos 1 e 2, que abordam o processo de desenvolvimento de uma aplicação web e os diferentes tipos de servidores e infraestruturas</li>
+<li><strong>Programação em PHP</strong> — que compreende os capítulos 3, 4 e 5, que abordam a sintaxe, controlo de fluxo, funções e organização de código</li>
+<li><strong>Comunicação e Estado na Web</strong> — neste bloco, nos capítulos 6 e 7, os modelos de rede, o protocolo HTTP e a gestão de estado com cookies e sessões</li>
+<li><strong>Dados e Segurança</strong> — este bloco compreende os capítulos 8 e 9 sobre bases de dados com PHP e segurança de aplicações web</li>
+<li><strong>Arquitetura e Ferramentas</strong> — finalmente, este bloco, com os caítulos 10 e 11, debruça-se sobreo padrão Model-View-Controller e frameworks de desenvolvimento web</li>
 </ol>
 </section>
 <section id="fonte-e-atualização" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="fonte-e-atualização">Fonte e atualização</h2>
-<p>Os conteúdos deste documento de aopio ao estudo baseiam-se no material próprio do docente, desenvolvido ao longo de anos anteriores de lecionação da UC (slides e demonstrações de código), reorganizado e atualizado para o ano letivo 2026/2027. A bibliografia de referência da UC está indicada em cada capítulo e compilada no ficheiro <code>referencias.bib</code>.</p>
+<p>Os conteúdos deste documento de aopio ao estudo baseiam-se no material próprio dos docentes, desenvolvido ao longo de anos anteriores de lecionação da UC (slides e demonstrações de código), reorganizado e atualizado para o ano letivo 2026/2027. A bibliografia de referência da UC está indicada em cada capítulo e compilada no ficheiro <code>referencias.bib</code>.</p>
 </section>
 <section id="como-usar-este-texto-de-apoio" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="como-usar-este-texto-de-apoio">Como usar este texto de apoio</h2>
-<p>Cada capítulo corresponde a uma aula teórica da UC. A recomendação é que os alunos leiam um capítulo antes da aula respetiva, e que usem aeste texto como apoio ao estudo autónomo, para rever conceitos e esclarecer dúvidas. A leitura não substitui a presença nas aulas, nem a participação nas demonstrações práticas em sala de aula.</p>
+<p>Cada capítulo corresponde a uma aula teórica da UC. A recomendação é que os alunos leiam um capítulo antes da aula respetiva, e que usem aeste texto como apoio ao estudo autónomo, para rever conceitos e esclarecer dúvidas. A leitura não substitui a presença nas aulas, nem a participação nas demonstrações práticas em sala de aula. Em cada capítulo que envolve programação PHP, o código de exemplo é apresentado no próprio texto, e os alunos são encorajados a experimentar o código, testando-o e modificando-o para compreender melhor os conceitos, através do uso dos desafios propostos no final de cada capítulo.</p>
 </section>
 <section id="autor" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="autor">Autor</h2>
-<p><strong>João Pavão</strong> — UTAD, docente responsável, componente teórica</p>
+<p><strong>João Pavão</strong> — UTAD</p>
 
 
 </section>

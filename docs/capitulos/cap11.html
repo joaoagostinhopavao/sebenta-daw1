@@ -195,7 +195,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -267,6 +267,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -320,12 +332,16 @@ div.csl-indent {
 </header>
 
 
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap11.jpg');">
+  <div class="hero-badge">Capítulo 11</div>
+  <h1>Frameworks de Desenvolvimento Web</h1>
+</div>
 <section id="sec-11-automatizacao" class="level2" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="sec-11-automatizacao"><span class="header-section-number">11.1</span> O Que um Framework Automatiza</h2>
 <p>Ao longo desta UC, construíram-se, ficheiro a ficheiro, os elementos básicos de uma aplicação PHP: ligação à base de dados, um controlador frontal a decidir que ação executar, e a separação entre <em>Model</em>, <em>View</em> e <em>Controller</em>, vista no capítulo anterior. Um <em>framework</em> de desenvolvimento web como o <code>Laravel</code>, hoje o mais usado no ecossistema PHP <span class="citation" data-cites="jetbrains_stateofphp2025">(<a href="cap01.html#ref-jetbrains_stateofphp2025" role="doc-biblioref">JetBrains 2025</a>)</span>, automatiza precisamente este tipo de trabalho repetitivo, oferecendo já resolvidas, e testadas por uma grande comunidade de utilizadores, partes que, de outra forma, cada programador teria de construir à sua maneira em cada novo projeto:</p>
 <ul>
-<li><strong>Sistema de rotas</strong>: em vez do <code>switch</code> manual construído no <a href="cap10.html#sec-10-front-controller" class="quarto-xref"><span>Secção 10.4</span></a>, um <em>framework</em> permite declarar rotas de forma direta, associando um endereço a uma função do <em>Controller</em>;</li>
-<li><strong>ORM</strong> (<em>Object-Relational Mapping</em>): em vez de escrever SQL à mão com <code>mysqli</code>, como no <a href="cap08.html#sec-08-prepared-statements" class="quarto-xref"><span>Secção 8.7</span></a>, um ORM representa cada tabela como uma classe PHP, e cada linha como um objeto, permitindo interagir com a base de dados através de código PHP em vez de instruções SQL diretas;</li>
+<li><strong>Sistema de rotas</strong>: em vez do <code>switch</code> manual construído na <a href="cap10.html#sec-10-front-controller" class="quarto-xref"><span>Secção 10.4</span></a>, um <em>framework</em> permite declarar rotas de forma direta, associando um endereço a uma função do <em>Controller</em>;</li>
+<li><strong>ORM</strong> (<em>Object-Relational Mapping</em>): em vez de escrever SQL à mão com <code>mysqli</code>, como na <a href="cap08.html#sec-08-prepared-statements" class="quarto-xref"><span>Secção 8.7</span></a>, um ORM representa cada tabela como uma classe PHP, e cada linha como um objeto, permitindo interagir com a base de dados através de código PHP em vez de instruções SQL diretas;</li>
 <li><strong>Motor de <em>templates</em></strong>: em vez de misturar PHP e HTML diretamente nas <em>Views</em>, um motor de <em>templates</em> oferece uma sintaxe mais limpa para gerar HTML dinâmico, com funcionalidades como herança de <em>layouts</em>, para não repetir cabeçalho e rodapé em cada página;</li>
 <li><strong>Migrações</strong>: ficheiros que descrevem, em código, a estrutura da base de dados, permitindo criar, alterar e partilhar essa estrutura entre programadores sem depender de instruções <code>CREATE TABLE</code> escritas manualmente por cada um.</li>
 </ul>
@@ -334,30 +350,31 @@ div.csl-indent {
 <h2 data-number="11.2" class="anchored" data-anchor-id="sec-11-laravel"><span class="header-section-number">11.2</span> O Laravel</h2>
 <p>O Laravel inclui, entre outros, o <code>Eloquent</code>, o seu ORM nativo, e o <code>Blade</code>, o seu motor de <em>templates</em>. Uma consulta que, com <code>mysqli</code>, exigiria escrever a instrução SQL explicitamente, escreve-se, em Eloquent, como uma chamada de método sobre uma classe que representa a tabela:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">// Com mysqli (capítulo 8)</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT * FROM contactos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT * FROM artigos WHERE id = ?"</span>)<span class="ot">;</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span></span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a></span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="co">// Com Eloquent (Laravel)</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="va">$contacto</span> <span class="op">=</span> Contacto::find(<span class="va">$id</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>O sistema de rotas do Laravel substitui diretamente o <code>switch</code> manual do controlador frontal construído no <a href="cap10.html#sec-10-front-controller" class="quarto-xref"><span>Secção 10.4</span></a>, associando um endereço a uma função de forma declarativa:</p>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="va">$artigo</span> <span class="op">=</span> Artigo::find(<span class="va">$id</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O sistema de rotas do Laravel substitui diretamente o <code>switch</code> manual do controlador frontal construído na <a href="cap10.html#sec-10-front-controller" class="quarto-xref"><span>Secção 10.4</span></a>, associando um endereço a uma função de forma declarativa:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">// routes/web.php</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>Route::get(<span class="st">'/contactos'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'listar'</span>])<span class="ot">;</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>Route::post(<span class="st">'/contactos'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'criar'</span>])<span class="ot">;</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>Route::get(<span class="st">'/contactos/{id}/editar'</span><span class="ot">,</span> [ContactoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'editar'</span>])<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As migrações substituem, por sua vez, as instruções <code>CREATE TABLE</code> escritas à mão no <a href="cap08.html#sec-08-criar-bd" class="quarto-xref"><span>Secção 8.5</span></a>, descrevendo a estrutura da tabela em código PHP, versionável e partilhável entre toda a equipa:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">// database/migrations/create_contactos_table.php</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>Schema::create(<span class="st">'contactos'</span><span class="ot">,</span> <span class="kw">function</span> (Blueprint <span class="va">$table</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>Route::get(<span class="st">'/artigos'</span><span class="ot">,</span> [ArtigoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'listar'</span>])<span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>Route::post(<span class="st">'/artigos'</span><span class="ot">,</span> [ArtigoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'criar'</span>])<span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>Route::get(<span class="st">'/artigos/{id}/editar'</span><span class="ot">,</span> [ArtigoController::<span class="kw">class</span><span class="ot">,</span> <span class="st">'editar'</span>])<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As migrações substituem, por sua vez, as instruções <code>CREATE TABLE</code> escritas à mão na <a href="cap08.html#sec-08-criar-bd" class="quarto-xref"><span>Secção 8.5</span></a>, descrevendo a estrutura da tabela em código PHP, versionável e partilhável entre toda a equipa:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">// database/migrations/create_artigos_table.php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>Schema::create(<span class="st">'artigos'</span><span class="ot">,</span> <span class="kw">function</span> (Blueprint <span class="va">$table</span>) {</span>
 <span id="cb3-3"><a href="#cb3-3"></a>    <span class="va">$table</span>-&gt;id()<span class="ot">;</span>                    <span class="co">// INT AUTO_INCREMENT PRIMARY KEY</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'nome'</span>)<span class="ot">;</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'email'</span>)<span class="ot">;</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>    <span class="va">$table</span>-&gt;timestamps()<span class="ot">;</span>            <span class="co">// datas de criação/atualização automáticas</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>})<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'titulo'</span>)<span class="ot">;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'autor'</span>)<span class="ot">;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="va">$table</span>-&gt;<span class="dt">string</span>(<span class="st">'categoria'</span>)<span class="ot">;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="va">$table</span>-&gt;timestamps()<span class="ot">;</span>            <span class="co">// datas de criação/atualização automáticas</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>})<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O Laravel gera, também, automaticamente, grande parte da estrutura de pastas que foi construída manualmente ao longo desta UC: uma pasta <code>app/Models</code> para as classes do <em>Model</em>, uma pasta <code>resources/views</code> para as <em>Views</em> em Blade, e uma pasta <code>routes</code> para declarar as rotas da aplicação. A curva de aprendizagem inicial de um <em>framework</em> como o Laravel é mais exigente do que escrever PHP simples, porque exige compreender as suas convenções próprias, mas paga-se rapidamente à medida que uma aplicação cresce, evitando que cada equipa reinvente, à sua maneira, os mesmos mecanismos de ligação à base de dados, autenticação ou geração de páginas.</p>
 </section>
 <section id="sec-11-outros" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="sec-11-outros"><span class="header-section-number">11.3</span> Outros Frameworks</h2>
-<p>O Laravel não é o único <em>framework</em> PHP: o <code>Symfony</code>, mais modular e usado sobretudo em contextos empresariais, é o segundo mais adotado <span class="citation" data-cites="jetbrains_stateofphp2025">(<a href="cap01.html#ref-jetbrains_stateofphp2025" role="doc-biblioref">JetBrains 2025</a>)</span>, e partes dele são, de resto, usadas internamente pelo próprio Laravel. Fora do universo PHP, o mesmo princípio aplica-se a outras linguagens do lado do servidor, como o <code>Django</code> em Python ou o <code>Express</code> em JavaScript, referidos no <a href="cap01.html#sec-01-frameworks-servidor" class="quarto-xref"><span>Secção 1.6.2</span></a>: cada um resolve o mesmo tipo de problema, rotas, acesso a dados, geração de páginas, com convenções e ferramentas próprias da sua linguagem.</p>
+<p>O Laravel não é o único <em>framework</em> PHP: o <code>Symfony</code>, mais modular e usado sobretudo em contextos empresariais, é o segundo mais adotado <span class="citation" data-cites="jetbrains_stateofphp2025">(<a href="cap01.html#ref-jetbrains_stateofphp2025" role="doc-biblioref">JetBrains 2025</a>)</span>, e partes dele são, de resto, usadas internamente pelo próprio Laravel. Fora do universo PHP, o mesmo princípio aplica-se a outras linguagens do lado do servidor, como o <code>Django</code> em Python ou o <code>Express</code> em JavaScript, referidos na <a href="cap01.html#sec-01-frameworks-servidor" class="quarto-xref"><span>Secção 1.6.2</span></a>: cada um resolve o mesmo tipo de problema, rotas, acesso a dados, geração de páginas, com convenções e ferramentas próprias da sua linguagem.</p>
 </section>
 <section id="sec-11-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-11-referencias">Referências</h2>

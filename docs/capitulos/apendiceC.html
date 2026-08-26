@@ -84,6 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../capitulos/apendiceD.html" rel="next">
 <link href="../capitulos/apendiceB.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -193,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -265,6 +266,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -282,6 +295,7 @@ div.csl-indent {
   <li><a href="#sec-apC-cap04" id="toc-sec-apC-cap04" class="nav-link" data-scroll-target="#sec-apC-cap04"><span class="header-section-number">C.3</span> Desafio do Capítulo 4: Listar e Filtrar Artigos</a></li>
   <li><a href="#sec-apC-cap05" id="toc-sec-apC-cap05" class="nav-link" data-scroll-target="#sec-apC-cap05"><span class="header-section-number">C.4</span> Desafio do Capítulo 5: Função de Formatação e Includes</a></li>
   <li><a href="#sec-apC-cap07" id="toc-sec-apC-cap07" class="nav-link" data-scroll-target="#sec-apC-cap07"><span class="header-section-number">C.5</span> Desafio do Capítulo 7: Pedidos Reais com GET e POST</a></li>
+  <li><a href="#sec-apC-cap08" id="toc-sec-apC-cap08" class="nav-link" data-scroll-target="#sec-apC-cap08"><span class="header-section-number">C.6</span> Desafio do Capítulo 8: Migrar o Catálogo para uma Base de Dados</a></li>
   <li><a href="#sec-apC-referencias" id="toc-sec-apC-referencias" class="nav-link" data-scroll-target="#sec-apC-referencias">Referências</a></li>
   </ul>
 </nav>
@@ -322,11 +336,11 @@ div.csl-indent {
 
 <section id="sec-apC-intro" class="level2" data-number="C.1">
 <h2 data-number="C.1" class="anchored" data-anchor-id="sec-apC-intro"><span class="header-section-number">C.1</span> Introdução</h2>
-<p>No final de cada capítulo, uma secção “Desafio” propõe um pequeno exercício que aplica, ao projeto da Revista Contraponto apresentado no <a href="cap03.html#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>, apenas as ferramentas da linguagem já vistas até esse ponto do livro. Este apêndice reúne o ficheiro de arranque de cada um desses desafios, com parte do código já escrito e o resto assinalado com comentários <code>TODO</code>, para que o trabalho de cada aluno seja completar e estender o que já está feito, em vez de começar sempre do zero.</p>
+<p>No final de cada capítulo, uma secção “Desafio” propõe um pequeno exercício que aplica, ao projeto da Revista Contraponto apresentado na <a href="cap03.html#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>, apenas as ferramentas da linguagem já vistas até esse ponto do livro. Este apêndice reúne o ficheiro de arranque de cada um desses desafios, com parte do código já escrito e o resto assinalado com comentários <code>TODO</code>, para que o trabalho de cada aluno seja completar e estender o que já está feito, em vez de começar sempre do zero.</p>
 </section>
 <section id="sec-apC-cap03" class="level2" data-number="C.2">
 <h2 data-number="C.2" class="anchored" data-anchor-id="sec-apC-cap03"><span class="header-section-number">C.2</span> Desafio do Capítulo 3: Completar o Catálogo de Artigos</h2>
-<p>Ficheiro de arranque para o desafio do <a href="cap03.html#sec-03-desafio" class="quarto-xref"><span>Secção 3.9</span></a>. Os dois primeiros artigos já estão completos, seguindo o mesmo formato usado no <a href="cap03.html#sec-03-arrays" class="quarto-xref"><span>Secção 3.8</span></a>; os restantes pontos ficam por completar.</p>
+<p>Ficheiro de arranque para o desafio da <a href="cap03.html#sec-03-desafio" class="quarto-xref"><span>Secção 3.9</span></a>. Os dois primeiros artigos já estão completos, seguindo o mesmo formato usado na <a href="cap03.html#sec-03-arrays" class="quarto-xref"><span>Secção 3.8</span></a>; os restantes pontos ficam por completar.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="co">// Desafio do Capítulo 3: completar o catálogo de artigos da Contraponto</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="co">//</span></span>
@@ -363,7 +377,7 @@ div.csl-indent {
 </section>
 <section id="sec-apC-cap04" class="level2" data-number="C.3">
 <h2 data-number="C.3" class="anchored" data-anchor-id="sec-apC-cap04"><span class="header-section-number">C.3</span> Desafio do Capítulo 4: Listar e Filtrar Artigos</h2>
-<p>Ficheiro de arranque para o desafio do <a href="cap04.html#sec-04-desafio" class="quarto-xref"><span>Secção 4.3</span></a>. O array <code>$artigos</code>, aqui já completo com cinco artigos, dá continuidade ao catálogo do desafio anterior; o trabalho deste capítulo é percorrê-lo e filtrá-lo, não voltar a construí-lo.</p>
+<p>Ficheiro de arranque para o desafio da <a href="cap04.html#sec-04-desafio" class="quarto-xref"><span>Secção 4.3</span></a>. O array <code>$artigos</code>, aqui já completo com cinco artigos, dá continuidade ao catálogo do desafio anterior; o trabalho deste capítulo é percorrê-lo e filtrá-lo, não voltar a construí-lo.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="co">// Desafio do Capítulo 4: listar e filtrar os artigos da Contraponto</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">//</span></span>
@@ -411,21 +425,30 @@ div.csl-indent {
 </section>
 <section id="sec-apC-cap05" class="level2" data-number="C.4">
 <h2 data-number="C.4" class="anchored" data-anchor-id="sec-apC-cap05"><span class="header-section-number">C.4</span> Desafio do Capítulo 5: Função de Formatação e Includes</h2>
-<p>Ficheiro de arranque para o desafio do <a href="cap05.html#sec-05-desafio" class="quarto-xref"><span>Secção 5.4</span></a>. O <code>header.php</code> e o <code>footer.php</code> já vêm prontos, com um cabeçalho e um rodapé simples do sítio; o <code>index.php</code> retoma o catálogo <code>$artigos</code> e o filtro por categoria do desafio anterior, faltando apenas a função <code>formatarArtigo()</code> e a sua integração no <code>foreach</code>.</p>
+<p>Ficheiro de arranque para o desafio da <a href="cap05.html#sec-05-desafio" class="quarto-xref"><span>Secção 5.4</span></a>. O <code>header.php</code> e o <code>footer.php</code> ficam por escrever, com um exemplo de estrutura sugerido em comentário, para orientar; o <code>index.php</code> retoma o catálogo <code>$artigos</code> e o filtro por categoria do desafio anterior, faltando apenas a função <code>formatarArtigo()</code> e a sua integração no <code>foreach</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="op">&lt;!--</span> <span class="fu">header</span><span class="op">.</span>php <span class="op">-</span>-&gt;</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="op">&lt;</span><span class="fu">header</span><span class="op">&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>    <span class="op">&lt;</span>h1<span class="op">&gt;</span>Contraponto<span class="op">&lt;/</span>h1<span class="op">&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>    <span class="op">&lt;</span>nav<span class="op">&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php"</span><span class="op">&gt;</span>Início<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Cultura"</span><span class="op">&gt;</span>Cultura<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Tecnologia"</span><span class="op">&gt;</span>Tecnologia<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Música"</span><span class="op">&gt;</span>Música<span class="op">&lt;/</span>a<span class="op">&gt;</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>    <span class="op">&lt;/</span>nav<span class="op">&gt;</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="op">&lt;/</span><span class="fu">header</span><span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="op">&lt;!--</span> <span class="cn">TODO</span><span class="ot">:</span> escrever aqui um cabeçalho simples para o sítio da</span>
+<span id="cb3-3"><a href="#cb3-3"></a>     Contraponto<span class="ot">,</span> com o nome da revista e um menu de navegação por</span>
+<span id="cb3-4"><a href="#cb3-4"></a>     categoria<span class="op">.</span> Exemplo de estrutura possível<span class="ot">:</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>     <span class="op">&lt;</span><span class="fu">header</span><span class="op">&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>         <span class="op">&lt;</span>h1<span class="op">&gt;</span>Contraponto<span class="op">&lt;/</span>h1<span class="op">&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>         <span class="op">&lt;</span>nav<span class="op">&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>             <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php"</span><span class="op">&gt;</span>Início<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>             <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Cultura"</span><span class="op">&gt;</span>Cultura<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>             <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Tecnologia"</span><span class="op">&gt;</span>Tecnologia<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>             <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Música"</span><span class="op">&gt;</span>Música<span class="op">&lt;/</span>a<span class="op">&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>         <span class="op">&lt;/</span>nav<span class="op">&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>     <span class="op">&lt;/</span><span class="fu">header</span><span class="op">&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="op">-</span>-&gt;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="op">&lt;!--</span> footer<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="op">&lt;</span>footer<span class="op">&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>    <span class="op">&lt;</span>p<span class="op">&gt;&amp;</span><span class="fu">copy</span><span class="ot">;</span> <span class="dv">2026</span> Revista Contraponto<span class="op">.</span> Todos os direitos reservados<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="op">&lt;/</span>footer<span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="op">&lt;!--</span> <span class="cn">TODO</span><span class="ot">:</span> escrever aqui um rodapé simples para o sítio da Contraponto<span class="ot">,</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>     por exemplo com os direitos de autor<span class="ot">:</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>     <span class="op">&lt;</span>footer<span class="op">&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>         <span class="op">&lt;</span>p<span class="op">&gt;&amp;</span><span class="fu">copy</span><span class="ot">;</span> <span class="dv">2026</span> Revista Contraponto<span class="op">.</span> Todos os direitos reservados<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>     <span class="op">&lt;/</span>footer<span class="op">&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="op">-</span>-&gt;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="op">&lt;!--</span> index<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="co">// Desafio do Capítulo 5: função de formatação e includes</span></span>
@@ -476,7 +499,7 @@ div.csl-indent {
 </section>
 <section id="sec-apC-cap07" class="level2" data-number="C.5">
 <h2 data-number="C.5" class="anchored" data-anchor-id="sec-apC-cap07"><span class="header-section-number">C.5</span> Desafio do Capítulo 7: Pedidos Reais com GET e POST</h2>
-<p>Ficheiro de arranque para o desafio do <a href="cap07.html#sec-07-desafio" class="quarto-xref"><span>Secção 7.9</span></a>. O <code>header.php</code> e o <code>footer.php</code> mantêm-se iguais aos do capítulo anterior; o <code>index.php</code> já tem a função <code>formatarArtigo()</code> completa, tal como resolvida no <a href="cap05.html#sec-05-desafio" class="quarto-xref"><span>Secção 5.4</span></a>, faltando apenas substituir a variável fixa pelo valor real de <code>$_GET["categoria"]</code>, e tratar a submissão do formulário de comentário.</p>
+<p>Ficheiro de arranque para o desafio da <a href="cap07.html#sec-07-desafio" class="quarto-xref"><span>Secção 7.10</span></a>. O <code>header.php</code> e o <code>footer.php</code> aparecem aqui já completos, tal como ficariam depois de resolvido o desafio anterior; o <code>index.php</code> já tem a função <code>formatarArtigo()</code> completa, tal como resolvida na <a href="cap05.html#sec-05-desafio" class="quarto-xref"><span>Secção 5.4</span></a>, e já inclui o formulário HTML de comentário, faltando apenas substituir a variável fixa pelo valor real de <code>$_GET["categoria"]</code>, e tratar a submissão desse formulário.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="op">&lt;!--</span> <span class="fu">header</span><span class="op">.</span>php <span class="op">-</span>-&gt;</span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="op">&lt;</span><span class="fu">header</span><span class="op">&gt;</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>    <span class="op">&lt;</span>h1<span class="op">&gt;</span>Contraponto<span class="op">&lt;/</span>h1<span class="op">&gt;</span></span>
@@ -498,56 +521,184 @@ div.csl-indent {
 <span id="cb8-5"><a href="#cb8-5"></a><span class="co">// 1. Substituir a linha de $categoria_escolhida pelo valor real de</span></span>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="co">//    $_GET["categoria"], com isset() a tratar o caso de não existir</span></span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="co">//    (nesse caso, mostrar todos os artigos);</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">// 2. Tratar a submissão do formulário de comentário: verificar se</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">//    $_SERVER["REQUEST_METHOD"] é "POST" e, nesse caso, mostrar uma</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">//    mensagem de confirmação com $_POST["nome"] e $_POST["texto"].</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="kw">function</span> formatarArtigo(<span class="va">$artigo</span>) {</span>
-<span id="cb8-13"><a href="#cb8-13"></a>    <span class="cf">return</span> <span class="va">$artigo</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" — por "</span> <span class="op">.</span> <span class="va">$artigo</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
-<span id="cb8-14"><a href="#cb8-14"></a>}</span>
-<span id="cb8-15"><a href="#cb8-15"></a></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
-<span id="cb8-17"><a href="#cb8-17"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-18"><a href="#cb8-18"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
-<span id="cb8-19"><a href="#cb8-19"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
-<span id="cb8-20"><a href="#cb8-20"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
-<span id="cb8-21"><a href="#cb8-21"></a>    )<span class="ot">,</span></span>
-<span id="cb8-22"><a href="#cb8-22"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-23"><a href="#cb8-23"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
-<span id="cb8-24"><a href="#cb8-24"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
-<span id="cb8-25"><a href="#cb8-25"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
-<span id="cb8-26"><a href="#cb8-26"></a>    )<span class="ot">,</span></span>
-<span id="cb8-27"><a href="#cb8-27"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-28"><a href="#cb8-28"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
-<span id="cb8-29"><a href="#cb8-29"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
-<span id="cb8-30"><a href="#cb8-30"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
-<span id="cb8-31"><a href="#cb8-31"></a>    )<span class="ot">,</span></span>
-<span id="cb8-32"><a href="#cb8-32"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-33"><a href="#cb8-33"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Roteiro cultural de outubro"</span><span class="ot">,</span></span>
-<span id="cb8-34"><a href="#cb8-34"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
-<span id="cb8-35"><a href="#cb8-35"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Música"</span></span>
-<span id="cb8-36"><a href="#cb8-36"></a>    )<span class="ot">,</span></span>
-<span id="cb8-37"><a href="#cb8-37"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-38"><a href="#cb8-38"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como a IA está a mudar o jornalismo"</span><span class="ot">,</span></span>
-<span id="cb8-39"><a href="#cb8-39"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
-<span id="cb8-40"><a href="#cb8-40"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
-<span id="cb8-41"><a href="#cb8-41"></a>    )</span>
-<span id="cb8-42"><a href="#cb8-42"></a>)<span class="ot">;</span></span>
-<span id="cb8-43"><a href="#cb8-43"></a></span>
-<span id="cb8-44"><a href="#cb8-44"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 1: substituir esta linha pela leitura de $_GET["categoria"]</span></span>
-<span id="cb8-45"><a href="#cb8-45"></a><span class="va">$categoria_escolhida</span> <span class="op">=</span> <span class="st">"Tecnologia"</span><span class="ot">;</span></span>
-<span id="cb8-46"><a href="#cb8-46"></a></span>
-<span id="cb8-47"><a href="#cb8-47"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
-<span id="cb8-48"><a href="#cb8-48"></a></span>
-<span id="cb8-49"><a href="#cb8-49"></a><span class="cf">foreach</span> (<span class="va">$artigos</span> <span class="kw">as</span> <span class="va">$artigo</span>) {</span>
-<span id="cb8-50"><a href="#cb8-50"></a>    <span class="cf">if</span> (<span class="va">$artigo</span>[<span class="st">"categoria"</span>] <span class="op">===</span> <span class="va">$categoria_escolhida</span>) {</span>
-<span id="cb8-51"><a href="#cb8-51"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> formatarArtigo(<span class="va">$artigo</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb8-52"><a href="#cb8-52"></a>    }</span>
-<span id="cb8-53"><a href="#cb8-53"></a>}</span>
-<span id="cb8-54"><a href="#cb8-54"></a></span>
-<span id="cb8-55"><a href="#cb8-55"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 2: tratar a submissão do formulário de comentário, por POST</span></span>
-<span id="cb8-56"><a href="#cb8-56"></a></span>
-<span id="cb8-57"><a href="#cb8-57"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">// 2. Tratar a submissão do formulário de comentário, já incluído mais</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">//    abaixo: verificar se $_SERVER["REQUEST_METHOD"] é "POST" e, nesse</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">//    caso, mostrar uma mensagem de confirmação com $_POST["nome"] e</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">//    $_POST["texto"].</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="kw">function</span> formatarArtigo(<span class="va">$artigo</span>) {</span>
+<span id="cb8-14"><a href="#cb8-14"></a>    <span class="cf">return</span> <span class="va">$artigo</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" — por "</span> <span class="op">.</span> <span class="va">$artigo</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a>}</span>
+<span id="cb8-16"><a href="#cb8-16"></a></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb8-18"><a href="#cb8-18"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-19"><a href="#cb8-19"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a>    )<span class="ot">,</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-24"><a href="#cb8-24"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a>    )<span class="ot">,</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-29"><a href="#cb8-29"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb8-31"><a href="#cb8-31"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a>    )<span class="ot">,</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-34"><a href="#cb8-34"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Roteiro cultural de outubro"</span><span class="ot">,</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Música"</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a>    )<span class="ot">,</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-39"><a href="#cb8-39"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como a IA está a mudar o jornalismo"</span><span class="ot">,</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb8-41"><a href="#cb8-41"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a>    )</span>
+<span id="cb8-43"><a href="#cb8-43"></a>)<span class="ot">;</span></span>
+<span id="cb8-44"><a href="#cb8-44"></a></span>
+<span id="cb8-45"><a href="#cb8-45"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 1: substituir esta linha pela leitura de $_GET["categoria"]</span></span>
+<span id="cb8-46"><a href="#cb8-46"></a><span class="va">$categoria_escolhida</span> <span class="op">=</span> <span class="st">"Tecnologia"</span><span class="ot">;</span></span>
+<span id="cb8-47"><a href="#cb8-47"></a></span>
+<span id="cb8-48"><a href="#cb8-48"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
+<span id="cb8-49"><a href="#cb8-49"></a></span>
+<span id="cb8-50"><a href="#cb8-50"></a><span class="cf">foreach</span> (<span class="va">$artigos</span> <span class="kw">as</span> <span class="va">$artigo</span>) {</span>
+<span id="cb8-51"><a href="#cb8-51"></a>    <span class="cf">if</span> (<span class="va">$artigo</span>[<span class="st">"categoria"</span>] <span class="op">===</span> <span class="va">$categoria_escolhida</span>) {</span>
+<span id="cb8-52"><a href="#cb8-52"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> formatarArtigo(<span class="va">$artigo</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb8-53"><a href="#cb8-53"></a>    }</span>
+<span id="cb8-54"><a href="#cb8-54"></a>}</span>
+<span id="cb8-55"><a href="#cb8-55"></a></span>
+<span id="cb8-56"><a href="#cb8-56"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 2: tratar a submissão do formulário de comentário abaixo, por POST</span></span>
+<span id="cb8-57"><a href="#cb8-57"></a><span class="kw">?&gt;</span></span>
+<span id="cb8-58"><a href="#cb8-58"></a></span>
+<span id="cb8-59"><a href="#cb8-59"></a><span class="op">&lt;</span>form action<span class="op">=</span><span class="st">"index.php"</span> method<span class="op">=</span><span class="st">"POST"</span><span class="op">&gt;</span></span>
+<span id="cb8-60"><a href="#cb8-60"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"nome"</span><span class="op">&gt;</span>Nome<span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
+<span id="cb8-61"><a href="#cb8-61"></a>    <span class="op">&lt;</span>input id<span class="op">=</span><span class="st">"nome"</span> name<span class="op">=</span><span class="st">"nome"</span> type<span class="op">=</span><span class="st">"text"</span> <span class="op">/&gt;</span></span>
+<span id="cb8-62"><a href="#cb8-62"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"texto"</span><span class="op">&gt;</span>Comentário<span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
+<span id="cb8-63"><a href="#cb8-63"></a>    <span class="op">&lt;</span>textarea id<span class="op">=</span><span class="st">"texto"</span> name<span class="op">=</span><span class="st">"texto"</span><span class="op">&gt;&lt;/</span>textarea<span class="op">&gt;</span></span>
+<span id="cb8-64"><a href="#cb8-64"></a>    <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"submit"</span> value<span class="op">=</span><span class="st">"Comentar"</span> <span class="op">/&gt;</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span>
+<span id="cb8-66"><a href="#cb8-66"></a></span>
+<span id="cb8-67"><a href="#cb8-67"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb8-68"><a href="#cb8-68"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-apC-cap08" class="level2" data-number="C.6">
+<h2 data-number="C.6" class="anchored" data-anchor-id="sec-apC-cap08"><span class="header-section-number">C.6</span> Desafio do Capítulo 8: Migrar o Catálogo para uma Base de Dados</h2>
+<p>Ficheiro de arranque para o desafio da <a href="cap08.html#sec-08-desafio" class="quarto-xref"><span>Secção 8.10</span></a>. O <code>header.php</code> e o <code>footer.php</code> mantêm-se iguais aos dos capítulos anteriores; o <code>config.php</code> já estabelece a ligação ao MySQL, faltando criar a base de dados e a tabela; o <code>seed.php</code> retoma o catálogo <code>$artigos</code> de sempre, para o migrar, uma única vez, para a tabela; e o <code>index.php</code> ainda percorre o array em memória, tal como no desafio anterior, faltando substituir esse <code>foreach</code> por uma consulta à base de dados.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="op">&lt;!--</span> <span class="fu">header</span><span class="op">.</span>php <span class="op">-</span>-&gt;</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="op">&lt;</span><span class="fu">header</span><span class="op">&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="op">&lt;</span>h1<span class="op">&gt;</span>Contraponto<span class="op">&lt;/</span>h1<span class="op">&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="op">&lt;</span>nav<span class="op">&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php"</span><span class="op">&gt;</span>Início<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Cultura"</span><span class="op">&gt;</span>Cultura<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Tecnologia"</span><span class="op">&gt;</span>Tecnologia<span class="op">&lt;/</span>a<span class="op">&gt;</span> <span class="op">|</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>        <span class="op">&lt;</span>a href<span class="op">=</span><span class="st">"index.php?categoria=Música"</span><span class="op">&gt;</span>Música<span class="op">&lt;/</span>a<span class="op">&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>    <span class="op">&lt;/</span>nav<span class="op">&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="op">&lt;/</span><span class="fu">header</span><span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="op">&lt;!--</span> footer<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="op">&lt;</span>footer<span class="op">&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="op">&lt;</span>p<span class="op">&gt;&amp;</span><span class="fu">copy</span><span class="ot">;</span> <span class="dv">2026</span> Revista Contraponto<span class="op">.</span> Todos os direitos reservados<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="op">&lt;/</span>footer<span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="op">&lt;!--</span> config<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1"></a><span class="op">&lt;!--</span> seed<span class="op">.</span>php<span class="ot">:</span> script único para migrar o catálogo original para a tabela <span class="op">-</span>-&gt;</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">// Desafio do Capítulo 8: migrar o catálogo de artigos para o MySQL</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co">//</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="co">// 1. Criar a base de dados contraponto e a tabela artigos, com a</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="co">//    estrutura definida na Secção 8.5;</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">// 2. Percorrer $artigos com foreach, inserindo cada um na tabela</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co">//    artigos através de um prepared statement. Este ficheiro só</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">//    precisa de ser executado uma vez.</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb12-14"><a href="#cb12-14"></a>    <span class="dt">array</span>(</span>
+<span id="cb12-15"><a href="#cb12-15"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a>    )<span class="ot">,</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a>    <span class="dt">array</span>(</span>
+<span id="cb12-20"><a href="#cb12-20"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
+<span id="cb12-21"><a href="#cb12-21"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb12-23"><a href="#cb12-23"></a>    )<span class="ot">,</span></span>
+<span id="cb12-24"><a href="#cb12-24"></a>    <span class="dt">array</span>(</span>
+<span id="cb12-25"><a href="#cb12-25"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
+<span id="cb12-26"><a href="#cb12-26"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb12-27"><a href="#cb12-27"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb12-28"><a href="#cb12-28"></a>    )<span class="ot">,</span></span>
+<span id="cb12-29"><a href="#cb12-29"></a>    <span class="dt">array</span>(</span>
+<span id="cb12-30"><a href="#cb12-30"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Roteiro cultural de outubro"</span><span class="ot">,</span></span>
+<span id="cb12-31"><a href="#cb12-31"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb12-32"><a href="#cb12-32"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Música"</span></span>
+<span id="cb12-33"><a href="#cb12-33"></a>    )<span class="ot">,</span></span>
+<span id="cb12-34"><a href="#cb12-34"></a>    <span class="dt">array</span>(</span>
+<span id="cb12-35"><a href="#cb12-35"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como a IA está a mudar o jornalismo"</span><span class="ot">,</span></span>
+<span id="cb12-36"><a href="#cb12-36"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb12-37"><a href="#cb12-37"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb12-38"><a href="#cb12-38"></a>    )</span>
+<span id="cb12-39"><a href="#cb12-39"></a>)<span class="ot">;</span></span>
+<span id="cb12-40"><a href="#cb12-40"></a></span>
+<span id="cb12-41"><a href="#cb12-41"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 1: criar a base de dados contraponto e a tabela artigos, se</span></span>
+<span id="cb12-42"><a href="#cb12-42"></a><span class="co">// ainda não existirem</span></span>
+<span id="cb12-43"><a href="#cb12-43"></a></span>
+<span id="cb12-44"><a href="#cb12-44"></a></span>
+<span id="cb12-45"><a href="#cb12-45"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 2: percorrer $artigos com foreach, inserindo cada um na tabela</span></span>
+<span id="cb12-46"><a href="#cb12-46"></a><span class="co">// artigos através de um prepared statement</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1"></a><span class="op">&lt;!--</span> index<span class="op">.</span>php <span class="op">-</span>-&gt;</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="va">$categoria_escolhida</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"categoria"</span>] <span class="op">??</span> <span class="kw">null</span><span class="ot">;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="dt">array</span>(</span>
+<span id="cb13-9"><a href="#cb13-9"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>    )<span class="ot">,</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a>    <span class="dt">array</span>(</span>
+<span id="cb13-14"><a href="#cb13-14"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a>    )<span class="ot">,</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a>    <span class="dt">array</span>(</span>
+<span id="cb13-19"><a href="#cb13-19"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb13-22"><a href="#cb13-22"></a>    )<span class="ot">,</span></span>
+<span id="cb13-23"><a href="#cb13-23"></a>    <span class="dt">array</span>(</span>
+<span id="cb13-24"><a href="#cb13-24"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Roteiro cultural de outubro"</span><span class="ot">,</span></span>
+<span id="cb13-25"><a href="#cb13-25"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb13-26"><a href="#cb13-26"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Música"</span></span>
+<span id="cb13-27"><a href="#cb13-27"></a>    )<span class="ot">,</span></span>
+<span id="cb13-28"><a href="#cb13-28"></a>    <span class="dt">array</span>(</span>
+<span id="cb13-29"><a href="#cb13-29"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como a IA está a mudar o jornalismo"</span><span class="ot">,</span></span>
+<span id="cb13-30"><a href="#cb13-30"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb13-31"><a href="#cb13-31"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb13-32"><a href="#cb13-32"></a>    )</span>
+<span id="cb13-33"><a href="#cb13-33"></a>)<span class="ot">;</span></span>
+<span id="cb13-34"><a href="#cb13-34"></a></span>
+<span id="cb13-35"><a href="#cb13-35"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
+<span id="cb13-36"><a href="#cb13-36"></a></span>
+<span id="cb13-37"><a href="#cb13-37"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 3: substituir este bloco por uma consulta à tabela artigos, com</span></span>
+<span id="cb13-38"><a href="#cb13-38"></a><span class="co">// um prepared statement, filtrando por $categoria_escolhida quando</span></span>
+<span id="cb13-39"><a href="#cb13-39"></a><span class="co">// esta existir, e devolvendo todos os artigos quando não existir</span></span>
+<span id="cb13-40"><a href="#cb13-40"></a><span class="cf">foreach</span> (<span class="va">$artigos</span> <span class="kw">as</span> <span class="va">$artigo</span>) {</span>
+<span id="cb13-41"><a href="#cb13-41"></a>    <span class="cf">if</span> (<span class="va">$categoria_escolhida</span> <span class="op">===</span> <span class="kw">null</span> <span class="op">||</span> <span class="va">$artigo</span>[<span class="st">"categoria"</span>] <span class="op">===</span> <span class="va">$categoria_escolhida</span>) {</span>
+<span id="cb13-42"><a href="#cb13-42"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$artigo</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" — por "</span> <span class="op">.</span> <span class="va">$artigo</span>[<span class="st">"autor"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb13-43"><a href="#cb13-43"></a>    }</span>
+<span id="cb13-44"><a href="#cb13-44"></a>}</span>
+<span id="cb13-45"><a href="#cb13-45"></a></span>
+<span id="cb13-46"><a href="#cb13-46"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-apC-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-apC-referencias">Referências</h2>
@@ -1127,6 +1278,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../capitulos/apendiceD.html" class="pagination-link" aria-label="Complementos de Redes de Computadores">
+        <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -194,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -266,6 +266,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -325,6 +337,10 @@ div.csl-indent {
 </header>
 
 
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap05.jpg');">
+  <div class="hero-badge">Capítulo 5</div>
+  <h1>PHP III: Funções, Datas e Includes</h1>
+</div>
 <section id="sec-05-funcoes" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="sec-05-funcoes"><span class="header-section-number">5.1</span> Funções</h2>
 <p>À medida que o sítio da Contraponto cresce, Tiago repara que está a escrever o mesmo tipo de código em vários sítios diferentes: sempre que mostra um artigo, seja na listagem, seja na página do próprio artigo, tem de juntar o autor à categoria no mesmo formato, “por Rita Ferreira, em Tecnologia”. Copiar essa linha para cada novo sítio onde é precisa é, mais cedo ou mais tarde, uma fonte de inconsistências: se um dia mudar o formato, tem de se lembrar de o mudar em todos os sítios onde o copiou. Uma função resolve exatamente este problema: é um conjunto de instruções nomeado, escrito uma única vez, que pode ser chamado sempre que for necessário. Uma função pode aceitar parâmetros (dados de entrada) e devolver um valor (dado de saída), ambos opcionais:</p>
@@ -370,11 +386,11 @@ div.csl-indent {
 <span id="cb4-10"><a href="#cb4-10"></a><span class="kw">echo</span> formatarVistas(<span class="dv">850</span>)<span class="ot">;</span>  <span class="co">// 850 vistas</span></span>
 <span id="cb4-11"><a href="#cb4-11"></a><span class="kw">echo</span> formatarVistas(<span class="dv">1</span>)<span class="ot">;</span>    <span class="co">// 1 vista</span></span>
 <span id="cb4-12"><a href="#cb4-12"></a><span class="co">// echo $sufixo;           // erro: $sufixo não está definida aqui fora</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>O código completo da demonstração feita na aula sobre funções está disponível no <a href="apendiceB.html#sec-apB-funcoes" class="quarto-xref"><span>Secção B.4</span></a>.</p>
+<p>O código completo da demonstração feita na aula sobre funções está disponível na <a href="apendiceB.html#sec-apB-funcoes" class="quarto-xref"><span>Secção B.4</span></a>.</p>
 </section>
 <section id="sec-05-datas" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="sec-05-datas"><span class="header-section-number">5.2</span> Datas</h2>
-<p>O esboço do artigo proposto no <a href="cap03.html#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a> inclui uma data de publicação, um campo que nenhum dos exemplos anteriores ainda usou. Tiago precisa de a mostrar de forma legível ao leitor, de calcular há quanto tempo um artigo foi publicado, e de permitir a Rita agendar um artigo para uma data futura. O PHP oferece funções dedicadas à manipulação de datas e horas para este tipo de necessidade. Há três operações comuns.</p>
+<p>O esboço do artigo proposto na <a href="cap03.html#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a> inclui uma data de publicação, um campo que nenhum dos exemplos anteriores ainda usou. Tiago precisa de a mostrar de forma legível ao leitor, de calcular há quanto tempo um artigo foi publicado, e de permitir a Rita agendar um artigo para uma data futura. O PHP oferece funções dedicadas à manipulação de datas e horas para este tipo de necessidade. Há três operações comuns.</p>
 <section id="sec-05-data-atual" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="sec-05-data-atual"><span class="header-section-number">5.2.1</span> Obter a Data e Hora Atuais</h3>
 <p>A função <code>date()</code> formata a data e hora atuais do servidor de acordo com um padrão indicado como parâmetro, usando letras com significados predefinidos, como <code>d</code> para o dia, <code>m</code> para o mês, <code>Y</code> para o ano com quatro dígitos, <code>H</code> para a hora, <code>i</code> para os minutos e <code>s</code> para os segundos. É esta função que Tiago usa para registar a data no momento em que um novo artigo é criado:</p>
@@ -393,7 +409,7 @@ div.csl-indent {
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="fu">date_default_timezone_set</span>(<span class="st">"Europe/Lisbon"</span>)<span class="ot">;</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"H:i:s"</span>)<span class="ot">;</span>  <span class="co">// hora local em Portugal, independentemente do fuso do servidor</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Para operações mais complexas sobre datas, o PHP disponibiliza a classe <code>DateTime</code>, orientada a objetos, já referida no <a href="cap03.html#sec-03-linguagem" class="quarto-xref"><span>Secção 3.4</span></a>. Ao contrário de <code>date()</code>, que recebe tudo como parâmetros de uma função, aqui cria-se primeiro um objeto que representa a própria data, com <code>new DateTime(...)</code>, e chamam-se depois os seus métodos através de uma seta (<code>-&gt;</code>) para o consultar ou modificar, como <code>-&gt;modify()</code> ou <code>-&gt;format()</code>. É com esta ferramenta que Tiago resolve dois problemas concretos da Contraponto: mostrar há quantos dias um artigo foi publicado, e agendar a publicação de um artigo para uma data futura:</p>
+<p>Para operações mais complexas sobre datas, o PHP disponibiliza a classe <code>DateTime</code>, orientada a objetos, já referida na <a href="cap03.html#sec-03-linguagem" class="quarto-xref"><span>Secção 3.4</span></a>. Ao contrário de <code>date()</code>, que recebe tudo como parâmetros de uma função, aqui cria-se primeiro um objeto que representa a própria data, com <code>new DateTime(...)</code>, e chamam-se depois os seus métodos através de uma seta (<code>-&gt;</code>) para o consultar ou modificar, como <code>-&gt;modify()</code> ou <code>-&gt;format()</code>. É com esta ferramenta que Tiago resolve dois problemas concretos da Contraponto: mostrar há quantos dias um artigo foi publicado, e agendar a publicação de um artigo para uma data futura:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="va">$data_publicacao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>(<span class="st">"2026-08-20"</span>)<span class="ot">;</span></span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="va">$hoje</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
@@ -403,7 +419,7 @@ div.csl-indent {
 <span id="cb7-7"><a href="#cb7-7"></a><span class="va">$data_agendada</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
 <span id="cb7-8"><a href="#cb7-8"></a><span class="va">$data_agendada</span>-&gt;modify(<span class="st">"+7 days"</span>)<span class="ot">;</span></span>
 <span id="cb7-9"><a href="#cb7-9"></a><span class="kw">echo</span> <span class="st">"Publicação agendada para "</span> <span class="op">.</span> <span class="va">$data_agendada</span>-&gt;format(<span class="st">"d/m/Y"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>O código completo da demonstração feita na aula sobre datas, incluindo o cálculo de anos bissextos, está disponível no <a href="apendiceB.html#sec-apB-datas" class="quarto-xref"><span>Secção B.5</span></a>.</p>
+<p>O código completo da demonstração feita na aula sobre datas, incluindo o cálculo de anos bissextos, está disponível na <a href="apendiceB.html#sec-apB-datas" class="quarto-xref"><span>Secção B.5</span></a>.</p>
 </section>
 </section>
 <section id="sec-05-includes" class="level2" data-number="5.3">
@@ -422,18 +438,18 @@ div.csl-indent {
 <span id="cb8-9"><a href="#cb8-9"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span>
 <span id="cb8-10"><a href="#cb8-10"></a><span class="kw">?&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Como o cabeçalho e o rodapé costumam ser essenciais à estrutura visual de uma página, sem os quais o resultado ficaria incompleto ou quebrado, é comum preferir-se <code>require</code> a <code>include</code> para os incluir. Existem ainda as variantes <code>include_once</code> e <code>require_once</code>, que garantem que um mesmo ficheiro só é incluído uma vez, mesmo que a instrução apareça, direta ou indiretamente, mais do que uma vez no fluxo de execução, evitando erros como a redefinição de uma mesma função.</p>
-<p>Este padrão, ficheiros <code>header.php</code> e <code>footer.php</code> incluídos em cada página do sítio, é o primeiro passo prático para pensar numa aplicação web como um conjunto de componentes reutilizáveis, em vez de páginas HTML independentes e desligadas umas das outras, uma ideia retomada com mais profundidade no <a href="cap02.html#sec-02-mvc" class="quarto-xref"><span>Secção 2.1.2</span></a> e no <a href="cap10.html#sec-10-porque-separar" class="quarto-xref"><span>Secção 10.1</span></a>.</p>
-<p>O código completo dos três ficheiros desta demonstração está disponível no <a href="apendiceB.html#sec-apB-includes" class="quarto-xref"><span>Secção B.6</span></a>.</p>
+<p>Este padrão, ficheiros <code>header.php</code> e <code>footer.php</code> incluídos em cada página do sítio, é o primeiro passo prático para pensar numa aplicação web como um conjunto de componentes reutilizáveis, em vez de páginas HTML independentes e desligadas umas das outras, uma ideia retomada com mais profundidade na <a href="cap02.html#sec-02-mvc" class="quarto-xref"><span>Secção 2.1.2</span></a> e na <a href="cap10.html#sec-10-porque-separar" class="quarto-xref"><span>Secção 10.1</span></a>.</p>
+<p>O código completo dos três ficheiros desta demonstração está disponível na <a href="apendiceB.html#sec-apB-includes" class="quarto-xref"><span>Secção B.6</span></a>.</p>
 </section>
 <section id="sec-05-desafio" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="sec-05-desafio"><span class="header-section-number">5.4</span> Desafio</h2>
-<p>Com funções, datas e <em>includes</em>, Tiago já tem as peças para organizar o código do sítio em vez de o repetir. O desafio, a partir do catálogo <code>$artigos</code> e do filtro por categoria do <a href="cap04.html#sec-04-desafio" class="quarto-xref"><span>Secção 4.3</span></a>, é:</p>
+<p>Com funções, datas e <em>includes</em>, Tiago já tem as peças para organizar o código do sítio em vez de o repetir. O desafio, a partir do catálogo <code>$artigos</code> e do filtro por categoria da <a href="cap04.html#sec-04-desafio" class="quarto-xref"><span>Secção 4.3</span></a>, é:</p>
 <ol type="1">
 <li>Escrever uma função <code>formatarArtigo($artigo)</code> que recebe um artigo (um elemento do array <code>$artigos</code>) e devolve uma <em>string</em> com o título e a autoria formatada, por exemplo <code>"Título — por Autor"</code>;</li>
 <li>Usar essa função dentro do <code>foreach</code> que já percorre <code>$artigos</code>, em vez de escrever a formatação diretamente lá dentro;</li>
 <li>Criar dois ficheiros, <code>header.php</code> e <code>footer.php</code>, com um cabeçalho e um rodapé simples do sítio, e usar <code>require</code> para os incluir antes e depois da listagem de artigos.</li>
 </ol>
-<p>O ficheiro de arranque, com o catálogo e o filtro por categoria já prontos, está disponível no <a href="apendiceC.html#sec-apC-cap05" class="quarto-xref"><span>Secção C.4</span></a>.</p>
+<p>O ficheiro de arranque, com o catálogo e o filtro por categoria já prontos, está disponível na <a href="apendiceC.html#sec-apC-cap05" class="quarto-xref"><span>Secção C.4</span></a>.</p>
 </section>
 <section id="sec-05-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-05-referencias">Referências</h2>
@@ -1008,8 +1024,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Condicionais e Ciclos">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span>
+      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Condicionais e Loops">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

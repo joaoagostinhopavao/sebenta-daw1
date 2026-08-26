@@ -197,7 +197,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -269,6 +269,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -337,9 +349,13 @@ div.csl-indent {
 </header>
 
 
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap03.jpg');">
+  <div class="hero-badge">Capítulo 3</div>
+  <h1>PHP I: Sintaxe, Variáveis e Arrays</h1>
+</div>
 <section id="sec-03-ambiente" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="sec-03-ambiente"><span class="header-section-number">3.1</span> Preparar o Ambiente de Desenvolvimento</h2>
-<p>Antes de escrever a primeira linha de código PHP, é necessário um ambiente onde esse código possa ser executado: um servidor <code>Apache</code> capaz de interpretar PHP, ligado a um <code>MySQL</code>, tal como visto no <a href="cap02.html#sec-02-ambiente-uc" class="quarto-xref"><span>Secção 2.2.4</span></a>. Na prática, não é necessário que cada aluno construa este ambiente do zero: o professor da componente prática disponibiliza normalmente uma imagem já preparada, seja de uma máquina virtual, seja de contentores <code>Docker</code>, prontos a importar e a usar. Os passos completos de preparação deste ambiente, por qualquer uma das duas vias, ficam reservados para o <a href="apendiceA.html#sec-apA-intro" class="quarto-xref"><span>Secção A.1</span></a>, já que são detalhes de configuração, não de programação, e podem variar consoante o sistema operativo do computador de cada aluno.</p>
+<p>Antes de escrever a primeira linha de código PHP, é necessário um ambiente onde esse código possa ser executado: um servidor <code>Apache</code> capaz de interpretar PHP, ligado a um <code>MySQL</code>, tal como visto na <a href="cap02.html#sec-02-ambiente-uc" class="quarto-xref"><span>Secção 2.2.4</span></a>. Na prática, não é necessário que cada aluno construa este ambiente do zero: o professor da componente prática disponibiliza normalmente uma imagem já preparada, seja de uma máquina virtual, seja de contentores <code>Docker</code>, prontos a importar e a usar. Os passos completos de preparação deste ambiente, por qualquer uma das duas vias, ficam reservados para a <a href="apendiceA.html#sec-apA-intro" class="quarto-xref"><span>Secção A.1</span></a>, já que são detalhes de configuração, não de programação, e podem variar consoante o sistema operativo do computador de cada aluno.</p>
 <p>O que importa reter, para o resto deste capítulo, é apenas o resultado: um <code>Apache</code> a correr, capaz de interpretar PHP, ligado a um <code>MySQL</code>, um editor de código como o <code>Visual Studio Code</code> com acesso aos ficheiros do projeto, e a possibilidade de abrir um ficheiro <code>.php</code> num <em>browser</em> e ver o resultado da sua execução. Com este ambiente preparado, está reunido tudo o que é necessário para começar, finalmente, a escrever e a testar código PHP.</p>
 </section>
 <section id="sec-03-projeto" class="level2" data-number="3.2">
@@ -353,11 +369,11 @@ div.csl-indent {
 <li><strong>Categoria</strong>: o tema de cada artigo, por exemplo Cultura, Tecnologia ou Música;</li>
 <li><strong>Comentário</strong>: o que os leitores escrevem sobre um artigo.</li>
 </ul>
-<p>Este esboço não é ainda uma base de dados, apenas um mapa do problema: a implementação, capítulo a capítulo, começa pelas partes mais simples, e só junta complexidade nova à medida que Tiago aprende novas ferramentas da linguagem, dos arrays vistos no <a href="#sec-03-arrays" class="quarto-xref"><span>Secção 3.8</span></a> às tabelas de uma base de dados a partir do <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>.</p>
+<p>Este esboço não é ainda uma base de dados, apenas um mapa do problema: a implementação, capítulo a capítulo, começa pelas partes mais simples, e só junta complexidade nova à medida que Tiago aprende novas ferramentas da linguagem, dos arrays vistos na <a href="#sec-03-arrays" class="quarto-xref"><span>Secção 3.8</span></a> às tabelas de uma base de dados a partir da <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>.</p>
 </section>
 <section id="sec-03-arquitetura" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="sec-03-arquitetura"><span class="header-section-number">3.3</span> Arquitetura e Atribuição de Responsabilidades</h2>
-<p>Antes de decidir com que linguagem programar o sítio da Contraponto, importa perceber onde é que cada peça do problema se encaixa. A arquitetura em três camadas, já apresentada no <a href="cap02.html#sec-02-tres-camadas" class="quarto-xref"><span>Secção 2.1.3</span></a>, distribui uma aplicação como esta em três partes: apresentação, lógica e dados. A figura seguinte aplica esta distribuição ao projeto esboçado no <a href="#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>:</p>
+<p>Antes de decidir com que linguagem programar o sítio da Contraponto, importa perceber onde é que cada peça do problema se encaixa. A arquitetura em três camadas, já apresentada na <a href="cap02.html#sec-02-tres-camadas" class="quarto-xref"><span>Secção 2.1.3</span></a>, distribui uma aplicação como esta em três partes: apresentação, lógica e dados. A figura seguinte aplica esta distribuição ao projeto esboçado na <a href="#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div>
@@ -382,7 +398,7 @@ div.csl-indent {
 </div>
 </div>
 <p>A camada de apresentação é o que Tiago já domina desde o primeiro ano do curso: o HTML estrutura cada página do sítio, a lista de artigos, a página de um artigo, o formulário de comentário, a CSS trata da sua apresentação visual, e o JavaScript pode, mais tarde, tornar a interface mais dinâmica. Nada disto muda nesta UC; é o ponto de partida sobre o qual todo o trabalho seguinte se constrói.</p>
-<p>O que falta a Tiago é a camada de lógica: o código que corre no servidor, decide que artigos mostrar, e valida o comentário submetido por um leitor antes de o passar à camada de dados. Como visto no <a href="cap01.html#sec-01-linguagens" class="quarto-xref"><span>Secção 1.6.1</span></a>, esta camada pode ser escrita em qualquer uma de várias linguagens de servidor, <code>Node.js</code>, <code>Python</code> ou <code>PHP</code>, entre outras; esta UC escolhe o PHP, uma das mais usadas neste papel. A camada de dados, a que a lógica recorre para consultar ou guardar artigos, autores, categorias e comentários, só é introduzida a partir do <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>; até lá, é a própria camada de lógica que guarda estes dados, em memória, tal como se vê já na secção seguinte. É a partir daqui que o resto deste capítulo, e de todos os seguintes, se dedica a construir a camada de lógica da Contraponto.</p>
+<p>O que falta a Tiago é a camada de lógica: o código que corre no servidor, decide que artigos mostrar, e valida o comentário submetido por um leitor antes de o passar à camada de dados. Como visto na <a href="cap01.html#sec-01-linguagens" class="quarto-xref"><span>Secção 1.6.1</span></a>, esta camada pode ser escrita em qualquer uma de várias linguagens de servidor, <code>Node.js</code>, <code>Python</code> ou <code>PHP</code>, entre outras; esta UC escolhe o PHP, uma das mais usadas neste papel. A camada de dados, a que a lógica recorre para consultar ou guardar artigos, autores, categorias e comentários, só é introduzida a partir da <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>; até lá, é a própria camada de lógica que guarda estes dados, em memória, tal como se vê já na secção seguinte. É a partir daqui que o resto deste capítulo, e de todos os seguintes, se dedica a construir a camada de lógica da Contraponto.</p>
 </section>
 <section id="sec-03-linguagem" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="sec-03-linguagem"><span class="header-section-number">3.4</span> A Linguagem PHP</h2>
@@ -402,7 +418,7 @@ div.csl-indent {
 <span id="cb1-12"><a href="#cb1-12"></a>  <span class="kw">?&gt;</span></span>
 <span id="cb1-13"><a href="#cb1-13"></a><span class="op">&lt;/</span>body<span class="op">&gt;</span></span>
 <span id="cb1-14"><a href="#cb1-14"></a><span class="op">&lt;/</span>html<span class="op">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>O PHP suporta dois estilos de programação: o procedimental, uma sequência de instruções e chamadas a funções, que é o que este livro segue como base, e o orientado a objetos, em que dados e comportamento se agrupam em objetos, criados com <code>new</code> e manipulados através de métodos, chamados com uma seta (<code>-&gt;</code>). O PHP recorre a objetos nalgumas das suas próprias ferramentas internas, como a classe <code>DateTime</code>, vista no <a href="cap05.html#sec-05-datas" class="quarto-xref"><span>Secção 5.2</span></a>; nesses casos, introduz-se apenas a sintaxe necessária para os usar, sem que seja preciso, para já, saber construir os próprios objetos.</p>
+<p>O PHP suporta dois estilos de programação: o procedimental, uma sequência de instruções e chamadas a funções, que é o que este livro segue como base, e o orientado a objetos, em que dados e comportamento se agrupam em objetos, criados com <code>new</code> e manipulados através de métodos, chamados com uma seta (<code>-&gt;</code>). O PHP recorre a objetos nalgumas das suas próprias ferramentas internas, como a classe <code>DateTime</code>, vista na <a href="cap05.html#sec-05-datas" class="quarto-xref"><span>Secção 5.2</span></a>; nesses casos, introduz-se apenas a sintaxe necessária para os usar, sem que seja preciso, para já, saber construir os próprios objetos.</p>
 </section>
 <section id="sec-03-sintaxe" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="sec-03-sintaxe"><span class="header-section-number">3.5</span> Sintaxe Básica</h2>
@@ -570,7 +586,7 @@ div.csl-indent {
 <span id="cb14-8"><a href="#cb14-8"></a><span class="kw">echo</span> <span class="va">$revistas_concorrentes</span>[<span class="st">"culturais"</span>][<span class="dv">1</span>]<span class="ot">;</span>     <span class="co">// Blimunda</span></span>
 <span id="cb14-9"><a href="#cb14-9"></a></span>
 <span id="cb14-10"><a href="#cb14-10"></a><span class="co">// Um array de registos, cada um por sua vez um array associativo:</span></span>
-<span id="cb14-11"><a href="#cb14-11"></a><span class="co">// exatamente o esboço de "Artigo" proposto por Tiago no @sec-03-projeto</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">// exatamente o esboço de "Artigo" proposto por Tiago na @sec-03-projeto</span></span>
 <span id="cb14-12"><a href="#cb14-12"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
 <span id="cb14-13"><a href="#cb14-13"></a>    <span class="dt">array</span>(</span>
 <span id="cb14-14"><a href="#cb14-14"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
@@ -591,7 +607,7 @@ div.csl-indent {
 <span id="cb14-29"><a href="#cb14-29"></a></span>
 <span id="cb14-30"><a href="#cb14-30"></a><span class="kw">echo</span> <span class="va">$artigos</span>[<span class="dv">0</span>][<span class="st">"titulo"</span>]<span class="ot">;</span>  <span class="co">// Entrevista: o futuro do jornalismo local</span></span>
 <span id="cb14-31"><a href="#cb14-31"></a><span class="kw">echo</span> <span class="va">$artigos</span>[<span class="dv">2</span>][<span class="st">"autor"</span>]<span class="ot">;</span>   <span class="co">// Rita Ferreira</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>O array <code>$artigos</code> é a estrutura que finalmente dá corpo ao modelo proposto no <a href="#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>: cada elemento é um artigo completo, com toda a sua informação, e a lista inteira continua a poder ser percorrida, contada e ordenada com as mesmas funções vistas na <a href="#sec-03-arrays-numericos" class="quarto-xref"><span>Secção 3.8.1</span></a>. É também com este mesmo array, em memória, que Tiago vai construir as primeiras páginas do sítio, muito antes de ligar a aplicação a uma base de dados real; este último exemplo, um array de arrays associativos, é de resto a forma mais comum de representar, em memória, um conjunto de registos vindos de uma base de dados, tema retomado com mais detalhe no <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>.</p>
+<p>O array <code>$artigos</code> é a estrutura que finalmente dá corpo ao modelo proposto na <a href="#sec-03-projeto" class="quarto-xref"><span>Secção 3.2</span></a>: cada elemento é um artigo completo, com toda a sua informação, e a lista inteira continua a poder ser percorrida, contada e ordenada com as mesmas funções vistas na <a href="#sec-03-arrays-numericos" class="quarto-xref"><span>Secção 3.8.1</span></a>. É também com este mesmo array, em memória, que Tiago vai construir as primeiras páginas do sítio, muito antes de ligar a aplicação a uma base de dados real; este último exemplo, um array de arrays associativos, é de resto a forma mais comum de representar, em memória, um conjunto de registos vindos de uma base de dados, tema retomado com mais detalhe na <a href="cap08.html#sec-08-dbms" class="quarto-xref"><span>Secção 8.1</span></a>.</p>
 <p>Para inspecionar rapidamente o conteúdo de um array durante o desenvolvimento, sem ter de aceder a cada elemento individualmente, usa-se a função <code>print_r()</code>, que mostra a sua estrutura completa, incluindo arrays aninhados, ou <code>var_dump()</code>, que mostra ainda o tipo e o comprimento de cada valor.</p>
 </section>
 <section id="sec-03-exemplo-completo" class="level3" data-number="3.8.4">
@@ -633,7 +649,7 @@ div.csl-indent {
 </dd>
 </dl>
 <p>Note-se que <code>array_sum()</code> devolve um <code>float</code> sempre que a divisão não é exata, mesmo que todas as vistas somadas sejam inteiras, o que é consistente com o comportamento de tipagem dinâmica visto na <a href="#sec-03-tipos" class="quarto-xref"><span>Secção 3.7</span></a>: o PHP escolhe automaticamente o tipo mais adequado ao resultado de cada operação.</p>
-<p>O código completo da demonstração feita na aula sobre variáveis e arrays, pronto a copiar, está disponível no <a href="apendiceB.html#sec-apB-variaveis" class="quarto-xref"><span>Secção B.2</span></a>.</p>
+<p>O código completo da demonstração feita na aula sobre variáveis e arrays, pronto a copiar, está disponível na <a href="apendiceB.html#sec-apB-variaveis" class="quarto-xref"><span>Secção B.2</span></a>.</p>
 </section>
 </section>
 <section id="sec-03-desafio" class="level2" data-number="3.9">
@@ -643,9 +659,9 @@ div.csl-indent {
 <li>Completar o array <code>$artigos</code> com pelo menos cinco artigos, cada um com título, autor e categoria;</li>
 <li>Mostrar o título do terceiro artigo do catálogo;</li>
 <li>Construir um array <code>$categorias</code> com as categorias já usadas nos artigos, sem repetições, e ordená-lo por ordem alfabética com <code>sort()</code>;</li>
-<li>Verificar, com <code>in_array()</code>, se a categoria <code>"Entrevistas"</code> já está representada no catálogo.</li>
+<li>Verificar, com <code>in_array()</code>, se a categoria <code>"Entrevistas"</code> já está presente no array <code>$categorias</code> construído no ponto anterior.</li>
 </ol>
-<p>O ficheiro de arranque, com o array <code>$artigos</code> parcialmente preenchido, está disponível no <a href="apendiceC.html#sec-apC-cap03" class="quarto-xref"><span>Secção C.2</span></a>.</p>
+<p>O ficheiro de arranque, com o array <code>$artigos</code> parcialmente preenchido, está disponível na <a href="apendiceC.html#sec-apC-cap03" class="quarto-xref"><span>Secção C.2</span></a>.</p>
 </section>
 <section id="sec-03-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-03-referencias">Referências</h2>
@@ -1225,8 +1241,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Condicionais e Ciclos">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Condicionais e Loops">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

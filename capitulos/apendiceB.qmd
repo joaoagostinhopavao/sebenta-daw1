@@ -13,14 +13,14 @@ capítulos anteriores. Cada demo aqui apresentada foi limpa da parte
 puramente decorativa (o HTML e a CSS que envolvem a demonstração na
 aula), mantendo apenas a lógica em PHP e os comentários necessários para
 a compreender, de modo a que possa ser copiada diretamente para um
-ficheiro `.php` próprio e executada no ambiente preparado no
+ficheiro `.php` próprio e executada no ambiente preparado na
 @sec-apA-intro, sem qualquer alteração. Cada capítulo do texto principal
 remete para a secção correspondente deste apêndice, no ponto em que essa
 demo é relevante.
 
 ## Demo: Variáveis e Arrays {#sec-apB-variaveis}
 
-Demonstração usada no @sec-03-variaveis e no @sec-03-arrays, com
+Demonstração usada na @sec-03-variaveis e na @sec-03-arrays, com
 exemplos dos quatro tipos de arrays vistos nesse capítulo: numérico,
 associativo e multidimensional.
 
@@ -76,7 +76,7 @@ echo "<p>Terceiro sedan: " . $carros["sedans"][2] . "</p>";
 
 ## Demo: Condicionais, Loops e Supervariáveis {#sec-apB-condicionais-loops}
 
-Demonstração usada no @sec-04-condicionais, no @sec-04-ciclos e no
+Demonstração usada na @sec-04-condicionais, na @sec-04-ciclos e na
 @sec-07-supervariaveis. A parte de `$_POST` requer um pequeno formulário
 HTML na mesma página, submetido para si próprio (`action=""`).
 
@@ -147,7 +147,7 @@ echo "<p>Nome do servidor: " . $_SERVER['SERVER_NAME'] . "</p>";
 
 ## Demo: Funções {#sec-apB-funcoes}
 
-Demonstração usada no @sec-05-funcoes, com quatro variantes de função
+Demonstração usada na @sec-05-funcoes, com quatro variantes de função
 (sem parâmetros nem retorno, com parâmetros, com retorno, e com
 parâmetro opcional).
 
@@ -197,7 +197,7 @@ criarUtilizador("Ana", "ana@example.com", "789123", "admin"); // 'role' explíci
 
 ## Demo: Datas {#sec-apB-datas}
 
-Demonstração usada no @sec-05-datas, desta vez com a classe `DateTime`,
+Demonstração usada na @sec-05-datas, desta vez com a classe `DateTime`,
 orientada a objetos, em vez da função `date()`.
 
 ```php
@@ -235,7 +235,7 @@ if ($ano % 4 === 0 && ($ano % 100 !== 0 || $ano % 400 === 0)) {
 
 ## Demo: Includes (Header e Footer) {#sec-apB-includes}
 
-Demonstração usada no @sec-05-includes, com três ficheiros: um
+Demonstração usada na @sec-05-includes, com três ficheiros: um
 `header.php` e um `footer.php` reutilizáveis, incluídos por uma página
 principal.
 

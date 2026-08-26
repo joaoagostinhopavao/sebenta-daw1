@@ -5,17 +5,24 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap03.jpg');">
+  <div class="hero-badge">Capítulo 3</div>
+  <h1>PHP I: Sintaxe, Variáveis e Arrays</h1>
+</div>
+```
+
 ## Preparar o Ambiente de Desenvolvimento {#sec-03-ambiente}
 
 Antes de escrever a primeira linha de código PHP, é necessário um
 ambiente onde esse código possa ser executado: um servidor `Apache`
-capaz de interpretar PHP, ligado a um `MySQL`, tal como visto no
+capaz de interpretar PHP, ligado a um `MySQL`, tal como visto na
 @sec-02-ambiente-uc. Na prática, não é necessário que cada aluno
 construa este ambiente do zero: o professor da componente prática
 disponibiliza normalmente uma imagem já preparada, seja de uma máquina
 virtual, seja de contentores `Docker`, prontos a importar e a usar. Os
 passos completos de preparação deste ambiente, por qualquer uma das
-duas vias, ficam reservados para o @sec-apA-intro, já que são detalhes
+duas vias, ficam reservados para a @sec-apA-intro, já que são detalhes
 de configuração, não de programação, e podem variar consoante o
 sistema operativo do computador de cada aluno.
 
@@ -53,17 +60,17 @@ esboço simples dos dados que o sítio vai precisar de guardar:
 Este esboço não é ainda uma base de dados, apenas um mapa do problema:
 a implementação, capítulo a capítulo, começa pelas partes mais simples,
 e só junta complexidade nova à medida que Tiago aprende novas
-ferramentas da linguagem, dos arrays vistos no @sec-03-arrays às
-tabelas de uma base de dados a partir do @sec-08-dbms.
+ferramentas da linguagem, dos arrays vistos na @sec-03-arrays às
+tabelas de uma base de dados a partir da @sec-08-dbms.
 
 ## Arquitetura e Atribuição de Responsabilidades {#sec-03-arquitetura}
 
 Antes de decidir com que linguagem programar o sítio da Contraponto,
 importa perceber onde é que cada peça do problema se encaixa. A
-arquitetura em três camadas, já apresentada no @sec-02-tres-camadas,
+arquitetura em três camadas, já apresentada na @sec-02-tres-camadas,
 distribui uma aplicação como esta em três partes: apresentação, lógica
 e dados. A figura seguinte aplica esta distribuição ao projeto esboçado
-no @sec-03-projeto:
+na @sec-03-projeto:
 
 ```{mermaid}
 %%| echo: false
@@ -91,13 +98,13 @@ qual todo o trabalho seguinte se constrói.
 
 O que falta a Tiago é a camada de lógica: o código que corre no
 servidor, decide que artigos mostrar, e valida o comentário submetido
-por um leitor antes de o passar à camada de dados. Como visto no
+por um leitor antes de o passar à camada de dados. Como visto na
 @sec-01-linguagens, esta camada pode ser escrita em qualquer uma de
 várias linguagens de servidor, `Node.js`, `Python` ou `PHP`, entre
 outras; esta UC escolhe o PHP, uma das mais usadas neste papel. A
 camada de dados, a que a lógica recorre para consultar ou guardar
 artigos, autores, categorias e comentários, só é introduzida a partir
-do @sec-08-dbms; até lá, é a própria camada de lógica que guarda estes
+da @sec-08-dbms; até lá, é a própria camada de lógica que guarda estes
 dados, em memória, tal como se vê já na secção seguinte. É a partir
 daqui que o resto deste capítulo, e de todos os seguintes, se dedica a
 construir a camada de lógica da Contraponto.
@@ -143,7 +150,7 @@ segue como base, e o orientado a objetos, em que dados e comportamento
 se agrupam em objetos, criados com `new` e manipulados através de
 métodos, chamados com uma seta (`->`). O PHP recorre a objetos nalgumas
 das suas próprias ferramentas internas, como a classe `DateTime`, vista
-no @sec-05-datas; nesses casos, introduz-se apenas a sintaxe necessária
+na @sec-05-datas; nesses casos, introduz-se apenas a sintaxe necessária
 para os usar, sem que seja preciso, para já, saber construir os
 próprios objetos.
 
@@ -464,7 +471,7 @@ echo $revistas_concorrentes["generalistas"][0];  // Visão
 echo $revistas_concorrentes["culturais"][1];     // Blimunda
 
 // Um array de registos, cada um por sua vez um array associativo:
-// exatamente o esboço de "Artigo" proposto por Tiago no @sec-03-projeto
+// exatamente o esboço de "Artigo" proposto por Tiago na @sec-03-projeto
 $artigos = array(
     array(
         "titulo"    => "Entrevista: o futuro do jornalismo local",
@@ -488,7 +495,7 @@ echo $artigos[2]["autor"];   // Rita Ferreira
 ```
 
 O array `$artigos` é a estrutura que finalmente dá corpo ao modelo
-proposto no @sec-03-projeto: cada elemento é um artigo completo, com
+proposto na @sec-03-projeto: cada elemento é um artigo completo, com
 toda a sua informação, e a lista inteira continua a poder ser
 percorrida, contada e ordenada com as mesmas funções vistas na
 @sec-03-arrays-numericos. É também com este mesmo array, em memória,
@@ -496,7 +503,7 @@ que Tiago vai construir as primeiras páginas do sítio, muito antes de
 ligar a aplicação a uma base de dados real; este último exemplo, um
 array de arrays associativos, é de resto a forma mais comum de
 representar, em memória, um conjunto de registos vindos de uma base de
-dados, tema retomado com mais detalhe no @sec-08-dbms.
+dados, tema retomado com mais detalhe na @sec-08-dbms.
 
 Para inspecionar rapidamente o conteúdo de um array durante o
 desenvolvimento, sem ter de aceder a cada elemento individualmente, usa-se
@@ -542,7 +549,7 @@ consistente com o comportamento de tipagem dinâmica visto na
 resultado de cada operação.
 
 O código completo da demonstração feita na aula sobre variáveis e
-arrays, pronto a copiar, está disponível no @sec-apB-variaveis.
+arrays, pronto a copiar, está disponível na @sec-apB-variaveis.
 
 ## Desafio {#sec-03-desafio}
 
@@ -559,10 +566,10 @@ condicionais:
    artigos, sem repetições, e ordená-lo por ordem alfabética com
    `sort()`;
 4. Verificar, com `in_array()`, se a categoria `"Entrevistas"` já está
-   representada no catálogo.
+   presente no array `$categorias` construído no ponto anterior.
 
 O ficheiro de arranque, com o array `$artigos` parcialmente preenchido,
-está disponível no @sec-apC-cap03.
+está disponível na @sec-apC-cap03.
 
 ## Referências {#sec-03-referencias .unnumbered}
 

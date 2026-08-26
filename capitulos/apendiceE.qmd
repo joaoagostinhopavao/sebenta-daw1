@@ -1,0 +1,214 @@
+---
+title: "Complementos sobre o HTTP"
+author: "João Pavão"
+date: 2026-08-26
+lang: pt-PT
+---
+
+## Introdução {#sec-apE-intro}
+
+A @sec-07-http dá a um programador de aplicações web o que precisa de
+saber sobre o protocolo `HTTP` para perceber o resto deste livro: o
+que são os métodos `GET` e `POST`, como um pedido chega a um recurso
+virtual, como o PHP recebe esses dados através das supervariáveis, e
+como um sítio mantém o estado de um leitor através de *cookies* e
+sessões, apesar de o `HTTP` ser, por natureza, *stateless*. Este
+apêndice aprofunda essa matéria além do que é estritamente necessário
+para desenvolver aplicações web, tal como um pintor não precisa de
+saber compor a sua própria tinta para pintar um quadro, mas beneficia
+de perceber como ela é feita. Aqui fica, para quem quiser esse
+aprofundamento, a sintaxe exata das mensagens `GET` e `POST`, outros
+cabeçalhos comuns, as estratégias que os *browsers* usam para gerir
+ligações, e o conjunto completo de atributos de um *cookie*.
+
+## A Sintaxe Exata das Mensagens HTTP {#sec-apE-mensagens}
+
+A @sec-07-mensagem-pedido apresenta a estrutura genérica de uma
+mensagem `HTTP`. Vale a pena ver, em detalhe, o que cada uma das suas
+partes contém no caso concreto de um pedido `GET` ou `POST`.
+
+### O Pedido GET {#sec-apE-get}
+
+O *link* para os artigos de uma categoria da Contraponto, visto na
+@sec-07-get,
+
+```html
+<a href="contraponto.pt/artigos.php?categoria=Cultura">Cultura</a>
+```
+
+ao ser clicado, resulta na seguinte mensagem `GET`:
+
+```bash
+GET /artigos.php?categoria=Cultura HTTP/1.1
+Host: contraponto.pt
+```
+
+`GET` é o método, `/artigos.php?categoria=Cultura` é o recurso pedido e
+`HTTP/1.1` é a versão do protocolo em uso. O cabeçalho `Host` indica a
+que servidor o pedido se destina, essencial quando um mesmo endereço IP
+aloja vários domínios diferentes. A mensagem `GET` não tem corpo,
+porque não é necessário enviar dados adicionais para o servidor, apenas
+pedir um recurso.
+
+Por não alterar nada no servidor, a mensagem `GET` é considerada uma
+mensagem **inócua**. Esta é uma convenção do protocolo, não uma
+garantia técnica: um servidor mal concebido pode, tecnicamente, alterar
+dados como resposta a um `GET`, mas fazê-lo viola o comportamento
+esperado por qualquer cliente HTTP, e é considerado má prática.
+
+O `GET` pode também ser usado num contexto de formulário HTML, desde
+que o objetivo não seja alterar informação no servidor, apenas obter um
+resultado, como numa pesquisa:
+
+```html
+<form action="/pesquisa" method="GET">
+    <label for="term">Procurar:</label>
+    <input id="term" name="term" type="text" />
+    <input type="submit" value="Procurar!" />
+</form>
+```
+
+Ao submeter este formulário com o termo "jornalismo", o *browser* gera
+a seguinte mensagem:
+
+```bash
+GET /pesquisa?term=jornalismo HTTP/1.1
+Host: contraponto.pt
+```
+
+Note-se como os dados do formulário aparecem diretamente na URL, depois
+do `?`, no formato `chave=valor`, exatamente como no *link* da
+categoria.
+
+### O Pedido POST {#sec-apE-post}
+
+O formulário de comentário da Contraponto, referido na @sec-07-post,
+tem tipicamente esta forma:
+
+```html
+<form action="/comentar.php" method="POST">
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" type="text" />
+    <label for="texto">Comentário</label>
+    <textarea id="texto" name="texto"></textarea>
+    <input type="submit" value="Comentar" />
+</form>
+```
+
+Que, ao ser submetido, resulta na seguinte mensagem:
+
+```bash
+POST /comentar.php HTTP/1.1
+Host: contraponto.pt
+
+nome=Rita&texto=Excelente+artigo%21
+```
+
+Ao contrário do `GET`, os dados vão no corpo da mensagem, não na URL.
+Repare-se como o formato `chave=valor` se mantém, mas agora no corpo, e
+como caracteres especiais no texto (como o `!`) aparecem codificados
+(`%21`), uma regra chamada *URL encoding*, necessária porque o corpo de
+uma mensagem `HTTP` só pode conter um conjunto restrito de carateres.
+
+## Cabeçalhos HTTP {#sec-apE-cabecalhos}
+
+A @sec-07-cabecalhos apresenta o cabeçalho `Host`, o único obrigatório
+num pedido. Outro cabeçalho comum é o `Accept`, que indica ao servidor
+que tipos de conteúdo (formatos `MIME`) o *browser* prefere receber na
+resposta, por ordem de preferência, indicada por um valor de qualidade
+`q` entre 0 e 1 (o valor por omissão é 1, a preferência máxima):
+
+```bash
+GET /artigos.php?categoria=Cultura HTTP/1.1
+Host: contraponto.pt
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8
+```
+
+Neste exemplo, o *browser* prefere `HTML`, aceita `XML` com uma
+preferência ligeiramente menor, e aceita qualquer outro tipo de
+conteúdo (`*/*`) apenas como último recurso.
+
+## Gestão de Ligações do Browser {#sec-apE-ligacoes}
+
+A @sec-07-stateless explica que cada pedido `HTTP` é, por si só,
+independente de todos os outros, e que uma única página normalmente
+exige vários pedidos, um por cada recurso. Para atenuar o custo disto,
+os *browsers* recorrem a diferentes estratégias de gestão de ligações:
+
+- **Ligações paralelas**: ao detetar vários recursos numa página, o
+  *browser* abre várias ligações em simultâneo para os carregar mais
+  depressa, uma para o HTML, outra para o CSS, outra para o JavaScript,
+  e assim por diante. O número de ligações paralelas é limitado, porque
+  cada ligação adicional aumenta a carga sobre o servidor, o que, a
+  partir de certo ponto, pode tornar o carregamento da página mais
+  lento em vez de mais rápido;
+- **Ligações persistentes**: em vez de fechar o *socket* logo a seguir
+  a cada resposta, o servidor mantém-no aberto para vários pedidos
+  sucessivos. O `Apache`, por omissão, mantém uma ligação persistente
+  aberta durante 5 segundos de inatividade antes de a fechar. Este
+  período tem também de ser limitado por razões de segurança, para
+  evitar ataques de negação de serviço (*DoS*, *Denial of Service*), em
+  que um atacante mantém propositadamente muitas ligações abertas em
+  simultâneo, impedindo o servidor de atender pedidos legítimos;
+- **Ligações em rajada** (*back-to-back*): desde o HTTP/1.1, um cliente
+  pode enviar vários pedidos seguidos, sobre a mesma ligação, sem
+  esperar pela resposta a cada um antes de enviar o seguinte, reduzindo
+  ainda mais o tempo total de carregamento de uma página com muitos
+  recursos.
+
+## Os Atributos de um Cookie {#sec-apE-cookies}
+
+A @sec-07-cookies apresenta o essencial sobre *cookies*: um pequeno
+pedaço de informação que o servidor pede ao *browser* para guardar e
+reenviar em cada pedido seguinte. Os *cookies* estão definidos, em
+detalhe, na norma `RFC 6265`, *HTTP State Management Mechanism*.
+
+Um servidor pode definir vários *cookies* ao mesmo tempo, cada um com o
+seu próprio significado, por exemplo um identificador de sessão e a
+língua preferida do leitor:
+
+```bash
+HTTP/1.1 200 OK
+Set-Cookie: sessao=31d4d96e407aad42; Path=/; Secure; HttpOnly
+Set-Cookie: lang=pt-PT; Path=/; Domain=contraponto.pt
+```
+
+Um *cookie* definido pelo servidor pode incluir vários atributos, para
+além do par nome-valor:
+
+- **`Expires`** ou **`Max-Age`**: definem quando o *cookie* deve
+  expirar (uma data concreta, ou um número de segundos, respetivamente);
+  se ambos forem definidos, prevalece o `Max-Age`. Sem nenhum dos dois,
+  o *cookie* expira quando o *browser* é fechado;
+- **`Domain`** e **`Path`**: restringem a que *host* e a que pasta do
+  servidor o *cookie* é enviado;
+- **`Secure`**: o *browser* só envia este *cookie* por um canal seguro,
+  `HTTPS`;
+- **`HttpOnly`**: uma proteção importante contra ataques de *XSS*, tema
+  aprofundado na @sec-09-codigo-proprio; o *cookie* só é trocado entre
+  *browser* e servidor, sem ficar acessível a código JavaScript do
+  lado do cliente.
+
+Para apagar um *cookie*, o servidor reenvia-o com uma data de expiração
+já no passado; a partir desse momento, o *browser* deixa de o incluir
+nos pedidos seguintes. Note-se ainda que os *cookies* têm uma limitação
+de 4kB de informação cada. Em PHP, um *cookie* cria-se com a função
+`setcookie()`, que aceita todos estes atributos como parâmetros:
+
+```php
+<?php
+setcookie(
+    "utilizador",   // nome
+    "joao",         // valor
+    time() + 3600,  // expira em 1 hora
+    "/",            // path
+    "",             // domain
+    true,           // secure
+    true            // httponly
+);
+```
+
+## Referências {#sec-apE-referencias .unnumbered}
+
+::: {#refs}
+:::

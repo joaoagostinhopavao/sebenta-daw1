@@ -5,6 +5,13 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap05.jpg');">
+  <div class="hero-badge">Capítulo 5</div>
+  <h1>PHP III: Funções, Datas e Includes</h1>
+</div>
+```
+
 ## Funções {#sec-05-funcoes}
 
 À medida que o sítio da Contraponto cresce, Tiago repara que está a
@@ -91,11 +98,11 @@ echo formatarVistas(1);    // 1 vista
 ```
 
 O código completo da demonstração feita na aula sobre funções está
-disponível no @sec-apB-funcoes.
+disponível na @sec-apB-funcoes.
 
 ## Datas {#sec-05-datas}
 
-O esboço do artigo proposto no @sec-03-projeto inclui uma data de
+O esboço do artigo proposto na @sec-03-projeto inclui uma data de
 publicação, um campo que nenhum dos exemplos anteriores ainda usou.
 Tiago precisa de a mostrar de forma legível ao leitor, de calcular há
 quanto tempo um artigo foi publicado, e de permitir a Rita agendar um
@@ -143,7 +150,7 @@ echo date("H:i:s");  // hora local em Portugal, independentemente do fuso do ser
 ```
 
 Para operações mais complexas sobre datas, o PHP disponibiliza a classe
-`DateTime`, orientada a objetos, já referida no @sec-03-linguagem. Ao
+`DateTime`, orientada a objetos, já referida na @sec-03-linguagem. Ao
 contrário de `date()`, que recebe tudo como parâmetros de uma função,
 aqui cria-se primeiro um objeto que representa a própria data, com
 `new DateTime(...)`, e chamam-se depois os seus métodos através de uma
@@ -165,7 +172,7 @@ echo "Publicação agendada para " . $data_agendada->format("d/m/Y");
 ```
 
 O código completo da demonstração feita na aula sobre datas, incluindo
-o cálculo de anos bissextos, está disponível no @sec-apB-datas.
+o cálculo de anos bissextos, está disponível na @sec-apB-datas.
 
 ## Manipulação do Fluxo de Páginas: Includes {#sec-05-includes}
 
@@ -216,16 +223,16 @@ Este padrão, ficheiros `header.php` e `footer.php` incluídos em cada
 página do sítio, é o primeiro passo prático para pensar numa aplicação
 web como um conjunto de componentes reutilizáveis, em vez de páginas
 HTML independentes e desligadas umas das outras, uma ideia retomada com
-mais profundidade no @sec-02-mvc e no @sec-10-porque-separar.
+mais profundidade na @sec-02-mvc e na @sec-10-porque-separar.
 
 O código completo dos três ficheiros desta demonstração está disponível
-no @sec-apB-includes.
+na @sec-apB-includes.
 
 ## Desafio {#sec-05-desafio}
 
 Com funções, datas e *includes*, Tiago já tem as peças para organizar o
 código do sítio em vez de o repetir. O desafio, a partir do catálogo
-`$artigos` e do filtro por categoria do @sec-04-desafio, é:
+`$artigos` e do filtro por categoria da @sec-04-desafio, é:
 
 1. Escrever uma função `formatarArtigo($artigo)` que recebe um artigo
    (um elemento do array `$artigos`) e devolve uma *string* com o
@@ -237,7 +244,7 @@ código do sítio em vez de o repetir. O desafio, a partir do catálogo
    e depois da listagem de artigos.
 
 O ficheiro de arranque, com o catálogo e o filtro por categoria já
-prontos, está disponível no @sec-apC-cap05.
+prontos, está disponível na @sec-apC-cap05.
 
 ## Referências {#sec-05-referencias .unnumbered}
 

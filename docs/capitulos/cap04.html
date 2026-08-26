@@ -8,7 +8,7 @@
 
 <meta name="author" content="João Pavão">
 
-<title>4&nbsp; PHP II: Condicionais e Ciclos – Desenvolvimento de Aplicações Web I</title>
+<title>4&nbsp; PHP II: Condicionais e Loops – Desenvolvimento de Aplicações Web I</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -139,7 +139,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap04.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap04.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -194,7 +194,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -266,6 +266,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Desafios de Programação</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Complementos de Redes de Computadores</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Complementos sobre o HTTP</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -300,7 +312,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Ciclos</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Condicionais e Loops</span></h1>
 </div>
 
 
@@ -329,6 +341,10 @@ div.csl-indent {
 </header>
 
 
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap04.jpg');">
+  <div class="hero-badge">Capítulo 4</div>
+  <h1>PHP II: Condicionais e Loops</h1>
+</div>
 <section id="sec-04-condicionais" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="sec-04-condicionais"><span class="header-section-number">4.1</span> Estruturas Condicionais</h2>
 <p>Com o catálogo de artigos completo, Tiago repara que nem tudo o que está no array <code>$artigos</code> deve ser tratado da mesma forma: um artigo pode estar pronto a publicar, ou pode ainda ser apenas um rascunho que Rita está a rever. Com o que sabe até aqui, o único código que consegue escrever é um <code>echo</code> direto, sempre executado da mesma maneira, sem nunca variar consoante os dados: não há forma de dizer “mostra isto <strong>se</strong> o artigo estiver publicado, mas não se ainda for rascunho”. É exatamente este tipo de decisão que uma estrutura condicional permite tomar: avalia se uma condição é verdadeira ou falsa, e executa um bloco de código diferente consoante o resultado, direcionando o fluxo do programa de acordo com os dados. Em PHP, a estrutura mais comum é o <code>if</code>/<code>else</code>, e resolve bem o problema do estado do artigo:</p>
@@ -420,7 +436,7 @@ div.csl-indent {
 <span id="cb4-4"><a href="#cb4-4"></a><span class="fu">var_dump</span>(<span class="dv">0</span> <span class="op">===</span> <span class="st">"0"</span>)<span class="ot">;</span>     <span class="co">// false: tipos diferentes, integer vs string</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a><span class="fu">var_dump</span>(<span class="st">"10"</span> <span class="op">==</span> <span class="st">"1e1"</span>)<span class="ot">;</span> <span class="co">// true: ambos convertidos para o mesmo número</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a><span class="fu">var_dump</span>(<span class="st">"10"</span> <span class="op">===</span> <span class="st">"1e1"</span>)<span class="ot">;</span><span class="co">// false: são strings diferentes</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Por esta razão, é boa prática usar <code>===</code> sempre que se quer garantir que dois valores são realmente iguais, tanto no valor como no tipo, evitando comparações que dependam de conversões automáticas nem sempre óbvias. Esta distinção vai ser particularmente relevante mais adiante no livro, quando Tiago começar a receber dados de pedidos HTTP reais, no <a href="cap07.html#sec-07-supervariaveis" class="quarto-xref"><span>Secção 7.4</span></a>: um identificador de artigo recebido pela URL chega sempre como <em>string</em>, mesmo que represente um número, e comparar essa <em>string</em> com um <code>id</code> guardado como <code>integer</code> pode ter resultados inesperados se se usar <code>==</code> em vez de <code>===</code>.</p>
+<p>Por esta razão, é boa prática usar <code>===</code> sempre que se quer garantir que dois valores são realmente iguais, tanto no valor como no tipo, evitando comparações que dependam de conversões automáticas nem sempre óbvias. Esta distinção vai ser particularmente relevante mais adiante no livro, quando Tiago começar a receber dados de pedidos HTTP reais, na <a href="cap07.html#sec-07-supervariaveis" class="quarto-xref"><span>Secção 7.5</span></a>: um identificador de artigo recebido pela URL chega sempre como <em>string</em>, mesmo que represente um número, e comparar essa <em>string</em> com um <code>id</code> guardado como <code>integer</code> pode ter resultados inesperados se se usar <code>==</code> em vez de <code>===</code>.</p>
 </section>
 <section id="sec-04-operadores-logicos" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="sec-04-operadores-logicos"><span class="header-section-number">4.1.2</span> Operadores Lógicos</h3>
@@ -474,7 +490,7 @@ div.csl-indent {
 </section>
 <section id="sec-04-foreach" class="level3" data-number="4.2.4">
 <h3 data-number="4.2.4" class="anchored" data-anchor-id="sec-04-foreach"><span class="header-section-number">4.2.4</span> <code>foreach</code></h3>
-<p>Usado especificamente para percorrer arrays, sem necessidade de gerir um índice manualmente. É finalmente com um <code>foreach</code> que Tiago consegue transformar o array <code>$titulos</code>, esboçado no <a href="cap03.html#sec-03-arrays-numericos" class="quarto-xref"><span>Secção 3.8.1</span></a>, numa lista real de artigos na página do sítio, sem repetir <code>echo</code> uma vez por artigo:</p>
+<p>Usado especificamente para percorrer arrays, sem necessidade de gerir um índice manualmente. É finalmente com um <code>foreach</code> que Tiago consegue transformar o array <code>$titulos</code>, esboçado na <a href="cap03.html#sec-03-arrays-numericos" class="quarto-xref"><span>Secção 3.8.1</span></a>, numa lista real de artigos na página do sítio, sem repetir <code>echo</code> uma vez por artigo:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="va">$titulos</span> <span class="op">=</span> [</span>
 <span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
@@ -500,13 +516,13 @@ div.csl-indent {
 </section>
 <section id="sec-04-desafio" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="sec-04-desafio"><span class="header-section-number">4.3</span> Desafio</h2>
-<p>Com condicionais e ciclos, Tiago já consegue transformar o catálogo estático de artigos numa página que reage aos dados. O desafio, a partir do catálogo <code>$artigos</code> completado no <a href="cap03.html#sec-03-desafio" class="quarto-xref"><span>Secção 3.9</span></a>, é:</p>
+<p>Com condicionais e ciclos, Tiago já consegue transformar o catálogo estático de artigos numa página que reage aos dados. O desafio, a partir do catálogo <code>$artigos</code> completado na <a href="cap03.html#sec-03-desafio" class="quarto-xref"><span>Secção 3.9</span></a>, é:</p>
 <ol type="1">
 <li>Usar um <code>foreach</code> para percorrer <code>$artigos</code> e mostrar o título de cada um;</li>
 <li>Dentro do mesmo <code>foreach</code>, usar um <code>if</code> para mostrar também o autor, mas apenas dos artigos cuja categoria seja <code>"Cultura"</code>;</li>
 <li>Definir, no topo do ficheiro, uma variável <code>$categoria_escolhida = "Tecnologia";</code>, a simular, por agora, a categoria que o leitor quer ver, e usar um <code>if</code> para que o <code>foreach</code> só mostre os artigos dessa categoria.</li>
 </ol>
-<p>O ficheiro de arranque, já com o catálogo completo do capítulo anterior, está disponível no <a href="apendiceC.html#sec-apC-cap04" class="quarto-xref"><span>Secção C.3</span></a>. Esta variável fixa é, propositadamente, uma simplificação: o <a href="cap07.html#sec-07-supervariaveis" class="quarto-xref"><span>Secção 7.4</span></a> mostra como substituí-la pelo valor real de um pedido do <em>browser</em>, através de <code>$_GET</code>.</p>
+<p>O ficheiro de arranque, já com o catálogo completo do capítulo anterior, está disponível na <a href="apendiceC.html#sec-apC-cap04" class="quarto-xref"><span>Secção C.3</span></a>. Esta variável fixa é, propositadamente, uma simplificação: a <a href="cap07.html#sec-07-supervariaveis" class="quarto-xref"><span>Secção 7.5</span></a> mostra como substituí-la pelo valor real de um pedido do <em>browser</em>, através de <code>$_GET</code>.</p>
 </section>
 <section id="sec-04-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-04-referencias">Referências</h2>

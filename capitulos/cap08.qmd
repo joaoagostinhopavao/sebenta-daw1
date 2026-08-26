@@ -5,6 +5,13 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap08.jpg');">
+  <div class="hero-badge">Capítulo 8</div>
+  <h1>Bases de Dados e PHP</h1>
+</div>
+```
+
 ## Bases de Dados Relacionais e o DBMS {#sec-08-dbms}
 
 Um `DBMS` (*Database Management System*, sistema de gestão de bases de
@@ -17,10 +24,13 @@ o `Oracle`, o `SQL Server` e o `SQLite`.
 
 Numa base de dados relacional, como o `MySQL`, os dados organizam-se em
 tabelas, cada uma com colunas de tipo fixo, e linhas que representam
-registos individuais. É esta persistência que falta às variáveis PHP
-vistas até agora: uma variável existe apenas durante a execução de um
-*script*, enquanto uma base de dados guarda a informação entre pedidos
-diferentes, e entre utilizadores diferentes.
+registos individuais. É esta persistência que falta ao array `$artigos`
+visto na @sec-03-arrays-multidimensionais: guardado apenas em memória,
+esse array reinicia-se sempre que o servidor reinicia, e um leitor nunca
+vê um artigo publicado por outro processo do servidor. Uma base de
+dados guarda a informação entre pedidos diferentes, e entre utilizadores
+diferentes, exatamente o que falta a Tiago para o sítio da Contraponto
+deixar de depender de dados fixos no código.
 
 ## Comandos SQL {#sec-08-sql}
 
@@ -44,7 +54,7 @@ instrução (`FROM`, `WHERE`, `ORDER BY`, `VALUES`), expressões e condições
 final:
 
 ```sql
-SELECT firstname, lastname FROM MyGuests WHERE id = 3;
+SELECT titulo, autor FROM artigos WHERE id = 3;
 ```
 
 Um comando de atualização junta estas mesmas partes de forma um pouco
@@ -52,12 +62,12 @@ diferente, comando mais tabela alvo, a ação de alterar valores, e uma
 condição que filtra que registos são afetados:
 
 ```sql
-UPDATE Employees SET Salary = Salary * 1.02 WHERE Country = 'USA';
+UPDATE artigos SET categoria = 'Tecnologia' WHERE categoria = 'Informática';
 ```
 
 ## A Arquitetura em Três Camadas e o Papel do PHP {#sec-08-arquitetura-3camadas}
 
-Retomando o @sec-02-tres-camadas, uma aplicação web organiza-se
+Retomando a @sec-02-tres-camadas, uma aplicação web organiza-se
 tipicamente em três camadas distintas: o cliente (*browser*), que mostra
 páginas e envia pedidos; o servidor, que processa a lógica da
 aplicação; e o DBMS, que guarda e gere os dados. Separar estas camadas
@@ -66,9 +76,9 @@ aumenta a segurança, o desempenho e a organização da aplicação.
 Vale a pena seguir, passo a passo, como circula a informação neste
 modelo, com um exemplo concreto:
 
-1. O cliente envia um pedido, por exemplo `GET /produtos?categoria=livros`;
+1. O cliente envia um pedido, por exemplo `GET /artigos.php?categoria=Cultura`;
 2. O servidor (PHP) interpreta o pedido e gera a instrução SQL
-   correspondente: `SELECT * FROM produtos WHERE categoria = 'livros'`;
+   correspondente: `SELECT * FROM artigos WHERE categoria = 'Cultura'`;
 3. O DBMS (MySQL) executa essa instrução e devolve os resultados ao
    servidor;
 4. O servidor insere esses dados num modelo (*template*) HTML;
@@ -97,7 +107,7 @@ está a começar:
 
 ```php
 <?php
-$conexao = mysqli_connect("localhost", "utilizador", "password", "nome_bd");
+$conexao = mysqli_connect("localhost", "utilizador", "password", "contraponto");
 
 if (!$conexao) {
     die("Ligação falhou: " . mysqli_connect_error());
@@ -110,7 +120,7 @@ e os erros ficam expostos na propriedade `connect_error` desse objeto.
 
 ```php
 <?php
-$conexao = new mysqli("localhost", "utilizador", "password", "nome_bd");
+$conexao = new mysqli("localhost", "utilizador", "password", "contraponto");
 
 if ($conexao->connect_error) {
     die("Ligação falhou: " . $conexao->connect_error);
@@ -127,15 +137,17 @@ envia o comando SQL ao MySQL e devolve sucesso ou erro:
 
 ```php
 <?php
-$conexao->query("CREATE DATABASE IF NOT EXISTS loja");
-$conexao->select_db("loja");
+$conexao->query("CREATE DATABASE IF NOT EXISTS contraponto");
+$conexao->select_db("contraponto");
 
 $conexao->query("
-    CREATE TABLE IF NOT EXISTS contactos (
+    CREATE TABLE IF NOT EXISTS artigos (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        nome VARCHAR(100) NOT NULL,
-        email VARCHAR(100) NOT NULL,
-        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+        titulo VARCHAR(150) NOT NULL,
+        autor VARCHAR(100) NOT NULL,
+        categoria VARCHAR(50) NOT NULL,
+        resumo TEXT,
+        data_publicacao DATETIME DEFAULT CURRENT_TIMESTAMP
     )
 ");
 ```
@@ -172,37 +184,39 @@ quatro comandos SQL.
 ```php
 <?php
 $conexao->query(
-    "INSERT INTO contactos (nome, email) VALUES ('Ana Silva', 'ana@exemplo.pt')"
+    "INSERT INTO artigos (titulo, autor, categoria)
+     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Cultura')"
 );
 ```
 
 **Ler** dados existentes (*Read*), com `SELECT`. A propriedade
 `num_rows` do resultado indica quantas linhas foram devolvidas, e o
 método `fetch_assoc()` devolve cada linha como um array associativo, tal
-como visto no @sec-03-arrays-multidimensionais:
+como visto na @sec-03-arrays-multidimensionais:
 
 ```php
 <?php
-$resultado = $conexao->query("SELECT * FROM contactos");
-echo $resultado->num_rows . " contactos encontrados";
+$resultado = $conexao->query("SELECT * FROM artigos");
+echo $resultado->num_rows . " artigos encontrados";
 
 while ($linha = $resultado->fetch_assoc()) {
-    echo $linha["nome"] . " - " . $linha["email"] . "<br>";
+    echo $linha["titulo"] . " - " . $linha["autor"] . "<br>";
 }
 ```
 
 Esta última construção, um `while` a percorrer os resultados linha a
 linha, é também a forma habitual de gerar uma tabela HTML dinamicamente
 a partir dos dados devolvidos pela base de dados, transformando cada
-linha da base de dados numa linha `<tr>` da página.
+artigo numa linha `<tr>` da página, exatamente o que o *array*
+`$artigos`, visto na @sec-03-arrays-multidimensionais, fazia em memória.
 
 **Atualizar** (*Update*) e **apagar** (*Delete*) registos existentes,
 com `UPDATE` e `DELETE`:
 
 ```php
 <?php
-$conexao->query("UPDATE contactos SET email = 'novo@exemplo.pt' WHERE id = 3");
-$conexao->query("DELETE FROM contactos WHERE id = 3");
+$conexao->query("UPDATE artigos SET categoria = 'Tecnologia' WHERE id = 3");
+$conexao->query("DELETE FROM artigos WHERE id = 3");
 ```
 
 Tanto o `UPDATE` como o `DELETE` **exigem sempre uma cláusula `WHERE`**;
@@ -217,7 +231,7 @@ código, servem para perceber o fluxo básico, mas não são adequados a uma
 aplicação real. Construir uma instrução SQL concatenando diretamente
 valores vindos do utilizador, como os de `$_POST`, tem vários problemas:
 mistura dados com código, é vulnerável a um ataque de injeção de SQL
-(tema aprofundado no @sec-09-codigo-proprio), é mais propenso a erros de
+(tema aprofundado na @sec-09-codigo-proprio), é mais propenso a erros de
 sintaxe, e é difícil de manter.
 
 A alternativa correta é usar *prepared statements*, que separam a
@@ -231,12 +245,13 @@ várias vezes, e um código mais limpo:
 ```php
 <?php
 $stmt = $conexao->prepare(
-    "INSERT INTO contactos (nome, email) VALUES (?, ?)"
+    "INSERT INTO artigos (titulo, autor, categoria) VALUES (?, ?, ?)"
 );
-$stmt->bind_param("ss", $nome, $email);  // "ss" = dois parâmetros string
+$stmt->bind_param("sss", $titulo, $autor, $categoria);  // "sss" = três parâmetros string
 
-$nome = $_POST["nome"];
-$email = $_POST["email"];
+$titulo = $_POST["titulo"];
+$autor = $_POST["autor"];
+$categoria = $_POST["categoria"];
 $stmt->execute();
 ```
 
@@ -253,16 +268,21 @@ terminando com `get_result()` para obter as linhas devolvidas:
 
 ```php
 <?php
-$stmt = $conexao->prepare("SELECT nome, email FROM contactos WHERE id = ?");
+$stmt = $conexao->prepare("SELECT titulo, autor FROM artigos WHERE id = ?");
 $stmt->bind_param("i", $id);  // "i" = um parâmetro integer
 $id = $_GET["id"];
 $stmt->execute();
 
 $resultado = $stmt->get_result();
 while ($linha = $resultado->fetch_assoc()) {
-    echo $linha["nome"] . " - " . $linha["email"] . "<br>";
+    echo $linha["titulo"] . " - " . $linha["autor"] . "<br>";
 }
 ```
+
+Repare-se que este último exemplo é exatamente o que faltava a
+`artigos.php?id=5`, a página de detalhe de um artigo referida na
+@sec-07-recursos-virtuais: o `id` que chega pelo `$_GET` identifica,
+agora sim, um artigo real, lido diretamente da tabela `artigos`.
 
 O mesmo princípio aplica-se ao `UPDATE` e ao `DELETE`: usar *prepared
 statements* torna-os seguros, porque os valores nunca são interpretados
@@ -307,50 +327,81 @@ bases de dados em PHP:
 
 ## Uma Aplicação CRUD Completa {#sec-08-crud}
 
-Juntando tudo o que foi visto neste capítulo, uma pequena aplicação de
-gestão de contactos, sobre uma tabela `contacts`, distribui-se
-tipicamente por vários ficheiros PHP, cada um responsável por uma
-operação:
+Juntando tudo o que foi visto neste capítulo, o próximo passo natural
+para o sítio da Contraponto é dar a Rita, a diretora, uma forma de gerir
+os artigos sem precisar de mexer diretamente na base de dados: uma
+pequena aplicação de gestão de artigos, sobre a tabela `artigos` criada
+na @sec-08-criar-bd, distinta das páginas públicas já esboçadas nos
+capítulos anteriores, e que se distribui tipicamente por vários
+ficheiros PHP, cada um responsável por uma operação:
 
 - `config.php`: estabelece a ligação à base de dados, e é incluído, com
   `require`, no início de todos os outros ficheiros, evitando repetir o
   código de ligação em cada um;
-- `index.php`: lista todos os contactos existentes (*Read*), e liga a
+- `index.php`: lista todos os artigos existentes (*Read*), e liga a
   todas as outras operações;
-- `add.php` e `insert.php`: `add.php` apresenta um formulário HTML, que
-  envia os seus dados por `POST` para `insert.php`, o qual, com um
-  *prepared statement*, insere o novo registo (*Create*) e redireciona
-  de volta para `index.php`;
+- `add.php` e `insert.php`: `add.php` apresenta um formulário HTML, com
+  campos para o título, o autor e a categoria, que envia os seus dados
+  por `POST` para `insert.php`, o qual, com um *prepared statement*,
+  insere o novo artigo (*Create*) e redireciona de volta para
+  `index.php`;
 - `edit.php` e `update.php`: `edit.php` apresenta um formulário
-  pré-preenchido com os dados de um registo existente, e `update.php`
-  grava as alterações (*Update*);
-- `delete.php`: remove um registo existente (*Delete*).
+  pré-preenchido com os dados de um artigo existente, e `update.php`
+  grava as alterações (*Update*), por exemplo depois de Rita corrigir um
+  erro ou mudar um artigo de categoria;
+- `delete.php`: remove um artigo existente (*Delete*).
 
 Um detalhe merece atenção especial no `index.php`: cada `link` para
-editar ou apagar um contacto transporta o `id` desse contacto na
-própria URL, por exemplo `edit.php?id=7`, para que a página seguinte
-saiba exatamente a que registo se refere. Este `id`, por vir de um
-`GET` simples, sem dados sensíveis nem efeitos colaterais até ser
-efetivamente processado, não exige, aqui, um *prepared statement* na
-listagem; já em `edit.php`, ao ler esse mesmo `id` do `GET` para o
-incluir de novo no formulário, este tem de ser colocado num campo
-`hidden` do formulário, para que, ao ser submetido por `POST` para
-`update.php`, o `id` do registo a alterar viaje junto com os restantes
-dados.
+editar ou apagar um artigo transporta o `id` desse artigo na própria
+URL, por exemplo `edit.php?id=7`, tal como já acontecia em
+`artigos.php?id=5` do lado do leitor, visto na
+@sec-07-recursos-virtuais, para que a página seguinte saiba exatamente
+a que registo se refere. Este `id`, por vir de um `GET` simples, sem
+dados sensíveis nem efeitos colaterais até ser efetivamente processado,
+não exige, aqui, um *prepared statement* na listagem; já em `edit.php`,
+ao ler esse mesmo `id` do `GET` para o incluir de novo no formulário,
+este tem de ser colocado num campo `hidden` do formulário, para que, ao
+ser submetido por `POST` para `update.php`, o `id` do artigo a alterar
+viaje junto com os restantes dados.
 
-O fluxo completo da aplicação pode resumir-se assim: o utilizador
-navega entre páginas simples e independentes a partir de `index.php`;
-cada operação, `add`, `edit` ou `delete`, comunica com a base de dados
-através de `insert.php`, `update.php` ou diretamente em `delete.php`; e,
-depois de gravada a alteração, a aplicação redireciona sempre de volta
-para `index.php`, fechando o ciclo.
+O fluxo completo da aplicação pode resumir-se assim: Rita navega entre
+páginas simples e independentes a partir de `index.php`; cada operação,
+`add`, `edit` ou `delete`, comunica com a base de dados através de
+`insert.php`, `update.php` ou diretamente em `delete.php`; e, depois de
+gravada a alteração, a aplicação redireciona sempre de volta para
+`index.php`, fechando o ciclo. Numa aplicação real, esta área de gestão
+ficaria, claro, protegida por autenticação, através de sessões como as
+vistas na @sec-07-sessoes, para que só Rita, e não qualquer leitor, a
+pudesse usar.
 
 Este pequeno projeto reúne, na prática, praticamente tudo o que foi
 visto até este ponto da UC: HTML e formulários do lado do cliente,
 supervariáveis para receber os dados submetidos, *prepared statements*
 para os gravar e ler em segurança, e uma aplicação organizada em várias
 páginas simples, cada uma com uma única responsabilidade, o padrão
-sobre o qual assenta a maioria das aplicações web dinâmicas.
+sobre o qual assenta a maioria das aplicações web dinâmicas, e sobre o
+qual o resto desta UC continua a construir.
+
+## Desafio {#sec-08-desafio}
+
+Com a ligação ao MySQL, as tabelas e os *prepared statements*, a
+Contraponto deixa finalmente de depender de dados simulados, tal como
+já tinha sido anunciado no desafio do capítulo anterior. O desafio, a
+partir do ficheiro de arranque da @sec-07-desafio, é:
+
+1. Criar a base de dados `contraponto` e a tabela `artigos`, com a
+   estrutura definida na @sec-08-criar-bd;
+2. Percorrer, com um `foreach`, o catálogo `$artigos` usado em memória
+   desde a @sec-03-desafio, inserindo cada um dos cinco artigos na
+   tabela, através de um *prepared statement*;
+3. Reescrever a listagem de `index.php` para deixar de percorrer o
+   array em memória, e passar a consultar diretamente a tabela
+   `artigos`, com um *prepared statement* que filtra pela categoria
+   escolhida em `$_GET["categoria"]`, tal como já fazia com o array no
+   desafio anterior.
+
+O ficheiro de arranque, com a ligação à base de dados já estabelecida,
+está disponível na @sec-apC-cap08.
 
 ## Referências {#sec-08-referencias .unnumbered}
 

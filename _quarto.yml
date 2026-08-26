@@ -3,6 +3,7 @@ project:
   output-dir: docs
   resources:
     - assets/images/heroes/
+    - assets/images/capa/
 
 lang: pt-PT
 bibliography: referencias.bib
@@ -43,6 +44,8 @@ book:
     - capitulos/apendiceA.qmd
     - capitulos/apendiceB.qmd
     - capitulos/apendiceC.qmd
+    - capitulos/apendiceD.qmd
+    - capitulos/apendiceE.qmd
 
   sidebar:
     search: true
@@ -105,24 +108,54 @@ format:
         \definecolor{chaptxt}{HTML}{0a1f13}
         \KOMAoption{chapterprefix}{false}
         \makeatletter
+        \newif\ifDAWappendix
+        \let\DAWoldappendix\appendix
+        \renewcommand{\appendix}{\DAWoldappendix\DAWappendixtrue}
+        \newcommand{\chapheroimg}{%
+          \ifcase\c@chapter\relax
+            cap01.jpg%
+          \or cap01.jpg\or cap02.jpg\or cap03.jpg\or cap04.jpg\or cap05.jpg\or cap06.jpg\or cap07.jpg\or cap08.jpg\or cap09.jpg\or cap10.jpg\or cap11.jpg%
+          \fi
+        }
         \renewcommand{\chapterlinesformat}[3]{%
-          {\setlength{\fboxsep}{12pt}%
-          \noindent\colorbox{chapbg}{%
-            \parbox[c][5cm]{\dimexpr\linewidth-2\fboxsep\relax}{%
-              \def\@chnum{#2}%
-              \ifx\@chnum\@empty%
+          \def\@chnum{#2}%
+          \ifx\@chnum\@empty%
+            {\setlength{\fboxsep}{12pt}%
+            \noindent\colorbox{chapbg}{%
+              \parbox[c][5cm]{\dimexpr\linewidth-2\fboxsep\relax}{%
                 {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\color{chaptxt}\huge\bfseries #3}%
-              \else%
-                \begin{minipage}[c]{3cm}%
-                  \centering\color{chapnum}\fontsize{104}{104}\selectfont\bfseries #2%
-                \end{minipage}%
-                \hspace{10pt}%
-                \begin{minipage}[c]{\dimexpr\linewidth-2\fboxsep-3cm-10pt\relax}%
-                  \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\color{chaptxt}\fontsize{20}{24}\selectfont\bfseries #3%
-                \end{minipage}%
-              \fi%
-            }%
-          }}%
+              }%
+            }}%
+          \else%
+            \ifDAWappendix%
+              {\setlength{\fboxsep}{12pt}%
+              \noindent\colorbox{chapbg}{%
+                \parbox[c][5cm]{\dimexpr\linewidth-2\fboxsep\relax}{%
+                  \begin{minipage}[c]{3cm}%
+                    \centering\color{chapnum}\fontsize{104}{104}\selectfont\bfseries #2%
+                  \end{minipage}%
+                  \hspace{10pt}%
+                  \begin{minipage}[c]{\dimexpr\linewidth-2\fboxsep-3cm-10pt\relax}%
+                    \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\color{chaptxt}\fontsize{20}{24}\selectfont\bfseries #3%
+                  \end{minipage}%
+                }%
+              }}%
+            \else%
+              \noindent%
+              \begin{tikzpicture}[remember picture]
+                \useasboundingbox (0,0) rectangle (\linewidth,5cm);
+                \clip (0,0) rectangle (\linewidth,5cm);
+                \edef\heroimg{assets/images/heroes/\chapheroimg}%
+                \node[anchor=center,inner sep=0pt] at (0.5\linewidth,2.5cm)
+                  {\includegraphics[width=\linewidth]{\heroimg}};
+                \fill[coverDark,opacity=0.4] (0,0) rectangle (\linewidth,5cm);
+                \node[anchor=west,text=coverLight,font=\fontsize{80}{80}\selectfont\bfseries,inner sep=0pt]
+                  at (12pt,2.5cm) {#2};
+                \node[anchor=west,text width=\dimexpr\linewidth-3.6cm\relax,align=left,text=white,inner sep=0pt]
+                  at (3.6cm,2.5cm) {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\fontsize{20}{24}\selectfont\bfseries #3};
+              \end{tikzpicture}%
+            \fi%
+          \fi%
         }
         \makeatother
     pdf-engine: lualatex

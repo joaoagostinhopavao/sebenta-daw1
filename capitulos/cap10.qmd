@@ -5,9 +5,16 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap10.jpg');">
+  <div class="hero-badge">Capítulo 10</div>
+  <h1>Model-View-Controller (MVC)</h1>
+</div>
+```
+
 ## Porquê Separar Responsabilidades? {#sec-10-porque-separar}
 
-A mini aplicação CRUD construída no @sec-08-crud, com ficheiros como
+A mini aplicação CRUD construída na @sec-08-crud, com ficheiros como
 `index.php`, `add.php` ou `edit.php`, ilustra bem um problema muito
 concreto: em cada um desses ficheiros misturam-se, no mesmo lugar, a
 consulta à base de dados, a validação dos dados recebidos e o HTML
@@ -18,41 +25,43 @@ cada vez mais difícil de manter: uma alteração simples ao aspeto visual
 de uma página obriga a mexer no mesmo ficheiro que contém a lógica de
 acesso aos dados, e um erro numa consulta SQL pode, sem se perceber
 porquê, quebrar também a apresentação da página. É exatamente este
-problema que o padrão MVC, apresentado no @sec-02-mvc, resolve, separando
+problema que o padrão MVC, apresentado na @sec-02-mvc, resolve, separando
 a aplicação em Model, View e Controller.
 
 ## Refazer o CRUD com MVC {#sec-10-crud-mvc}
 
-Aplicar o MVC à mini aplicação de contactos significa reorganizar o
-código, mantendo o mesmo comportamento, mas separando-o em ficheiros com
-responsabilidades bem definidas:
+Aplicar o MVC à mini aplicação de gestão de artigos da Contraponto,
+construída na @sec-08-crud, significa reorganizar o código, mantendo o
+mesmo comportamento, mas separando-o em ficheiros com responsabilidades
+bem definidas:
 
-- **Model** (`Contacto.php`): concentra toda a lógica de acesso à base
-  de dados relativa a contactos, com funções como `listarContactos()`,
-  `criarContacto($nome, $email)`, `atualizarContacto($id, $nome, $email)`
-  e `apagarContacto($id)`. Nenhuma destas funções produz HTML; devolvem
+- **Model** (`Artigo.php`): concentra toda a lógica de acesso à base de
+  dados relativa a artigos, com funções como `listarArtigos()`,
+  `criarArtigo($titulo, $autor, $categoria)`,
+  `atualizarArtigo($id, $titulo, $autor, $categoria)` e
+  `apagarArtigo($id)`. Nenhuma destas funções produz HTML; devolvem
   apenas dados.
 - **View** (`views/lista.php`, `views/formulario.php`): concentram
   apenas HTML, com pequenos trechos de PHP para apresentar os dados que
   lhes são fornecidos, sem qualquer acesso direto à base de dados.
-- **Controller** (`ContactoController.php`): recebe o pedido do
-  utilizador, decide que função do *Model* chamar consoante a ação
-  pedida, seja listar, criar, editar ou apagar, e escolhe a *View*
-  apropriada para mostrar o resultado.
+- **Controller** (`ArtigoController.php`): recebe o pedido de Rita,
+  decide que função do *Model* chamar consoante a ação pedida, seja
+  listar, criar, editar ou apagar, e escolhe a *View* apropriada para
+  mostrar o resultado.
 
 ```php
 <?php
-// ContactoController.php (excerto)
-require "Contacto.php";
+// ArtigoController.php (excerto)
+require "Artigo.php";
 
 function acaoListar() {
-    $contactos = listarContactos();
-    require "views/lista.php";  // a View usa $contactos
+    $artigos = listarArtigos();
+    require "views/lista.php";  // a View usa $artigos
 }
 
 function acaoCriar() {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        criarContacto($_POST["nome"], $_POST["email"]);
+        criarArtigo($_POST["titulo"], $_POST["autor"], $_POST["categoria"]);
         header("Location: index.php");
         exit;
     }
@@ -71,20 +80,21 @@ internos de nenhuma delas.
 O *Model* não se limita a executar consultas SQL: é também o lugar
 natural para as regras de negócio da aplicação, a lógica que determina
 se uma operação é válida, independentemente de como os dados chegaram
-até ali. Considere-se a validação de um endereço de email antes de criar
-um novo contacto:
+até ali. Considere-se a validação da categoria antes de criar um novo
+artigo, usando `in_array()`, já visto na @sec-03-arrays-numericos:
 
 ```php
 <?php
-// Contacto.php (excerto)
-function criarContacto($nome, $email) {
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return ["sucesso" => false, "erro" => "Email inválido"];
+// Artigo.php (excerto)
+function criarArtigo($titulo, $autor, $categoria) {
+    $categorias_validas = ["Cultura", "Tecnologia", "Música"];
+    if (!in_array($categoria, $categorias_validas)) {
+        return ["sucesso" => false, "erro" => "Categoria inválida"];
     }
 
     global $conexao;
-    $stmt = $conexao->prepare("INSERT INTO contactos (nome, email) VALUES (?, ?)");
-    $stmt->bind_param("ss", $nome, $email);
+    $stmt = $conexao->prepare("INSERT INTO artigos (titulo, autor, categoria) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $titulo, $autor, $categoria);
     $stmt->execute();
 
     return ["sucesso" => true];
@@ -92,12 +102,13 @@ function criarContacto($nome, $email) {
 ```
 
 Esta validação faz sentido no *Model*, e não no *Controller* ou na
-*View*, porque é uma regra sobre os dados em si, "um contacto tem de ter
-um email válido", que se aplica sempre que um contacto é criado,
-independentemente de o pedido ter vindo de um formulário web, de uma
-futura API, ou de um script de importação em lote. Colocar esta
-verificação no *Controller*, por comparação, obrigaria a repeti-la em
-cada novo ponto de entrada que viesse a criar contactos.
+*View*, porque é uma regra sobre os dados em si, "um artigo tem de
+pertencer a uma das categorias da revista", que se aplica sempre que um
+artigo é criado, independentemente de o pedido ter vindo de um
+formulário web, de uma futura API, ou de um script de importação em
+lote. Colocar esta verificação no *Controller*, por comparação,
+obrigaria a repeti-la em cada novo ponto de entrada que viesse a criar
+artigos.
 
 ## O Controlador Frontal (Front Controller) {#sec-10-front-controller}
 
@@ -112,7 +123,7 @@ parâmetro, que ação do *Controller* deve executar:
 ```php
 <?php
 // index.php como controlador frontal
-require "ContactoController.php";
+require "ArtigoController.php";
 
 $acao = $_GET["acao"] ?? "listar";
 

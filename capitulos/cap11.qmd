@@ -5,6 +5,13 @@ date: 2026-08-24
 lang: pt-PT
 ---
 
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap11.jpg');">
+  <div class="hero-badge">Capítulo 11</div>
+  <h1>Frameworks de Desenvolvimento Web</h1>
+</div>
+```
+
 ## O Que um Framework Automatiza {#sec-11-automatizacao}
 
 Ao longo desta UC, construíram-se, ficheiro a ficheiro, os elementos
@@ -17,11 +24,11 @@ trabalho repetitivo, oferecendo já resolvidas, e testadas por uma
 grande comunidade de utilizadores, partes que, de outra forma, cada
 programador teria de construir à sua maneira em cada novo projeto:
 
-- **Sistema de rotas**: em vez do `switch` manual construído no
+- **Sistema de rotas**: em vez do `switch` manual construído na
   @sec-10-front-controller, um *framework* permite declarar rotas de
   forma direta, associando um endereço a uma função do *Controller*;
 - **ORM** (*Object-Relational Mapping*): em vez de escrever SQL à mão
-  com `mysqli`, como no @sec-08-prepared-statements, um ORM representa
+  com `mysqli`, como na @sec-08-prepared-statements, um ORM representa
   cada tabela como uma classe PHP, e cada linha como um objeto,
   permitindo interagir com a base de dados através de código PHP em vez
   de instruções SQL diretas;
@@ -44,35 +51,36 @@ tabela:
 
 ```php
 // Com mysqli (capítulo 8)
-$stmt = $conexao->prepare("SELECT * FROM contactos WHERE id = ?");
+$stmt = $conexao->prepare("SELECT * FROM artigos WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 
 // Com Eloquent (Laravel)
-$contacto = Contacto::find($id);
+$artigo = Artigo::find($id);
 ```
 
 O sistema de rotas do Laravel substitui diretamente o `switch` manual do
-controlador frontal construído no @sec-10-front-controller, associando
+controlador frontal construído na @sec-10-front-controller, associando
 um endereço a uma função de forma declarativa:
 
 ```php
 // routes/web.php
-Route::get('/contactos', [ContactoController::class, 'listar']);
-Route::post('/contactos', [ContactoController::class, 'criar']);
-Route::get('/contactos/{id}/editar', [ContactoController::class, 'editar']);
+Route::get('/artigos', [ArtigoController::class, 'listar']);
+Route::post('/artigos', [ArtigoController::class, 'criar']);
+Route::get('/artigos/{id}/editar', [ArtigoController::class, 'editar']);
 ```
 
 As migrações substituem, por sua vez, as instruções `CREATE TABLE`
-escritas à mão no @sec-08-criar-bd, descrevendo a estrutura da tabela em
+escritas à mão na @sec-08-criar-bd, descrevendo a estrutura da tabela em
 código PHP, versionável e partilhável entre toda a equipa:
 
 ```php
-// database/migrations/create_contactos_table.php
-Schema::create('contactos', function (Blueprint $table) {
+// database/migrations/create_artigos_table.php
+Schema::create('artigos', function (Blueprint $table) {
     $table->id();                    // INT AUTO_INCREMENT PRIMARY KEY
-    $table->string('nome');
-    $table->string('email');
+    $table->string('titulo');
+    $table->string('autor');
+    $table->string('categoria');
     $table->timestamps();            // datas de criação/atualização automáticas
 });
 ```
@@ -95,7 +103,7 @@ usado sobretudo em contextos empresariais, é o segundo mais adotado
 [@jetbrains_stateofphp2025], e partes dele são, de resto, usadas
 internamente pelo próprio Laravel. Fora do universo PHP, o mesmo
 princípio aplica-se a outras linguagens do lado do servidor, como o
-`Django` em Python ou o `Express` em JavaScript, referidos no
+`Django` em Python ou o `Express` em JavaScript, referidos na
 @sec-01-frameworks-servidor: cada um resolve o mesmo tipo de problema,
 rotas, acesso a dados, geração de páginas, com convenções e ferramentas
 próprias da sua linguagem.

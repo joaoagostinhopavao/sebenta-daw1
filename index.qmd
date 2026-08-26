@@ -1,10 +1,10 @@
 # Prefácio {.unnumbered}
 
 ```{=html}
-<div class="hero">
+<div class="hero hero-cover" style="background-image: linear-gradient(90deg, rgba(4,23,12,0.88) 0%, rgba(14,138,77,0.55) 45%, rgba(75,224,138,0.15) 100%), url('assets/images/capa/Web/capa-web-16-9.png');">
   <div class="hero-badge">UTAD · 2026/2027</div>
   <h1>Desenvolvimento de Aplicações Web I</h1>
-  <h2>Sebenta de estudo</h2>
+  <h2>Texto de estudo da UC</h2>
   <p>Universidade de Trás-os-Montes e Alto Douro</p>
   <div class="hero-meta">
     <span>João Pavão</span>
@@ -28,20 +28,19 @@ teórica; a componente prática é acompanhada em separado, nas respetivas aulas
 O texto está organizado em cinco blocos temáticos, que seguem o programa
 oficial da UC:
 
-1. **Fundamentos e Panorama da Web** — o processo de desenvolvimento de
+1. **Fundamentos e Panorama da Web** — contendo os capítulos 1 e 2, que abordam o processo de desenvolvimento de
    uma aplicação web e os diferentes tipos de servidores e infraestruturas
-2. **Programação em PHP** — sintaxe, controlo de fluxo, funções e
+2. **Programação em PHP** — que compreende os capítulos 3, 4 e 5, que abordam a sintaxe, controlo de fluxo, funções e
    organização de código
-3. **Comunicação e Estado na Web** — modelos de rede, o protocolo HTTP e
+3. **Comunicação e Estado na Web** — neste bloco, nos capítulos 6 e 7, os modelos de rede, o protocolo HTTP e
    a gestão de estado com cookies e sessões
-4. **Dados e Segurança** — bases de dados com PHP e segurança de
+4. **Dados e Segurança** — este bloco compreende os capítulos 8 e 9 sobre bases de dados com PHP e segurança de
    aplicações web
-5. **Arquitetura e Ferramentas** — o padrão Model-View-Controller e
-   frameworks de desenvolvimento web
+5. **Arquitetura e Ferramentas** — finalmente, este bloco, com os caítulos 10 e 11, debruça-se sobreo padrão Model-View-Controller e frameworks de desenvolvimento web
 
 ## Fonte e atualização {.unnumbered}
 
-Os conteúdos deste documento de aopio ao estudo baseiam-se no material próprio do docente,
+Os conteúdos deste documento de aopio ao estudo baseiam-se no material próprio dos docentes,
 desenvolvido ao longo de anos anteriores de lecionação da UC (slides e
 demonstrações de código), reorganizado e atualizado para o ano letivo
 2026/2027. A bibliografia de referência da UC está indicada em cada
@@ -54,7 +53,8 @@ alunos leiam um capítulo antes da aula respetiva, e que usem aeste texto como
 apoio ao estudo autónomo, para rever conceitos e esclarecer dúvidas. A
 leitura não substitui a presença nas aulas, nem a participação nas
 demonstrações práticas em sala de aula.
+Em cada capítulo que envolve programação PHP, o código de exemplo é apresentado no próprio texto, e os alunos são encorajados a experimentar o código, testando-o e modificando-o para compreender melhor os conceitos, através do uso dos desafios propostos no final de cada capítulo.
 
 ## Autor {.unnumbered}
 
-**João Pavão** — UTAD, docente responsável, componente teórica
+**João Pavão** — UTAD
