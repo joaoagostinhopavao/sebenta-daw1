@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+<meta name="dcterms.date" content="2026-08-24">
+
+<title>8&nbsp; Databases and PHP – Web Application Development I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap09.html" rel="next">
+<link href="../capitulos/cap07.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap08.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Databases and PHP</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Web Application Development I</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../index.html" title="Versão portuguesa" class="quarto-navigation-tool px-1" aria-label="Versão portuguesa"><i class="bi bi-translate"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Development for the Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Web Architectures and Infrastructure</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Syntax, Variables and Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Conditionals and Loops</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Functions, Dates and Includes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Communication Models and Networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The HTTP Protocol and State Management</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Databases and PHP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web Application Security</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Model-View-Controller (MVC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Web Development Frameworks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Development Environment Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Class Code Demos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Programming Challenges</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Computer Networks Supplement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">HTTP Supplement</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-08-dbms-en" id="toc-sec-08-dbms-en" class="nav-link active" data-scroll-target="#sec-08-dbms-en"><span class="header-section-number">8.1</span> Relational Databases and the DBMS</a></li>
+  <li><a href="#sec-08-sql-en" id="toc-sec-08-sql-en" class="nav-link" data-scroll-target="#sec-08-sql-en"><span class="header-section-number">8.2</span> SQL Commands</a></li>
+  <li><a href="#sec-08-three-tier-en" id="toc-sec-08-three-tier-en" class="nav-link" data-scroll-target="#sec-08-three-tier-en"><span class="header-section-number">8.3</span> The Three-Tier Architecture and PHP’s Role</a></li>
+  <li><a href="#sec-08-connecting-en" id="toc-sec-08-connecting-en" class="nav-link" data-scroll-target="#sec-08-connecting-en"><span class="header-section-number">8.4</span> Connecting PHP to MySQL</a></li>
+  <li><a href="#sec-08-creating-db-en" id="toc-sec-08-creating-db-en" class="nav-link" data-scroll-target="#sec-08-creating-db-en"><span class="header-section-number">8.5</span> Creating Databases and Tables</a></li>
+  <li><a href="#sec-08-crud-sql-en" id="toc-sec-08-crud-sql-en" class="nav-link" data-scroll-target="#sec-08-crud-sql-en"><span class="header-section-number">8.6</span> Fundamental Operations: CRUD in SQL</a></li>
+  <li><a href="#sec-08-prepared-statements-en" id="toc-sec-08-prepared-statements-en" class="nav-link" data-scroll-target="#sec-08-prepared-statements-en"><span class="header-section-number">8.7</span> Prepared Statements</a></li>
+  <li><a href="#sec-08-errors-en" id="toc-sec-08-errors-en" class="nav-link" data-scroll-target="#sec-08-errors-en"><span class="header-section-number">8.8</span> Errors and Best Practices</a></li>
+  <li><a href="#sec-08-crud-en" id="toc-sec-08-crud-en" class="nav-link" data-scroll-target="#sec-08-crud-en"><span class="header-section-number">8.9</span> A Complete CRUD Application</a></li>
+  <li><a href="#sec-08-challenge-en" id="toc-sec-08-challenge-en" class="nav-link" data-scroll-target="#sec-08-challenge-en"><span class="header-section-number">8.10</span> Challenge</a></li>
+  <li><a href="#sec-08-references-en" id="toc-sec-08-references-en" class="nav-link" data-scroll-target="#sec-08-references-en">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Databases and PHP</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 August 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap08.jpg');">
+  <div class="hero-badge">Chapter 8</div>
+  <h1>Databases and PHP</h1>
+</div>
+<section id="sec-08-dbms-en" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="sec-08-dbms-en"><span class="header-section-number">8.1</span> Relational Databases and the DBMS</h2>
+<p>A <code>DBMS</code> (<em>Database Management System</em>) is the <em>software</em> that creates, organises and manages databases: it controls access, queries and updates, guarantees the integrity, security and performance of the data, and allows applications, such as those written in PHP, to read and write information persistently. Common examples of DBMS include <code>MySQL</code>, <code>MariaDB</code>, <code>PostgreSQL</code>, <code>Oracle</code>, <code>SQL Server</code> and <code>SQLite</code>.</p>
+<p>In a relational database, such as <code>MySQL</code>, data is organised into tables, each with fixed-type columns, and rows that represent individual records. It is exactly this persistence that the <code>$artigos</code> array seen in <a href="cap03.html#sec-03-multidimensional-arrays-en" class="quarto-xref"><span>Section 3.8.3</span></a> lacks: kept only in memory, that array resets every time the server restarts, and one reader never sees an article published by another server process. A database keeps information across different requests, and across different users — exactly what Tiago’s Contraponto site is missing to stop depending on data fixed in the code.</p>
+</section>
+<section id="sec-08-sql-en" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="sec-08-sql-en"><span class="header-section-number">8.2</span> SQL Commands</h2>
+<p><code>SQL</code> (<em>Structured Query Language</em>) is the language used to interact with a relational DBMS. Its commands are divided into four main groups:</p>
+<ul>
+<li><strong>DQL</strong> (<em>Data Query Language</em>): queries that retrieve data, with the <code>SELECT</code> command;</li>
+<li><strong>DML</strong> (<em>Data Manipulation Language</em>): inserting, changing and removing data, with the <code>INSERT</code>, <code>UPDATE</code> and <code>DELETE</code> commands;</li>
+<li><strong>DDL</strong> (<em>Data Definition Language</em>): creating and altering database structures, with the <code>CREATE</code>, <code>ALTER</code> and <code>DROP</code> commands;</li>
+<li><strong>DCL</strong> (<em>Data Control Language</em>): permissions and access control, with the <code>GRANT</code> and <code>REVOKE</code> commands.</li>
+</ul>
+<p>An SQL command follows a predictable structure: a keyword (<code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, <code>DELETE</code>), clauses that refine the statement (<code>FROM</code>, <code>WHERE</code>, <code>ORDER BY</code>, <code>VALUES</code>), expressions and conditions (fields, values and comparisons, such as <code>age &gt; 18</code>), and a final semicolon:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">SELECT</span> titulo, autor <span class="kw">FROM</span> artigos <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">3</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>An update command puts these same parts together in a slightly different way: command, then target table, the action of changing values, and a condition that filters which records are affected:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">UPDATE</span> artigos <span class="kw">SET</span> categoria <span class="op">=</span> <span class="st">'Tecnologia'</span> <span class="kw">WHERE</span> categoria <span class="op">=</span> <span class="st">'Informática'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-08-three-tier-en" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="sec-08-three-tier-en"><span class="header-section-number">8.3</span> The Three-Tier Architecture and PHP’s Role</h2>
+<p>Returning to <a href="cap02.html#sec-02-three-tier-en" class="quarto-xref"><span>Section 2.1.3</span></a>, a web application is typically organised into three distinct tiers: the client (<em>browser</em>), which displays pages and sends requests; the server, which processes the application’s logic; and the DBMS, which stores and manages the data. Separating these tiers increases the application’s security, performance and organisation.</p>
+<p>It is worth following, step by step, how information flows through this model, with a concrete example:</p>
+<ol type="1">
+<li>The client sends a request, for example <code>GET /artigos.php?categoria=Cultura</code>;</li>
+<li>The server (PHP) interprets the request and generates the corresponding SQL statement: <code>SELECT * FROM artigos WHERE categoria = 'Cultura'</code>;</li>
+<li>The DBMS (MySQL) executes that statement and returns the results to the server;</li>
+<li>The server inserts that data into an HTML <em>template</em>;</li>
+<li>The server returns the final page to the <em>browser</em>, already filled with the requested data.</li>
+</ol>
+<p>Each tier thus fulfils its own mission: the <em>browser</em> asks, the server thinks, the DBMS stores and answers, the server assembles the page, and the <em>browser</em> shows the final result to the user. PHP lives entirely on the server tier, responsible for receiving the client’s requests, building the SQL statements, communicating with the DBMS, processing the returned results, and generating the final HTML sent to the <em>browser</em>: it is the bridge between the user’s request and the data stored in the database.</p>
+</section>
+<section id="sec-08-connecting-en" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="sec-08-connecting-en"><span class="header-section-number">8.4</span> Connecting PHP to MySQL</h2>
+<p>PHP connects to a <code>MySQL</code> database through the <code>mysqli</code> extension (<em>MySQL Improved</em>), which supports connecting to MySQL, running queries, <em>prepared statements</em> and transactions, and can be used in two styles: procedural or object-oriented.</p>
+<p>In the procedural style, <code>mysqli_connect()</code> creates the connection and returns <code>false</code> if it fails — a simple, straightforward version, suited to beginners:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="fu">mysqli_connect</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="cf">if</span> (<span class="op">!</span><span class="va">$conexao</span>) {</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="fu">mysqli_connect_error</span>())<span class="ot">;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the object-oriented style, <code>new mysqli()</code> creates a connection object, and errors are exposed in that object’s <code>connect_error</code> property. It is the more modern style, and the one most used in practice:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-08-creating-db-en" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="sec-08-creating-db-en"><span class="header-section-number">8.5</span> Creating Databases and Tables</h2>
+<p>Creating the database and creating the tables are two separate steps: first the “container” is created (the database), only then the internal structures (the tables). Like any other SQL statement, both can be done from PHP, through the <code>query()</code> method, which sends the SQL command to MySQL and returns success or failure:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"CREATE DATABASE IF NOT EXISTS contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="va">$conexao</span>-&gt;select_db(<span class="st">"contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="st">    CREATE TABLE IF NOT EXISTS artigos (</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="st">        id INT AUTO_INCREMENT PRIMARY KEY,</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="st">        titulo VARCHAR(150) NOT NULL,</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="st">        autor VARCHAR(100) NOT NULL,</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="st">        categoria VARCHAR(50) NOT NULL,</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="st">        resumo TEXT,</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="st">        data_publicacao DATETIME DEFAULT CURRENT_TIMESTAMP</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="st">    )</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="st">"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It is worth understanding the meaning of each part of this table definition:</p>
+<ul>
+<li><strong><code>PRIMARY KEY</code></strong> (PK): unambiguously identifies each record in the table; no well-designed relational table should exist without one;</li>
+<li><strong><code>AUTO_INCREMENT</code></strong>: makes this field’s value increase automatically by one for each new record inserted, without the programmer having to calculate it;</li>
+<li><strong><code>NOT NULL</code></strong>: forces this field to always have a value, preventing it from being left empty;</li>
+<li><strong><code>DEFAULT CURRENT_TIMESTAMP</code></strong>: if no explicit value is given for this field when inserting a record, MySQL automatically fills in the current date and time.</li>
+</ul>
+<p>In practice, creating the database and tables from PHP is an initial, rare step in a real application: the database structure of an application already in production is typically created and altered once, through dedicated administration tools, not on every <em>script</em> execution.</p>
+</section>
+<section id="sec-08-crud-sql-en" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="sec-08-crud-sql-en"><span class="header-section-number">8.6</span> Fundamental Operations: CRUD in SQL</h2>
+<p>The four fundamental operations on persistent data, <code>CRUD</code> (<em>Create</em>, <em>Read</em>, <em>Update</em>, <em>Delete</em>), correspond directly to four SQL commands.</p>
+<p><strong>Insert</strong> a new record (<em>Create</em>), with <code>INSERT</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="va">$conexao</span>-&gt;query(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="st">"INSERT INTO artigos (titulo, autor, categoria)</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="st">     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Cultura')"</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Read</strong> existing data (<em>Read</em>), with <code>SELECT</code>. The result’s <code>num_rows</code> property indicates how many rows were returned, and the <code>fetch_assoc()</code> method returns each row as an associative array, as seen in <a href="cap03.html#sec-03-multidimensional-arrays-en" class="quarto-xref"><span>Section 3.8.3</span></a>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM artigos"</span>)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">echo</span> <span class="va">$resultado</span>-&gt;num_rows <span class="op">.</span> <span class="st">" artigos encontrados"</span><span class="ot">;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb7-6"><a href="#cb7-6"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"autor"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This last construct, a <code>while</code> looping over the results row by row, is also the usual way to dynamically generate an HTML table from data returned by the database, turning each article into a <code>&lt;tr&gt;</code> row on the page — exactly what the <code>$artigos</code> <em>array</em>, seen in <a href="cap03.html#sec-03-multidimensional-arrays-en" class="quarto-xref"><span>Section 3.8.3</span></a>, did in memory.</p>
+<p><strong>Update</strong> (<em>Update</em>) and <strong>delete</strong> (<em>Delete</em>) existing records, with <code>UPDATE</code> and <code>DELETE</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"UPDATE artigos SET categoria = 'Tecnologia' WHERE id = 3"</span>)<span class="ot">;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM artigos WHERE id = 3"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Both <code>UPDATE</code> and <code>DELETE</code> <strong>always require a <code>WHERE</code> clause</strong>; forgetting it is one of the most serious and most common mistakes one can make with a database, because, without a condition filtering the affected records, the statement applies to <strong>every</strong> row in the table.</p>
+</section>
+<section id="sec-08-prepared-statements-en" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="sec-08-prepared-statements-en"><span class="header-section-number">8.7</span> Prepared Statements</h2>
+<p>All the examples above, with fixed values written directly in the code, are useful for understanding the basic flow, but are not suitable for a real application. Building an SQL statement by directly concatenating values coming from the user, such as those from <code>$_POST</code>, has several problems: it mixes data with code, it is vulnerable to an SQL injection attack (a topic covered in depth in <a href="cap09.html#sec-09-custom-code-en" class="quarto-xref"><span>Section 9.1</span></a>), it is more prone to syntax errors, and it is hard to maintain.</p>
+<p>The correct alternative is to use <em>prepared statements</em>, which separate the fixed SQL statement from the values, which are only inserted afterwards. They work in two phases: the server prepares the statement, with question marks (<code>?</code>) in place of the values, and only then does PHP send the data, separately and safely. The advantages are protection against SQL injection, better performance when the same statement is executed multiple times, and cleaner code:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">"INSERT INTO artigos (titulo, autor, categoria) VALUES (?, ?, ?)"</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>)<span class="ot">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"sss"</span><span class="ot">,</span> <span class="va">$titulo</span><span class="ot">,</span> <span class="va">$autor</span><span class="ot">,</span> <span class="va">$categoria</span>)<span class="ot">;</span>  <span class="co">// "sss" = three string parameters</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="va">$titulo</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"titulo"</span>]<span class="ot">;</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="va">$autor</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="va">$categoria</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"categoria"</span>]<span class="ot">;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>bind_param()</code> needs to know the type of each associated value, indicated by a letter:</p>
+<ul>
+<li><strong><code>s</code></strong>: <em>string</em>;</li>
+<li><strong><code>i</code></strong>: <em>integer</em>;</li>
+<li><strong><code>d</code></strong>: <em>double</em> (numbers with decimal places);</li>
+<li><strong><code>b</code></strong>: <em>blob</em> (binary data, such as images or files).</li>
+</ul>
+<p>To query data with <em>prepared statements</em>, the pattern is similar, ending with <code>get_result()</code> to obtain the returned rows:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT titulo, autor FROM artigos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span>  <span class="co">// "i" = one integer parameter</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"autor"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that this last example is exactly what <code>artigos.php?id=5</code>, the article detail page mentioned in <a href="cap07.html#sec-07-virtual-resources-en" class="quarto-xref"><span>Section 7.4.4</span></a>, was missing: the <code>id</code> arriving through <code>$_GET</code> now identifies a real article, read directly from the <code>artigos</code> table.</p>
+<p>The same principle applies to <code>UPDATE</code> and <code>DELETE</code>: using <em>prepared statements</em> makes them safe, because the values are never interpreted as part of the SQL command itself, which prevents both SQL injection and accidental changes.</p>
+</section>
+<section id="sec-08-errors-en" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="sec-08-errors-en"><span class="header-section-number">8.8</span> Errors and Best Practices</h2>
+<p>Working with databases inevitably means dealing with errors. The most common fall into three categories:</p>
+<ul>
+<li><strong>Connection errors</strong>: incorrect credentials, the MySQL server being down, or the specified database not existing;</li>
+<li><strong>SQL errors</strong>: invalid syntax, wrong table or column names, missing quotes or commas in the statement;</li>
+<li><strong>PHP execution errors</strong>: using undefined variables, or calling <code>fetch_assoc()</code> on an empty result.</li>
+</ul>
+<p>During development, it is essential to enable the display of all PHP errors and warnings — something that should never remain active in a production environment, for security reasons:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>mysqli</code> always explains what went wrong, as long as the right information is read: <code>connect_error</code> shows problems with the connection itself, and <code>error</code> shows problems coming from MySQL regarding a specific query. Some general good practices, to always keep in mind when working with databases in PHP:</p>
+<ul>
+<li>Use <em>prepared statements</em> whenever there is data coming from the user;</li>
+<li>Validate and sanitise inputs before using them;</li>
+<li>Clearly separate PHP, SQL and HTML code;</li>
+<li>Show errors during development, but hide them in production;</li>
+<li>Always test with real data and also with deliberately malicious data.</li>
+</ul>
+</section>
+<section id="sec-08-crud-en" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="sec-08-crud-en"><span class="header-section-number">8.9</span> A Complete CRUD Application</h2>
+<p>Putting together everything seen in this chapter, the natural next step for the Contraponto site is to give Rita, the editor, a way to manage articles without having to touch the database directly: a small article management application, on top of the <code>artigos</code> table created in <a href="#sec-08-creating-db-en" class="quarto-xref"><span>Section 8.5</span></a>, distinct from the public pages already sketched in previous chapters, and which is typically spread across several PHP files, each responsible for one operation:</p>
+<ul>
+<li><code>config.php</code>: establishes the database connection, and is included, with <code>require</code>, at the start of every other file, avoiding repeating the connection code in each one;</li>
+<li><code>index.php</code>: lists all existing articles (<em>Read</em>), and links to all the other operations;</li>
+<li><code>add.php</code> and <code>insert.php</code>: <code>add.php</code> presents an HTML form, with fields for the title, author and category, which sends its data by <code>POST</code> to <code>insert.php</code>, which, with a <em>prepared statement</em>, inserts the new article (<em>Create</em>) and redirects back to <code>index.php</code>;</li>
+<li><code>edit.php</code> and <code>update.php</code>: <code>edit.php</code> presents a form pre-filled with the data of an existing article, and <code>update.php</code> saves the changes (<em>Update</em>), for example after Rita corrects an error or changes an article’s category;</li>
+<li><code>delete.php</code>: removes an existing article (<em>Delete</em>).</li>
+</ul>
+<p>One detail deserves special attention in <code>index.php</code>: each <code>link</code> to edit or delete an article carries that article’s <code>id</code> in the URL itself, for example <code>edit.php?id=7</code>, just as already happened in <code>artigos.php?id=5</code> on the reader’s side, seen in <a href="cap07.html#sec-07-virtual-resources-en" class="quarto-xref"><span>Section 7.4.4</span></a>, so the following page knows exactly which record it refers to. This <code>id</code>, coming from a simple <code>GET</code>, with no sensitive data or side effects until it is actually processed, does not require a <em>prepared statement</em> here in the listing; but in <code>edit.php</code>, when reading that same <code>id</code> from <code>GET</code> to include it again in the form, it has to be placed in a <code>hidden</code> field of the form, so that, when submitted by <code>POST</code> to <code>update.php</code>, the <code>id</code> of the article to change travels along with the rest of the data.</p>
+<p>The complete flow of the application can be summarised as follows: Rita navigates between simple, independent pages starting from <code>index.php</code>; each operation, <code>add</code>, <code>edit</code> or <code>delete</code>, communicates with the database through <code>insert.php</code>, <code>update.php</code> or directly in <code>delete.php</code>; and, once the change is saved, the application always redirects back to <code>index.php</code>, closing the cycle. In a real application, this management area would, of course, be protected by authentication, through sessions as seen in <a href="cap07.html#sec-07-sessions-en" class="quarto-xref"><span>Section 7.9.2</span></a>, so that only Rita, and not any reader, could use it.</p>
+<p>This small project brings together, in practice, almost everything seen so far in the course: HTML and forms on the client side, superglobals to receive submitted data, <em>prepared statements</em> to save and read them securely, and an application organised into several simple pages, each with a single responsibility — the pattern underlying most dynamic web applications, and the one the rest of this course continues to build on.</p>
+</section>
+<section id="sec-08-challenge-en" class="level2" data-number="8.10">
+<h2 data-number="8.10" class="anchored" data-anchor-id="sec-08-challenge-en"><span class="header-section-number">8.10</span> Challenge</h2>
+<p>With the connection to MySQL, the tables and the <em>prepared statements</em>, Contraponto finally stops depending on simulated data, as already announced in the previous chapter’s challenge. Starting from the starter file in <a href="cap07.html#sec-07-challenge-en" class="quarto-xref"><span>Section 7.10</span></a>, the challenge is:</p>
+<ol type="1">
+<li>Create the <code>contraponto</code> database and the <code>artigos</code> table, with the structure defined in <a href="#sec-08-creating-db-en" class="quarto-xref"><span>Section 8.5</span></a>;</li>
+<li>Loop, with a <code>foreach</code>, over the <code>$artigos</code> catalogue used in memory since <a href="cap03.html#sec-03-challenge-en" class="quarto-xref"><span>Section 3.9</span></a>, inserting each of the five articles into the table, through a <em>prepared statement</em>;</li>
+<li>Rewrite the <code>index.php</code> listing to stop looping over the in-memory array, and instead query the <code>artigos</code> table directly, with a <em>prepared statement</em> that filters by the category chosen in <code>$_GET["categoria"]</code>, just as it already did with the array in the previous challenge.</li>
+</ol>
+<p>The starter file, with the database connection already set up, is available in <a href="apendiceC.html#sec-apC-cap08-en" class="quarto-xref"><span>Section C.6</span></a>.</p>
+</section>
+<section id="sec-08-references-en" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-08-references-en">References</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap07.html" class="pagination-link" aria-label="The HTTP Protocol and State Management">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The HTTP Protocol and State Management</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap09.html" class="pagination-link" aria-label="Web Application Security">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web Application Security</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Web Application Development I — UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

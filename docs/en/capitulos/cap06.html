@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+<meta name="dcterms.date" content="2026-08-24">
+
+<title>6&nbsp; Communication Models and Networks – Web Application Development I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap07.html" rel="next">
+<link href="../capitulos/cap05.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap06.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Communication Models and Networks</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Web Application Development I</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../index.html" title="Versão portuguesa" class="quarto-navigation-tool px-1" aria-label="Versão portuguesa"><i class="bi bi-translate"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Development for the Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Web Architectures and Infrastructure</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Syntax, Variables and Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Conditionals and Loops</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Functions, Dates and Includes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Communication Models and Networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The HTTP Protocol and State Management</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Databases and PHP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web Application Security</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Model-View-Controller (MVC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Web Development Frameworks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Development Environment Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Class Code Demos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Programming Challenges</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Computer Networks Supplement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">HTTP Supplement</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-06-why-layers-en" id="toc-sec-06-why-layers-en" class="nav-link active" data-scroll-target="#sec-06-why-layers-en"><span class="header-section-number">6.1</span> Why Organise Communication into Layers?</a></li>
+  <li><a href="#sec-06-osi-tcpip-en" id="toc-sec-06-osi-tcpip-en" class="nav-link" data-scroll-target="#sec-06-osi-tcpip-en"><span class="header-section-number">6.2</span> The Two Models: OSI and TCP/IP</a></li>
+  <li><a href="#sec-06-encapsulation-en" id="toc-sec-06-encapsulation-en" class="nav-link" data-scroll-target="#sec-06-encapsulation-en"><span class="header-section-number">6.3</span> The Data’s Journey: Encapsulation</a>
+  <ul class="collapse">
+  <li><a href="#sec-06-tcp-en" id="toc-sec-06-tcp-en" class="nav-link" data-scroll-target="#sec-06-tcp-en"><span class="header-section-number">6.3.1</span> The Transport Layer: TCP</a></li>
+  <li><a href="#sec-06-ip-en" id="toc-sec-06-ip-en" class="nav-link" data-scroll-target="#sec-06-ip-en"><span class="header-section-number">6.3.2</span> The Network Layer: IP</a></li>
+  <li><a href="#sec-06-ethernet-en" id="toc-sec-06-ethernet-en" class="nav-link" data-scroll-target="#sec-06-ethernet-en"><span class="header-section-number">6.3.3</span> The Link Layer: Ethernet and MAC Addresses</a></li>
+  <li><a href="#sec-06-physical-en" id="toc-sec-06-physical-en" class="nav-link" data-scroll-target="#sec-06-physical-en"><span class="header-section-number">6.3.4</span> The Physical Medium</a></li>
+  </ul></li>
+  <li><a href="#sec-06-routing-en" id="toc-sec-06-routing-en" class="nav-link" data-scroll-target="#sec-06-routing-en"><span class="header-section-number">6.4</span> Routing</a></li>
+  <li><a href="#sec-06-ports-addresses-en" id="toc-sec-06-ports-addresses-en" class="nav-link" data-scroll-target="#sec-06-ports-addresses-en"><span class="header-section-number">6.5</span> Ports, Addresses and URLs</a></li>
+  <li><a href="#sec-06-dns-en" id="toc-sec-06-dns-en" class="nav-link" data-scroll-target="#sec-06-dns-en"><span class="header-section-number">6.6</span> The Domain Name System (DNS)</a></li>
+  <li><a href="#sec-06-references-en" id="toc-sec-06-references-en" class="nav-link" data-scroll-target="#sec-06-references-en">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Communication Models and Networks</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 August 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap06.jpg');">
+  <div class="hero-badge">Chapter 6</div>
+  <h1>Communication Models and Networks</h1>
+</div>
+<section id="sec-06-why-layers-en" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sec-06-why-layers-en"><span class="header-section-number">6.1</span> Why Organise Communication into Layers?</h2>
+<p>Before a Contraponto reader can even see the magazine’s home page, the request the <em>browser</em> sends to the server only gets there after a series of operations:</p>
+<ul>
+<li>finding the address of the magazine’s server;</li>
+<li>determining the path the data must travel to get there;</li>
+<li>establishing a reliable connection;</li>
+<li>converting the data into electrical signals or radio pulses.</li>
+</ul>
+<p>This set of operations is governed by rules that regulate each of these operations — the format of messages, the order of exchanges, error handling — which is precisely what is called a communication protocol. Without it, two devices cannot understand each other.</p>
+<p>The <em>browser</em> does all of this without Tiago, on the server side, needing to think about any of these details. Before a request can leave the <em>browser</em> and reach a server, there is an entire stack of protocols that has to work correctly underneath that communication.</p>
+<p>What, exactly, is a <strong>protocol</strong>? And what is a protocol stack? A <strong>protocol</strong> is a set of rules agreed between two parties (two devices) that want to communicate: it defines the exact format of the messages exchanged and the order in which they must be sent, so that both sides understand each other unambiguously. A protocol can be thought of as a contract between two remote devices on a network, defining the rules for how they will communicate at a distance.</p>
+<p>No protocol, on its own, solves every problem involved in getting a message from one computer to another: several are needed, each handling a different part of the problem, the same four operations already mentioned above.</p>
+<p>That set of protocols is organised so that each one, when it needs a feature offered by another, turns to that other protocol to obtain it. That relationship defines a hierarchy in which the protocols that use others are “above” and the ones being used are “below”. This arrangement is called a <strong>protocol stack</strong>, or layered architecture.</p>
+<p>It is this stack, not a single isolated protocol, that the Contraponto reader’s request has to cross, without the user noticing, before it even reaches the server.</p>
+<p>In a layered architecture, each layer is a module that depends on the layers below it, but is completely independent of the layers above it: it only needs to know how to use the layer immediately below it, not how the layers above it work. This allows each one to be developed, optimised or replaced independently of the others, as long as the service it provides to the layers above it stays the same. That service a layer provides to the layer immediately above it, without the latter needing to know how it is implemented underneath, is precisely called a <strong>service</strong>.</p>
+<p>A <strong>service</strong>, like a protocol, can also be thought of as a kind of contract, but with an essential difference: a protocol is a contract between two remote devices, defining how they communicate at a distance; a service is a contract between layers within the same device, defining how they work with each other, locally. In other words, a service acts locally, while a protocol acts remotely.</p>
+<div id="fig-06-protocol-service-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-protocol-service-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap06/protocolo-vs-servico.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-protocol-service-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: Protocols (horizontal arrows) connect matching layers on different devices; services (vertical arrows) connect adjacent layers within the same device.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-06-osi-tcpip-en" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-06-osi-tcpip-en"><span class="header-section-number">6.2</span> The Two Models: OSI and TCP/IP</h2>
+<p>Historically, two reference models emerged for organising communication into layers, with different origins:</p>
+<ul>
+<li><strong>OSI</strong> (<em>Open Systems Interconnection</em>): developed by ISO (<em>International Organization for Standardization</em>) as a formal model, with seven layers: physical, data link, network, transport, session, presentation and application. Because it was formally defined and approved by an international standardisation body before being widely implemented, OSI is known as the <em>de jure</em> standard (by law, i.e., formally instituted).</li>
+<li><strong>TCP/IP</strong> (also called the DoD model, as it originated in the US Department of Defense): a simpler model, with only four layers, application, transport, network (or internet) and network access, which arose directly from the practical implementation of ARPANET, the precursor to the Internet. Because it became the model actually used, through its widespread adoption, before any formal international standardisation, TCP/IP is known as the <em>de facto</em> standard (as a matter of fact, i.e., imposed by practice and common use).</li>
+</ul>
+<div id="fig-06-osi-model-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-osi-model-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap06/Mix_ modelo-osi + modelo-TCP-IP.png" class="img-fluid figure-img" style="width:45.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-osi-model-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: The OSI model, with its seven layers, from application (closest to the user) to physical (the transmission medium itself).
+</figcaption>
+</figure>
+</div>
+<p>In practice, today’s Internet runs on the TCP/IP model, not on OSI: OSI continues to be used, mainly, as a pedagogical tool, because it divides more finely responsibilities that, in TCP/IP, appear concentrated in a single layer. For the purposes of this course, three layers of the TCP/IP model are of particular interest:</p>
+<ul>
+<li><strong>Application</strong>: where the protocols an application uses directly run, such as HTTP, the rough equivalent of OSI’s three upper layers (application, presentation and session);</li>
+<li><strong>Transport</strong>: responsible for reliably delivering data between two programs, through the <code>TCP</code> protocol;</li>
+<li><strong>Network</strong>: responsible for routing data between different networks, to its destination, through the <code>IP</code> protocol.</li>
+</ul>
+<p>Each of these layers communicates with its peer layer (on the remote device) through a <strong>protocol</strong> (as seen in <a href="#fig-06-protocol-service-en" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>): a set of rules that defines how data is exchanged between two entities of the same layer, one on the client side and one on the server side. It is the Application layer protocol of the TCP/IP model, known as <code>HTTP</code>, that defines the rules for how a <em>browser</em> requests a page from a server. <code>HTTP</code> will be the topic of the next chapter.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To see which other real protocols run at each layer, and the more precise formalism behind the distinction between service and protocol, see <a href="apendiceD.html#sec-apD-protocols-layer-en" class="quarto-xref"><span>Section D.2</span></a> and <a href="apendiceD.html#sec-apD-services-protocols-en" class="quarto-xref"><span>Section D.3</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="sec-06-encapsulation-en" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-06-encapsulation-en"><span class="header-section-number">6.3</span> The Data’s Journey: Encapsulation</h2>
+<p>When an application sends data, it passes through each layer of the TCP/IP model, and each layer adds its own control information, in a process called encapsulation. It is worth following this journey step by step, from the upper layers down to the physical medium.</p>
+<p>The following figure summarises the whole journey: the data of an <code>HTTP</code> message leaves the application layer, passes through a <em>socket</em> (the connection point between the application layer and the protocol stack), and goes down the transport, network and link layers, each applying its own protocol and encapsulating the data it receives from the layer above, until it reaches the network card (<code>NIC</code>, <em>Network Interface Controller</em>), which finally converts it into an electrical or radio signal:</p>
+<div id="fig-06-nic-transmission-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-nic-transmission-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap06/emissao-dos-dados-com-nic.png" class="img-fluid figure-img" style="width:55.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-nic-transmission-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: The journey of data from the application to the physical medium, layer by layer, down to the network card (NIC).
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Do not confuse the <strong>application layer</strong> with the <strong>application</strong> itself: the application layer is just one of the layers of the TCP/IP model, defining how data is exchanged between two remote applications; the application is the program the user directly uses, such as a <em>browser</em> or an <em>email client</em>, which uses the application layer to send and receive data. In <a href="#fig-06-nic-transmission-en" class="quarto-xref">Figure&nbsp;<span>6.3</span></a> the <em>browser</em> or <em>email client</em> is represented by the <strong>DADOS</strong> rectangle, which is the application sending the data.</p>
+</div>
+</div>
+<section id="sec-06-tcp-en" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="sec-06-tcp-en"><span class="header-section-number">6.3.1</span> The Transport Layer: TCP</h3>
+<p>The <em>payload</em> (the technical name given to the data, in this case, for example, an HTTP message) is passed to the transport layer by the application layer, through a <em>socket</em>, which adds to it a <code>TCP</code> header with the <strong>source and destination ports</strong>. These are two addresses that identify the <strong>applications</strong> sending and receiving the data — a <em>browser</em> or an <em>email client</em>.</p>
+<p>Ports range from 0 to 65535, and the so-called <em>well-known ports</em>, from 0 to 1023, are reserved for well-known services, such as port 80 for HTTP or 443 for HTTPS. <a href="#tbl-06-common-ports-en" class="quarto-xref">Table&nbsp;<span>6.1</span></a> shows the most common ports for some well-known protocols.</p>
+<div id="tbl-06-common-ports-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-06-common-ports-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.1: <em>Well-known</em> ports for some common protocols.
+</figcaption>
+<div aria-describedby="tbl-06-common-ports-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Port</th>
+<th>Protocol</th>
+<th>Service</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>80</td>
+<td>HTTP</td>
+<td>Web pages (unencrypted)</td>
+</tr>
+<tr class="even">
+<td>443</td>
+<td>HTTPS</td>
+<td>Web pages (TLS-encrypted)</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>FTP</td>
+<td>File transfer</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td>SMTP</td>
+<td>Sending email</td>
+</tr>
+<tr class="odd">
+<td>53</td>
+<td>DNS</td>
+<td>Domain name resolution</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>TCP also guarantees that data arrives reliably and in the correct order: it divides it into numbered segments, and resends any segment that is not acknowledged by the receiver within a well-defined time window.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The exact structure of the TCP header, and the mechanisms that guarantee this reliability, are covered in more depth in <a href="apendiceD.html#sec-apD-tcp-en" class="quarto-xref"><span>Section D.4.1</span></a>, for the more curious students.</p>
+</div>
+</div>
+</section>
+<section id="sec-06-ip-en" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="sec-06-ip-en"><span class="header-section-number">6.3.2</span> The Network Layer: IP</h3>
+<p>Next, the data passes to the network layer, to which an <code>IP</code> header is added with the <strong>source and destination IP addresses</strong>. An <code>IPv4</code> address has the form <code>(0-255).(0-255).(0-255).(0-255)</code>, such as <code>192.168.24.36</code>; this address identifies each computer even if they are on different networks.</p>
+<p>The same computer can have several IP addresses, one for each network interface it has. This is the case in <a href="#fig-06-nic-transmission-en" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>, where there are two network devices: the Wi-Fi network card and the Ethernet network card, each with its own IP address.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The complete structure of the IP header is covered in more depth in <a href="apendiceD.html#sec-apD-ip-en" class="quarto-xref"><span>Section D.4.2</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="sec-06-ethernet-en" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="sec-06-ethernet-en"><span class="header-section-number">6.3.3</span> The Link Layer: Ethernet and MAC Addresses</h3>
+<p>After the network layer comes the data link layer, whose task is to deliver a packet to a machine within the same local network. This layer adds the <strong>source and destination MAC addresses</strong> (MAC stands for Medium Access Control), forming a frame, typically according to the <code>IEEE 802.3</code> standard (Ethernet) or the equivalent for wireless networks. These addresses only identify devices <strong>within the same</strong> local network, and are assigned by the network card’s manufacturer, being unique worldwide. A MAC address has the form <code>XX:XX:XX:XX:XX:XX</code>, such as <code>00:1A:2B:3C:4D:5E</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The complete structure of an Ethernet frame is covered in more depth in <a href="apendiceD.html#sec-apD-ethernet-en" class="quarto-xref"><span>Section D.4.3</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="sec-06-physical-en" class="level3" data-number="6.3.4">
+<h3 data-number="6.3.4" class="anchored" data-anchor-id="sec-06-physical-en"><span class="header-section-number">6.3.4</span> The Physical Medium</h3>
+<p>Finally, at the physical layer, bits are converted into electrical signals, pulses of light (optical fibre) or radio waves (Wi-Fi), and transmitted through the corresponding physical channel. On the receiving side, this process happens exactly in reverse, layer by layer, until only the original application data remains; the complete journey, in both directions, is covered in more depth in <a href="apendiceD.html#sec-apD-reception-en" class="quarto-xref"><span>Section D.5</span></a> and in <a href="apendiceD.html#sec-apD-overview-en" class="quarto-xref"><span>Section D.6</span></a>.</p>
+<p>None of these addresses are theoretical abstractions: any computer, phone or tablet connected to a network has, at that very moment, a MAC address and an IP address assigned, visible in its own network settings. The following screenshot shows the Wi-Fi settings of an iPhone connected to the <code>eduroam</code> network, with its MAC address (labelled “Wi-Fi Address”), its IP address, the subnet mask and the <em>router</em>’s address:</p>
+<div id="fig-06-iphone-example-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-iphone-example-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap06/exemplo-iphone-wifi.png" class="img-fluid figure-img" style="width:35.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-iphone-example-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: The Wi-Fi settings of a mobile phone show, in practice, the MAC address and the IP address assigned to that device.
+</figcaption>
+</figure>
+</div>
+<p><a href="#tbl-06-layer-addresses-en" class="quarto-xref">Table&nbsp;<span>6.2</span></a> summarises the different types of address added along the data’s journey, from the application to the physical medium: each layer of the TCP/IP model adds its own address, and each identifies something different.</p>
+<div id="tbl-06-layer-addresses-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-06-layer-addresses-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.2: The different types of address used along the data’s journey.
+</figcaption>
+<div aria-describedby="tbl-06-layer-addresses-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 37%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>Protocol</th>
+<th>Source Address</th>
+<th>Destination Address</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Transport</td>
+<td>TCP</td>
+<td>Port of the sending application</td>
+<td>Port of the receiving application</td>
+</tr>
+<tr class="even">
+<td>Network</td>
+<td>IP</td>
+<td>IP of the sending computer</td>
+<td>IP of the receiving computer</td>
+</tr>
+<tr class="odd">
+<td>Link</td>
+<td>Ethernet</td>
+<td>MAC of the sending network card</td>
+<td>MAC of the receiving network card</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>It is precisely because these three levels exist that two applications, on two different computers, can only communicate with each other once all three addresses are identified: the port, which guarantees the data reaches the right application, within the right computer; the IP address, which guarantees it reaches the right computer, within the right network; and the MAC address, which guarantees it reaches the right network card, within the local network. If any one of these three is missing, communication cannot be completed.</p>
+</section>
+</section>
+<section id="sec-06-routing-en" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-06-routing-en"><span class="header-section-number">6.4</span> Routing</h2>
+<p>Up to this point, data has always moved within the same local network, identified by the MAC address. But the Internet is, at its core, a huge network of networks: thousands of different local networks, connected to each other. It is this connection between networks that allows, for example, the Contraponto reader, from home, to reach the magazine’s server, which sits on a completely different network. The equipment responsible for that connection is called a <strong>router</strong>: its function is to receive packets coming from one network and forward them to the next network, along the right path to the destination.</p>
+<p>A router recognises, from each packet’s destination IP address, that it is not meant for its own local network, and decides which network to forward it to next. A typical example: someone, at home, types a search into <code>Google</code>. The resulting packet has the destination IP set to the IP of <code>Google</code>’s servers. The home <em>router</em> receives that packet, recognises that the destination IP does not belong to its network, and forwards it to the public network; from router to router, hop by hop, the packet eventually reaches the destination computer, with the intended IP. To decide where to forward each packet, each router maintains a <strong>routing table</strong>, with rules that map possible destinations to the network interface the packet should follow.</p>
+<p>It is worth noting the difference between a <em>router</em> and a <em>switch</em>: a <em>switch</em> interconnects several devices within the same local network, forwarding frames based on the MAC address; a <em>router</em> interconnects different networks with each other, forwarding packets based on the IP address. That is why a request to a server outside the local network, like Google’s in the earlier example, always passes through at least one router.</p>
+</section>
+<section id="sec-06-ports-addresses-en" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="sec-06-ports-addresses-en"><span class="header-section-number">6.5</span> Ports, Addresses and URLs</h2>
+<p>An address such as <code>http://www.utad.pt</code> actually hides several pieces of information: the protocol to use (<code>http</code>), the server name (<code>www.utad.pt</code>), optionally, the port to use, and the resource to be accessed (i.e., the name of the web page). The <em>browser</em> needs all these separate pieces of information: the server’s address and the port to use. When no port is explicitly given, the well-known port of the protocol in question is assumed, port 80 in the case of HTTP, so <code>http://www.utad.pt</code> and <code>http://www.utad.pt:80</code> are, in practice, equivalent.</p>
+<div id="fig-06-pc-url-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-pc-url-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap06/pc-com-url.png" class="img-fluid figure-img" style="width:55.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-pc-url-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.5: The URL typed in the browser’s address bar is the starting point of the whole journey described in this chapter.
+</figcaption>
+</figure>
+</div>
+<p>Since humans memorise text more easily than numbers, the address written in a URL always takes the form of a domain name, such as <code>www.utad.pt</code>, never an IP number directly. But the network, at the IP layer level, only understands numbers. It is DNS that bridges these two realities.</p>
+</section>
+<section id="sec-06-dns-en" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="sec-06-dns-en"><span class="header-section-number">6.6</span> The Domain Name System (DNS)</h2>
+<p><code>DNS</code> (<em>Domain Name System</em>) is the service responsible for translating domain names, such as <code>www.utad.pt</code>, into the corresponding IP address. The process is simple from the point of view of whoever uses it: the <em>browser</em> asks a name server what the IP corresponding to a given domain is, and the name system replies with the IP number, which the <em>browser</em> then uses in the IP header of every subsequent packet to that destination.</p>
+<div id="fig-06-dns-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-dns-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap06/dns.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-dns-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.6: The domain name system is organised in a hierarchy, from the root domain (<code>ROOT</code>) to the top-level domains (<code>TLD</code>) and to each organisation’s domains.
+</figcaption>
+</figure>
+</div>
+<p>DNS is not, however, a single server, but a hierarchical, distributed system of servers, organised by domains and subdomains: a server may not directly know the IP of <code>www.utad.pt</code>, but it knows which other server to ask, closer to that domain in the hierarchy, until the final answer is obtained. Only once the domain name has been resolved to its IP address can the HTTP request actually be sent to the destination server, which makes DNS resolution a mandatory step, and sometimes the slowest one, whenever a given site is accessed for the first time.</p>
+<div id="fig-06-dns-resolution-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-dns-resolution-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap06/dns2.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-dns-resolution-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.7: The process of resolving <code>www.utad.pt</code>: the <em>browser</em> asks the local DNS server, which in turn successively asks the root server, the <code>.pt</code> domain server and, finally, the <code>utad.pt</code> server, until it obtains the corresponding IP address.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-06-references-en" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-06-references-en">References</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap05.html" class="pagination-link" aria-label="PHP III: Functions, Dates and Includes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Functions, Dates and Includes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap07.html" class="pagination-link" aria-label="The HTTP Protocol and State Management">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The HTTP Protocol and State Management</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Web Application Development I — UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

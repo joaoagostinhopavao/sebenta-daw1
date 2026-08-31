@@ -1,0 +1,71 @@
+---
+lang: en-GB
+---
+
+# Preface {.unnumbered}
+
+```{=html}
+<div class="hero hero-cover" style="background-image: linear-gradient(90deg, rgba(4,23,12,0.88) 0%, rgba(14,138,77,0.55) 45%, rgba(75,224,138,0.15) 100%), url('assets/images/capa/Web/capa-web-16-9.png');">
+  <div class="hero-badge">UTAD · 2026/2027</div>
+  <h1>Web Application Development I</h1>
+  <h2>Course Study Guide</h2>
+  <p>University of Trás-os-Montes e Alto Douro</p>
+  <div class="hero-meta">
+    <span>João Pavão</span>
+    <span class="hero-meta-date">22 August 2026</span>
+  </div>
+</div>
+```
+
+This textbook is a self-study resource for the theoretical component of the
+course **Web Application Development I** (DAW1), Bachelor's in
+Communication and Multimedia, covering server-side web application
+development with PHP, from the fundamentals of client-server communication
+to the architecture and security of modern web applications.
+
+In the practical component of the course, students apply these concepts by
+building dynamic web sites with PHP and databases. This textbook covers the
+theoretical component; the practical component is covered separately, in
+the corresponding classes.
+
+## Organisation {.unnumbered}
+
+The text is organised into five thematic blocks, following the course's
+official syllabus:
+
+1. **Web Foundations and Landscape** — chapters 1 and 2, covering the
+   process of developing a web application and the different types of
+   servers and infrastructure
+2. **PHP Programming** — chapters 3, 4 and 5, covering syntax, control
+   flow, functions and code organisation
+3. **Communication and State on the Web** — in this block, chapters 6 and
+   7, network models, the HTTP protocol, and state management with cookies
+   and sessions
+4. **Data and Security** — this block covers chapters 8 and 9, on
+   databases with PHP and web application security
+5. **Architecture and Tools** — finally, this block, chapters 10 and 11,
+   covers the Model-View-Controller pattern and web development frameworks
+
+## Source and Updates {.unnumbered}
+
+The content of this textbook is based on the lecturer's own material,
+developed over previous years of teaching the course (slides and code
+demonstrations), reorganised and updated for the 2026/2027 academic year.
+The reference bibliography for the course is listed in each chapter and
+compiled in the `referencias.bib` file.
+
+## How to Use This Textbook {.unnumbered}
+
+Each chapter corresponds to one theoretical class of the course. Students
+are advised to read a chapter before the corresponding class, and to use
+this text as support for independent study, to review concepts and
+clarify doubts. Reading does not replace attendance in class, nor
+participation in the practical, in-class demonstrations.
+In every chapter involving PHP programming, the example code is presented
+directly in the text, and students are encouraged to experiment with the
+code, testing it and modifying it to better understand the concepts,
+through the challenges proposed at the end of each chapter.
+
+## Author {.unnumbered}
+
+**João Pavão** — UTAD

@@ -1,0 +1,262 @@
+---
+title: "Class Code Demos"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+## Introduction {#sec-apB-intro-en}
+
+This appendix gathers the complete code for the demonstrations given live in theoretical classes, one for each major PHP topic covered in the previous chapters. Each demo presented here has been stripped of the purely decorative part (the HTML and CSS surrounding the demonstration in class), keeping only the PHP logic and the comments necessary to understand it, so that it can be copied directly into its own `.php` file and run in the environment set up in @sec-apA-intro-en, without any changes. Each chapter of the main text points to the corresponding section of this appendix, at the point where that demo is relevant.
+
+## Demo: Variables and Arrays {#sec-apB-variables-en}
+
+Demonstration used in @sec-03-variables-en and @sec-03-arrays-en, with examples of the four array types seen in that chapter: numeric, associative and multidimensional.
+
+```php
+<?php
+// Declare variables of different types
+$age = 19;                    // Integer
+$lunchPrice = 10.5;           // Float
+$text = "Hello, World!";      // String
+$doorOpen = true;             // Boolean
+$simpleArray = array(1, 2, 3);  // Array
+
+// Show the values in a readable way
+echo "<p><strong>Age:</strong> $age</p>";
+echo "<p><strong>Lunch price:</strong> $lunchPrice</p>";
+echo "<p><strong>Text:</strong> $text</p>";
+
+// echo of a boolean shows "1" for true and nothing for false;
+// to show readable text, a ternary expression is used
+echo "<p><strong>Door open:</strong> " . ($doorOpen ? 'true' : 'false') . "</p>";
+
+// echoing an array directly produces a Warning; use print_r() or var_dump()
+echo "<p><strong>Simple array:</strong> ";
+print_r($simpleArray);
+echo "</p>";
+
+// Indexed array
+$fruits = array("Apple", "Banana", "Orange");
+echo "<p>First fruit: " . $fruits[0] . "</p>";
+echo "<p>Second fruit: " . $fruits[1] . "</p>";
+echo "<p>Third fruit: " . $fruits[2] . "</p>";
+
+// Associative array
+$person = array(
+    "name" => "John",
+    "age"  => 25,
+    "city" => "Lisbon"
+);
+echo "<p>Name: " . $person["name"] . "</p>";
+echo "<p>Age: " . $person["age"] . "</p>";
+echo "<p>City: " . $person["city"] . "</p>";
+
+// Multidimensional array
+$cars = array(
+    "sports" => array("Ferrari", "Lamborghini", "Porsche"),
+    "suv"    => array("BMW X5", "Audi Q7", "Mercedes GLE"),
+    "sedans" => array("Toyota Camry", "Honda Accord", "Hyundai Elantra")
+);
+echo "<p>First sports car: " . $cars["sports"][0] . "</p>";
+echo "<p>Second SUV: " . $cars["suv"][1] . "</p>";
+echo "<p>Third sedan: " . $cars["sedans"][2] . "</p>";
+```
+
+## Demo: Conditionals, Loops and Superglobals {#sec-apB-conditionals-loops-en}
+
+Demonstration used in @sec-04-conditionals-en, @sec-04-loops-en and @sec-07-superglobals-en. The `$_POST` part requires a small HTML form on the same page, submitting to itself (`action=""`).
+
+```php
+<?php
+// --- Conditionals ---
+$age = 18;
+
+if ($age >= 18) {
+    echo "<p>Is an adult.</p>";
+} else {
+    echo "<p>Is a minor.</p>";
+}
+
+$color = "red";
+
+switch ($color) {
+    case "blue":
+        echo "<p>The colour is blue.</p>";
+        break;
+    case "red":
+        echo "<p>The colour is red.</p>";
+        break;
+    default:
+        echo "<p>The colour is neither blue nor red.</p>";
+}
+
+// --- Loops ---
+echo "<h3>for loop</h3>";
+for ($i = 1; $i <= 5; $i++) {
+    echo "<p>Iteration $i</p>";
+}
+
+echo "<h3>while loop</h3>";
+$counter = 1;
+while ($counter <= 3) {
+    echo "<p>Count: $counter</p>";
+    $counter++;
+}
+
+echo "<h3>foreach loop</h3>";
+$fruits = array("Apple", "Banana", "Orange");
+foreach ($fruits as $fruit) {
+    echo "<p>Fruit: $fruit</p>";
+}
+?>
+
+<!-- --- Superglobals: $_GET, $_POST, $_SERVER --- -->
+<form method="post" action="">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <input type="submit" value="Submit">
+</form>
+
+<?php
+// $_GET: data coming from a URL parameter (e.g. ?name=Ana)
+echo "<p>Value of 'name' via GET: "
+   . (isset($_GET['name']) ? $_GET['name'] : 'not provided') . "</p>";
+
+// $_POST: data coming from the form above, submitted via POST
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    echo "<p>Name submitted via POST: " . htmlspecialchars($_POST['name']) . "</p>";
+}
+
+// $_SERVER: information about the server itself and the request
+echo "<p>Server name: " . $_SERVER['SERVER_NAME'] . "</p>";
+```
+
+## Demo: Functions {#sec-apB-functions-en}
+
+Demonstration used in @sec-05-functions-en, with four function variants (no parameters or return value, with parameters, with a return value, and with an optional parameter).
+
+```php
+<?php
+// No parameters and no return value
+function showGreeting() {
+    echo "<p>Welcome to the system!</p>";
+}
+
+// With parameters and no return value
+function sendEmail($recipient, $subject, $message) {
+    echo "<p>Email sent to: $recipient</p>";
+    echo "<p>Subject: $subject</p>";
+    echo "<p>Message: $message</p>";
+}
+
+// With parameters and a return value
+function calculateDiscount($price, $discountPercentage) {
+    $discount = $price * ($discountPercentage / 100);
+    return $price - $discount;
+}
+
+// With an optional parameter (default value)
+function createUser($name, $email, $password, $role = 'user') {
+    echo "<p>User $name created with the role of $role.</p>";
+}
+
+function volume($width, $height, $length) {
+    return $width * $height * $length;
+}
+
+// --- Calls ---
+$roomVolume = volume(5, 3, 10);
+echo "<p>The room's volume is $roomVolume m3.</p>";
+
+showGreeting();
+
+sendEmail("customer@example.com", "Welcome", "Thank you for signing up!");
+
+$priceWithDiscount = calculateDiscount(100, 10); // 10% discount
+echo "<p>Final price with discount: $priceWithDiscount</p>";
+
+createUser("Joseph", "joseph@example.com", "123456");        // no 'role': uses 'user'
+createUser("Anna", "anna@example.com", "789123", "admin"); // explicit 'role'
+```
+
+## Demo: Dates {#sec-apB-dates-en}
+
+Demonstration used in @sec-05-dates-en, this time with the object-oriented `DateTime` class, instead of the `date()` function.
+
+```php
+<?php
+// Create and show the current date and time
+$currentDate = new DateTime();
+echo "<p>Current date and time: " . $currentDate->format('d-m-Y H:i:s') . "</p>";
+
+// Add days to a date (clone so as not to change the original object)
+$futureDate = clone $currentDate;
+$futureDate->modify('+150 days');
+echo "<p>Date in 150 days: " . $futureDate->format('Y-m-d') . "</p>";
+
+// Subtract days from a date
+$pastDate = clone $currentDate;
+$pastDate->modify('-10 days');
+echo "<p>Date 10 days ago: " . $pastDate->format('Y-m-d') . "</p>";
+
+// Difference between two dates
+$interval = $currentDate->diff($pastDate);
+echo "<p>Difference: " . $interval->days . " days</p>";
+
+// Create a date from a string, in a specific format
+$specificDate = DateTime::createFromFormat('Y-m-d', '2024-12-25');
+echo "<p>Specific date (Christmas): " . $specificDate->format('Y-m-d') . "</p>";
+
+// Check whether a year is a leap year
+$year = (int) $specificDate->format('Y');
+if ($year % 4 === 0 && ($year % 100 !== 0 || $year % 400 === 0)) {
+    echo "<p>$year is a leap year.</p>";
+} else {
+    echo "<p>$year is not a leap year.</p>";
+}
+```
+
+## Demo: Includes (Header and Footer) {#sec-apB-includes-en}
+
+Demonstration used in @sec-05-includes-en, with three files: a reusable `header.php` and `footer.php`, included by a main page.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Welcome to my application!</h1>
+    <nav>
+        <a href="index.php">Home</a> |
+        <a href="about.php">About</a> |
+        <a href="contact.php">Contact</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 My Application. All rights reserved.</p>
+</footer>
+```
+
+```php
+<!-- index.php -->
+<?php
+// include: if header.php does not exist, it is only a Warning; the page continues
+include 'header.php';
+?>
+
+<h2>Main Page</h2>
+<p>Content specific to this page.</p>
+
+<?php
+// require: if footer.php does not exist, it is a fatal error; the page stops here
+require 'footer.php';
+?>
+```
+
+## References {#sec-apB-references-en .unnumbered}
+
+::: {#refs}
+:::

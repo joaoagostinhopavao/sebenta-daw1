@@ -1,0 +1,377 @@
+---
+title: "PHP I: Syntax, Variables and Arrays"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap03.jpg');">
+  <div class="hero-badge">Chapter 3</div>
+  <h1>PHP I: Syntax, Variables and Arrays</h1>
+</div>
+```
+
+## Preparing the Development Environment {#sec-03-environment-en}
+
+Before writing the first line of PHP code, an environment where that code can run is needed: an `Apache` server capable of interpreting PHP, connected to a `MySQL`, as seen in @sec-02-course-environment-en. In practice, no student needs to build this environment from scratch: the lecturer of the practical component usually provides a ready-made image, either a virtual machine or `Docker` containers, ready to import and use. The complete steps for preparing this environment, by either route, are left for @sec-apA-intro-en, since they are configuration details, not programming, and can vary depending on each student's operating system.
+
+What matters for the rest of this chapter is only the result: an `Apache` running, capable of interpreting PHP, connected to a `MySQL`, a code editor such as `Visual Studio Code` with access to the project files, and the ability to open a `.php` file in a *browser* and see the result of its execution. With this environment ready, everything needed is in place to finally start writing and testing PHP code.
+
+## The Project: Contraponto Magazine {#sec-03-project-en}
+
+Throughout this and the following chapters, the code examples follow the same project, so that each new concept is seen applied to a real problem, instead of disconnected, standalone examples.
+
+Rita Ferreira has run Contraponto, a cultural print magazine, for over ten years, and now wants a digital version: a site where the magazine's articles are available online, organised by category, with room for readers to comment. Tiago Correia, a final-year Communication and Multimedia student, takes on the challenge of building that site over the semester, applying what he learns in this course.
+
+Before writing the first line of code, Tiago proposes a simple sketch to Rita of the data the site will need to store:
+
+- **Article**: each published piece of content (title, summary, text, author, category, publication date);
+- **Author**: who writes the magazine's articles;
+- **Category**: the topic of each article, for example Culture, Technology or Music;
+- **Comment**: what readers write about an article.
+
+This sketch is not yet a database, only a map of the problem: the implementation, chapter by chapter, starts with the simplest parts, and only adds new complexity as Tiago learns new tools of the language, from the arrays seen in @sec-03-arrays-en to the database tables from @sec-08-dbms-en onward.
+
+## Architecture and Assigning Responsibilities {#sec-03-architecture-en}
+
+Before deciding what language to program the Contraponto site in, it is worth understanding where each piece of the problem fits. Three-tier architecture, already introduced in @sec-02-three-tier-en, splits an application like this one into three parts: presentation, logic and data. The following figure applies this split to the project sketched in @sec-03-project-en:
+
+```{mermaid}
+%%| echo: false
+%%| fig-align: center
+flowchart TB
+    A["Presentation Layer<br/>HTML / CSS / JS"]
+    B["Logic Layer<br/>PHP"]
+    C[("Data Layer<br/>MySQL")]
+
+    A -- "HTTP request" --> B
+    B -- "generated HTML" --> A
+    B -- "queries / stores data" --> C
+    C -- "result" --> B
+
+    classDef layer fill:#eef2ff,stroke:#4338ca,stroke-width:1px,color:#1e1b4b;
+    class A,B,C layer;
+```
+
+The presentation layer is what Tiago has already mastered since the first year of his degree: HTML structures each page of the site, the article listing, an individual article's page, the comment form; CSS handles their visual presentation; and JavaScript can, later, make the interface more dynamic. None of this changes in this course; it is the starting point on which all the following work is built.
+
+What Tiago is missing is the logic layer: the code that runs on the server, decides which articles to show, and validates a comment submitted by a reader before passing it on to the data layer. As seen in @sec-01-languages-en, this layer can be written in any of several server languages, `Node.js`, `Python` or `PHP`, among others; this course chooses PHP, one of the most used in this role. The data layer, which the logic turns to in order to query or store articles, authors, categories and comments, is only introduced from @sec-08-dbms-en onward; until then, it is the logic layer itself that stores this data, in memory, as already seen in the next section. From here on, the rest of this chapter, and all the following ones, is devoted to building Contraponto's logic layer.
+
+## The PHP Language {#sec-03-language-en}
+
+`PHP` (*Hypertext Preprocessor*) is a *scripting* language that runs on the server side. Unlike HTML and JavaScript, which the *browser* receives and interprets directly, PHP code is executed on the server, and the client only receives the result of that processing, typically HTML. This means PHP code is never visible to whoever visits the site, even if they view the page's source code in the *browser*: everything the client receives is already the result of PHP's execution, never the PHP code itself.
+
+A PHP code section always starts with `<?php` and can be closed with `?>`, although, in files that contain only PHP, it is common to omit the closing tag, to avoid accidental whitespace after it. PHP can be inserted in the middle of HTML, mixing both languages in the same file, entering and leaving PHP mode as many times as needed:
+
+```php
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Hello!</h1>
+  <?php
+    echo "<p>It is now " . date("H:i") . "</p>";
+  ?>
+  <p>This text is no longer PHP, it is plain HTML.</p>
+  <?php
+    $visitas = 128;
+    echo "<p>This site has been visited $visitas times.</p>";
+  ?>
+</body>
+</html>
+```
+
+PHP supports two programming styles: procedural, a sequence of instructions and function calls, which is what this book follows as its base, and object-oriented, in which data and behaviour are grouped into objects, created with `new` and manipulated through methods, called with an arrow (`->`). PHP itself relies on objects in some of its own internal tools, such as the `DateTime` class, seen in @sec-05-dates-en; in those cases, only the syntax needed to use them is introduced, without yet needing to know how to build objects of one's own.
+
+## Basic Syntax {#sec-03-syntax-en}
+
+Every PHP statement ends with a semicolon (`;`); forgetting it is one of the most common mistakes made by those starting to program in PHP, and it typically produces a syntax error (*parse error*) that prevents the page from loading. Single-line comments are made with `//`, and multi-line ones with `/* ... */`:
+
+```php
+<?php
+// This single-line comment does not appear on the page
+
+/* This comment
+   can span
+   several lines */
+
+echo "Hello, World!";
+```
+
+To display a value, the `echo` command is used, which can take several values separated by commas:
+
+```php
+<?php
+echo "Hello, World!";
+echo "Name: ", "John", ", Age: ", 25;
+```
+
+## Variables {#sec-03-variables-en}
+
+A variable is a "container" for storing data the program will use. In PHP, a variable's name has to follow a precise set of rules:
+
+- Always starts with the `$` symbol;
+- After the `$`, the name has to start with a letter or an *underscore* (`_`), never a number;
+- Can only contain letters, numbers and *underscores*, no spaces or other symbols;
+- Is case sensitive: `$idade` and `$Idade` are two different variables, a common mistake that can cause a lot of confusion when debugging a *script*.
+
+```php
+<?php
+$idade = 19;       // valid
+$_total = 0;       // valid, starts with an underscore
+$nome_completo = "Ana Silva";  // valid
+
+$1idade = 19;      // INVALID: cannot start with a number
+```
+
+## Data Types {#sec-03-types-en}
+
+Unlike languages such as Java or C#, PHP does not require declaring a variable's type: the type is determined automatically by the assigned value, and can change if the variable later receives a value of another type. This feature is called dynamic typing. PHP supports the following data types:
+
+- **String**: text, delimited by single or double quotes;
+- **Integer**: whole numbers, positive or negative, with no decimal places;
+- **Float** (or *double*): numbers with decimal places;
+- **Boolean**: the values `true` or `false`;
+- **Array**: a collection of several values, a topic detailed in the next section;
+- **Object**: an instance of a class, grouping data and behaviour;
+- **NULL**: a special type, with a single possible value, `null`, representing the absence of a value;
+- **Resource**: a reference to a resource external to PHP, such as an open connection to a database or a file.
+
+The first four, string, integer, float and boolean, are the simple types used in day-to-day programming; the remaining ones, array, object, NULL and resource, appear throughout this course as programs become more complex.
+
+```php
+<?php
+$idade = 19;                  // integer
+$preco_do_almoco = 10.5;      // float
+$texto = "Hello, World!";     // string
+$porta_aberta = true;         // boolean
+$sem_valor = null;            // NULL
+```
+
+The `gettype()` function returns a variable's current type, which is particularly useful while learning the language, since type errors in PHP are not always obvious:
+
+```php
+<?php
+echo gettype($idade);           // integer
+echo gettype($preco_do_almoco); // double
+echo gettype($porta_aberta);    // boolean
+```
+
+A typical source of confusion for beginners: `echo` of a boolean value shows `1` for `true`, but shows literally nothing for `false`, which can at first look like a bug in the program itself, when it is simply PHP's normal behaviour.
+
+Strings can be concatenated with the `.` operator, and it is possible to mix text and variables directly in the same `echo` statement, either by concatenation or by writing the variable inside a double-quoted *string*:
+
+```php
+<?php
+$nome = "Ana";
+$idade = 25;
+
+echo "Name: " . $nome . ", Age: " . $idade . " years old";  // by concatenation
+echo "Name: $nome, Age: $idade years old";                  // inside double quotes
+```
+
+Note that this variable interpolation only works with double quotes; inside single quotes, `$nome` would be displayed literally, without being replaced by its value.
+
+### Type Conversion {#sec-03-type-conversion-en}
+
+Even though typing in PHP is dynamic, it is often necessary to explicitly convert a value from one type to another, for example to ensure a number received from an HTML form, which always arrives as a *string*, is treated as a number before being used in a calculation. This conversion is done by placing the desired type, in parentheses, before the value:
+
+```php
+<?php
+$idade_texto = "25";           // string, as it would arrive from a form
+$idade = (int) $idade_texto;   // 25, now an integer
+
+$preco = "10.5";
+$preco_num = (float) $preco;   // 10.5, now a float
+
+$numero = 0;
+$estado = (bool) $numero;      // false: 0, "", "0" and null convert to false
+
+echo gettype($idade);   // integer
+echo gettype($estado);  // boolean
+```
+
+PHP also converts types automatically, with no need to ask, whenever an operation requires it: in a sum, a purely numeric *string* is converted to a number with no warning at all:
+
+```php
+<?php
+$a = "10";
+$b = "5";
+
+echo $a + $b;   // 15 (integer), the strings are converted automatically
+echo $a . $b;   // "105" (string), the . operator forces concatenation
+```
+
+This behaviour is useful, but also a common source of confusion for beginners: the same `+` symbol adds numbers, but `.` concatenates text, and it is easy to swap one for the other without PHP flagging any error, simply producing an unexpected result.
+
+## Arrays {#sec-03-arrays-en}
+
+Tiago starts with the most visible part of the Contraponto site: the list of published articles. A first attempt, perhaps the most obvious for someone starting to program, would be to create one variable per title:
+
+```php
+<?php
+$artigo1 = "Entrevista: o futuro do jornalismo local";
+$artigo2 = "Crítica: a nova exposição do museu";
+$artigo3 = "Como nasceu a Contraponto";
+```
+
+This approach works while the magazine has three articles, but quickly becomes unsustainable: what if the magazine publishes fifty articles? What if an article is taken down, or a new one is published? Variables would need to be created, deleted or renamed one by one, and any code that needed to loop through "all the articles" would have to be rewritten every time the number of articles changed. This approach also lacks simple answers to everyday questions about a site like this: how many articles are published? What is the list of titles, in alphabetical order? None of these questions has an easy answer with separate variables.
+
+The solution is an array: a data structure that allows several related values to be stored in a single variable, accessible through numeric indices or associative keys, instead of creating a separate variable for each value. PHP provides three types of arrays, each better suited to a different kind of problem, as the following sections show, always returning to the Contraponto site.
+
+### Indexed Arrays {#sec-03-indexed-arrays-en}
+
+The simplest type of array is the indexed (or numeric) array, in which each value is accessed through an integer index, which always starts at 0. It is the right structure for Contraponto's titles problem, since there is no need to give each article its own name, only to store them all together:
+
+```php
+<?php
+$titulos = array(
+    "Entrevista: o futuro do jornalismo local",
+    "Crítica: a nova exposição do museu",
+    "Como nasceu a Contraponto"
+);
+
+echo $titulos[0];  // Entrevista: o futuro do jornalismo local
+echo $titulos[1];  // Crítica: a nova exposição do museu
+echo $titulos[2];  // Como nasceu a Contraponto
+
+$titulos[] = "Roteiro cultural de outubro";  // adds a new element at the end
+echo count($titulos);                        // 4, the number of elements in the array
+```
+
+Two of Tiago's questions are already solved with very little code: publishing a new article is a single statement, `$titulos[] = "Roteiro cultural de outubro"`, with no need to declare any further variable; and knowing how many articles are published is just `count($titulos)`, the number of elements in the array, which stays correct no matter how many articles are published or removed.
+
+From PHP 5.4 onward, `array("...", "...")` can also be written with the shorthand syntax `["...", "..."]`, today the most common way to find it in recent PHP code.
+
+Tiago's third question is still unanswered: what is the list of articles, in alphabetical order? Besides `count()`, PHP provides several other functions for working with the content of an indexed array, without having to loop through its elements manually:
+
+```php
+<?php
+$categorias = ["Tecnologia", "Cultura", "Música", "Cinema"];
+
+array_push($categorias, "Entrevistas");   // adds to the end
+$ultima = array_pop($categorias);         // removes the last element
+
+sort($categorias);                        // sorts alphabetically
+print_r($categorias);                     // [Cinema, Cultura, Música, Tecnologia]
+
+if (in_array("Música", $categorias)) {
+    echo "The Música category already exists";
+}
+
+$posicao = array_search("Cultura", $categorias);   // index of "Cultura"
+echo $posicao;
+```
+
+Applied to the initial problem, `sort($titulos)` would reorder the article titles alphabetically, the same way this example sorts the categories, since PHP uses the same comparison mechanism for text and for numbers, only with different sorting criteria depending on the value's type. The remaining functions also address common list-management needs: `in_array()` checks whether a category already exists before adding it again, and `array_search()` returns the position of a specific category, useful, for example, for removing it later.
+
+### Associative Arrays {#sec-03-associative-arrays-en}
+
+An indexed array handles a simple list of titles well, but the Contraponto site will quickly need to store more information about each article, not just its title: the author, the category, the summary. Storing all this information in an indexed array would require memorising that index `0` always corresponds to the title, `1` to the author, and so on, code that is hard to read and easy to get wrong. An associative array solves exactly this problem: each value is accessed through a key of one's choosing, typically a *string*, instead of a numeric index, which makes the code much more readable when each value has its own meaning:
+
+```php
+<?php
+$artigo = array(
+    "titulo"    => "Entrevista: o futuro do jornalismo local",
+    "autor"     => "Rita Ferreira",
+    "categoria" => "Tecnologia"
+);
+
+echo $artigo["titulo"];   // Entrevista: o futuro do jornalismo local
+echo $artigo["autor"];    // Rita Ferreira
+
+// adds a new key
+$artigo["resumo"] = "Uma conversa sobre os desafios do jornalismo de proximidade.";
+```
+
+A Contraponto article therefore stops being just a loose piece of text inside the `$titulos` array, and becomes, itself, an associative array with all its properties. This idea, an associative array inside another array, is precisely the topic of the next section.
+
+### Multidimensional Arrays {#sec-03-multidimensional-arrays-en}
+
+A multidimensional array is an array whose values are themselves other arrays, which makes it possible to represent more structured data, such as categories with lists of items, or a list of records, each with several fields — exactly the problem raised at the end of the previous section:
+
+```php
+<?php
+$revistas_concorrentes = array(
+    "generalistas" => array("Visão", "Sábado", "Expresso"),
+    "culturais"    => array("Ler", "Blimunda", "Time Out")
+);
+
+echo $revistas_concorrentes["generalistas"][0];  // Visão
+echo $revistas_concorrentes["culturais"][1];     // Blimunda
+
+// An array of records, each one in turn an associative array:
+// exactly the "Article" sketch Tiago proposed in @sec-03-project-en
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    )
+);
+
+echo $artigos[0]["titulo"];  // Entrevista: o futuro do jornalismo local
+echo $artigos[2]["autor"];   // Rita Ferreira
+```
+
+The `$artigos` array is the structure that finally gives shape to the model proposed in @sec-03-project-en: each element is a complete article, with all its information, and the whole list can still be looped through, counted and sorted with the same functions seen in @sec-03-indexed-arrays-en. It is also with this same array, in memory, that Tiago will build the site's first pages, long before connecting the application to a real database; this last example, an array of associative arrays, is in fact the most common way to represent, in memory, a set of records coming from a database, a topic picked up in more detail in @sec-08-dbms-en.
+
+To quickly inspect the content of an array during development, without having to access each element individually, the `print_r()` function is used, which shows its full structure, including nested arrays, or `var_dump()`, which also shows the type and length of each value.
+
+### Complete Example: an Author's Views {#sec-03-complete-example-en}
+
+A small example, combining variables, types, conversion and multidimensional arrays, shows well how these concepts come together in practice: calculating the average views of an author's latest articles, stored inside an associative array with their data:
+
+```php
+<?php
+$autor = [
+    "nome"   => "Rita Ferreira",
+    "vistas" => [1200, 850, 430, 610]
+];
+
+$soma = array_sum($autor["vistas"]);        # <1>
+$numero_artigos = count($autor["vistas"]);  # <2>
+$media = $soma / $numero_artigos;           # <3>
+
+echo $autor["nome"] . " tem uma média de " . $media . " vistas por artigo";
+
+if ($media >= 500) {                        # <4>
+    echo ", um alcance acima da média da revista.";
+} else {
+    echo ", um alcance abaixo da média da revista.";
+}
+```
+1. Adds up the views of the latest articles: 1200 + 850 + 430 + 610 = 3090.
+2. Counts how many articles were added up: 4.
+3. Divides the sum by the number of articles, obtaining the average: 3090 / 4 = 772.5.
+4. Compares the average with the magazine's reference value, deciding the final result.
+
+Note that `array_sum()` returns a `float` whenever the division is not exact, even when all the added-up views are integers, which is consistent with the dynamic-typing behaviour seen in @sec-03-types-en: PHP automatically picks the most suitable type for the result of each operation.
+
+The complete code from the in-class demonstration on variables and arrays, ready to copy, is available in @sec-apB-variables-en.
+
+## Challenge {#sec-03-challenge-en}
+
+Tiago now knows how to represent an article, and a list of articles, as arrays. Before moving on to the next chapter, the challenge is to put that knowledge to the test, completing Contraponto's article catalogue, using only what has been covered in this chapter, with no loops or conditionals:
+
+1. Complete the `$artigos` array with at least five articles, each with a title, author and category;
+2. Display the title of the third article in the catalogue;
+3. Build a `$categorias` array with the categories already used in the articles, with no repeats, and sort it alphabetically with `sort()`;
+4. Check, with `in_array()`, whether the category `"Entrevistas"` is already present in the `$categorias` array built in the previous point.
+
+The starter file, with the `$artigos` array partially filled in, is available in @sec-apC-cap03-en.
+
+## References {#sec-03-references-en .unnumbered}
+
+::: {#refs}
+:::

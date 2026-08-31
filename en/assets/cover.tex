@@ -1,0 +1,10 @@
+%% Capa — Sebenta DAW1 (imagem: capa-4-5, recortada para A4)
+\newgeometry{top=0mm,bottom=0mm,left=0mm,right=0mm}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \clip (current page.south west) rectangle (current page.north east);
+  \node[anchor=center,inner sep=0pt] at (current page.center)
+    {\includegraphics[height=\paperheight]{assets/images/capa/PDF/capa-4-5.jpg}};
+\end{tikzpicture}
+\vfill\clearpage
+\restoregeometry

@@ -1,0 +1,200 @@
+---
+title: "PHP II: Conditionals and Loops"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap04.jpg');">
+  <div class="hero-badge">Chapter 4</div>
+  <h1>PHP II: Conditionals and Loops</h1>
+</div>
+```
+
+## Conditional Structures {#sec-04-conditionals-en}
+
+With the article catalogue complete, Tiago notices that not everything in the `$artigos` array should be treated the same way: an article can be ready to publish, or it can still just be a draft that Rita is reviewing. With what he knows so far, the only code he can write is a direct `echo`, always executed the same way, never varying with the data: there is no way to say "show this **if** the article is published, but not if it is still a draft". This is exactly the kind of decision a conditional structure allows: it evaluates whether a condition is true or false, and executes a different block of code depending on the result, directing the flow of the program according to the data. In PHP, the most common structure is `if`/`else`, and it solves the article-status problem well:
+
+```php
+<?php
+$estado = "publicado";
+
+if ($estado === "publicado") {
+    echo "Mostrar o artigo aos leitores.";
+} else {
+    echo "Artigo ainda em rascunho, não mostrar.";
+}
+```
+
+This handles a yes-or-no decision well. But Tiago has another, similar problem: he wants the home page to highlight articles according to how many views they have already had, and this time there are more than two possible categories, not just "viral" or "not viral". A single `if`/`else` only distinguishes two cases; when there are more than two alternatives, `elseif` is chained on:
+
+```php
+<?php
+$vistas = 850;
+
+if ($vistas >= 1000) {
+    echo "Viral";
+} elseif ($vistas >= 500) {
+    echo "Popular";
+} elseif ($vistas >= 100) {
+    echo "Normal";
+} else {
+    echo "Pouco lido";
+}
+```
+
+This views problem is well solved with `elseif` because each alternative depends on a different range of values. But when Tiago wants to decide the site section from an article's exact category, always comparing the same `$categoria` variable against several possible values, one by one, writing an `elseif` for each category starts to get repetitive: `elseif ($categoria === "Cultura")`, `elseif ($categoria === "Música")`, and so on. There is another, simpler way for Tiago to do the same thing, whenever what is at stake is comparing a single variable against several exact values: `switch`. Notice the use of `break`: without it, execution would continue on to the next `case` even after finding a match, a behaviour called *fallthrough*, sometimes used on purpose, as in the first two lines of the example, to group several cases under the same site section:
+
+```php
+<?php
+$categoria = "Música";
+
+switch ($categoria) {
+    case "Cultura":
+    case "Música":
+        echo "Secção Lazer";
+        break;
+    case "Tecnologia":
+        echo "Secção Inovação";
+        break;
+    default:
+        echo "Outras notícias";
+}
+```
+
+### Comparison Operators {#sec-04-comparison-operators-en}
+
+While testing the article-status `if`, Tiago runs into a detail of PHP that is worth understanding well before moving on. Conditions rest on comparison operators, which evaluate two values and always return a boolean, `true` or `false`:
+
+| Operator | Meaning |
+|----------|-------------|
+| `==`     | equal (compares only the value) |
+| `===`    | identical (compares the value and the type) |
+| `!=`     | not equal (compares only the value) |
+| `!==`    | not identical (compares the value and the type) |
+| `<`      | less than |
+| `>`      | greater than |
+| `<=`     | less than or equal to |
+| `>=`     | greater than or equal to |
+
+The distinction between `==` and `===` is one of the most common sources of subtle bugs in PHP, precisely because PHP automatically converts between types when using `==`:
+
+```php
+<?php
+var_dump(0 == "abc");    // false in most current PHP versions
+var_dump(0 == "0");      // true: "0" is converted to the number 0
+var_dump(0 === "0");     // false: different types, integer vs string
+var_dump("10" == "1e1"); // true: both converted to the same number
+var_dump("10" === "1e1");// false: they are different strings
+```
+
+For this reason, it is good practice to use `===` whenever the goal is to guarantee two values are really equal, both in value and in type, avoiding comparisons that rely on automatic conversions that are not always obvious. This distinction will become particularly relevant later in the book, once Tiago starts receiving data from real HTTP requests, in @sec-07-superglobals-en: an article identifier received through the URL always arrives as a *string*, even when it represents a number, and comparing that *string* against an `id` stored as an `integer` can have unexpected results if `==` is used instead of `===`.
+
+### Logical Operators {#sec-04-logical-operators-en}
+
+Tiago realises that showing an article, in practice, depends on two conditions at once: the article has to be published, **and** its category cannot in the meantime have been archived. Testing this with two separate `if`s would require nesting one inside the other; combining both conditions into one is the role of logical operators:
+
+- **`and`** (or `&&`): true only if both conditions are true;
+- **`or`** (or `||`): true if at least one of the conditions is true;
+- **`xor`**: true if exactly one of the two conditions is true, but not both.
+
+```php
+<?php
+$publicado = true;
+$categoria_ativa = true;
+
+if ($publicado && $categoria_ativa) {
+    echo "Mostrar artigo.";
+}
+```
+
+## Loops {#sec-04-loops-en}
+
+A loop is a control structure that allows a block of code to be executed repeatedly, until a specified condition is no longer met, or until a predetermined number of repetitions is reached. PHP provides four types of loops.
+
+### `for` {#sec-04-for-en}
+
+Used when the number of repetitions needed is known in advance, taking three parameters: the initial value, the stopping condition, and the increment applied at each repetition:
+
+```php
+<?php
+for ($pagina = 1; $pagina <= 5; $pagina++) {
+    echo "Página $pagina ";
+}
+// Página 1 Página 2 Página 3 Página 4 Página 5
+```
+
+### `while` {#sec-04-while-en}
+
+Takes only one condition, evaluated **before** each repetition; if the condition is false from the start, the code block never runs at all. In Contraponto's management panel, an editor could use a `while` to work through, one by one, the comments still waiting for approval:
+
+```php
+<?php
+$comentarios_pendentes = 5;
+while ($comentarios_pendentes > 0) {
+    echo "Comentário pendente: $comentarios_pendentes ";
+    $comentarios_pendentes--;
+}
+```
+
+### `do...while` {#sec-04-do-while-en}
+
+Very similar to `while`, but with the condition evaluated **after** each repetition, which guarantees the code block always runs at least once, even if the condition is false from the start. It is useful, for example, to guarantee the home page always shows some featured article, even on days when none was explicitly marked as such:
+
+```php
+<?php
+$artigos_destaque = 0;   // no article marked as featured today
+do {
+    echo "A mostrar o artigo mais recente como destaque. ";
+    $artigos_destaque--;
+} while ($artigos_destaque > 0);
+// runs once, even though the condition is already false from the start
+```
+
+### `foreach` {#sec-04-foreach-en}
+
+Used specifically to loop through arrays, with no need to manage an index manually. It is finally with a `foreach` that Tiago manages to turn the `$titulos` array, sketched in @sec-03-indexed-arrays-en, into a real list of articles on the site's page, without repeating `echo` once per article:
+
+```php
+<?php
+$titulos = [
+    "Entrevista: o futuro do jornalismo local",
+    "Crítica: a nova exposição do museu",
+    "Como nasceu a Contraponto"
+];
+
+foreach ($titulos as $titulo) {
+    echo $titulo . "<br>";
+}
+```
+
+With an associative array, `foreach` allows both the key and the value of each element to be accessed at the same time, which is useful, for example, for showing every field of a single article without writing a separate `echo` for each property:
+
+```php
+<?php
+$artigo = [
+    "titulo"    => "Entrevista: o futuro do jornalismo local",
+    "autor"     => "Rita Ferreira",
+    "categoria" => "Tecnologia"
+];
+
+foreach ($artigo as $chave => $valor) {
+    echo "$chave: $valor<br>";
+}
+```
+
+## Challenge {#sec-04-challenge-en}
+
+With conditionals and loops, Tiago can now turn the static article catalogue into a page that reacts to the data. The challenge, building on the `$artigos` catalogue completed in @sec-03-challenge-en, is:
+
+1. Use a `foreach` to loop through `$artigos` and display the title of each one;
+2. Inside the same `foreach`, use an `if` to also display the author, but only for articles whose category is `"Cultura"`;
+3. Define, at the top of the file, a variable `$categoria_escolhida = "Tecnologia";`, standing in, for now, for the category the reader wants to see, and use an `if` so the `foreach` only shows articles from that category.
+
+The starter file, already with the previous chapter's complete catalogue, is available in @sec-apC-cap04-en. This fixed variable is, deliberately, a simplification: @sec-07-superglobals-en shows how to replace it with the real value from a *browser* request, through `$_GET`.
+
+## References {#sec-04-references-en .unnumbered}
+
+::: {#refs}
+:::

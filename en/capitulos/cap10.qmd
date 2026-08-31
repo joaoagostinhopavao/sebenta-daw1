@@ -1,0 +1,101 @@
+---
+title: "Model-View-Controller (MVC)"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap10.jpg');">
+  <div class="hero-badge">Chapter 10</div>
+  <h1>Model-View-Controller (MVC)</h1>
+</div>
+```
+
+## Why Separate Responsibilities? {#sec-10-why-separate-en}
+
+The mini CRUD application built in @sec-08-crud-en, with files such as `index.php`, `add.php` or `edit.php`, illustrates a very concrete problem well: in each of these files, the database query, the validation of received data and the HTML shown to the user are all mixed together in the same place. In a small application, with a single table, this is manageable. As an application grows, with more entities, more business rules and more pages, this coding style becomes increasingly hard to maintain: a simple change to a page's visual appearance requires editing the same file that contains the data access logic, and an error in an SQL query can, without it being obvious why, also break the page's presentation. This is exactly the problem the MVC pattern, presented in @sec-02-mvc-en, solves, by separating the application into Model, View and Controller.
+
+## Rebuilding the CRUD with MVC {#sec-10-crud-mvc-en}
+
+Applying MVC to Contraponto's small article-management application, built in @sec-08-crud-en, means reorganising the code, keeping the same behaviour, but splitting it into files with well-defined responsibilities:
+
+- **Model** (`Artigo.php`): concentrates all the database access logic related to articles, with functions such as `listarArtigos()`, `criarArtigo($titulo, $autor, $categoria)`, `atualizarArtigo($id, $titulo, $autor, $categoria)` and `apagarArtigo($id)`. None of these functions produce HTML; they only return data.
+- **View** (`views/lista.php`, `views/formulario.php`): concentrate only HTML, with small snippets of PHP to display the data provided to them, with no direct access to the database.
+- **Controller** (`ArtigoController.php`): receives Rita's request, decides which *Model* function to call depending on the requested action — listing, creating, editing or deleting — and chooses the appropriate *View* to display the result.
+
+```php
+<?php
+// ArtigoController.php (excerpt)
+require "Artigo.php";
+
+function acaoListar() {
+    $artigos = listarArtigos();
+    require "views/lista.php";  // the View uses $artigos
+}
+
+function acaoCriar() {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        criarArtigo($_POST["titulo"], $_POST["autor"], $_POST["categoria"]);
+        header("Location: index.php");
+        exit;
+    }
+    require "views/formulario.php";
+}
+```
+
+The final behaviour, for whoever uses the application, is the same as before. What changed was entirely internal: whoever changes the visual appearance only touches the *Views*, whoever changes the business rules only touches the *Model*, and the *Controller* connects the two parts without depending on the internal details of either.
+
+## Business Rules in the Model {#sec-10-business-rules-en}
+
+The *Model* is not limited to running SQL queries: it is also the natural place for the application's business rules, the logic that determines whether an operation is valid, regardless of how the data arrived there. Consider validating the category before creating a new article, using `in_array()`, already seen in @sec-03-indexed-arrays-en:
+
+```php
+<?php
+// Artigo.php (excerpt)
+function criarArtigo($titulo, $autor, $categoria) {
+    $categorias_validas = ["Cultura", "Tecnologia", "Música"];
+    if (!in_array($categoria, $categorias_validas)) {
+        return ["sucesso" => false, "erro" => "Categoria inválida"];
+    }
+
+    global $conexao;
+    $stmt = $conexao->prepare("INSERT INTO artigos (titulo, autor, categoria) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $titulo, $autor, $categoria);
+    $stmt->execute();
+
+    return ["sucesso" => true];
+}
+```
+
+This validation belongs in the *Model*, not in the *Controller* or the *View*, because it is a rule about the data itself — "an article must belong to one of the magazine's categories" — that applies whenever an article is created, regardless of whether the request came from a web form, a future API, or a batch import script. Placing this check in the *Controller*, by contrast, would require repeating it in every new entry point that came to create articles.
+
+## The Front Controller {#sec-10-front-controller-en}
+
+The original mini application had one PHP file per action: `index.php`, `add.php`, `edit.php`, `delete.php`. A common alternative, especially as the number of actions grows, is the *front controller* pattern: instead of several entry points, there is a single file, usually also called `index.php`, which receives every request and decides, based on a parameter, which *Controller* action to run:
+
+```php
+<?php
+// index.php as a front controller
+require "ArtigoController.php";
+
+$acao = $_GET["acao"] ?? "listar";
+
+switch ($acao) {
+    case "criar":
+        acaoCriar();
+        break;
+    case "editar":
+        acaoEditar();
+        break;
+    default:
+        acaoListar();
+}
+```
+
+This pattern centralises decisions that would otherwise have to be repeated in every file, such as checking whether the user has an active session before allowing any action. It is also the mechanism most web development *frameworks*, the topic of the next chapter, use behind their routing system.
+
+## References {#sec-10-references-en .unnumbered}
+
+::: {#refs}
+:::

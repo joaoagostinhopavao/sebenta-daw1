@@ -1,0 +1,211 @@
+---
+title: "HTTP Supplement"
+author: "João Pavão"
+date: 2026-08-26
+lang: en-GB
+---
+
+## Introduction {#sec-apE-intro-en}
+
+@sec-07-http-en gives a web application programmer what they need to
+know about the `HTTP` protocol to understand the rest of this book: what
+the `GET` and `POST` methods are, how a request reaches a virtual
+resource, how PHP receives that data through the superglobals, and how
+a site keeps track of a reader's state through *cookies* and sessions,
+despite `HTTP` being, by nature, *stateless*. This appendix goes deeper
+into this subject beyond what is strictly necessary to develop web
+applications, much as a painter does not need to know how to make their
+own paint to paint a picture, but benefits from understanding how it is
+made. Here, for whoever wants that deeper dive, is the exact syntax of
+`GET` and `POST` messages, other common headers, the strategies
+*browsers* use to manage connections, and the complete set of *cookie*
+attributes.
+
+## The Exact Syntax of HTTP Messages {#sec-apE-messages-en}
+
+@sec-07-request-message-en presents the generic structure of an `HTTP`
+message. It is worth seeing, in detail, what each of its parts contains
+in the concrete case of a `GET` or `POST` request.
+
+### The GET Request {#sec-apE-get-en}
+
+The *link* to a Contraponto category's articles, seen in
+@sec-07-get-en,
+
+```html
+<a href="contraponto.pt/artigos.php?categoria=Cultura">Cultura</a>
+```
+
+when clicked, results in the following `GET` message:
+
+```bash
+GET /artigos.php?categoria=Cultura HTTP/1.1
+Host: contraponto.pt
+```
+
+`GET` is the method, `/artigos.php?categoria=Cultura` is the requested
+resource, and `HTTP/1.1` is the protocol version in use. The `Host`
+header indicates which server the request is intended for, essential
+when the same IP address hosts several different domains. The `GET`
+message has no body, because there is no need to send additional data
+to the server, only to request a resource.
+
+Because it changes nothing on the server, the `GET` message is
+considered **safe**. This is a convention of the protocol, not a
+technical guarantee: a poorly designed server can, technically, change
+data in response to a `GET`, but doing so violates the behaviour
+expected by any HTTP client, and is considered bad practice.
+
+`GET` can also be used in an HTML form context, as long as the goal is
+not to change information on the server, only to obtain a result, as in
+a search:
+
+```html
+<form action="/pesquisa" method="GET">
+    <label for="term">Procurar:</label>
+    <input id="term" name="term" type="text" />
+    <input type="submit" value="Procurar!" />
+</form>
+```
+
+When this form is submitted with the term "jornalismo", the *browser*
+generates the following message:
+
+```bash
+GET /pesquisa?term=jornalismo HTTP/1.1
+Host: contraponto.pt
+```
+
+Note how the form data appears directly in the URL, after the `?`, in
+the `key=value` format, exactly as in the category *link*.
+
+### The POST Request {#sec-apE-post-en}
+
+Contraponto's comment form, referred to in @sec-07-post-en, typically
+has this form:
+
+```html
+<form action="/comentar.php" method="POST">
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" type="text" />
+    <label for="texto">Comentário</label>
+    <textarea id="texto" name="texto"></textarea>
+    <input type="submit" value="Comentar" />
+</form>
+```
+
+Which, when submitted, results in the following message:
+
+```bash
+POST /comentar.php HTTP/1.1
+Host: contraponto.pt
+
+nome=Rita&texto=Excelente+artigo%21
+```
+
+Unlike `GET`, the data goes in the body of the message, not in the URL.
+Notice how the `key=value` format is preserved, but now in the body,
+and how special characters in the text (such as `!`) appear encoded
+(`%21`), a rule called *URL encoding*, necessary because the body of an
+`HTTP` message can only contain a restricted set of characters.
+
+## HTTP Headers {#sec-apE-headers-en}
+
+@sec-07-headers-en presents the `Host` header, the only mandatory one
+in a request. Another common header is `Accept`, which tells the server
+what content types (`MIME` formats) the *browser* prefers to receive in
+the response, in order of preference, indicated by a quality value `q`
+between 0 and 1 (the default value is 1, maximum preference):
+
+```bash
+GET /artigos.php?categoria=Cultura HTTP/1.1
+Host: contraponto.pt
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8
+```
+
+In this example, the *browser* prefers `HTML`, accepts `XML` with a
+slightly lower preference, and accepts any other content type (`*/*`)
+only as a last resort.
+
+## Browser Connection Management {#sec-apE-connections-en}
+
+@sec-07-stateless-en explains that each `HTTP` request is, in itself,
+independent of all the others, and that a single page normally requires
+several requests, one for each resource. To ease this cost, *browsers*
+rely on different connection-management strategies:
+
+- **Parallel connections**: on detecting several resources on a page,
+  the *browser* opens several connections at once to load them faster,
+  one for the HTML, another for the CSS, another for the JavaScript,
+  and so on. The number of parallel connections is limited, because
+  each additional connection increases the load on the server, which,
+  beyond a certain point, can make the page load more slowly instead of
+  faster;
+- **Persistent connections**: instead of closing the *socket* right
+  after each response, the server keeps it open for several successive
+  requests. `Apache`, by default, keeps a persistent connection open for
+  5 seconds of inactivity before closing it. This period also has to be
+  limited for security reasons, to prevent denial-of-service attacks
+  (*DoS*), in which an attacker deliberately keeps many connections open
+  at once, preventing the server from handling legitimate requests;
+- **Back-to-back connections**: since HTTP/1.1, a client can send
+  several requests in a row, over the same connection, without waiting
+  for the response to each one before sending the next, further
+  reducing the total load time of a page with many resources.
+
+## The Attributes of a Cookie {#sec-apE-cookies-en}
+
+@sec-07-cookies-en presents the essentials about *cookies*: a small
+piece of information the server asks the *browser* to store and resend
+with each following request. *Cookies* are defined, in detail, in the
+`RFC 6265` standard, *HTTP State Management Mechanism*.
+
+A server can set several *cookies* at the same time, each with its own
+meaning, for example a session identifier and the reader's preferred
+language:
+
+```bash
+HTTP/1.1 200 OK
+Set-Cookie: sessao=31d4d96e407aad42; Path=/; Secure; HttpOnly
+Set-Cookie: lang=pt-PT; Path=/; Domain=contraponto.pt
+```
+
+A *cookie* set by the server can include several attributes, besides
+the name-value pair:
+
+- **`Expires`** or **`Max-Age`**: define when the *cookie* should
+  expire (a concrete date, or a number of seconds, respectively); if
+  both are set, `Max-Age` takes precedence. With neither of the two,
+  the *cookie* expires when the *browser* is closed;
+- **`Domain`** and **`Path`**: restrict which *host* and which folder
+  on the server the *cookie* is sent to;
+- **`Secure`**: the *browser* only sends this *cookie* over a secure
+  channel, `HTTPS`;
+- **`HttpOnly`**: an important protection against *XSS* attacks, a
+  subject explored further in @sec-09-custom-code-en; the *cookie* is
+  only exchanged between *browser* and server, without being accessible
+  to client-side JavaScript code.
+
+To delete a *cookie*, the server resends it with an expiry date already
+in the past; from that point on, the *browser* stops including it in
+following requests. Note also that *cookies* are limited to 4kB of
+information each. In PHP, a *cookie* is created with the `setcookie()`
+function, which accepts all of these attributes as parameters:
+
+```php
+<?php
+setcookie(
+    "utilizador",   // nome
+    "joao",         // valor
+    time() + 3600,  // expira em 1 hora
+    "/",            // path
+    "",             // domain
+    true,           // secure
+    true            // httponly
+);
+```
+
+## References {#sec-apE-references-en .unnumbered}
+
+::: {#refs}
+:::

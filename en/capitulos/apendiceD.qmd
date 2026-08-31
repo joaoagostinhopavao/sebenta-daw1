@@ -1,0 +1,194 @@
+---
+title: "Computer Networks Supplement"
+author: "João Pavão"
+date: 2026-08-25
+lang: en-GB
+---
+
+## Introduction {#sec-apD-intro-en}
+
+@sec-06-why-layers-en gives a web application programmer what they
+need to know about computer networks to understand the following
+chapter and those that follow it: that communication is organised into
+layers, that these layers have names and responsibilities, and that
+concepts such as IP, port, MAC or DNS are not loose abstractions, but
+concrete pieces of that system. This appendix goes deeper into this
+subject beyond what is strictly necessary to develop web applications,
+much as a painter does not need to know how to make their own paint to
+paint a picture, but benefits from understanding how it is made. Here,
+for whoever wants that deeper dive, is the complete formalism of
+services and protocols, the exact, field-by-field structure of TCP, IP
+and Ethernet headers, and the complete encapsulation process in the OSI
+model.
+
+## The Real Protocols per Layer {#sec-apD-protocols-layer-en}
+
+@sec-06-osi-tcpip-en presents the two reference models, OSI and TCP/IP,
+and the three TCP/IP layers most relevant to a web programmer. The
+following figure brings the two models together, showing how the OSI
+layers group into the four TCP/IP layers, and some of the concrete
+protocols that run in each: `HTTP`, used by Contraponto, shares the
+application layer with `SMTP` (email), `FTP` (file transfer) or `DNS`,
+a subject explored further in @sec-06-dns-en; the transport layer is
+dominated by `TCP` and `UDP`; and the network layer by `IP`.
+
+![The two models side by side, with the most common protocols in each
+layer.](../assets/images/cap06/osi-tcpip-protocolos.png){#fig-apD-osi-tcpip-protocolos-en width="85%"}
+
+## Services and Protocols {#sec-apD-services-protocols-en}
+
+Two concepts are central to understanding, in detail, how layers
+communicate with one another: services and protocols.
+
+A **service** represents a set of functions offered to a user by a
+provider. That service is made available through **Service Access
+Points** (*SAPs*): from the perspective of whoever uses the service, all
+of its characteristics are fully defined by the interface at the SAP,
+which means the entity providing the service can be treated as
+completely abstract, with no need to know how that service is
+implemented internally. It is exactly this principle that allows a web
+application programmer to use TCP without needing to understand how it
+guarantees, internally, the reliable delivery of data.
+
+![On the left, the user of a service exchanges messages with the
+provider of that service through a SAP, without knowing its internal
+implementation; on the right, the same principle applied to the OSI and
+TCP/IP layers.](../assets/images/cap06/servicos-sap-osi.png){#fig-apD-servicos-sap-en width="90%"}
+
+A **protocol**, in turn, is a family of standards for exchanging
+information: a set of rules that define the physical connections, the
+data formats, the transmission models, and the means used to ensure
+correctness against errors and failures in data transmission. While the
+service describes *what* a layer offers to the layer above it, the
+protocol describes *how* two entities of the same layer, one on the
+client side and the other on the server side, communicate with each
+other to implement that service.
+
+## The Structure of the Headers {#sec-apD-headers-en}
+
+@sec-06-encapsulation-en explains that each layer adds its own control
+information to the data, in a process called encapsulation, and
+summarises what each one adds: TCP the ports, IP the addresses, MAC the
+physical addresses. It is worth seeing, in detail, the exact structure
+of each of these headers, field by field.
+
+### TCP {#sec-apD-tcp-en}
+
+The `TCP` header includes, besides the source and destination ports,
+the sequence number and the acknowledgement number:
+
+![The field-by-field structure of a TCP
+segment.](../assets/images/cap06/segmento-tcp.png){#fig-apD-segmento-tcp-en width="95%"}
+
+- **Flags**: six single-*bit* indicators, which signal the role of a
+  segment in the communication. `SYN` starts a new connection, `FIN`
+  ends it in an orderly way, `ACK` signals that the acknowledgement
+  field is valid, `RST` abruptly interrupts the connection (typically
+  due to an error), `PSH` asks that the data be delivered immediately
+  to the application, without waiting to group it with others, and
+  `URG` signals urgent data;
+- **Window** (*Window Size*): the size of the flow-control window. A
+  window is a set of segments that can be sent all at once, for example
+  100 segments, without waiting for an individual acknowledgement of
+  each one before sending the next. If the receiver takes too long to
+  acknowledge receipt, or if the network starts showing signs of
+  congestion, the window size is automatically reduced, decreasing the
+  sending rate; when the network is free again, the window size
+  increases again. In this way, TCP adjusts itself to the network
+  conditions at each moment, with no need for the application using it
+  to do anything;
+- **Checksum**: a value calculated from the content of the segment,
+  which lets the receiver detect whether the data was corrupted during
+  transmission;
+- **Options**: a variable-length field, used by extensions to the TCP
+  protocol not provided for in the basic header.
+
+### IP {#sec-apD-ip-en}
+
+The `IP` header includes, besides the source and destination addresses:
+
+![The field-by-field structure of an IP
+packet.](../assets/images/cap06/pacote-ip.png){#fig-apD-pacote-ip-en width="95%"}
+
+- **Version**: the IP protocol in use (`4` or `6`);
+- **IHL** (*Internet Header Length*): the length of the header itself,
+  since it can vary depending on the options present;
+- **Total length** of the packet;
+- **Identification**: a number used to associate with one another all
+  the fragments resulting from the same original packet, when it is
+  fragmented;
+- **Hop count** (*TTL*, *Time To Live*): the maximum number of hops
+  (passes through a *router*) a packet can take before being discarded,
+  a safety mechanism to prevent a misrouted packet from circulating
+  indefinitely across the network;
+- **Fragmentation**: each network has a maximum packet size it can
+  carry (the *MTU*, *Maximum Transmission Unit*); if an IP packet
+  exceeds that size, it is fragmented into smaller parts, a process
+  carried out by intermediate nodes on the network;
+- **Protocol**: indicates whether the content of the packet, in its
+  data section, is a TCP segment or a UDP datagram, informing the
+  transport layer, on the receiving side, how to interpret what
+  follows.
+
+### Ethernet {#sec-apD-ethernet-en}
+
+A complete Ethernet frame, under the `IEEE 802.3` standard, has the
+following structure:
+
+![The structure of an Ethernet frame, under the IEEE 802.3
+standard.](../assets/images/cap06/frame-ethernet.png){#fig-apD-frame-ethernet-en width="100%"}
+
+Besides the destination (`DA`) and source (`SA`) addresses, the frame
+includes a **preamble**, a fixed sequence of *bits* that lets receiving
+network interfaces synchronise with the start of the transmission; a
+**length** field, with the size of the data carried; an **FCS** (*Frame
+Check Sequence*), similar in purpose to TCP's *checksum*, which allows
+corrupted frames to be detected; and an **interframe gap**, a small
+mandatory pause before the next frame can be transmitted.
+
+## Data Reception, in Detail {#sec-apD-reception-en}
+
+@sec-06-encapsulation-en describes, in summary, the reception process:
+each layer removes the header that the corresponding layer had added
+to it on the sending side, until only the application's original data
+remains. In detail, layer by layer: the physical layer detects a signal
+with the Ethernet address matching the local network interface, and
+passes the information to the link layer; this checks whether the
+destination MAC address is its own and, if so, passes the information
+to the network layer; this checks whether the destination IP address is
+its own and, if so, passes the information to the transport layer; and
+this, finally, checks whether there is an application registered on the
+indicated destination port and, if so, finally delivers the data to it.
+
+![The reverse path to sending: the signal arrives through the network
+card and climbs the layers, one by one, up to the
+application.](../assets/images/cap06/rececao-de-dados.png){#fig-apD-rececao-dados-en width="45%"}
+
+## An Overall View {#sec-apD-overview-en}
+
+The same encapsulation and decapsulation principle applies, in even
+finer detail, to the complete OSI model, with its seven layers: in
+each one, on the sending side, a new header is added (`AH` at the
+application layer, `PH` at the presentation layer, `SH` at the session
+layer, and so on); on the receiving side, each layer removes the header
+that corresponds to it, in a process entirely similar to what was
+already seen for TCP/IP, just with more layers involved:
+
+![The complete encapsulation and decapsulation process in the OSI
+model, from sender to
+receiver.](../assets/images/cap06/encapsulamento-bidirecional.png){#fig-apD-encapsulamento-osi-en width="95%"}
+
+It is worth reviewing, in summary, which address is added by each layer
+along this path: the transport layer adds the source and destination
+ports, the network layer the source and destination IP addresses, and
+the link layer the source and destination MAC addresses, each one
+wrapping around the data already prepared by the previous layer:
+
+![The different types of address added at each layer: port
+(transport), IP (network) and MAC
+(link).](../assets/images/cap06/diferentes-tipos-enderecos.png){#fig-apD-enderecos-camada-en width="85%"}
+
+## References {#sec-apD-references-en .unnumbered}
+
+::: {#refs}
+:::

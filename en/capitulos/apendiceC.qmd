@@ -1,0 +1,445 @@
+---
+title: "Programming Challenges"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+## Introduction {#sec-apC-intro-en}
+
+At the end of each chapter, a "Challenge" section proposes a small
+exercise that applies, to the Contraponto Magazine project presented in
+@sec-03-project-en, only the language tools already covered up to that
+point in the book. This appendix gathers the starter file for each of
+these challenges, with part of the code already written and the rest
+marked with `TODO` comments, so that each student's job is to complete
+and extend what is already there, instead of always starting from
+scratch.
+
+## Chapter 3 Challenge: Complete the Article Catalogue {#sec-apC-cap03-en}
+
+Starter file for the challenge in @sec-03-challenge-en. The first two
+articles are already complete, following the same format used in
+@sec-03-arrays-en; the remaining points are left to complete.
+
+```php
+<?php
+// Chapter 3 Challenge: complete the Contraponto article catalogue
+//
+// 1. Add more articles to $artigos, until you have at least five;
+// 2. Show the title of the third article in the catalogue (index 2);
+// 3. Build $categorias from $artigos, with no repeats, sorted
+//    alphabetically;
+// 4. Check, with in_array(), whether the category "Entrevistas" is
+//    already represented in $categorias.
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+
+    // TODO 1: add more articles here, following the same format
+);
+
+// TODO 2: show the title of the third article (index 2)
+
+
+// TODO 3: build $categorias from $artigos, with no repeats,
+// and sort it alphabetically
+
+
+// TODO 4: check with in_array() whether "Entrevistas" is already in $categorias
+```
+
+## Chapter 4 Challenge: List and Filter Articles {#sec-apC-cap04-en}
+
+Starter file for the challenge in @sec-04-challenge-en. The `$artigos`
+array, already complete here with five articles, continues the
+catalogue from the previous challenge; the work for this chapter is to
+iterate over it and filter it, not to build it again.
+
+```php
+<?php
+// Chapter 4 Challenge: list and filter the Contraponto articles
+//
+// 1. Use a foreach to iterate over $artigos and show the title of
+//    each one;
+// 2. Inside the same foreach, also show the author, but only for
+//    articles whose category is "Cultura";
+// 3. Use an if so that the foreach only shows articles from the
+//    category given in $categoria_escolhida.
+
+// For now, simulate the category chosen by the reader
+$categoria_escolhida = "Tecnologia";
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1, 2 and 3: iterate over $artigos with foreach, showing the title of
+// each one, the author only for articles of category "Cultura", and
+// filtering by the value of $categoria_escolhida
+```
+
+## Chapter 5 Challenge: Formatting Function and Includes {#sec-apC-cap05-en}
+
+Starter file for the challenge in @sec-05-challenge-en. `header.php` and
+`footer.php` are left to be written, with a suggested example structure
+in a comment, for guidance; `index.php` picks up the `$artigos`
+catalogue and the category filter from the previous challenge, missing
+only the `formatarArtigo()` function and its integration into the
+`foreach`.
+
+```php
+<!-- header.php -->
+<!-- TODO: write a simple header here for the Contraponto site,
+     with the magazine's name and a navigation menu by category.
+     Example of a possible structure:
+
+     <header>
+         <h1>Contraponto</h1>
+         <nav>
+             <a href="index.php">Início</a> |
+             <a href="index.php?categoria=Cultura">Cultura</a> |
+             <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+             <a href="index.php?categoria=Música">Música</a>
+         </nav>
+     </header>
+-->
+```
+
+```php
+<!-- footer.php -->
+<!-- TODO: write a simple footer here for the Contraponto site,
+     for example with the copyright notice:
+
+     <footer>
+         <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+     </footer>
+-->
+```
+
+```php
+<!-- index.php -->
+<?php
+// Chapter 5 Challenge: formatting function and includes
+//
+// 1. Write a function formatarArtigo($artigo) that returns a
+//    string such as "Title — por Author";
+// 2. Use that function inside the foreach, instead of formatting the
+//    article directly in there;
+// 3. Include header.php before the listing, and footer.php after.
+
+// For now, simulate the category chosen by the reader
+$categoria_escolhida = "Tecnologia";
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1: write the function formatarArtigo($artigo)
+
+
+// TODO 2 and 3: include header.php, iterate over $artigos with foreach
+// calling formatarArtigo() and respecting $categoria_escolhida, and
+// include footer.php at the end
+```
+
+## Chapter 7 Challenge: Real Requests with GET and POST {#sec-apC-cap07-en}
+
+Starter file for the challenge in @sec-07-challenge-en. `header.php` and
+`footer.php` appear here already complete, as they would be after
+solving the previous challenge; `index.php` already has the
+`formatarArtigo()` function complete, as solved in @sec-05-challenge-en,
+and already includes the HTML comment form, missing only replacing the
+fixed variable with the real value of `$_GET["categoria"]`, and
+handling that form's submission.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Contraponto</h1>
+    <nav>
+        <a href="index.php">Início</a> |
+        <a href="index.php?categoria=Cultura">Cultura</a> |
+        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+        <a href="index.php?categoria=Música">Música</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+</footer>
+```
+
+```php
+<!-- index.php -->
+<?php
+// Chapter 7 Challenge: real requests with $_GET and $_POST
+//
+// 1. Replace the $categoria_escolhida line with the real value of
+//    $_GET["categoria"], with isset() handling the case where it
+//    doesn't exist (in that case, show all articles);
+// 2. Handle the submission of the comment form, already included
+//    further below: check whether $_SERVER["REQUEST_METHOD"] is
+//    "POST" and, in that case, show a confirmation message with
+//    $_POST["nome"] and $_POST["texto"].
+
+function formatarArtigo($artigo) {
+    return $artigo["titulo"] . " — por " . $artigo["autor"];
+}
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1: replace this line with reading $_GET["categoria"]
+$categoria_escolhida = "Tecnologia";
+
+require "header.php";
+
+foreach ($artigos as $artigo) {
+    if ($artigo["categoria"] === $categoria_escolhida) {
+        echo "<p>" . formatarArtigo($artigo) . "</p>";
+    }
+}
+
+// TODO 2: handle the submission of the comment form below, via POST
+?>
+
+<form action="index.php" method="POST">
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" type="text" />
+    <label for="texto">Comentário</label>
+    <textarea id="texto" name="texto"></textarea>
+    <input type="submit" value="Comentar" />
+</form>
+
+<?php
+require "footer.php";
+```
+
+## Chapter 8 Challenge: Migrate the Catalogue to a Database {#sec-apC-cap08-en}
+
+Starter file for the challenge in @sec-08-challenge-en. `header.php` and
+`footer.php` stay the same as in the previous chapters; `config.php`
+already establishes the connection to MySQL, missing only creating the
+database and the table; `seed.php` picks up the usual `$artigos`
+catalogue, to migrate it, once, into the table; and `index.php` still
+iterates over the in-memory array, as in the previous challenge, missing
+only replacing that `foreach` with a database query.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Contraponto</h1>
+    <nav>
+        <a href="index.php">Início</a> |
+        <a href="index.php?categoria=Cultura">Cultura</a> |
+        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+        <a href="index.php?categoria=Música">Música</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+</footer>
+```
+
+```php
+<!-- config.php -->
+<?php
+$conexao = new mysqli("localhost", "utilizador", "password", "contraponto");
+
+if ($conexao->connect_error) {
+    die("Ligação falhou: " . $conexao->connect_error);
+}
+```
+
+```php
+<!-- seed.php: one-off script to migrate the original catalogue into the table -->
+<?php
+// Chapter 8 Challenge: migrate the article catalogue to MySQL
+//
+// 1. Create the contraponto database and the artigos table, with the
+//    structure defined in Section 8.5;
+// 2. Iterate over $artigos with foreach, inserting each one into the
+//    artigos table through a prepared statement. This file only
+//    needs to be run once.
+
+require "config.php";
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+// TODO 1: create the contraponto database and the artigos table, if
+// they don't already exist
+
+
+// TODO 2: iterate over $artigos with foreach, inserting each one into
+// the artigos table through a prepared statement
+```
+
+```php
+<!-- index.php -->
+<?php
+require "config.php";
+
+$categoria_escolhida = $_GET["categoria"] ?? null;
+
+$artigos = array(
+    array(
+        "titulo"    => "Entrevista: o futuro do jornalismo local",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    ),
+    array(
+        "titulo"    => "Crítica: a nova exposição do museu",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Como nasceu a Contraponto",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Cultura"
+    ),
+    array(
+        "titulo"    => "Roteiro cultural de outubro",
+        "autor"     => "Marco Antunes",
+        "categoria" => "Música"
+    ),
+    array(
+        "titulo"    => "Como a IA está a mudar o jornalismo",
+        "autor"     => "Rita Ferreira",
+        "categoria" => "Tecnologia"
+    )
+);
+
+require "header.php";
+
+// TODO 3: replace this block with a query to the artigos table, with
+// a prepared statement, filtering by $categoria_escolhida when it
+// exists, and returning all articles when it doesn't
+foreach ($artigos as $artigo) {
+    if ($categoria_escolhida === null || $artigo["categoria"] === $categoria_escolhida) {
+        echo "<p>" . $artigo["titulo"] . " — por " . $artigo["autor"] . "</p>";
+    }
+}
+
+require "footer.php";
+```
+
+## References {#sec-apC-references-en .unnumbered}
+
+::: {#refs}
+:::

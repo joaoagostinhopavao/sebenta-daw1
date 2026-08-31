@@ -1,0 +1,223 @@
+---
+title: "The HTTP Protocol and State Management"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap07.jpg');">
+  <div class="hero-badge">Chapter 7</div>
+  <h1>The HTTP Protocol and State Management</h1>
+</div>
+```
+
+## The Components of the Web {#sec-07-web-components-en}
+
+Everything seen in the previous chapter, layers, encapsulation, ports, addresses and DNS, is the infrastructure the Web itself rests on. The Web, as a system, rests on three fundamental components:
+
+- A presentation language: `HTML`;
+- An addressing scheme: `URI`/`URL`;
+- A communication protocol between client and server: `HTTP`.
+
+A URL (*Uniform Resource Locator*) uniquely identifies a resource on the Web, combining the protocol to use (`http`, `https`), the server name (which DNS translates to an IP), the port, and the path to the intended resource within that server. It is precisely the HTTP protocol, built on top of all this infrastructure, that is the subject of this chapter.
+
+## The HTTP Protocol {#sec-07-http-en}
+
+`HTTP` (*Hypertext Transfer Protocol*) is the application-layer protocol that allows two applications to communicate with each other on the Web. Most of the time, one of these applications is a web server (such as `Apache`, `Tomcat` or `GlassFish`) and the other is a *browser* (such as `Chrome`, `Firefox` or `Edge`). It works according to a request-response model: the client sends an `HTTP` request to the server, and the server returns an `HTTP` response. This is the protocol the Contraponto reader's *browser* uses every time it requests a page from the magazine's server.
+
+## What Happens When a URL Is Typed {#sec-07-process-en}
+
+It is worth following, step by step, what happens between the moment a Contraponto reader types `contraponto.pt` into the *browser* and the moment the magazine's home page appears on screen, tying together everything seen in the previous chapter:
+
+1. The *browser* extracts the server name (*hostname*) from the URL, including the port number, if given, and queries `DNS` to obtain its `IP` address;
+2. The *browser* then opens a `TCP` *socket*, specifying the destination `IP` and the port to use (by default, port 80 for a typical web page);
+3. It writes an **`HTTP` request message** and sends it through that `TCP` *socket*; if no web page name is explicitly given in the URL, the server assumes `index.html` by default (if this does not exist, it looks for other default pages, such as `index.php`, `default.html`, etc.);
+4. The `TCP` layer **accepts the message** and guarantees its reliable delivery to the server, as described in @sec-06-tcp-en;
+5. The server responds, sending a **response message** that travels back along the same protocol stack, until it reaches the *browser* again, which interprets it and presents the page to the user.
+
+## The Request Message {#sec-07-request-message-en}
+
+A complete `HTTP` request message has the following general structure:
+
+```bash
+[method] [URL] [http version in use]
+[headers]
+
+[body]
+```
+
+The method indicates the client's intent. The most used in web development are `GET` and `POST`.
+
+### The GET Method {#sec-07-get-en}
+
+`GET` requests a resource, without that operation, by itself, changing anything on the server: it is the method used whenever a *link* is clicked, such as the one that takes the Contraponto reader to a category's articles:
+
+```html
+<a href="contraponto.pt/artigos.php?categoria=Cultura">Cultura</a>
+```
+
+For the same reason, `GET` can also be used in a form, as long as the goal is only to obtain a result, never to change something on the server, as would happen if this same category filter were done through a menu instead of a direct *link*. It is precisely this request that @sec-07-superglobals-en revisits, from the server side.
+
+::: {.callout-note}
+The exact syntax of a `GET` message, including the meaning of each of its parts, is detailed in @sec-apE-get-en.
+:::
+
+### The POST Method {#sec-07-post-en}
+
+`POST` sends data to the server, typically to **create** or **change** a resource: it is the method used, for example, by the Contraponto comment form sketched in @sec-03-project-en. Unlike `GET`, the data goes in the message body, not in the URL, and the request **is not considered harmless**: it usually records something or changes the server's state in some way. It is also this request that @sec-07-superglobals-en revisits, showing how PHP receives the data a reader submitted.
+
+::: {.callout-note}
+The complete structure of an HTML form and the corresponding `POST` message is detailed in @sec-apE-post-en.
+:::
+
+### GET vs. POST {#sec-07-get-vs-post-en}
+
+The choice between `GET` and `POST` in a form has concrete practical consequences:
+
+- **Disadvantage of `GET`**: the values of the form fields become visible in the *browser*'s URL. For this reason, **`GET` should never be used if the form data is sensitive**, such as a password, and should not be shared or recorded in the *browser*'s history;
+- **Advantage of `GET`**: precisely because the parameters stay in the URL, it can be bookmarked or shared, allowing the same results to be revisited whenever needed, just like Contraponto's own category *link* seen in @sec-07-get-en; `POST` does not allow this directly, because the data is not visible in the URL.
+
+### Virtual Resources {#sec-07-virtual-resources-en}
+
+Not all resources accessible through the Web exist, as such, as a file on the server. Many are created, or assembled "on the fly", according to the client's specific request, after the server retrieves the necessary data from a database, the topic of @sec-08-dbms-en. A request to `artigos.php?id=5`, for example, does not correspond to a file literally called that; it corresponds to the execution of the `artigos.php` *script*, which, based on the `id` parameter, dynamically generates the content to return.
+
+## Superglobals {#sec-07-superglobals-en}
+
+One piece is still missing to close the loop: how does the `artigos.php` *script* from the previous example actually get the value `5` of the `id` parameter? For this, PHP automatically provides a set of predefined arrays, known as superglobals: variables automatically initialised by PHP, available anywhere in a *script*, regardless of the context or the function it is in, with no need to declare them. **It is through these that PHP code has access to everything seen in this chapter so far: the parameters of a `GET` request, the fields of a `POST` form, *cookies*, the session**. The most used are:
+
+- **`$_GET`**: contains the data sent through the URL, exactly the `id` parameter of `artigos.php?id=5`, or the fields of a form submitted with `method="GET"`, as seen in @sec-07-get-en;
+- **`$_POST`**: contains the data sent in the body of a `POST` request, typically by a form such as the comment one seen in @sec-07-post-en;
+- **`$_REQUEST`**: combines the data from `$_GET`, `$_POST` and the request's *cookies*, useful when it does not matter by which method the data arrived;
+- **`$_SESSION`**: stores the user's session information, a topic covered in more depth later in this chapter, in @sec-07-sessions-en;
+- **`$_COOKIE`**: contains the *cookies* sent by the client to the server, a topic covered in more depth in @sec-07-cookies-en;
+- **`$_SERVER`**: contains information about the server and about the current request, such as the client's address, the `HTTP` method used, or the *script*'s own path.
+
+On the Contraponto site, `$_GET` is precisely the mechanism that lets a reader filter articles by category, through an address such as `contraponto.pt/artigos.php?categoria=Cultura`, finally replacing, with real data from a request, the fixed variable used in @sec-04-challenge-en:
+
+```php
+<?php
+// contraponto.pt/artigos.php?categoria=Cultura
+if (isset($_GET["categoria"])) {
+    echo "A mostrar artigos da categoria: " . $_GET["categoria"];
+} else {
+    echo "A mostrar todos os artigos.";
+}
+```
+
+The use of `isset()` in the previous example is not accidental: directly accessing a `$_GET` or `$_POST` key that does not exist generates a warning in PHP, so it is good practice to always check whether a given field was actually sent before using it, since not every reader arrives at the site through an address with that parameter.
+
+`$_POST`, in turn, is what receives the comment form sketched in @sec-03-project-en, when a reader submits it:
+
+```php
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nome_comentario = $_POST["nome"];
+    $texto_comentario = $_POST["texto"];
+    echo "Comentário de $nome_comentario recebido: $texto_comentario";
+}
+```
+
+Superglobals are the connecting point between `HTTP`, on the network side, and the PHP logic, on the server side: the category filter and the comment form only take effect because their data reaches the PHP *script* through `$_GET` or `$_POST`. The complete code for this demonstration, including the HTML form used to test `$_GET` and `$_POST`, is available in @sec-apB-conditionals-loops-en.
+
+## HTTP Headers {#sec-07-headers-en}
+
+Both the request and the response include **headers**, key-value pairs with additional information about the message, already present in the general structure shown in @sec-07-request-message-en. The only required header in a request is `Host`, which indicates which server the request is meant for, essential when a single IP address hosts several different domains, as with Contraponto's own server.
+
+::: {.callout-note}
+Other common headers, such as `Accept`, are described in @sec-apE-headers-en.
+:::
+
+## The Server's Response {#sec-07-response-en}
+
+The server's response follows a structure similar to the request's, but starts with a status line, instead of a method and a URL:
+
+```bash
+[version] [status code] [reason phrase]
+[headers]
+
+[body]
+```
+
+The status code is a number summarising the outcome of the request, grouped into five categories:
+
+- **1xx**: informational, rarely used directly by web application programmers;
+- **2xx**: success, such as `200 OK`;
+- **3xx**: redirection, such as `301 Moved Permanently`, indicating that the requested resource is now available at another address;
+- **4xx**: client-side error, such as `404 Not Found`, when the requested resource does not exist, or `403 Forbidden`, when access is denied;
+- **5xx**: server-side error, such as `500 Internal Server Error`, indicating a failure in the server-side application, typically a bug in the PHP code itself.
+
+---insert here the table with the summary of status codes, as in the original slides
+
+## HTTP Is a Stateless Protocol {#sec-07-stateless-en}
+
+The HTTP server does not, by itself, keep any information about the state of previous connections: after responding to a request, the server "forgets" that connection, a property called *stateless*. This has a relevant practical consequence: a single web page typically requires several resources, the HTML itself, the CSS style sheet, the JavaScript *script*, any images, and each of these resources requires an independent `HTTP` request, each with the cost of establishing its own connection. *Browsers* mitigate this cost with several connection-management strategies, but the principle remains: each request is, in itself, independent of all the others.
+
+If every page has more than one resource and the server does not keep state, how does an e-commerce site know which items a user has put in their cart, or how does Contraponto recognise a reader who has already commented before, without asking them for their name again on every comment? For this, HTTP relies on state-management mechanisms, such as *cookies* and sessions, the topic of @sec-07-state-en.
+
+::: {.callout-note}
+The concrete strategies *browsers* use to mitigate this cost, parallel, persistent and pipelined connections, are described in @sec-apE-connections-en.
+:::
+
+## State Management: Cookies and Sessions {#sec-07-state-en}
+
+Although HTTP is, by nature, *stateless*, the most common behaviour on the Web is precisely the opposite: an e-commerce site needs to know which items a user has put in their cart, and Contraponto, for example, would need to recognise a reader who has already commented before, without asking them for their name again on every comment.
+
+In the past, this kind of user tracking could be done based on the client's IP address; with the popularisation of networks where several devices share a single public IP towards the rest of the Internet (`NAT`, *Network Address Translation*), that approach stopped being reliable, since requests from completely different users can reach the server with the same source IP address.
+
+Two complementary solutions then emerged to maintain a session's state between successive requests: cookies and sessions.
+
+### Cookies {#sec-07-cookies-en}
+
+A *cookie* is a small piece of information the server asks the *browser* to store, inserted into an `HTTP` response header, which the *browser* then automatically includes in every subsequent request to that same server, allowing it to recognise the client:
+
+```bash
+HTTP/1.1 200 OK
+Set-Cookie: sessao=00b38b9a6f949a8df5476999c876789e; Path=/
+```
+
+In PHP, a *cookie* is created with the `setcookie()` function:
+
+```php
+<?php
+setcookie("utilizador", "joao", time() + 3600);
+```
+A *cookie*, by itself, does not amount to authentication: it only allows recognising that a request comes from the same *browser* that received it previously.
+
+::: {.callout-note}
+The attributes that control a *cookie*'s validity, scope and security (`Expires`, `Domain`, `Secure`, `HttpOnly`, among others), as well as the standard that defines them, are detailed in @sec-apE-cookies-en.
+:::
+
+### Sessions {#sec-07-sessions-en}
+
+Sessions go further than plain *cookies*: instead of storing the actual data on the client, visible and changeable by anyone with access to the *browser*, the server stores the data locally, associated with a unique identifier, and sends only that identifier to the client, typically through a *cookie*. In PHP, a session starts with `session_start()`, called at the beginning of every page that uses it, and its data is available through the `$_SESSION` superglobal:
+
+```php
+<?php
+session_start();
+$_SESSION["utilizador"] = "joao";
+```
+
+```php
+<?php
+// On another page, also with session_start() at the start:
+session_start();
+echo "Bem-vindo, " . $_SESSION["utilizador"];
+```
+
+Cookies and sessions are, therefore, the engineering solution that allows continuity to be simulated in a web application built on a protocol that, by nature, keeps no memory of anything between one request and the next.
+
+## Challenge {#sec-07-challenge-en}
+
+With `HTTP` and superglobals, the Contraponto site finally stops depending on simulated data. The challenge, starting from the starter file from @sec-05-challenge-en, is:
+
+1. Replace the fixed variable `$categoria_escolhida`, used in @sec-04-challenge-en to simulate the filter, with the real value of `$_GET["categoria"]`, with `isset()` handling the case where no category is given;
+2. Confirm, through the menu *links* in `header.php` (which already point to `index.php?categoria=Cultura`, `index.php?categoria=Tecnologia`, etc.), that the article listing does indeed change depending on the category chosen in the *browser*;
+3. Handle the submission of the comment form, already included in the starter file: check whether `$_SERVER["REQUEST_METHOD"]` is `"POST"` and, if so, read `$_POST["nome"]` and `$_POST["texto"]`, showing a confirmation message to the reader.
+
+The starter file is available in @sec-apC-cap07-en.
+
+## References {#sec-07-references-en .unnumbered}
+
+::: {#refs}
+:::

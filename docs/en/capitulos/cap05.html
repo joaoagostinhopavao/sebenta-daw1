@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+<meta name="dcterms.date" content="2026-08-24">
+
+<title>5&nbsp; PHP III: Functions, Dates and Includes – Web Application Development I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap06.html" rel="next">
+<link href="../capitulos/cap04.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap05.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Functions, Dates and Includes</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Web Application Development I</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../index.html" title="Versão portuguesa" class="quarto-navigation-tool px-1" aria-label="Versão portuguesa"><i class="bi bi-translate"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Development for the Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Web Architectures and Infrastructure</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Syntax, Variables and Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Conditionals and Loops</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Functions, Dates and Includes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Communication Models and Networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The HTTP Protocol and State Management</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Databases and PHP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web Application Security</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Model-View-Controller (MVC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Web Development Frameworks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Development Environment Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Class Code Demos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Programming Challenges</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Computer Networks Supplement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">HTTP Supplement</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-05-functions-en" id="toc-sec-05-functions-en" class="nav-link active" data-scroll-target="#sec-05-functions-en"><span class="header-section-number">5.1</span> Functions</a></li>
+  <li><a href="#sec-05-dates-en" id="toc-sec-05-dates-en" class="nav-link" data-scroll-target="#sec-05-dates-en"><span class="header-section-number">5.2</span> Dates</a>
+  <ul class="collapse">
+  <li><a href="#sec-05-current-date-en" id="toc-sec-05-current-date-en" class="nav-link" data-scroll-target="#sec-05-current-date-en"><span class="header-section-number">5.2.1</span> Getting the Current Date and Time</a></li>
+  <li><a href="#sec-05-custom-formatting-en" id="toc-sec-05-custom-formatting-en" class="nav-link" data-scroll-target="#sec-05-custom-formatting-en"><span class="header-section-number">5.2.2</span> Custom Formatting</a></li>
+  <li><a href="#sec-05-timezones-en" id="toc-sec-05-timezones-en" class="nav-link" data-scroll-target="#sec-05-timezones-en"><span class="header-section-number">5.2.3</span> Time Zones</a></li>
+  </ul></li>
+  <li><a href="#sec-05-includes-en" id="toc-sec-05-includes-en" class="nav-link" data-scroll-target="#sec-05-includes-en"><span class="header-section-number">5.3</span> Controlling Page Flow: Includes</a></li>
+  <li><a href="#sec-05-challenge-en" id="toc-sec-05-challenge-en" class="nav-link" data-scroll-target="#sec-05-challenge-en"><span class="header-section-number">5.4</span> Challenge</a></li>
+  <li><a href="#sec-05-references-en" id="toc-sec-05-references-en" class="nav-link" data-scroll-target="#sec-05-references-en">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Functions, Dates and Includes</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 August 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap05.jpg');">
+  <div class="hero-badge">Chapter 5</div>
+  <h1>PHP III: Functions, Dates and Includes</h1>
+</div>
+<section id="sec-05-functions-en" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="sec-05-functions-en"><span class="header-section-number">5.1</span> Functions</h2>
+<p>As the Contraponto site grows, Tiago notices he is writing the same kind of code in several different places: whenever he shows an article, whether in the listing or on the article’s own page, he has to join the author to the category in the same format, “by Rita Ferreira, in Technology”. Copying that line to every new place it is needed is, sooner or later, a source of inconsistencies: if the format ever changes, he has to remember to change it everywhere he copied it. A function solves exactly this problem: it is a named set of instructions, written once, that can be called whenever it is needed. A function can accept parameters (input data) and return a value (output data), both optional:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">function</span> formatarAutoria(<span class="va">$autor</span><span class="ot">,</span> <span class="va">$categoria</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="cf">return</span> <span class="st">"por "</span> <span class="op">.</span> <span class="va">$autor</span> <span class="op">.</span> <span class="st">", em "</span> <span class="op">.</span> <span class="va">$categoria</span><span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">echo</span> formatarAutoria(<span class="st">"Rita Ferreira"</span><span class="ot">,</span> <span class="st">"Tecnologia"</span>)<span class="ot">;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">echo</span> formatarAutoria(<span class="st">"Marco Antunes"</span><span class="ot">,</span> <span class="st">"Cultura"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A function can receive several parameters, and can define a default value for them, used when that parameter is not given in the call. This is what Tiago uses to estimate the reading time of an article, a common feature on content sites: by default, a reader is assumed to read 200 words per minute, but that speed can be adjusted when better known:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">function</span> tempoLeitura(<span class="va">$palavras</span><span class="ot">,</span> <span class="va">$palavras_por_minuto</span> <span class="op">=</span> <span class="dv">200</span>) {</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="cf">return</span> <span class="fu">ceil</span>(<span class="va">$palavras</span> <span class="op">/</span> <span class="va">$palavras_por_minuto</span>)<span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">echo</span> tempoLeitura(<span class="dv">600</span>)<span class="ot">;</span>       <span class="co">// 3, uses the default value (200 words/minute)</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">echo</span> tempoLeitura(<span class="dv">600</span><span class="ot">,</span> <span class="dv">300</span>)<span class="ot">;</span>  <span class="co">// 2, the given value overrides the default</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A function may also return nothing at all, simply producing an effect, such as displaying something directly on screen. This is how Tiago consolidates, in a single place, how an article’s teaser is shown in the site’s listing:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">function</span> mostrarTeaser(<span class="va">$titulo</span><span class="ot">,</span> <span class="va">$resumo</span>) {</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">echo</span> <span class="st">"&lt;h3&gt;"</span> <span class="op">.</span> <span class="va">$titulo</span> <span class="op">.</span> <span class="st">"&lt;/h3&gt;&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$resumo</span> <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>mostrarTeaser(</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="st">"Uma conversa sobre os desafios do jornalismo de proximidade."</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>)<span class="ot">;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>mostrarTeaser(</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>    <span class="st">"A história da revista, contada pela sua diretora."</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A variable defined inside a function is local to that function, and is not visible outside it, even if a variable with the same name also exists outside the function; the only way for a function to communicate a result to the rest of the <em>script</em> is through the value it returns with <code>return</code>. Notice, in the following example, how the formatting of the view count correctly handles the singular case without Tiago having to remember it everywhere that number is shown:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">function</span> formatarVistas(<span class="va">$vistas</span>) {</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="va">$sufixo</span> <span class="op">=</span> <span class="st">"vistas"</span><span class="ot">;</span>     <span class="co">// $sufixo only exists inside this function</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="cf">if</span> (<span class="va">$vistas</span> <span class="op">===</span> <span class="dv">1</span>) {</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="va">$sufixo</span> <span class="op">=</span> <span class="st">"vista"</span><span class="ot">;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>    }</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="cf">return</span> <span class="va">$vistas</span> <span class="op">.</span> <span class="st">" "</span> <span class="op">.</span> <span class="va">$sufixo</span><span class="ot">;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="kw">echo</span> formatarVistas(<span class="dv">850</span>)<span class="ot">;</span>  <span class="co">// 850 vistas</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="kw">echo</span> formatarVistas(<span class="dv">1</span>)<span class="ot">;</span>    <span class="co">// 1 vista</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">// echo $sufixo;           // error: $sufixo is not defined here, outside the function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The complete code for the demonstration done in class about functions is available in <a href="apendiceB.html#sec-apB-functions-en" class="quarto-xref"><span>Section B.4</span></a>.</p>
+</section>
+<section id="sec-05-dates-en" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="sec-05-dates-en"><span class="header-section-number">5.2</span> Dates</h2>
+<p>The article draft proposed in <a href="cap03.html#sec-03-project-en" class="quarto-xref"><span>Section 3.2</span></a> includes a publication date, a field none of the previous examples has used yet. Tiago needs to display it legibly to the reader, to calculate how long ago an article was published, and to let Rita schedule an article for a future date. PHP offers functions dedicated to handling dates and times for this kind of need. There are three common operations.</p>
+<section id="sec-05-current-date-en" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="sec-05-current-date-en"><span class="header-section-number">5.2.1</span> Getting the Current Date and Time</h3>
+<p>The <code>date()</code> function formats the server’s current date and time according to a pattern given as a parameter, using letters with predefined meanings, such as <code>d</code> for the day, <code>m</code> for the month, <code>Y</code> for the four-digit year, <code>H</code> for the hour, <code>i</code> for the minutes and <code>s</code> for the seconds. This is the function Tiago uses to record the date when a new article is created:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"d/m/Y"</span>)<span class="ot">;</span>        <span class="co">// 24/08/2026</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"d/m/Y H:i:s"</span>)<span class="ot">;</span>  <span class="co">// 24/08/2026 15:42:07</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"l, d \d</span><span class="sc">\e</span><span class="st"> F"</span>)<span class="ot">;</span>  <span class="co">// segunda-feira, 24 de Agosto (localised)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-05-custom-formatting-en" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="sec-05-custom-formatting-en"><span class="header-section-number">5.2.2</span> Custom Formatting</h3>
+<p>As shown in the previous examples, the same instant can be presented in very different ways, simply by changing the format given to <code>date()</code>, which is useful for adapting how the publication date is shown to the context: a compact format in the article listing, or a written-out format in the header of a single article’s page.</p>
+</section>
+<section id="sec-05-timezones-en" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="sec-05-timezones-en"><span class="header-section-number">5.2.3</span> Time Zones</h3>
+<p>By default, PHP uses the time zone configured on the server, which may not match the time zone of Contraponto’s readers. If the server is hosted outside Portugal, the publication date shown could come out wrong without anyone realising why; to avoid this, the time zone to use is set explicitly with <code>date_default_timezone_set()</code>, right at the start of the <em>script</em>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">date_default_timezone_set</span>(<span class="st">"Europe/Lisbon"</span>)<span class="ot">;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">echo</span> <span class="fu">date</span>(<span class="st">"H:i:s"</span>)<span class="ot">;</span>  <span class="co">// local time in Portugal, regardless of the server's time zone</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For more complex operations on dates, PHP provides the object-oriented <code>DateTime</code> class, already mentioned in <a href="cap03.html#sec-03-language-en" class="quarto-xref"><span>Section 3.4</span></a>. Unlike <code>date()</code>, which receives everything as function parameters, here an object representing the date itself is created first, with <code>new DateTime(...)</code>, and its methods are then called through an arrow (<code>-&gt;</code>) to query or modify it, such as <code>-&gt;modify()</code> or <code>-&gt;format()</code>. It is with this tool that Tiago solves two concrete Contraponto problems: showing how many days ago an article was published, and scheduling the publication of an article for a future date:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$data_publicacao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>(<span class="st">"2026-08-20"</span>)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="va">$hoje</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="va">$diferenca</span> <span class="op">=</span> <span class="va">$data_publicacao</span>-&gt;diff(<span class="va">$hoje</span>)<span class="ot">;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="kw">echo</span> <span class="va">$diferenca</span>-&gt;days <span class="op">.</span> <span class="st">" dias desde a publicação"</span><span class="ot">;</span>  <span class="co">// e.g.: 4 dias</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="va">$data_agendada</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">DateTime</span>()<span class="ot">;</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="va">$data_agendada</span>-&gt;modify(<span class="st">"+7 days"</span>)<span class="ot">;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="kw">echo</span> <span class="st">"Publicação agendada para "</span> <span class="op">.</span> <span class="va">$data_agendada</span>-&gt;format(<span class="st">"d/m/Y"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The complete code for the demonstration done in class about dates, including the leap-year calculation, is available in <a href="apendiceB.html#sec-apB-dates-en" class="quarto-xref"><span>Section B.5</span></a>.</p>
+</section>
+</section>
+<section id="sec-05-includes-en" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-05-includes-en"><span class="header-section-number">5.3</span> Controlling Page Flow: Includes</h2>
+<p>The Contraponto site will have several pages, the article listing, an article’s page, the comment form, but they all share the same header, with the logo and the category menu, and the same footer, with the copyright notice. Copying that HTML into every new page would be just as fragile as repeating a function’s logic: if Rita asks for the menu to change, Tiago would have to remember to update every page, one by one. Instead of repeating that code in every file, PHP allows the content of one file to be included inside another, through two very similar instructions: <code>include</code> and <code>require</code>.</p>
+<p><strong><code>include</code></strong>: includes the content of a file inside the current file. If the given file is not found, PHP issues a warning, but the <em>script</em> keeps running. It is useful when including optional files, not critical to the <em>script</em>’s operation.</p>
+<p><strong><code>require</code></strong>: works similarly to <code>include</code>, but is used when the included file is essential to the <em>script</em>’s operation. If the given file is not found, PHP issues a fatal error and immediately stops execution. It is useful when it is necessary to guarantee that a fundamental file is available before continuing to run the rest of the <em>script</em>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">?&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="op">&lt;</span>h2<span class="op">&gt;</span>Últimos Artigos<span class="op">&lt;/</span>h2<span class="op">&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="op">&lt;</span>p<span class="op">&gt;</span>Aqui aparece a listagem de artigos da Contraponto<span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="kw">?&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Since the header and footer are usually essential to a page’s visual structure, without which the result would look incomplete or broken, it is common to prefer <code>require</code> over <code>include</code> to include them. There are also the <code>include_once</code> and <code>require_once</code> variants, which guarantee that the same file is only included once, even if the instruction appears, directly or indirectly, more than once in the execution flow, avoiding errors such as redefining the same function.</p>
+<p>This pattern, <code>header.php</code> and <code>footer.php</code> files included in every page of the site, is the first practical step towards thinking of a web application as a set of reusable components, rather than independent HTML pages disconnected from one another, an idea revisited in more depth in <a href="cap02.html#sec-02-mvc-en" class="quarto-xref"><span>Section 2.1.2</span></a> and in <a href="cap10.html#sec-10-why-separate-en" class="quarto-xref"><span>Section 10.1</span></a>.</p>
+<p>The complete code for the three files in this demonstration is available in <a href="apendiceB.html#sec-apB-includes-en" class="quarto-xref"><span>Section B.6</span></a>.</p>
+</section>
+<section id="sec-05-challenge-en" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="sec-05-challenge-en"><span class="header-section-number">5.4</span> Challenge</h2>
+<p>With functions, dates and <em>includes</em>, Tiago now has the pieces to organise the site’s code instead of repeating it. The challenge, starting from the <code>$artigos</code> catalogue and the category filter from <a href="cap04.html#sec-04-challenge-en" class="quarto-xref"><span>Section 4.3</span></a>, is:</p>
+<ol type="1">
+<li>Write a function <code>formatarArtigo($artigo)</code> that receives an article (an element of the <code>$artigos</code> array) and returns a <em>string</em> with the title and the formatted authorship, for example <code>"Título — por Autor"</code>;</li>
+<li>Use that function inside the <code>foreach</code> that already iterates over <code>$artigos</code>, instead of writing the formatting directly inside it;</li>
+<li>Create two files, <code>header.php</code> and <code>footer.php</code>, with a simple header and footer for the site, and use <code>require</code> to include them before and after the article listing.</li>
+</ol>
+<p>The starter file, with the catalogue and the category filter already in place, is available in <a href="apendiceC.html#sec-apC-cap05-en" class="quarto-xref"><span>Section C.4</span></a>.</p>
+</section>
+<section id="sec-05-references-en" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-05-references-en">References</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Conditionals and Loops">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Conditionals and Loops</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap06.html" class="pagination-link" aria-label="Communication Models and Networks">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Communication Models and Networks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Web Application Development I — UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

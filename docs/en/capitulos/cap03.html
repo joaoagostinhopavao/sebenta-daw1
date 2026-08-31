@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+<meta name="dcterms.date" content="2026-08-24">
+
+<title>3&nbsp; PHP I: Syntax, Variables and Arrays – Web Application Development I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap04.html" rel="next">
+<link href="../capitulos/cap02.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Syntax, Variables and Arrays</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Web Application Development I</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../index.html" title="Versão portuguesa" class="quarto-navigation-tool px-1" aria-label="Versão portuguesa"><i class="bi bi-translate"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Development for the Web</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Web Architectures and Infrastructure</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Syntax, Variables and Arrays</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Conditionals and Loops</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">PHP III: Functions, Dates and Includes</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Communication Models and Networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">The HTTP Protocol and State Management</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Databases and PHP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Web Application Security</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Model-View-Controller (MVC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Web Development Frameworks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Development Environment Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceB.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Class Code Demos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Programming Challenges</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Computer Networks Supplement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/apendiceE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">HTTP Supplement</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-03-environment-en" id="toc-sec-03-environment-en" class="nav-link active" data-scroll-target="#sec-03-environment-en"><span class="header-section-number">3.1</span> Preparing the Development Environment</a></li>
+  <li><a href="#sec-03-project-en" id="toc-sec-03-project-en" class="nav-link" data-scroll-target="#sec-03-project-en"><span class="header-section-number">3.2</span> The Project: Contraponto Magazine</a></li>
+  <li><a href="#sec-03-architecture-en" id="toc-sec-03-architecture-en" class="nav-link" data-scroll-target="#sec-03-architecture-en"><span class="header-section-number">3.3</span> Architecture and Assigning Responsibilities</a></li>
+  <li><a href="#sec-03-language-en" id="toc-sec-03-language-en" class="nav-link" data-scroll-target="#sec-03-language-en"><span class="header-section-number">3.4</span> The PHP Language</a></li>
+  <li><a href="#sec-03-syntax-en" id="toc-sec-03-syntax-en" class="nav-link" data-scroll-target="#sec-03-syntax-en"><span class="header-section-number">3.5</span> Basic Syntax</a></li>
+  <li><a href="#sec-03-variables-en" id="toc-sec-03-variables-en" class="nav-link" data-scroll-target="#sec-03-variables-en"><span class="header-section-number">3.6</span> Variables</a></li>
+  <li><a href="#sec-03-types-en" id="toc-sec-03-types-en" class="nav-link" data-scroll-target="#sec-03-types-en"><span class="header-section-number">3.7</span> Data Types</a>
+  <ul class="collapse">
+  <li><a href="#sec-03-type-conversion-en" id="toc-sec-03-type-conversion-en" class="nav-link" data-scroll-target="#sec-03-type-conversion-en"><span class="header-section-number">3.7.1</span> Type Conversion</a></li>
+  </ul></li>
+  <li><a href="#sec-03-arrays-en" id="toc-sec-03-arrays-en" class="nav-link" data-scroll-target="#sec-03-arrays-en"><span class="header-section-number">3.8</span> Arrays</a>
+  <ul class="collapse">
+  <li><a href="#sec-03-indexed-arrays-en" id="toc-sec-03-indexed-arrays-en" class="nav-link" data-scroll-target="#sec-03-indexed-arrays-en"><span class="header-section-number">3.8.1</span> Indexed Arrays</a></li>
+  <li><a href="#sec-03-associative-arrays-en" id="toc-sec-03-associative-arrays-en" class="nav-link" data-scroll-target="#sec-03-associative-arrays-en"><span class="header-section-number">3.8.2</span> Associative Arrays</a></li>
+  <li><a href="#sec-03-multidimensional-arrays-en" id="toc-sec-03-multidimensional-arrays-en" class="nav-link" data-scroll-target="#sec-03-multidimensional-arrays-en"><span class="header-section-number">3.8.3</span> Multidimensional Arrays</a></li>
+  <li><a href="#sec-03-complete-example-en" id="toc-sec-03-complete-example-en" class="nav-link" data-scroll-target="#sec-03-complete-example-en"><span class="header-section-number">3.8.4</span> Complete Example: an Author’s Views</a></li>
+  </ul></li>
+  <li><a href="#sec-03-challenge-en" id="toc-sec-03-challenge-en" class="nav-link" data-scroll-target="#sec-03-challenge-en"><span class="header-section-number">3.9</span> Challenge</a></li>
+  <li><a href="#sec-03-references-en" id="toc-sec-03-references-en" class="nav-link" data-scroll-target="#sec-03-references-en">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">PHP I: Syntax, Variables and Arrays</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 August 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap03.jpg');">
+  <div class="hero-badge">Chapter 3</div>
+  <h1>PHP I: Syntax, Variables and Arrays</h1>
+</div>
+<section id="sec-03-environment-en" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="sec-03-environment-en"><span class="header-section-number">3.1</span> Preparing the Development Environment</h2>
+<p>Before writing the first line of PHP code, an environment where that code can run is needed: an <code>Apache</code> server capable of interpreting PHP, connected to a <code>MySQL</code>, as seen in <a href="cap02.html#sec-02-course-environment-en" class="quarto-xref"><span>Section 2.2.4</span></a>. In practice, no student needs to build this environment from scratch: the lecturer of the practical component usually provides a ready-made image, either a virtual machine or <code>Docker</code> containers, ready to import and use. The complete steps for preparing this environment, by either route, are left for <a href="apendiceA.html#sec-apA-intro-en" class="quarto-xref"><span>Section A.1</span></a>, since they are configuration details, not programming, and can vary depending on each student’s operating system.</p>
+<p>What matters for the rest of this chapter is only the result: an <code>Apache</code> running, capable of interpreting PHP, connected to a <code>MySQL</code>, a code editor such as <code>Visual Studio Code</code> with access to the project files, and the ability to open a <code>.php</code> file in a <em>browser</em> and see the result of its execution. With this environment ready, everything needed is in place to finally start writing and testing PHP code.</p>
+</section>
+<section id="sec-03-project-en" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="sec-03-project-en"><span class="header-section-number">3.2</span> The Project: Contraponto Magazine</h2>
+<p>Throughout this and the following chapters, the code examples follow the same project, so that each new concept is seen applied to a real problem, instead of disconnected, standalone examples.</p>
+<p>Rita Ferreira has run Contraponto, a cultural print magazine, for over ten years, and now wants a digital version: a site where the magazine’s articles are available online, organised by category, with room for readers to comment. Tiago Correia, a final-year Communication and Multimedia student, takes on the challenge of building that site over the semester, applying what he learns in this course.</p>
+<p>Before writing the first line of code, Tiago proposes a simple sketch to Rita of the data the site will need to store:</p>
+<ul>
+<li><strong>Article</strong>: each published piece of content (title, summary, text, author, category, publication date);</li>
+<li><strong>Author</strong>: who writes the magazine’s articles;</li>
+<li><strong>Category</strong>: the topic of each article, for example Culture, Technology or Music;</li>
+<li><strong>Comment</strong>: what readers write about an article.</li>
+</ul>
+<p>This sketch is not yet a database, only a map of the problem: the implementation, chapter by chapter, starts with the simplest parts, and only adds new complexity as Tiago learns new tools of the language, from the arrays seen in <a href="#sec-03-arrays-en" class="quarto-xref"><span>Section 3.8</span></a> to the database tables from <a href="cap08.html#sec-08-dbms-en" class="quarto-xref"><span>Section 8.1</span></a> onward.</p>
+</section>
+<section id="sec-03-architecture-en" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="sec-03-architecture-en"><span class="header-section-number">3.3</span> Architecture and Assigning Responsibilities</h2>
+<p>Before deciding what language to program the Contraponto site in, it is worth understanding where each piece of the problem fits. Three-tier architecture, already introduced in <a href="cap02.html#sec-02-three-tier-en" class="quarto-xref"><span>Section 2.1.3</span></a>, splits an application like this one into three parts: presentation, logic and data. The following figure applies this split to the project sketched in <a href="#sec-03-project-en" class="quarto-xref"><span>Section 3.2</span></a>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TB
+    A["Presentation Layer&lt;br/&gt;HTML / CSS / JS"]
+    B["Logic Layer&lt;br/&gt;PHP"]
+    C[("Data Layer&lt;br/&gt;MySQL")]
+
+    A -- "HTTP request" --&gt; B
+    B -- "generated HTML" --&gt; A
+    B -- "queries / stores data" --&gt; C
+    C -- "result" --&gt; B
+
+    classDef layer fill:#eef2ff,stroke:#4338ca,stroke-width:1px,color:#1e1b4b;
+    class A,B,C layer;
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The presentation layer is what Tiago has already mastered since the first year of his degree: HTML structures each page of the site, the article listing, an individual article’s page, the comment form; CSS handles their visual presentation; and JavaScript can, later, make the interface more dynamic. None of this changes in this course; it is the starting point on which all the following work is built.</p>
+<p>What Tiago is missing is the logic layer: the code that runs on the server, decides which articles to show, and validates a comment submitted by a reader before passing it on to the data layer. As seen in <a href="cap01.html#sec-01-languages-en" class="quarto-xref"><span>Section 1.6.1</span></a>, this layer can be written in any of several server languages, <code>Node.js</code>, <code>Python</code> or <code>PHP</code>, among others; this course chooses PHP, one of the most used in this role. The data layer, which the logic turns to in order to query or store articles, authors, categories and comments, is only introduced from <a href="cap08.html#sec-08-dbms-en" class="quarto-xref"><span>Section 8.1</span></a> onward; until then, it is the logic layer itself that stores this data, in memory, as already seen in the next section. From here on, the rest of this chapter, and all the following ones, is devoted to building Contraponto’s logic layer.</p>
+</section>
+<section id="sec-03-language-en" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="sec-03-language-en"><span class="header-section-number">3.4</span> The PHP Language</h2>
+<p><code>PHP</code> (<em>Hypertext Preprocessor</em>) is a <em>scripting</em> language that runs on the server side. Unlike HTML and JavaScript, which the <em>browser</em> receives and interprets directly, PHP code is executed on the server, and the client only receives the result of that processing, typically HTML. This means PHP code is never visible to whoever visits the site, even if they view the page’s source code in the <em>browser</em>: everything the client receives is already the result of PHP’s execution, never the PHP code itself.</p>
+<p>A PHP code section always starts with <code>&lt;?php</code> and can be closed with <code>?&gt;</code>, although, in files that contain only PHP, it is common to omit the closing tag, to avoid accidental whitespace after it. PHP can be inserted in the middle of HTML, mixing both languages in the same file, entering and leaving PHP mode as many times as needed:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="op">&lt;!</span><span class="cn">DOCTYPE</span> html<span class="op">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="op">&lt;</span>html<span class="op">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="op">&lt;</span>body<span class="op">&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="op">&lt;</span>h1<span class="op">&gt;</span>Hello<span class="op">!&lt;/</span>h1<span class="op">&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;It is now "</span> <span class="op">.</span> <span class="fu">date</span>(<span class="st">"H:i"</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="kw">?&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="op">&lt;</span>p<span class="op">&gt;</span>This text is no longer <span class="cn">PHP</span><span class="ot">,</span> it is plain <span class="cn">HTML</span><span class="op">.&lt;/</span>p<span class="op">&gt;</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    <span class="va">$visitas</span> <span class="op">=</span> <span class="dv">128</span><span class="ot">;</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;This site has been visited </span><span class="va">$visitas</span><span class="st"> times.&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="kw">?&gt;</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="op">&lt;/</span>body<span class="op">&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="op">&lt;/</span>html<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>PHP supports two programming styles: procedural, a sequence of instructions and function calls, which is what this book follows as its base, and object-oriented, in which data and behaviour are grouped into objects, created with <code>new</code> and manipulated through methods, called with an arrow (<code>-&gt;</code>). PHP itself relies on objects in some of its own internal tools, such as the <code>DateTime</code> class, seen in <a href="cap05.html#sec-05-dates-en" class="quarto-xref"><span>Section 5.2</span></a>; in those cases, only the syntax needed to use them is introduced, without yet needing to know how to build objects of one’s own.</p>
+</section>
+<section id="sec-03-syntax-en" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="sec-03-syntax-en"><span class="header-section-number">3.5</span> Basic Syntax</h2>
+<p>Every PHP statement ends with a semicolon (<code>;</code>); forgetting it is one of the most common mistakes made by those starting to program in PHP, and it typically produces a syntax error (<em>parse error</em>) that prevents the page from loading. Single-line comments are made with <code>//</code>, and multi-line ones with <code>/* ... */</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">// This single-line comment does not appear on the page</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">/* This comment</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">   can span</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">   several lines */</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="kw">echo</span> <span class="st">"Hello, World!"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To display a value, the <code>echo</code> command is used, which can take several values separated by commas:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">echo</span> <span class="st">"Hello, World!"</span><span class="ot">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">echo</span> <span class="st">"Name: "</span><span class="ot">,</span> <span class="st">"John"</span><span class="ot">,</span> <span class="st">", Age: "</span><span class="ot">,</span> <span class="dv">25</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-03-variables-en" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="sec-03-variables-en"><span class="header-section-number">3.6</span> Variables</h2>
+<p>A variable is a “container” for storing data the program will use. In PHP, a variable’s name has to follow a precise set of rules:</p>
+<ul>
+<li>Always starts with the <code>$</code> symbol;</li>
+<li>After the <code>$</code>, the name has to start with a letter or an <em>underscore</em> (<code>_</code>), never a number;</li>
+<li>Can only contain letters, numbers and <em>underscores</em>, no spaces or other symbols;</li>
+<li>Is case sensitive: <code>$idade</code> and <code>$Idade</code> are two different variables, a common mistake that can cause a lot of confusion when debugging a <em>script</em>.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="va">$idade</span> <span class="op">=</span> <span class="dv">19</span><span class="ot">;</span>       <span class="co">// valid</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="va">$_total</span> <span class="op">=</span> <span class="dv">0</span><span class="ot">;</span>       <span class="co">// valid, starts with an underscore</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="va">$nome_completo</span> <span class="op">=</span> <span class="st">"Ana Silva"</span><span class="ot">;</span>  <span class="co">// valid</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a>$<span class="er">1</span>idade <span class="op">=</span> <span class="dv">19</span><span class="ot">;</span>      <span class="co">// INVALID: cannot start with a number</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-03-types-en" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="sec-03-types-en"><span class="header-section-number">3.7</span> Data Types</h2>
+<p>Unlike languages such as Java or C#, PHP does not require declaring a variable’s type: the type is determined automatically by the assigned value, and can change if the variable later receives a value of another type. This feature is called dynamic typing. PHP supports the following data types:</p>
+<ul>
+<li><strong>String</strong>: text, delimited by single or double quotes;</li>
+<li><strong>Integer</strong>: whole numbers, positive or negative, with no decimal places;</li>
+<li><strong>Float</strong> (or <em>double</em>): numbers with decimal places;</li>
+<li><strong>Boolean</strong>: the values <code>true</code> or <code>false</code>;</li>
+<li><strong>Array</strong>: a collection of several values, a topic detailed in the next section;</li>
+<li><strong>Object</strong>: an instance of a class, grouping data and behaviour;</li>
+<li><strong>NULL</strong>: a special type, with a single possible value, <code>null</code>, representing the absence of a value;</li>
+<li><strong>Resource</strong>: a reference to a resource external to PHP, such as an open connection to a database or a file.</li>
+</ul>
+<p>The first four, string, integer, float and boolean, are the simple types used in day-to-day programming; the remaining ones, array, object, NULL and resource, appear throughout this course as programs become more complex.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="va">$idade</span> <span class="op">=</span> <span class="dv">19</span><span class="ot">;</span>                  <span class="co">// integer</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="va">$preco_do_almoco</span> <span class="op">=</span> <span class="fl">10.5</span><span class="ot">;</span>      <span class="co">// float</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="va">$texto</span> <span class="op">=</span> <span class="st">"Hello, World!"</span><span class="ot">;</span>     <span class="co">// string</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="va">$porta_aberta</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">;</span>         <span class="co">// boolean</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="va">$sem_valor</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">;</span>            <span class="co">// NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>gettype()</code> function returns a variable’s current type, which is particularly useful while learning the language, since type errors in PHP are not always obvious:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">echo</span> <span class="fu">gettype</span>(<span class="va">$idade</span>)<span class="ot">;</span>           <span class="co">// integer</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">echo</span> <span class="fu">gettype</span>(<span class="va">$preco_do_almoco</span>)<span class="ot">;</span> <span class="co">// double</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="kw">echo</span> <span class="fu">gettype</span>(<span class="va">$porta_aberta</span>)<span class="ot">;</span>    <span class="co">// boolean</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A typical source of confusion for beginners: <code>echo</code> of a boolean value shows <code>1</code> for <code>true</code>, but shows literally nothing for <code>false</code>, which can at first look like a bug in the program itself, when it is simply PHP’s normal behaviour.</p>
+<p>Strings can be concatenated with the <code>.</code> operator, and it is possible to mix text and variables directly in the same <code>echo</code> statement, either by concatenation or by writing the variable inside a double-quoted <em>string</em>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$nome</span> <span class="op">=</span> <span class="st">"Ana"</span><span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="va">$idade</span> <span class="op">=</span> <span class="dv">25</span><span class="ot">;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="kw">echo</span> <span class="st">"Name: "</span> <span class="op">.</span> <span class="va">$nome</span> <span class="op">.</span> <span class="st">", Age: "</span> <span class="op">.</span> <span class="va">$idade</span> <span class="op">.</span> <span class="st">" years old"</span><span class="ot">;</span>  <span class="co">// by concatenation</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="kw">echo</span> <span class="st">"Name: </span><span class="va">$nome</span><span class="st">, Age: </span><span class="va">$idade</span><span class="st"> years old"</span><span class="ot">;</span>                  <span class="co">// inside double quotes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that this variable interpolation only works with double quotes; inside single quotes, <code>$nome</code> would be displayed literally, without being replaced by its value.</p>
+<section id="sec-03-type-conversion-en" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="sec-03-type-conversion-en"><span class="header-section-number">3.7.1</span> Type Conversion</h3>
+<p>Even though typing in PHP is dynamic, it is often necessary to explicitly convert a value from one type to another, for example to ensure a number received from an HTML form, which always arrives as a <em>string</em>, is treated as a number before being used in a calculation. This conversion is done by placing the desired type, in parentheses, before the value:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="va">$idade_texto</span> <span class="op">=</span> <span class="st">"25"</span><span class="ot">;</span>           <span class="co">// string, as it would arrive from a form</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="va">$idade</span> <span class="op">=</span> (<span class="dt">int</span>) <span class="va">$idade_texto</span><span class="ot">;</span>   <span class="co">// 25, now an integer</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="va">$preco</span> <span class="op">=</span> <span class="st">"10.5"</span><span class="ot">;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="va">$preco_num</span> <span class="op">=</span> <span class="dt">(float)</span> <span class="va">$preco</span><span class="ot">;</span>   <span class="co">// 10.5, now a float</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="va">$numero</span> <span class="op">=</span> <span class="dv">0</span><span class="ot">;</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="va">$estado</span> <span class="op">=</span> <span class="dt">(bool)</span> <span class="va">$numero</span><span class="ot">;</span>      <span class="co">// false: 0, "", "0" and null convert to false</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="kw">echo</span> <span class="fu">gettype</span>(<span class="va">$idade</span>)<span class="ot">;</span>   <span class="co">// integer</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="kw">echo</span> <span class="fu">gettype</span>(<span class="va">$estado</span>)<span class="ot">;</span>  <span class="co">// boolean</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>PHP also converts types automatically, with no need to ask, whenever an operation requires it: in a sum, a purely numeric <em>string</em> is converted to a number with no warning at all:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="va">$a</span> <span class="op">=</span> <span class="st">"10"</span><span class="ot">;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="va">$b</span> <span class="op">=</span> <span class="st">"5"</span><span class="ot">;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">echo</span> <span class="va">$a</span> <span class="op">+</span> <span class="va">$b</span><span class="ot">;</span>   <span class="co">// 15 (integer), the strings are converted automatically</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="kw">echo</span> <span class="va">$a</span> <span class="op">.</span> <span class="va">$b</span><span class="ot">;</span>   <span class="co">// "105" (string), the . operator forces concatenation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This behaviour is useful, but also a common source of confusion for beginners: the same <code>+</code> symbol adds numbers, but <code>.</code> concatenates text, and it is easy to swap one for the other without PHP flagging any error, simply producing an unexpected result.</p>
+</section>
+</section>
+<section id="sec-03-arrays-en" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="sec-03-arrays-en"><span class="header-section-number">3.8</span> Arrays</h2>
+<p>Tiago starts with the most visible part of the Contraponto site: the list of published articles. A first attempt, perhaps the most obvious for someone starting to program, would be to create one variable per title:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="va">$artigo1</span> <span class="op">=</span> <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="va">$artigo2</span> <span class="op">=</span> <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="va">$artigo3</span> <span class="op">=</span> <span class="st">"Como nasceu a Contraponto"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This approach works while the magazine has three articles, but quickly becomes unsustainable: what if the magazine publishes fifty articles? What if an article is taken down, or a new one is published? Variables would need to be created, deleted or renamed one by one, and any code that needed to loop through “all the articles” would have to be rewritten every time the number of articles changed. This approach also lacks simple answers to everyday questions about a site like this: how many articles are published? What is the list of titles, in alphabetical order? None of these questions has an easy answer with separate variables.</p>
+<p>The solution is an array: a data structure that allows several related values to be stored in a single variable, accessible through numeric indices or associative keys, instead of creating a separate variable for each value. PHP provides three types of arrays, each better suited to a different kind of problem, as the following sections show, always returning to the Contraponto site.</p>
+<section id="sec-03-indexed-arrays-en" class="level3" data-number="3.8.1">
+<h3 data-number="3.8.1" class="anchored" data-anchor-id="sec-03-indexed-arrays-en"><span class="header-section-number">3.8.1</span> Indexed Arrays</h3>
+<p>The simplest type of array is the indexed (or numeric) array, in which each value is accessed through an integer index, which always starts at 0. It is the right structure for Contraponto’s titles problem, since there is no need to give each article its own name, only to store them all together:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="va">$titulos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>    <span class="st">"Como nasceu a Contraponto"</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>)<span class="ot">;</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="kw">echo</span> <span class="va">$titulos</span>[<span class="dv">0</span>]<span class="ot">;</span>  <span class="co">// Entrevista: o futuro do jornalismo local</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="kw">echo</span> <span class="va">$titulos</span>[<span class="dv">1</span>]<span class="ot">;</span>  <span class="co">// Crítica: a nova exposição do museu</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="kw">echo</span> <span class="va">$titulos</span>[<span class="dv">2</span>]<span class="ot">;</span>  <span class="co">// Como nasceu a Contraponto</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="va">$titulos</span>[] <span class="op">=</span> <span class="st">"Roteiro cultural de outubro"</span><span class="ot">;</span>  <span class="co">// adds a new element at the end</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="kw">echo</span> <span class="fu">count</span>(<span class="va">$titulos</span>)<span class="ot">;</span>                        <span class="co">// 4, the number of elements in the array</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Two of Tiago’s questions are already solved with very little code: publishing a new article is a single statement, <code>$titulos[] = "Roteiro cultural de outubro"</code>, with no need to declare any further variable; and knowing how many articles are published is just <code>count($titulos)</code>, the number of elements in the array, which stays correct no matter how many articles are published or removed.</p>
+<p>From PHP 5.4 onward, <code>array("...", "...")</code> can also be written with the shorthand syntax <code>["...", "..."]</code>, today the most common way to find it in recent PHP code.</p>
+<p>Tiago’s third question is still unanswered: what is the list of articles, in alphabetical order? Besides <code>count()</code>, PHP provides several other functions for working with the content of an indexed array, without having to loop through its elements manually:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="va">$categorias</span> <span class="op">=</span> [<span class="st">"Tecnologia"</span><span class="ot">,</span> <span class="st">"Cultura"</span><span class="ot">,</span> <span class="st">"Música"</span><span class="ot">,</span> <span class="st">"Cinema"</span>]<span class="ot">;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">array_push</span>(<span class="va">$categorias</span><span class="ot">,</span> <span class="st">"Entrevistas"</span>)<span class="ot">;</span>   <span class="co">// adds to the end</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="va">$ultima</span> <span class="op">=</span> <span class="fu">array_pop</span>(<span class="va">$categorias</span>)<span class="ot">;</span>         <span class="co">// removes the last element</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="fu">sort</span>(<span class="va">$categorias</span>)<span class="ot">;</span>                        <span class="co">// sorts alphabetically</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="fu">print_r</span>(<span class="va">$categorias</span>)<span class="ot">;</span>                     <span class="co">// [Cinema, Cultura, Música, Tecnologia]</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="cf">if</span> (<span class="fu">in_array</span>(<span class="st">"Música"</span><span class="ot">,</span> <span class="va">$categorias</span>)) {</span>
+<span id="cb12-11"><a href="#cb12-11"></a>    <span class="kw">echo</span> <span class="st">"The Música category already exists"</span><span class="ot">;</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>}</span>
+<span id="cb12-13"><a href="#cb12-13"></a></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="va">$posicao</span> <span class="op">=</span> <span class="fu">array_search</span>(<span class="st">"Cultura"</span><span class="ot">,</span> <span class="va">$categorias</span>)<span class="ot">;</span>   <span class="co">// index of "Cultura"</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="kw">echo</span> <span class="va">$posicao</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Applied to the initial problem, <code>sort($titulos)</code> would reorder the article titles alphabetically, the same way this example sorts the categories, since PHP uses the same comparison mechanism for text and for numbers, only with different sorting criteria depending on the value’s type. The remaining functions also address common list-management needs: <code>in_array()</code> checks whether a category already exists before adding it again, and <code>array_search()</code> returns the position of a specific category, useful, for example, for removing it later.</p>
+</section>
+<section id="sec-03-associative-arrays-en" class="level3" data-number="3.8.2">
+<h3 data-number="3.8.2" class="anchored" data-anchor-id="sec-03-associative-arrays-en"><span class="header-section-number">3.8.2</span> Associative Arrays</h3>
+<p>An indexed array handles a simple list of titles well, but the Contraponto site will quickly need to store more information about each article, not just its title: the author, the category, the summary. Storing all this information in an indexed array would require memorising that index <code>0</code> always corresponds to the title, <code>1</code> to the author, and so on, code that is hard to read and easy to get wrong. An associative array solves exactly this problem: each value is accessed through a key of one’s choosing, typically a <em>string</em>, instead of a numeric index, which makes the code much more readable when each value has its own meaning:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="va">$artigo</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>)<span class="ot">;</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="kw">echo</span> <span class="va">$artigo</span>[<span class="st">"titulo"</span>]<span class="ot">;</span>   <span class="co">// Entrevista: o futuro do jornalismo local</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="kw">echo</span> <span class="va">$artigo</span>[<span class="st">"autor"</span>]<span class="ot">;</span>    <span class="co">// Rita Ferreira</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="co">// adds a new key</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="va">$artigo</span>[<span class="st">"resumo"</span>] <span class="op">=</span> <span class="st">"Uma conversa sobre os desafios do jornalismo de proximidade."</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A Contraponto article therefore stops being just a loose piece of text inside the <code>$titulos</code> array, and becomes, itself, an associative array with all its properties. This idea, an associative array inside another array, is precisely the topic of the next section.</p>
+</section>
+<section id="sec-03-multidimensional-arrays-en" class="level3" data-number="3.8.3">
+<h3 data-number="3.8.3" class="anchored" data-anchor-id="sec-03-multidimensional-arrays-en"><span class="header-section-number">3.8.3</span> Multidimensional Arrays</h3>
+<p>A multidimensional array is an array whose values are themselves other arrays, which makes it possible to represent more structured data, such as categories with lists of items, or a list of records, each with several fields — exactly the problem raised at the end of the previous section:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="va">$revistas_concorrentes</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="st">"generalistas"</span> =&gt; <span class="dt">array</span>(<span class="st">"Visão"</span><span class="ot">,</span> <span class="st">"Sábado"</span><span class="ot">,</span> <span class="st">"Expresso"</span>)<span class="ot">,</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="st">"culturais"</span>    =&gt; <span class="dt">array</span>(<span class="st">"Ler"</span><span class="ot">,</span> <span class="st">"Blimunda"</span><span class="ot">,</span> <span class="st">"Time Out"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5"></a>)<span class="ot">;</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="kw">echo</span> <span class="va">$revistas_concorrentes</span>[<span class="st">"generalistas"</span>][<span class="dv">0</span>]<span class="ot">;</span>  <span class="co">// Visão</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="kw">echo</span> <span class="va">$revistas_concorrentes</span>[<span class="st">"culturais"</span>][<span class="dv">1</span>]<span class="ot">;</span>     <span class="co">// Blimunda</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="co">// An array of records, each one in turn an associative array:</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">// exactly the "Article" sketch Tiago proposed in @sec-03-project-en</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb14-13"><a href="#cb14-13"></a>    <span class="dt">array</span>(</span>
+<span id="cb14-14"><a href="#cb14-14"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a>    )<span class="ot">,</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a>    <span class="dt">array</span>(</span>
+<span id="cb14-19"><a href="#cb14-19"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb14-21"><a href="#cb14-21"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb14-22"><a href="#cb14-22"></a>    )<span class="ot">,</span></span>
+<span id="cb14-23"><a href="#cb14-23"></a>    <span class="dt">array</span>(</span>
+<span id="cb14-24"><a href="#cb14-24"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
+<span id="cb14-25"><a href="#cb14-25"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb14-26"><a href="#cb14-26"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb14-27"><a href="#cb14-27"></a>    )</span>
+<span id="cb14-28"><a href="#cb14-28"></a>)<span class="ot">;</span></span>
+<span id="cb14-29"><a href="#cb14-29"></a></span>
+<span id="cb14-30"><a href="#cb14-30"></a><span class="kw">echo</span> <span class="va">$artigos</span>[<span class="dv">0</span>][<span class="st">"titulo"</span>]<span class="ot">;</span>  <span class="co">// Entrevista: o futuro do jornalismo local</span></span>
+<span id="cb14-31"><a href="#cb14-31"></a><span class="kw">echo</span> <span class="va">$artigos</span>[<span class="dv">2</span>][<span class="st">"autor"</span>]<span class="ot">;</span>   <span class="co">// Rita Ferreira</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>$artigos</code> array is the structure that finally gives shape to the model proposed in <a href="#sec-03-project-en" class="quarto-xref"><span>Section 3.2</span></a>: each element is a complete article, with all its information, and the whole list can still be looped through, counted and sorted with the same functions seen in <a href="#sec-03-indexed-arrays-en" class="quarto-xref"><span>Section 3.8.1</span></a>. It is also with this same array, in memory, that Tiago will build the site’s first pages, long before connecting the application to a real database; this last example, an array of associative arrays, is in fact the most common way to represent, in memory, a set of records coming from a database, a topic picked up in more detail in <a href="cap08.html#sec-08-dbms-en" class="quarto-xref"><span>Section 8.1</span></a>.</p>
+<p>To quickly inspect the content of an array during development, without having to access each element individually, the <code>print_r()</code> function is used, which shows its full structure, including nested arrays, or <code>var_dump()</code>, which also shows the type and length of each value.</p>
+</section>
+<section id="sec-03-complete-example-en" class="level3" data-number="3.8.4">
+<h3 data-number="3.8.4" class="anchored" data-anchor-id="sec-03-complete-example-en"><span class="header-section-number">3.8.4</span> Complete Example: an Author’s Views</h3>
+<p>A small example, combining variables, types, conversion and multidimensional arrays, shows well how these concepts come together in practice: calculating the average views of an author’s latest articles, stored inside an associative array with their data:</p>
+<div class="sourceCode" id="annotated-cell-15"><pre class="sourceCode numberSource php code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode php"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1"></a><span class="kw">&lt;?php</span></span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2"></a><span class="va">$autor</span> <span class="op">=</span> [</span>
+<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3"></a>    <span class="st">"nome"</span>   =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4"></a>    <span class="st">"vistas"</span> =&gt; [<span class="dv">1200</span><span class="ot">,</span> <span class="dv">850</span><span class="ot">,</span> <span class="dv">430</span><span class="ot">,</span> <span class="dv">610</span>]</span>
+<span id="annotated-cell-15-5"><a href="#annotated-cell-15-5"></a>]<span class="ot">;</span></span>
+<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-7" class="code-annotation-target"><a href="#annotated-cell-15-7"></a><span class="va">$soma</span> <span class="op">=</span> <span class="fu">array_sum</span>(<span class="va">$autor</span>[<span class="st">"vistas"</span>])<span class="ot">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-15-8" class="code-annotation-target"><a href="#annotated-cell-15-8"></a><span class="va">$numero_artigos</span> <span class="op">=</span> <span class="fu">count</span>(<span class="va">$autor</span>[<span class="st">"vistas"</span>])<span class="ot">;</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-15-9" class="code-annotation-target"><a href="#annotated-cell-15-9"></a><span class="va">$media</span> <span class="op">=</span> <span class="va">$soma</span> <span class="op">/</span> <span class="va">$numero_artigos</span><span class="ot">;</span></span>
+<span id="annotated-cell-15-10"><a href="#annotated-cell-15-10"></a></span>
+<span id="annotated-cell-15-11"><a href="#annotated-cell-15-11"></a><span class="kw">echo</span> <span class="va">$autor</span>[<span class="st">"nome"</span>] <span class="op">.</span> <span class="st">" tem uma média de "</span> <span class="op">.</span> <span class="va">$media</span> <span class="op">.</span> <span class="st">" vistas por artigo"</span><span class="ot">;</span></span>
+<span id="annotated-cell-15-12"><a href="#annotated-cell-15-12"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-15-13" class="code-annotation-target"><a href="#annotated-cell-15-13"></a><span class="cf">if</span> (<span class="va">$media</span> <span class="op">&gt;=</span> <span class="dv">500</span>) {</span>
+<span id="annotated-cell-15-14"><a href="#annotated-cell-15-14"></a>    <span class="kw">echo</span> <span class="st">", um alcance acima da média da revista."</span><span class="ot">;</span></span>
+<span id="annotated-cell-15-15"><a href="#annotated-cell-15-15"></a>} <span class="cf">else</span> {</span>
+<span id="annotated-cell-15-16"><a href="#annotated-cell-15-16"></a>    <span class="kw">echo</span> <span class="st">", um alcance abaixo da média da revista."</span><span class="ot">;</span></span>
+<span id="annotated-cell-15-17"><a href="#annotated-cell-15-17"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="7" data-code-annotation="1">Adds up the views of the latest articles: 1200 + 850 + 430 + 610 = 3090.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="8" data-code-annotation="2">Counts how many articles were added up: 4.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="9" data-code-annotation="3">Divides the sum by the number of articles, obtaining the average: 3090 / 4 = 772.5.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="13" data-code-annotation="4">Compares the average with the magazine’s reference value, deciding the final result.</span>
+</dd>
+</dl>
+<p>Note that <code>array_sum()</code> returns a <code>float</code> whenever the division is not exact, even when all the added-up views are integers, which is consistent with the dynamic-typing behaviour seen in <a href="#sec-03-types-en" class="quarto-xref"><span>Section 3.7</span></a>: PHP automatically picks the most suitable type for the result of each operation.</p>
+<p>The complete code from the in-class demonstration on variables and arrays, ready to copy, is available in <a href="apendiceB.html#sec-apB-variables-en" class="quarto-xref"><span>Section B.2</span></a>.</p>
+</section>
+</section>
+<section id="sec-03-challenge-en" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="sec-03-challenge-en"><span class="header-section-number">3.9</span> Challenge</h2>
+<p>Tiago now knows how to represent an article, and a list of articles, as arrays. Before moving on to the next chapter, the challenge is to put that knowledge to the test, completing Contraponto’s article catalogue, using only what has been covered in this chapter, with no loops or conditionals:</p>
+<ol type="1">
+<li>Complete the <code>$artigos</code> array with at least five articles, each with a title, author and category;</li>
+<li>Display the title of the third article in the catalogue;</li>
+<li>Build a <code>$categorias</code> array with the categories already used in the articles, with no repeats, and sort it alphabetically with <code>sort()</code>;</li>
+<li>Check, with <code>in_array()</code>, whether the category <code>"Entrevistas"</code> is already present in the <code>$categorias</code> array built in the previous point.</li>
+</ol>
+<p>The starter file, with the <code>$artigos</code> array partially filled in, is available in <a href="apendiceC.html#sec-apC-cap03-en" class="quarto-xref"><span>Section C.2</span></a>.</p>
+</section>
+<section id="sec-03-references-en" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-03-references-en">References</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap02.html" class="pagination-link" aria-label="Web Architectures and Infrastructure">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Web Architectures and Infrastructure</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="PHP II: Conditionals and Loops">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">PHP II: Conditionals and Loops</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Web Application Development I — UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

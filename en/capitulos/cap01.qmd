@@ -1,0 +1,92 @@
+---
+title: "Software Development for the Web"
+author: "João Pavão"
+date: 2026-08-22
+lang: en-GB
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap01.jpg');">
+  <div class="hero-badge">Chapter 1</div>
+  <h1>Software Development for the Web</h1>
+</div>
+```
+
+## Web Programmer Profiles {#sec-01-profiles-en}
+
+Web development is traditionally organised into three profiles, distinguished by which side of the application they work on.
+
+### Frontend {#sec-01-frontend-en}
+
+The *frontend* programmer works on the client side, that is, in the *browser*, and is responsible for the interface the user interacts with directly. The base tools are HTML, CSS and JavaScript, often supported by *frameworks* such as React, Vue.js or Angular. React is today the most used, but Vue.js has established itself as the second most widely adopted option globally, ahead of Angular in developer satisfaction [@stateofjs2025].
+
+### Backend {#sec-01-backend-en}
+
+The *backend* programmer works on the server side: implements the business logic, manages database access, and exposes that logic to the outside world, typically through the HTTP protocol's API. Uses languages such as PHP, Python or JavaScript (in a Node.js environment), and database management systems such as MySQL, MariaDB, PostgreSQL or MongoDB. Also handles server configuration and application *deployment* tasks.
+
+### Full Stack {#sec-01-fullstack-en}
+
+The *full stack* programmer works on both sides, frontend and backend, with the tools described above or with *frameworks* that integrate both components, such as Laravel (in PHP), Django or FastAPI (in Python), or Next.js (in JavaScript/TypeScript).
+
+## Work Tools {#sec-01-tools-en}
+
+Regardless of profile, a web programmer typically works with the following set of tools:
+
+- **Computer and operating system**: macOS, Windows or Linux;
+- **Browser**: Chrome, Firefox, Safari or Edge, to test the result of the work;
+- **Text editor or IDE**: Visual Studio Code, Sublime Text or a more complete IDE, such as WebStorm;
+- **Terminal**: the command line on macOS or Linux, or PowerShell or Git Bash on Windows;
+- **Design software**: for prototypes and interfaces, with Figma as the market's reference tool [@mapsoft_adobexd_eol].
+
+## HTML and CSS: the Basic Building Blocks {#sec-01-htmlcss-en}
+
+HTML and CSS are the fundamental building blocks of any web page: HTML structures the content and CSS defines its visual presentation. A *frontend* programmer should master, at minimum:
+
+- The basic and semantic HTML5 *tags*;
+- The fundamentals of CSS: selectors, properties and the box model;
+- Alignment and grids in CSS, using Flexbox and CSS Grid;
+- *Media queries* and responsive design, so the page works across different screen sizes;
+- Simple animations and transitions.
+
+## CSS Frameworks and Preprocessors {#sec-01-css-frameworks-en}
+
+Writing pure CSS for a large project is possible, but laborious. This gave rise to CSS *frameworks*, ready-to-use style and component libraries. Tailwind CSS is today the most used, ahead of Bootstrap [@tailkits_css_frameworks_2025]; Foundation remains a niche option, mainly in existing enterprise projects.
+
+Beyond component *frameworks*, there are tools that extend the CSS language itself. Sass is a preprocessor that adds functionality to CSS, such as variables, selector nesting and *mixins*; PostCSS transforms CSS through JavaScript plugins, with similar functionality. Native selector nesting, native variables (`custom properties`) and features such as `color-mix()` are now part of the CSS language itself, with broad support in modern browsers [@w3tweaks_css_nesting], covering much of what used to motivate the use of a preprocessor.
+
+## What an Entry-Level Frontend Developer Should Know {#sec-01-frontend-basics-en}
+
+Summarising what is expected of a *frontend* programmer at the start of their career:
+
+- Build web *layouts* with HTML and CSS;
+- Know JavaScript and work with the DOM (*Document Object Model*);
+- Build small, interactive *frontend* applications;
+- Be able to connect those applications to external APIs;
+- Work with Git and use version control;
+- Install and manage small, real projects already in production.
+
+## Server-Side Technologies {#sec-01-backend-tech-en}
+
+Server-side technologies are organised into three broad groups: languages and *frameworks*, databases, and programming through the HTTP protocol's API.
+
+### Languages {#sec-01-languages-en}
+
+On the server side, the landscape of languages includes, among others, Node.js (JavaScript on the server), Python, PHP, C#, Go, Ruby, Java, Kotlin, Rust, Scala and Swift. PHP is one of the most used server-side languages, largely due to its historical connection to WordPress and a large part of the Web published through content management systems.
+
+### Server Frameworks {#sec-01-server-frameworks-en}
+
+Each backend language has its own web development *frameworks*. In JavaScript, notable ones include Express, Koa, Fastify and Next.js; in Python, Django, Flask and FastAPI; in PHP, Laravel, Symfony and Slim. Laravel is today the most used PHP *framework*, ahead of Symfony [@jetbrains_stateofphp2025].
+
+### Databases and ORMs {#sec-01-databases-orms-en}
+
+Databases are essentially divided into two broad groups:
+
+- **Relational**, organised into tables with a fixed schema and relationships between them, such as PostgreSQL, MySQL or SQLite;
+- **Non-relational** (*NoSQL*), with more flexible schemas, such as MongoDB and Firebase (Cloud Firestore), both document-oriented [@firebase_firestore_datamodel], or Redis (key-value, widely used for *caching*).
+
+To make it easier to access databases from object-oriented code, object-relational mapping (ORM) tools are frequently used, such as Eloquent (Laravel's native ORM), Prisma, Drizzle or TypeORM in JavaScript/TypeScript, Mongoose for MongoDB, or SQLAlchemy in Python. Prisma is the most used by number of projects, but Drizzle has grown notably among projects that favour more direct control over the generated SQL [@bytebase_drizzle_vs_prisma_2026].
+
+## References {#sec-01-references-en .unnumbered}
+
+::: {#refs}
+:::

@@ -1,0 +1,69 @@
+---
+title: "Web Development Frameworks"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap11.jpg');">
+  <div class="hero-badge">Chapter 11</div>
+  <h1>Web Development Frameworks</h1>
+</div>
+```
+
+## What a Framework Automates {#sec-11-automation-en}
+
+Throughout this course, the basic elements of a PHP application were built, file by file: the database connection, a front controller deciding which action to run, and the separation between *Model*, *View* and *Controller*, seen in the previous chapter. A web development *framework* such as `Laravel`, today the most used in the PHP ecosystem [@jetbrains_stateofphp2025], automates exactly this kind of repetitive work, offering parts that are already solved, and tested by a large community of users, which each programmer would otherwise have to build their own way in every new project:
+
+- **Routing system**: instead of the manual `switch` built in @sec-10-front-controller-en, a *framework* allows routes to be declared directly, associating an address with a *Controller* function;
+- **ORM** (*Object-Relational Mapping*): instead of writing SQL by hand with `mysqli`, as in @sec-08-prepared-statements-en, an ORM represents each table as a PHP class, and each row as an object, allowing interaction with the database through PHP code instead of direct SQL statements;
+- **Template engine**: instead of mixing PHP and HTML directly in the *Views*, a template engine offers a cleaner syntax for generating dynamic HTML, with features such as *layout* inheritance, to avoid repeating the header and footer on every page;
+- **Migrations**: files that describe, in code, the database structure, allowing that structure to be created, changed and shared between programmers without relying on `CREATE TABLE` statements written manually by each one.
+
+## Laravel {#sec-11-laravel-en}
+
+Laravel includes, among others, `Eloquent`, its native ORM, and `Blade`, its template engine. A query that, with `mysqli`, would require writing the SQL statement explicitly, is written, in Eloquent, as a method call on a class that represents the table:
+
+```php
+// With mysqli (chapter 8)
+$stmt = $conexao->prepare("SELECT * FROM artigos WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+// With Eloquent (Laravel)
+$artigo = Artigo::find($id);
+```
+
+Laravel's routing system directly replaces the manual `switch` in the front controller built in @sec-10-front-controller-en, associating an address with a function declaratively:
+
+```php
+// routes/web.php
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::post('/articles', [ArticleController::class, 'store']);
+Route::get('/articles/{id}/edit', [ArticleController::class, 'edit']);
+```
+
+Migrations, in turn, replace the `CREATE TABLE` statements written by hand in @sec-08-creating-db-en, describing the table structure in PHP code, versionable and shareable across the whole team:
+
+```php
+// database/migrations/create_articles_table.php
+Schema::create('articles', function (Blueprint $table) {
+    $table->id();                    // INT AUTO_INCREMENT PRIMARY KEY
+    $table->string('title');
+    $table->string('author');
+    $table->string('category');
+    $table->timestamps();            // automatic creation/update timestamps
+});
+```
+
+Laravel also automatically generates much of the folder structure that was built manually throughout this course: an `app/Models` folder for the *Model* classes, a `resources/views` folder for the Blade *Views*, and a `routes` folder to declare the application's routes. The initial learning curve of a *framework* such as Laravel is steeper than writing plain PHP, because it requires understanding its own conventions, but it pays off quickly as an application grows, preventing every team from reinventing, in its own way, the same mechanisms for database connections, authentication or page generation.
+
+## Other Frameworks {#sec-11-other-en}
+
+Laravel is not the only PHP *framework*: `Symfony`, more modular and used mainly in enterprise contexts, is the second most adopted [@jetbrains_stateofphp2025], and parts of it are, in fact, used internally by Laravel itself. Outside the PHP world, the same principle applies to other server-side languages, such as `Django` in Python or `Express` in JavaScript, referred to in @sec-01-server-frameworks-en: each one solves the same kind of problem — routing, data access, page generation — with conventions and tools of its own language.
+
+## References {#sec-11-references-en .unnumbered}
+
+::: {#refs}
+:::

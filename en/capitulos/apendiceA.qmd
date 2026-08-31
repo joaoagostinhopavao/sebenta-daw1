@@ -1,0 +1,323 @@
+---
+title: "Development Environment Setup"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+## Introduction {#sec-apA-intro-en}
+
+This appendix describes, step by step, the setup of the development environment presented in @sec-03-environment-en, both via virtual machine and via containers. For each of these two approaches, there are two possible scenarios:
+
+- **The lecturer provides a ready-made environment**: a virtual machine already installed and configured, distributed as an `.ova` file, or a set of containers already defined, distributed as configuration files or as pre-built images. This is the most common scenario, and the only one most students need to follow.
+- **The student builds the environment from scratch**: installing and configuring `Apache`, `MySQL` and `PHP` themselves, or writing their own `Dockerfile` and `docker-compose.yml`. This is useful for anyone who wants to use the same environment on a personal computer outside the context of class, or who simply wants to understand, in detail, what the provided environment is made of.
+
+Neither of these descriptions replaces the concrete instructions that may be given in practical classes, which may specify different versions, network configurations or credentials from those used here as an example; the goal of this appendix is only to ensure that any student can, on their own, reach a working environment, with `Apache`, `PHP` and `MySQL` ready to use.
+
+### Virtual Machine or Containers? {#sec-apA-approaches-en}
+
+There are two possible approaches for this environment, both already introduced in @sec-02-virtualisation-en:
+
+**Virtual machine**: this is the default approach followed in this course, already presented in @sec-02-course-environment-en: a `VirtualBox` virtual machine with Ubuntu, where the `Apache` server, `MySQL` and `PHP` are installed, either individually or through a pre-configured package, depending on each student's computer's operating system. All development, from editing the code to testing it in the *browser*, happens inside this virtual machine, which behaves, for practical purposes, like a small server of its own, isolated from the rest of the computer.
+
+**Containers (Docker)**: an alternative is to use `Docker` to run `Apache`, `PHP` and `MySQL` each in its own container, instead of installing them inside a full virtual machine. This is a lighter option, with a faster startup, especially suited to those who already have some experience with `Docker`, or to a computer with fewer resources available to run an entire virtual machine.
+
+### What You Should End Up With {#sec-apA-outcome-en}
+
+Whatever approach is chosen, and whether the environment is provided by the lecturer or built from scratch, the end result is the same:
+
+- A running `Apache` server, capable of interpreting PHP code;
+- A running `MySQL` server, accessible from PHP code;
+- A code editor, typically `Visual Studio Code`, with direct access to the project files;
+- The ability to open a `.php` file in a *browser*, through an address such as `http://localhost`, and see the result of its execution.
+
+The following sections describe how to reach this result, either through an image provided by the lecturer (see @sec-apA-vm-provided-en and @sec-apA-docker-provided-en), or by building the environment from scratch (see @sec-apA-scratch-en).
+
+### Students' Computer Operating Systems {#sec-apA-systems-en}
+
+Before downloading any *software*, it is important to know which of the following three variants matches each student's computer, since both `VirtualBox` and `Docker Desktop` provide different installers for each one:
+
+- **Windows**;
+- **macOS with an Intel processor** (older Macs, from before 2020/2021);
+- **macOS with Apple Silicon** (Macs with an `M1`, `M2`, `M3` or `M4` processor, most models sold from 2020/2021 onward).
+
+On a Mac, this information can be found in the `Apple` menu (the icon in the top-left corner of the screen), under *About This Mac*: if the `Chip` field shows `Apple M1`, `M2`, `M3` or `M4`, it is Apple Silicon; if it shows `Intel Processor`, it is an Intel Mac. Choosing the wrong installer is one of the most common mistakes at this stage, and typically results in an application that does not open, or that opens but fails to start any virtual machine or container.
+
+### phpMyAdmin {#sec-apA-phpmyadmin-en}
+
+[`phpMyAdmin`](https://www.phpmyadmin.net/) is a free `MySQL` administration tool accessed through the *browser*, itself written in PHP. Instead of writing SQL statements on the command line to view a table's contents, create a database, or check whether a row was correctly inserted, `phpMyAdmin` shows all of this in a visual interface, which makes it particularly useful while learning to work with databases. Neither the virtual machine nor the containers necessarily need to include it — `MySQL` works perfectly well without it — but, when available, it is often the fastest way to visually confirm that a PHP application is actually writing and reading the correct data. This appendix indicates, in each of the following four sections, how to access `phpMyAdmin` when it is provided by the lecturer, and how to install it when the environment is built from scratch.
+
+## Virtual Machine Provided by the Lecturer {#sec-apA-vm-provided-en}
+
+### Installing VirtualBox {#sec-apA-vm-provided-install-en}
+
+The only *software* each student needs to install, in this scenario, is `VirtualBox`, available for free at [virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads), where separate installation packages appear depending on the computer's operating system: `Windows hosts`, `macOS / Intel hosts` and `macOS / Apple Silicon hosts`, corresponding to the three variants described in @sec-apA-systems-en. The virtual machine itself, with `Ubuntu` and the entire development *stack* already installed and configured, is provided separately by the lecturer, as an `.ova` file.
+
+### Importing the .ova File {#sec-apA-vm-provided-import-en}
+
+With `VirtualBox` installed and the `.ova` file provided by the lecturer saved on the computer, the steps to get it running are:
+
+1. Open `VirtualBox` and choose `File > Import Appliance...` (or the shortcut `Ctrl+I`);
+2. Select the provided `.ova` file;
+3. Review the proposed settings for the virtual machine (name, RAM, number of processors, virtual disk location), which come pre-filled with the values used by the lecturer, and which can be adjusted, within each student's computer's limits, before proceeding;
+4. Confirm the import and wait for `VirtualBox` to copy and unpack the contents of the `.ova` file, a process that can take several minutes, depending on the size of the virtual machine and disk speed;
+5. Once the import is complete, select the virtual machine in the `VirtualBox` list and click `Start`.
+
+The access credentials (username and password) inside the virtual machine, as well as the address and port where the application becomes accessible from the host computer's *browser* (for example, `http://localhost:8080`, if the virtual machine uses port forwarding instead of direct access), are provided by the lecturer together with the `.ova` file, since they may vary from year to year.
+
+### First Tests {#sec-apA-vm-provided-tests-en}
+
+After the virtual machine starts, before beginning to program, it is worth confirming that everything is working as expected. In a terminal inside the virtual machine, check the version of each already-installed component:
+
+```bash
+php -v
+apache2 -v
+mysql --version
+```
+
+Next, test the connection to `PHP` through the *browser*: opening the address indicated by the lecturer (inside the virtual machine, typically `http://localhost`; from the host computer, depending on the virtual machine's network configuration), a page served by `Apache` and processed by `PHP` should appear. Finally, test the connection to the database, either directly on the terminal:
+
+```bash
+mysql -u root -p
+```
+
+or through a small PHP *script* like the one presented in @sec-apA-verify-en, which confirms that `PHP` can actually communicate with `MySQL`, and not just that both services are, each on its own, running.
+
+If the virtual machine provided by the lecturer also includes `phpMyAdmin`, a `MySQL` administration tool accessed through the *browser*, referred to in @sec-apA-phpmyadmin-en, that is the simplest way to visually confirm that the database is accessible, without needing the command line: simply open `http://localhost/phpmyadmin` (or the address indicated by the lecturer) and authenticate with the `MySQL` credentials.
+
+## Containers Provided by the Lecturer {#sec-apA-docker-provided-en}
+
+### Installing Docker {#sec-apA-docker-provided-install-en}
+
+As with the virtual machine option, the only *software* each student needs to install, in this scenario, is `Docker`. On Windows and macOS, `Docker Desktop` is installed, available at [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/), where, just as with `VirtualBox`, separate installers appear for `Mac with Apple silicon` and `Mac with Intel chip`, in addition to the Windows installer; on Linux, `Docker Engine` is installed directly, following the instructions at [docs.docker.com/engine/install](https://docs.docker.com/engine/install/). The installation is confirmed, in a terminal on the host computer, with:
+
+```bash
+docker --version
+docker compose version
+```
+
+### Loading and Starting the Containers {#sec-apA-docker-provided-load-en}
+
+The lecturer can distribute the environment in two different ways:
+
+- **Configuration files** (`docker-compose.yml`, and a `Dockerfile` if applicable): simply place them in a folder and run, from inside it:
+
+  ```bash
+  docker compose up -d --build
+  ```
+
+- **Pre-built images**, distributed as `.tar` files: in this case, start by loading each image into the local `Docker`, before starting it:
+
+  ```bash
+  docker load -i apache-php-image.tar
+  docker load -i mysql-image.tar
+  docker compose up -d
+  ```
+
+In either case, the expected result is the same one referred to in @sec-apA-approaches-en: one container with `Apache` and `PHP`, and another, separate, container with `MySQL`, both running and communicating with each other.
+
+### First Tests {#sec-apA-docker-provided-tests-en}
+
+With the containers running, first confirm that both are active:
+
+```bash
+docker ps
+```
+
+The list should show one container for `Apache`/`PHP` and another for `MySQL`, each with its own name. Then check the version installed in each one, running the command directly inside the container with `docker exec`:
+
+```bash
+docker exec -it <web_container_name> php -v
+docker exec -it <db_container_name> mysql --version
+```
+
+Next, test the connection to `PHP` through the *browser*, at the address and port indicated by the lecturer (for example, `http://localhost:8080`), and finally, the connection to the database, either directly from the container:
+
+```bash
+docker exec -it <db_container_name> mysql -u root -p
+```
+
+or through the small PHP *script* presented in @sec-apA-verify-en, just as in the virtual machine scenario.
+
+If the lecturer also includes a `phpMyAdmin` container, referred to in @sec-apA-phpmyadmin-en, it is normally accessible at its own address (for example, `http://localhost:8081`), offering a visual way, through the *browser*, to confirm the database's contents, without needing `docker exec` to enter the `MySQL` container.
+
+## Building the Environment from Scratch {#sec-apA-scratch-en}
+
+The following two sections are for anyone who is not going to use the environment provided by the lecturer, and prefers to build, themselves, each of the two approaches described in @sec-03-environment-en, from installing `VirtualBox` or `Docker` all the way to `Apache`, `MySQL` and `PHP` being ready to use.
+
+### Option 1: Virtual Machine with VirtualBox {#sec-apA-vm-en}
+
+#### Creating the Virtual Machine {#sec-apA-vm-create-en}
+
+1. Install `VirtualBox`, as described in @sec-apA-vm-provided-install-en;
+2. Get an `.iso` image of `Ubuntu`, available at [ubuntu.com/download](https://ubuntu.com/download) (the *Desktop* version, simpler to use for beginners, or the *Server* version, lighter, for those who already have some command-line experience);
+3. In `VirtualBox`, create a new virtual machine, specifying type `Linux` and version `Ubuntu (64-bit)`;
+4. Assign the virtual machine at least 4 GB of RAM, and a dynamically allocated virtual disk of at least 25 GB, to accommodate the operating system, the installed packages, and the projects developed throughout the course;
+5. Attach the `Ubuntu` `.iso` image as boot media, and start the virtual machine to run the installer, specifying language and keyboard, and creating a user and password;
+6. Once installation is complete, restart the virtual machine and install `VirtualBox`'s `Guest Additions` (available in `VirtualBox`'s own *Devices* menu), which improve graphics performance and later allow shared folders with the host computer to be configured.
+
+#### Installing Apache, MySQL and PHP {#sec-apA-vm-lamp-en}
+
+With `Ubuntu` installed and running inside the virtual machine, open a terminal and update the list of available packages before installing anything:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+Then install the `Apache` web server:
+
+```bash
+sudo apt install apache2 -y
+```
+
+Confirm that `Apache` is running, and test, in the virtual machine's own *browser*, the address `http://localhost`, which should show `Apache`'s default welcome page:
+
+```bash
+sudo systemctl status apache2
+```
+
+Then install `MySQL`, and run the security configuration wizard, which asks you to set an administrator password and remove insecure default settings:
+
+```bash
+sudo apt install mysql-server -y
+sudo mysql_secure_installation
+```
+
+Finally, install `PHP`, together with the module that connects `PHP` to `Apache`, and the extension that allows `PHP` to communicate with `MySQL`:
+
+```bash
+sudo apt install php libapache2-mod-php php-mysql -y
+sudo systemctl restart apache2
+```
+
+Restarting `Apache` at the end is necessary so that it recognises the installed `PHP` module, and correctly interprets `.php` files.
+
+#### Testing the Installation {#sec-apA-vm-test-en}
+
+By default, `Apache` serves files stored in the `/var/www/html` folder. To confirm that `PHP` is correctly installed, create a small test file there:
+
+```bash
+echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
+```
+
+Opening `http://localhost/info.php` in the *browser* should show a page with detailed information about the `PHP` installation, including its version and the list of active extensions, which should include `mysqli`. Once confirmed, this file should be deleted, since it exposes detailed server information that should not remain accessible outside a development environment:
+
+```bash
+sudo rm /var/www/html/info.php
+```
+
+#### Installing phpMyAdmin (Optional) {#sec-apA-vm-phpmyadmin-en}
+
+`phpMyAdmin`, referred to in @sec-apA-phpmyadmin-en, is a `MySQL` administration tool accessed through the *browser*, useful mainly while learning, to quickly view a table's contents without writing a single SQL statement. Install it with:
+
+```bash
+sudo apt install phpmyadmin -y
+```
+
+During installation, `apt` asks which web server to configure automatically: select `apache2` with the space bar, and confirm with `Tab` and `Enter`. It also asks whether it should configure `phpMyAdmin`'s own database with `dbconfig-common`, to which you answer yes, setting a password for that internal configuration. Once installation is complete, `phpMyAdmin` is accessible at `http://localhost/phpmyadmin`, where you log in with the username and password already created in `MySQL`. If `Apache` is not configured automatically, it may be necessary to manually add the line `Include /etc/phpmyadmin/apache.conf` to its configuration, and restart it:
+
+```bash
+echo "Include /etc/phpmyadmin/apache.conf" | sudo tee -a /etc/apache2/apache2.conf
+sudo systemctl restart apache2
+```
+
+#### Editing Code from the Host Computer {#sec-apA-vm-editor-en}
+
+Working directly inside the virtual machine, in a text editor installed there, is possible, but not very comfortable. Two alternatives allow editing the code with `Visual Studio Code` ([code.visualstudio.com/download](https://code.visualstudio.com/download)) installed on the host computer, while keeping the files accessible to `Apache` inside the virtual machine:
+
+- **Shared folder**: in the virtual machine's settings, in `VirtualBox`, it is possible to define a folder on the host computer as a shared folder, mounted inside `Ubuntu`. By editing the files in that folder from the host, changes become immediately visible inside the virtual machine;
+- **Remote connection via SSH**: by installing an SSH server inside the virtual machine (`sudo apt install openssh-server`), the [`Remote - SSH`](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension for `Visual Studio Code`, on the host computer, allows the virtual machine's files to be opened and edited directly, as if they were on the computer itself.
+
+### Option 2: Containers with Docker {#sec-apA-docker-en}
+
+#### Defining the Services with Docker Compose {#sec-apA-docker-compose-en}
+
+With `Docker` installed, as described in @sec-apA-docker-provided-install-en, instead of installing `Apache`, `PHP` and `MySQL` manually, as in the previous option, the necessary containers and how they communicate with each other are described in a `docker-compose.yml` file, based on the official `PHP` image ([hub.docker.com/_/php](https://hub.docker.com/_/php)) and the official `MySQL` image ([hub.docker.com/_/mysql](https://hub.docker.com/_/mysql)). The official `PHP` image with `Apache` does not, by default, include the `MySQL` connection extension, so a small `Dockerfile` of its own is needed to add it:
+
+```dockerfile
+# Dockerfile
+FROM php:8.3-apache
+RUN docker-php-ext-install mysqli pdo_mysql
+```
+
+```yaml
+# docker-compose.yml
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: application
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+```
+
+Note the line `volumes: - ./src:/var/www/html` in the `web` service: it directly links the `src` folder, on the host computer, to the folder where `Apache` serves files inside the container, which means any `.php` file created or edited in that folder, with `Visual Studio Code` running normally on the host, becomes immediately available to the server, without any additional sharing or remote connection.
+
+With the `Dockerfile` and `docker-compose.yml` in the same folder, the containers are built and started with:
+
+```bash
+docker compose up -d --build
+```
+
+`Apache`, inside the `web` container, becomes accessible on the host computer at `http://localhost:8080`, and `MySQL`, inside the `db` container, becomes accessible at `localhost`, on port `3306`, with user `root` and the password set in the `MYSQL_ROOT_PASSWORD` variable.
+
+#### Adding phpMyAdmin (Optional) {#sec-apA-docker-phpmyadmin-en}
+
+`phpMyAdmin`, referred to in @sec-apA-phpmyadmin-en, is also available as an official image on `Docker Hub` ([hub.docker.com/_/phpmyadmin](https://hub.docker.com/_/phpmyadmin)), simply by adding one more service to the same `docker-compose.yml`, linked to the `db` container through the `PMA_HOST` variable:
+
+```yaml
+# docker-compose.yml (additional service)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+```
+
+After restarting the containers with `docker compose up -d`, `phpMyAdmin` becomes accessible at `http://localhost:8081`, where you log in with user `root` and the password set in `MYSQL_ROOT_PASSWORD`. Unlike the virtual machine installation, there is no additional `Apache` configuration to do here, since `phpMyAdmin` runs in its own container, independent of the `web` container.
+
+#### Editing Code from the Host Computer {#sec-apA-docker-editor-en}
+
+Unlike the virtual machine option, this configuration already links the host's `src` folder directly to the container, so it is enough to simply open that folder normally in `Visual Studio Code`, with no need for shared folders or a remote SSH connection. Optionally, the [`Dev Containers`](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension for `Visual Studio Code` also allows opening the editor itself "inside" the `web` container, with direct access to the tools installed there.
+
+## Verifying the Installation {#sec-apA-verify-en}
+
+Whatever option is chosen, and whether the environment is provided by the lecturer or built from scratch, the final test is the same: confirming that `PHP` can actually communicate with `MySQL`. In the folder served by `Apache` (`/var/www/html` in the virtual machine, or `src` in the containers), create a small test file:
+
+```php
+<?php
+$connection = mysqli_connect("localhost", "root", "root");
+
+if ($connection) {
+    echo "Successfully connected to MySQL!";
+} else {
+    echo "Connection error: " . mysqli_connect_error();
+}
+```
+
+Opening this file in the *browser* should show the success message. If, instead, an error message appears, the most common reasons are that `MySQL` has not fully started yet, the password given does not match the one set during installation, or, in the case of containers, the server name is not `localhost` but rather the service name defined in `docker-compose.yml` (`db`, in the example above), since, from inside a container, `localhost` refers to the container itself, not to other containers in the same application.
+
+If `phpMyAdmin` is available, referred to in @sec-apA-phpmyadmin-en, this same test can be done visually, without writing any code: simply authenticate with the `MySQL` credentials and confirm that the created database appears in the list.
+
+With this test successful, the environment is ready for the PHP development work resumed in @sec-03-language-en.
+
+## References {#sec-apA-references-en .unnumbered}
+
+::: {#refs}
+:::

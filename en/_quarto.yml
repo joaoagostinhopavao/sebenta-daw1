@@ -1,0 +1,160 @@
+project:
+  type: book
+  output-dir: ../docs/en
+  resources:
+    - assets/images/heroes/
+    - assets/images/capa/
+
+lang: en-GB
+bibliography: ../referencias.bib
+
+book:
+  title: "Web Application Development I"
+  subtitle: "Course Textbook"
+  author:
+    - name: "João Pavão"
+      affiliation: "University of Trás-os-Montes e Alto Douro"
+  date: last-modified
+
+  chapters:
+    - index.qmd
+    - capitulos/cap01.qmd
+    - capitulos/cap02.qmd
+    - capitulos/cap03.qmd
+    - capitulos/cap04.qmd
+    - capitulos/cap05.qmd
+    - capitulos/cap06.qmd
+    - capitulos/cap07.qmd
+    - capitulos/cap08.qmd
+    - capitulos/cap09.qmd
+    - capitulos/cap10.qmd
+    - capitulos/cap11.qmd
+
+  appendices:
+    - capitulos/apendiceA.qmd
+    - capitulos/apendiceB.qmd
+    - capitulos/apendiceC.qmd
+    - capitulos/apendiceD.qmd
+    - capitulos/apendiceE.qmd
+
+  sidebar:
+    search: true
+    tools:
+      - icon: translate
+        href: /../index.html
+        text: "Versão portuguesa"
+
+  page-footer:
+    left: "Web Application Development I — UTAD"
+
+format:
+  html:
+    theme:
+        light: litera
+        dark: darkly
+    css: assets/css/custom.css
+    toc: true
+    toc-depth: 3
+    smooth-scroll: true
+    number-sections: true
+    number-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: false
+    code-line-numbers: true
+    fig-align: center
+
+  pdf:
+    documentclass: scrbook
+    classoption: [oneside]
+    papersize: a4
+    fontsize: 11pt
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-line-numbers: true
+    colorlinks: true
+    linkcolor: "NavyBlue"
+    urlcolor: "NavyBlue"
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=3cm
+      - right=2.5cm
+    include-in-header:
+      text: |
+        \AtBeginDocument{\input{assets/cover.tex}}
+        \usepackage{booktabs}
+        \usepackage{longtable}
+        \usepackage{array}
+        \usepackage{multirow}
+        \usepackage{amssymb}
+        \usepackage{amsmath}
+        \usepackage{caption}
+        \captionsetup{font=small, labelfont=bf}
+        \usepackage{xcolor}
+        \usepackage{tikz}
+        \definecolor{coverDark}{HTML}{04170c}
+        \definecolor{coverAccent}{HTML}{0e8a4d}
+        \definecolor{coverLight}{HTML}{4be08a}
+        \definecolor{chapbg}{HTML}{dcf5e6}
+        \definecolor{chapnum}{HTML}{0a4a28}
+        \definecolor{chaptxt}{HTML}{0a1f13}
+        \KOMAoption{chapterprefix}{false}
+        \makeatletter
+        \newif\ifDAWappendix
+        \let\DAWoldappendix\appendix
+        \renewcommand{\appendix}{\DAWoldappendix\DAWappendixtrue}
+        \newcommand{\chapheroimg}{%
+          \ifcase\c@chapter\relax
+            cap01.jpg%
+          \or cap01.jpg\or cap02.jpg\or cap03.jpg\or cap04.jpg\or cap05.jpg\or cap06.jpg\or cap07.jpg\or cap08.jpg\or cap09.jpg\or cap10.jpg\or cap11.jpg%
+          \fi
+        }
+        \renewcommand{\chapterlinesformat}[3]{%
+          \def\@chnum{#2}%
+          \ifx\@chnum\@empty%
+            {\setlength{\fboxsep}{12pt}%
+            \noindent\colorbox{chapbg}{%
+              \parbox[c][5cm]{\dimexpr\linewidth-2\fboxsep\relax}{%
+                {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\color{chaptxt}\huge\bfseries #3}%
+              }%
+            }}%
+          \else%
+            \ifDAWappendix%
+              {\setlength{\fboxsep}{12pt}%
+              \noindent\colorbox{chapbg}{%
+                \parbox[c][5cm]{\dimexpr\linewidth-2\fboxsep\relax}{%
+                  \begin{minipage}[c]{3cm}%
+                    \centering\color{chapnum}\fontsize{104}{104}\selectfont\bfseries #2%
+                  \end{minipage}%
+                  \hspace{10pt}%
+                  \begin{minipage}[c]{\dimexpr\linewidth-2\fboxsep-3cm-10pt\relax}%
+                    \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\color{chaptxt}\fontsize{20}{24}\selectfont\bfseries #3%
+                  \end{minipage}%
+                }%
+              }}%
+            \else%
+              \noindent%
+              \begin{tikzpicture}[remember picture]
+                \useasboundingbox (0,0) rectangle (\linewidth,5cm);
+                \clip (0,0) rectangle (\linewidth,5cm);
+                \edef\heroimg{assets/images/heroes/\chapheroimg}%
+                \node[anchor=center,inner sep=0pt] at (0.5\linewidth,2.5cm)
+                  {\includegraphics[width=\linewidth]{\heroimg}};
+                \fill[coverDark,opacity=0.4] (0,0) rectangle (\linewidth,5cm);
+                \node[anchor=west,text=coverLight,font=\fontsize{80}{80}\selectfont\bfseries,inner sep=0pt]
+                  at (12pt,2.5cm) {#2};
+                \node[anchor=west,text width=\dimexpr\linewidth-3.6cm\relax,align=left,text=white,inner sep=0pt]
+                  at (3.6cm,2.5cm) {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000\fontsize{20}{24}\selectfont\bfseries #3};
+              \end{tikzpicture}%
+            \fi%
+          \fi%
+        }
+        \makeatother
+    pdf-engine: lualatex
+
+execute:
+  echo: true
+  warning: false
+  message: false

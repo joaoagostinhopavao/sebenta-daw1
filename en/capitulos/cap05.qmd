@@ -1,0 +1,163 @@
+---
+title: "PHP III: Functions, Dates and Includes"
+author: "João Pavão"
+date: 2026-08-24
+lang: en-GB
+---
+
+```{=html}
+<div class="hero hero-chapter" style="background-image: linear-gradient(to top, rgba(4,23,12,0.88) 0%, rgba(4,23,12,0.6) 20%, rgba(4,23,12,0.15) 45%, rgba(4,23,12,0) 65%), url('../assets/images/heroes/cap05.jpg');">
+  <div class="hero-badge">Chapter 5</div>
+  <h1>PHP III: Functions, Dates and Includes</h1>
+</div>
+```
+
+## Functions {#sec-05-functions-en}
+
+As the Contraponto site grows, Tiago notices he is writing the same kind of code in several different places: whenever he shows an article, whether in the listing or on the article's own page, he has to join the author to the category in the same format, "by Rita Ferreira, in Technology". Copying that line to every new place it is needed is, sooner or later, a source of inconsistencies: if the format ever changes, he has to remember to change it everywhere he copied it. A function solves exactly this problem: it is a named set of instructions, written once, that can be called whenever it is needed. A function can accept parameters (input data) and return a value (output data), both optional:
+
+```php
+<?php
+function formatarAutoria($autor, $categoria) {
+    return "por " . $autor . ", em " . $categoria;
+}
+
+echo formatarAutoria("Rita Ferreira", "Tecnologia");
+echo formatarAutoria("Marco Antunes", "Cultura");
+```
+
+A function can receive several parameters, and can define a default value for them, used when that parameter is not given in the call. This is what Tiago uses to estimate the reading time of an article, a common feature on content sites: by default, a reader is assumed to read 200 words per minute, but that speed can be adjusted when better known:
+
+```php
+<?php
+function tempoLeitura($palavras, $palavras_por_minuto = 200) {
+    return ceil($palavras / $palavras_por_minuto);
+}
+
+echo tempoLeitura(600);       // 3, uses the default value (200 words/minute)
+echo tempoLeitura(600, 300);  // 2, the given value overrides the default
+```
+
+A function may also return nothing at all, simply producing an effect, such as displaying something directly on screen. This is how Tiago consolidates, in a single place, how an article's teaser is shown in the site's listing:
+
+```php
+<?php
+function mostrarTeaser($titulo, $resumo) {
+    echo "<h3>" . $titulo . "</h3><p>" . $resumo . "</p>";
+}
+
+mostrarTeaser(
+    "Entrevista: o futuro do jornalismo local",
+    "Uma conversa sobre os desafios do jornalismo de proximidade."
+);
+mostrarTeaser(
+    "Como nasceu a Contraponto",
+    "A história da revista, contada pela sua diretora."
+);
+```
+
+A variable defined inside a function is local to that function, and is not visible outside it, even if a variable with the same name also exists outside the function; the only way for a function to communicate a result to the rest of the *script* is through the value it returns with `return`. Notice, in the following example, how the formatting of the view count correctly handles the singular case without Tiago having to remember it everywhere that number is shown:
+
+```php
+<?php
+function formatarVistas($vistas) {
+    $sufixo = "vistas";     // $sufixo only exists inside this function
+    if ($vistas === 1) {
+        $sufixo = "vista";
+    }
+    return $vistas . " " . $sufixo;
+}
+
+echo formatarVistas(850);  // 850 vistas
+echo formatarVistas(1);    // 1 vista
+// echo $sufixo;           // error: $sufixo is not defined here, outside the function
+```
+
+The complete code for the demonstration done in class about functions is available in @sec-apB-functions-en.
+
+## Dates {#sec-05-dates-en}
+
+The article draft proposed in @sec-03-project-en includes a publication date, a field none of the previous examples has used yet. Tiago needs to display it legibly to the reader, to calculate how long ago an article was published, and to let Rita schedule an article for a future date. PHP offers functions dedicated to handling dates and times for this kind of need. There are three common operations.
+
+### Getting the Current Date and Time {#sec-05-current-date-en}
+
+The `date()` function formats the server's current date and time according to a pattern given as a parameter, using letters with predefined meanings, such as `d` for the day, `m` for the month, `Y` for the four-digit year, `H` for the hour, `i` for the minutes and `s` for the seconds. This is the function Tiago uses to record the date when a new article is created:
+
+```php
+<?php
+echo date("d/m/Y");        // 24/08/2026
+echo date("d/m/Y H:i:s");  // 24/08/2026 15:42:07
+echo date("l, d \d\e F");  // segunda-feira, 24 de Agosto (localised)
+```
+
+### Custom Formatting {#sec-05-custom-formatting-en}
+
+As shown in the previous examples, the same instant can be presented in very different ways, simply by changing the format given to `date()`, which is useful for adapting how the publication date is shown to the context: a compact format in the article listing, or a written-out format in the header of a single article's page.
+
+### Time Zones {#sec-05-timezones-en}
+
+By default, PHP uses the time zone configured on the server, which may not match the time zone of Contraponto's readers. If the server is hosted outside Portugal, the publication date shown could come out wrong without anyone realising why; to avoid this, the time zone to use is set explicitly with `date_default_timezone_set()`, right at the start of the *script*:
+
+```php
+<?php
+date_default_timezone_set("Europe/Lisbon");
+echo date("H:i:s");  // local time in Portugal, regardless of the server's time zone
+```
+
+For more complex operations on dates, PHP provides the object-oriented `DateTime` class, already mentioned in @sec-03-language-en. Unlike `date()`, which receives everything as function parameters, here an object representing the date itself is created first, with `new DateTime(...)`, and its methods are then called through an arrow (`->`) to query or modify it, such as `->modify()` or `->format()`. It is with this tool that Tiago solves two concrete Contraponto problems: showing how many days ago an article was published, and scheduling the publication of an article for a future date:
+
+```php
+<?php
+$data_publicacao = new DateTime("2026-08-20");
+$hoje = new DateTime();
+$diferenca = $data_publicacao->diff($hoje);
+echo $diferenca->days . " dias desde a publicação";  // e.g.: 4 dias
+
+$data_agendada = new DateTime();
+$data_agendada->modify("+7 days");
+echo "Publicação agendada para " . $data_agendada->format("d/m/Y");
+```
+
+The complete code for the demonstration done in class about dates, including the leap-year calculation, is available in @sec-apB-dates-en.
+
+## Controlling Page Flow: Includes {#sec-05-includes-en}
+
+The Contraponto site will have several pages, the article listing, an article's page, the comment form, but they all share the same header, with the logo and the category menu, and the same footer, with the copyright notice. Copying that HTML into every new page would be just as fragile as repeating a function's logic: if Rita asks for the menu to change, Tiago would have to remember to update every page, one by one. Instead of repeating that code in every file, PHP allows the content of one file to be included inside another, through two very similar instructions: `include` and `require`.
+
+**`include`**: includes the content of a file inside the current file. If the given file is not found, PHP issues a warning, but the *script* keeps running. It is useful when including optional files, not critical to the *script*'s operation.
+
+**`require`**: works similarly to `include`, but is used when the included file is essential to the *script*'s operation. If the given file is not found, PHP issues a fatal error and immediately stops execution. It is useful when it is necessary to guarantee that a fundamental file is available before continuing to run the rest of the *script*.
+
+```php
+<?php
+require "header.php";
+?>
+
+<h2>Últimos Artigos</h2>
+<p>Aqui aparece a listagem de artigos da Contraponto.</p>
+
+<?php
+require "footer.php";
+?>
+```
+
+Since the header and footer are usually essential to a page's visual structure, without which the result would look incomplete or broken, it is common to prefer `require` over `include` to include them. There are also the `include_once` and `require_once` variants, which guarantee that the same file is only included once, even if the instruction appears, directly or indirectly, more than once in the execution flow, avoiding errors such as redefining the same function.
+
+This pattern, `header.php` and `footer.php` files included in every page of the site, is the first practical step towards thinking of a web application as a set of reusable components, rather than independent HTML pages disconnected from one another, an idea revisited in more depth in @sec-02-mvc-en and in @sec-10-why-separate-en.
+
+The complete code for the three files in this demonstration is available in @sec-apB-includes-en.
+
+## Challenge {#sec-05-challenge-en}
+
+With functions, dates and *includes*, Tiago now has the pieces to organise the site's code instead of repeating it. The challenge, starting from the `$artigos` catalogue and the category filter from @sec-04-challenge-en, is:
+
+1. Write a function `formatarArtigo($artigo)` that receives an article (an element of the `$artigos` array) and returns a *string* with the title and the formatted authorship, for example `"Título — por Autor"`;
+2. Use that function inside the `foreach` that already iterates over `$artigos`, instead of writing the formatting directly inside it;
+3. Create two files, `header.php` and `footer.php`, with a simple header and footer for the site, and use `require` to include them before and after the article listing.
+
+The starter file, with the catalogue and the category filter already in place, is available in @sec-apC-cap05-en.
+
+## References {#sec-05-references-en .unnumbered}
+
+::: {#refs}
+:::
