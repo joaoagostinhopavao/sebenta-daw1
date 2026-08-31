@@ -2,6 +2,7 @@
 .quarto/
 _book/
 docs/*.pdf
+docs/en/*.pdf
 
 # macOS
 .DS_Store
