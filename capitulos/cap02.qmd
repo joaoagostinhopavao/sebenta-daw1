@@ -44,6 +44,27 @@ a arquitetura estudada nesta UC: o *frontend* corre no cliente, o
 *backend* corre no servidor, e os dois lados comunicam através do
 protocolo HTTP.
 
+Uma **página estática**, um ficheiro `.html`, é enviada ao cliente tal
+como está guardada no disco. Uma **página dinâmica**, um ficheiro
+`.php`, é executada pelo servidor a cada pedido, e o HTML que o cliente
+recebe é gerado nesse momento a partir dos dados disponíveis
+(@fig-02-pedido-dinamico). No sítio de uma revista *online*, quando um
+leitor abre o endereço `artigos.php?id=5`:
+
+1. o *browser* envia o pedido ao servidor web, através do protocolo HTTP;
+2. o servidor web, o `Apache`, reconhece um ficheiro PHP e entrega-o ao
+   interpretador de PHP;
+3. o PHP executa o código, que pede à base de dados o artigo número 5;
+4. a base de dados, o `MySQL`, devolve o título, o autor e o texto desse
+   artigo;
+5. o PHP insere esses dados num modelo de página e produz HTML;
+6. o servidor web envia esse HTML ao *browser*, que o mostra ao leitor.
+
+![Percurso de um pedido a uma página dinâmica: o *browser* só envia o pedido e recebe HTML; o Apache, o PHP e o MySQL trabalham do lado do servidor.](../assets/images/cap02/pedido-dinamico.png){#fig-02-pedido-dinamico}
+
+Se o artigo for corrigido na base de dados, o pedido seguinte já mostra
+a versão corrigida, sem que nenhum ficheiro HTML tenha sido editado.
+
 ### Model-View-Controller (MVC) {#sec-02-mvc}
 
 O MVC é um padrão de arquitetura de software, proposto originalmente por
@@ -100,6 +121,18 @@ aplicação PHP como as desenvolvidas nesta UC, as duas arquiteturas
 descrevem, em grande medida, a mesma separação de responsabilidades vista
 de ângulos diferentes.
 
+### Renderização no Servidor e no Cliente {#sec-02-renderizacao}
+
+No percurso descrito acima, é o servidor que monta a página completa:
+a página é **renderizada no servidor** (*server-side rendering*), o
+modelo do PHP e o seguido neste livro. Nas **aplicações de página única**
+(*Single Page Applications*, SPA), feitas com `React`, `Angular` ou
+`Vue`, acontece o inverso: o servidor envia uma página quase vazia e o
+código JavaScript, a correr no *browser*, pede os dados em formato JSON
+e constrói a página no próprio cliente (*client-side rendering*). A
+navegação fica mais fluida, mas o primeiro carregamento é mais pesado.
+Muitas aplicações combinam os dois modelos.
+
 ## Infraestruturas {#sec-02-infraestruturas}
 
 ### Servidores {#sec-02-servidores}
@@ -121,6 +154,18 @@ Application Server; hoje o nome do produto comercial suportado pela Red
 Hat é JBoss EAP). Do lado dos dados, o `MySQL Server` é o exemplo mais
 comum no contexto desta UC, correndo como um processo à parte do servidor
 web, e comunicando com o PHP através de uma ligação de rede local.
+
+Em produção, estes servidores correm numa máquina sempre ligada à
+Internet, normalmente de uma de três formas:
+
+- **alojamento partilhado**: muitos sítios no mesmo servidor, já
+  configurado com `Apache`, `PHP` e `MySQL`; é barato, mas dá pouco
+  controlo sobre a configuração;
+- **servidor virtual privado** (*Virtual Private Server*, VPS): uma
+  máquina virtual alugada, que o programador configura à sua medida;
+- **nuvem**, como a `Amazon Web Services`, o `Microsoft Azure` ou a
+  `Google Cloud`: infraestrutura ou plataformas prontas a usar, pagas em
+  função dos recursos consumidos.
 
 ### Serviços Web (API) {#sec-02-servicos-web}
 
@@ -168,6 +213,29 @@ compilação e distribuição; a desvantagem é um isolamento menos completo
 do que uma máquina virtual inteira, já que todos os contentores de uma
 máquina partilham o mesmo núcleo do sistema operativo.
 
+A tabela seguinte resume as diferenças entre as duas abordagens
+(@tbl-02-vm-contentor).
+
+|                          | Máquina virtual                   | Contentor                          |
+|--------------------------|-----------------------------------|------------------------------------|
+| Sistema operativo        | completo, próprio de cada máquina | partilha o núcleo do anfitrião     |
+| Tamanho típico           | vários *gigabytes*                | de *megabytes* a centenas de *megabytes* |
+| Arranque                 | de dezenas de segundos a minutos  | segundos                           |
+| Isolamento               | total                             | parcial (núcleo partilhado)        |
+| Ferramenta de referência | `VirtualBox`                      | `Docker`                           |
+
+: Comparação entre máquinas virtuais e contentores. {#tbl-02-vm-contentor}
+
+No `Docker`, três conceitos são essenciais:
+
+- **imagem**: o modelo com tudo o que a aplicação precisa para correr;
+- **contentor**: uma imagem em execução; da mesma imagem podem
+  arrancar-se vários contentores iguais, como da mesma receita se fazem
+  vários bolos;
+- **Docker Compose**: um ficheiro que descreve vários contentores que
+  trabalham em conjunto, por exemplo o servidor web e a base de dados,
+  arrancados com um só comando.
+
 Esta distinção não é apenas académica: as mesmas duas abordagens usadas
 para desenvolver localmente, numa máquina virtual ou num contentor, são
 também as mais comuns para pôr uma aplicação web em produção num
@@ -177,11 +245,11 @@ publicada.
 
 ### O Ambiente de Trabalho desta UC {#sec-02-ambiente-uc}
 
-Nesta UC, o *backend* é desenvolvido dentro de uma máquina virtual
-(`VirtualBox`) com Ubuntu, contendo a *stack* `XAMP` (consoante o sistema operativo poderá ser  `WAMP` para o Windows, `MAMP` para o MAC, `XAMP` para vários OS), `Apache` (o servidor), `MySQL` (a base de dados) e `PHP` (a
-linguagem de programação), as quatro iniciais que dão nome ao acrónimo.
-O editor de texto usado é o `Visual Studio Code`. Este ambiente isola o
-trabalho de desenvolvimento do sistema operativo do computador de cada
+Nesta UC, o *backend* é desenvolvido dentro de contentor *docker*
+com Ubuntu, contendo o servidor `Apache` (servidor web),  `MySQL` (a base de dados) e `PHP 8` (linguagem de programação).
+O editor de texto usado pode ser qualquer um, como o `Visual Studio Code`.
+
+Este ambiente isola a área de desenvolvimento do sistema operativo do computador de cada
 aluno, seja `macOS`, `Ubuntu` ou `Windows`, garantindo que todos
 trabalham sobre a mesma configuração de servidor, base de dados e
 linguagem, independentemente do computador usado em casa.

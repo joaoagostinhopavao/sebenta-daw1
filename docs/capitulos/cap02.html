@@ -263,6 +263,7 @@ div.csl-indent {
   <li><a href="#sec-02-cliente-servidor" id="toc-sec-02-cliente-servidor" class="nav-link" data-scroll-target="#sec-02-cliente-servidor"><span class="header-section-number">2.1.1</span> Arquitetura Cliente-Servidor</a></li>
   <li><a href="#sec-02-mvc" id="toc-sec-02-mvc" class="nav-link" data-scroll-target="#sec-02-mvc"><span class="header-section-number">2.1.2</span> Model-View-Controller (MVC)</a></li>
   <li><a href="#sec-02-tres-camadas" id="toc-sec-02-tres-camadas" class="nav-link" data-scroll-target="#sec-02-tres-camadas"><span class="header-section-number">2.1.3</span> Arquitetura em Três Camadas</a></li>
+  <li><a href="#sec-02-renderizacao" id="toc-sec-02-renderizacao" class="nav-link" data-scroll-target="#sec-02-renderizacao"><span class="header-section-number">2.1.4</span> Renderização no Servidor e no Cliente</a></li>
   </ul></li>
   <li><a href="#sec-02-infraestruturas" id="toc-sec-02-infraestruturas" class="nav-link" data-scroll-target="#sec-02-infraestruturas"><span class="header-section-number">2.2</span> Infraestruturas</a>
   <ul class="collapse">
@@ -324,6 +325,26 @@ div.csl-indent {
 </ul>
 <p>Um só computador pode desempenhar os dois papéis ao mesmo tempo, correndo tanto o cliente como o servidor, e um servidor pode responder a muitos clientes em simultâneo. O que nunca muda é a direção do pedido: é sempre o cliente que inicia a comunicação, o servidor limita-se a responder. Um servidor não envia dados a um cliente por iniciativa própria, sem que antes exista um pedido.</p>
 <p>Este modelo tem uma consequência direta na forma como uma aplicação web se organiza: o código que corre no cliente, HTML, CSS e JavaScript, é enviado pelo servidor mas depois executado inteiramente no computador do utilizador, fora do controlo do programador de <em>backend</em>; já o código que corre no servidor, neste caso PHP, nunca é visível ao cliente, que recebe apenas o resultado do seu processamento. Esta separação é a base de toda a arquitetura estudada nesta UC: o <em>frontend</em> corre no cliente, o <em>backend</em> corre no servidor, e os dois lados comunicam através do protocolo HTTP.</p>
+<p>Uma <strong>página estática</strong>, um ficheiro <code>.html</code>, é enviada ao cliente tal como está guardada no disco. Uma <strong>página dinâmica</strong>, um ficheiro <code>.php</code>, é executada pelo servidor a cada pedido, e o HTML que o cliente recebe é gerado nesse momento a partir dos dados disponíveis (<a href="#fig-02-pedido-dinamico" class="quarto-xref">Figura&nbsp;<span>2.1</span></a>). No sítio de uma revista <em>online</em>, quando um leitor abre o endereço <code>artigos.php?id=5</code>:</p>
+<ol type="1">
+<li>o <em>browser</em> envia o pedido ao servidor web, através do protocolo HTTP;</li>
+<li>o servidor web, o <code>Apache</code>, reconhece um ficheiro PHP e entrega-o ao interpretador de PHP;</li>
+<li>o PHP executa o código, que pede à base de dados o artigo número 5;</li>
+<li>a base de dados, o <code>MySQL</code>, devolve o título, o autor e o texto desse artigo;</li>
+<li>o PHP insere esses dados num modelo de página e produz HTML;</li>
+<li>o servidor web envia esse HTML ao <em>browser</em>, que o mostra ao leitor.</li>
+</ol>
+<div id="fig-02-pedido-dinamico" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-02-pedido-dinamico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap02/pedido-dinamico.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-pedido-dinamico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.1: Percurso de um pedido a uma página dinâmica: o <em>browser</em> só envia o pedido e recebe HTML; o Apache, o PHP e o MySQL trabalham do lado do servidor.
+</figcaption>
+</figure>
+</div>
+<p>Se o artigo for corrigido na base de dados, o pedido seguinte já mostra a versão corrigida, sem que nenhum ficheiro HTML tenha sido editado.</p>
 </section>
 <section id="sec-02-mvc" class="level3" data-number="2.1.2">
 <h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-02-mvc"><span class="header-section-number">2.1.2</span> Model-View-Controller (MVC)</h3>
@@ -341,6 +362,10 @@ div.csl-indent {
 <p>Intimamente relacionada com o MVC está a arquitetura em três camadas (<em>3-tier</em>), que separa uma aplicação em camada de apresentação (o que o utilizador vê e com que interage), camada de lógica de negócio (o processamento e as regras da aplicação) e camada de dados (o armazenamento persistente). Numa aplicação PHP, isto traduz-se, tipicamente, em HTML/CSS na camada de apresentação, PHP na camada de lógica, e MySQL na camada de dados.</p>
 <p>A diferença entre o MVC e a arquitetura em três camadas é sobretudo de nível: o MVC é um padrão de organização do código dentro de uma aplicação, enquanto a arquitetura em três camadas descreve, de forma mais geral, como essas responsabilidades se distribuem, podendo inclusivamente correr em máquinas físicas diferentes, por exemplo um servidor de aplicação separado do servidor de base de dados. Na prática, para uma aplicação PHP como as desenvolvidas nesta UC, as duas arquiteturas descrevem, em grande medida, a mesma separação de responsabilidades vista de ângulos diferentes.</p>
 </section>
+<section id="sec-02-renderizacao" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="sec-02-renderizacao"><span class="header-section-number">2.1.4</span> Renderização no Servidor e no Cliente</h3>
+<p>No percurso descrito acima, é o servidor que monta a página completa: a página é <strong>renderizada no servidor</strong> (<em>server-side rendering</em>), o modelo do PHP e o seguido neste livro. Nas <strong>aplicações de página única</strong> (<em>Single Page Applications</em>, SPA), feitas com <code>React</code>, <code>Angular</code> ou <code>Vue</code>, acontece o inverso: o servidor envia uma página quase vazia e o código JavaScript, a correr no <em>browser</em>, pede os dados em formato JSON e constrói a página no próprio cliente (<em>client-side rendering</em>). A navegação fica mais fluida, mas o primeiro carregamento é mais pesado. Muitas aplicações combinam os dois modelos.</p>
+</section>
 </section>
 <section id="sec-02-infraestruturas" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="sec-02-infraestruturas"><span class="header-section-number">2.2</span> Infraestruturas</h2>
@@ -348,6 +373,12 @@ div.csl-indent {
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="sec-02-servidores"><span class="header-section-number">2.2.1</span> Servidores</h3>
 <p>Um servidor web é o programa responsável por escutar pedidos HTTP numa porta de rede e devolver respostas, tipicamente páginas web ou dados. É uma peça de <em>software</em> que corre continuamente numa máquina, à espera de novas ligações, capaz de lidar com muitos pedidos em simultâneo, vindos de clientes diferentes. Os servidores web mais usados incluem o <code>Apache</code> e o <code>NGinX</code>, ambos capazes de servir páginas PHP, seja através de um módulo embutido ou de um processo separado (como o <code>PHP-FPM</code>) que o servidor web invoca para executar o código PHP.</p>
 <p>Para além dos servidores web, existem outros tipos de servidores especializados. No mundo Java, por exemplo, há servidores de aplicações como o <code>GlassFish</code>, mantido atualmente pela Eclipse Foundation no âmbito do Jakarta EE, e o <code>WildFly</code> (anteriormente conhecido como JBoss Application Server; hoje o nome do produto comercial suportado pela Red Hat é JBoss EAP). Do lado dos dados, o <code>MySQL Server</code> é o exemplo mais comum no contexto desta UC, correndo como um processo à parte do servidor web, e comunicando com o PHP através de uma ligação de rede local.</p>
+<p>Em produção, estes servidores correm numa máquina sempre ligada à Internet, normalmente de uma de três formas:</p>
+<ul>
+<li><strong>alojamento partilhado</strong>: muitos sítios no mesmo servidor, já configurado com <code>Apache</code>, <code>PHP</code> e <code>MySQL</code>; é barato, mas dá pouco controlo sobre a configuração;</li>
+<li><strong>servidor virtual privado</strong> (<em>Virtual Private Server</em>, VPS): uma máquina virtual alugada, que o programador configura à sua medida;</li>
+<li><strong>nuvem</strong>, como a <code>Amazon Web Services</code>, o <code>Microsoft Azure</code> ou a <code>Google Cloud</code>: infraestrutura ou plataformas prontas a usar, pagas em função dos recursos consumidos.</li>
+</ul>
 </section>
 <section id="sec-02-servicos-web" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="sec-02-servicos-web"><span class="header-section-number">2.2.2</span> Serviços Web (API)</h3>
@@ -362,11 +393,69 @@ div.csl-indent {
 <p>Para desenvolver e testar aplicações web de forma isolada do sistema operativo do computador local, e sem o risco de o resultado do trabalho depender de particularidades desse computador, usam-se ambientes virtualizados. Há duas abordagens principais:</p>
 <p><strong>Máquinas virtuais</strong>: cada máquina virtual inclui o seu próprio sistema operativo completo, para além da aplicação e das suas dependências. A vantagem é isolarem-se completamente umas das outras, e as suas configurações poderem ser partilhadas e reproduzidas com confiança, garantindo que todos os alunos de uma turma trabalham exatamente sobre a mesma configuração de servidor; a desvantagem é a duplicação de recursos, já que cada máquina virtual carrega o seu próprio sistema operativo, e tempos de arranque mais longos.</p>
 <p><strong>Contentores</strong>: em vez de replicarem todo o sistema operativo, os contentores partilham o núcleo do sistema operativo do anfitrião, encapsulando apenas a aplicação e as suas dependências. O <code>Docker</code> é a ferramenta de referência para este modelo. As vantagens são o menor impacto no sistema, o arranque mais rápido e a facilidade de partilha, compilação e distribuição; a desvantagem é um isolamento menos completo do que uma máquina virtual inteira, já que todos os contentores de uma máquina partilham o mesmo núcleo do sistema operativo.</p>
+<p>A tabela seguinte resume as diferenças entre as duas abordagens (<a href="#tbl-02-vm-contentor" class="quarto-xref">Tabela&nbsp;<span>2.1</span></a>).</p>
+<div id="tbl-02-vm-contentor" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-02-vm-contentor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;2.1: Comparação entre máquinas virtuais e contentores.
+</figcaption>
+<div aria-describedby="tbl-02-vm-contentor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 36%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Máquina virtual</th>
+<th>Contentor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sistema operativo</td>
+<td>completo, próprio de cada máquina</td>
+<td>partilha o núcleo do anfitrião</td>
+</tr>
+<tr class="even">
+<td>Tamanho típico</td>
+<td>vários <em>gigabytes</em></td>
+<td>de <em>megabytes</em> a centenas de <em>megabytes</em></td>
+</tr>
+<tr class="odd">
+<td>Arranque</td>
+<td>de dezenas de segundos a minutos</td>
+<td>segundos</td>
+</tr>
+<tr class="even">
+<td>Isolamento</td>
+<td>total</td>
+<td>parcial (núcleo partilhado)</td>
+</tr>
+<tr class="odd">
+<td>Ferramenta de referência</td>
+<td><code>VirtualBox</code></td>
+<td><code>Docker</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>No <code>Docker</code>, três conceitos são essenciais:</p>
+<ul>
+<li><strong>imagem</strong>: o modelo com tudo o que a aplicação precisa para correr;</li>
+<li><strong>contentor</strong>: uma imagem em execução; da mesma imagem podem arrancar-se vários contentores iguais, como da mesma receita se fazem vários bolos;</li>
+<li><strong>Docker Compose</strong>: um ficheiro que descreve vários contentores que trabalham em conjunto, por exemplo o servidor web e a base de dados, arrancados com um só comando.</li>
+</ul>
 <p>Esta distinção não é apenas académica: as mesmas duas abordagens usadas para desenvolver localmente, numa máquina virtual ou num contentor, são também as mais comuns para pôr uma aplicação web em produção num servidor real, o que faz da escolha do ambiente de desenvolvimento uma decisão com impacto direto na forma como a aplicação será depois publicada.</p>
 </section>
 <section id="sec-02-ambiente-uc" class="level3" data-number="2.2.4">
 <h3 data-number="2.2.4" class="anchored" data-anchor-id="sec-02-ambiente-uc"><span class="header-section-number">2.2.4</span> O Ambiente de Trabalho desta UC</h3>
-<p>Nesta UC, o <em>backend</em> é desenvolvido dentro de uma máquina virtual (<code>VirtualBox</code>) com Ubuntu, contendo a <em>stack</em> <code>XAMP</code> (consoante o sistema operativo poderá ser <code>WAMP</code> para o Windows, <code>MAMP</code> para o MAC, <code>XAMP</code> para vários OS), <code>Apache</code> (o servidor), <code>MySQL</code> (a base de dados) e <code>PHP</code> (a linguagem de programação), as quatro iniciais que dão nome ao acrónimo. O editor de texto usado é o <code>Visual Studio Code</code>. Este ambiente isola o trabalho de desenvolvimento do sistema operativo do computador de cada aluno, seja <code>macOS</code>, <code>Ubuntu</code> ou <code>Windows</code>, garantindo que todos trabalham sobre a mesma configuração de servidor, base de dados e linguagem, independentemente do computador usado em casa.</p>
+<p>Nesta UC, o <em>backend</em> é desenvolvido dentro de contentor <em>docker</em> com Ubuntu, contendo o servidor <code>Apache</code> (servidor web), <code>MySQL</code> (a base de dados) e <code>PHP 8</code> (linguagem de programação). O editor de texto usado pode ser qualquer um, como o <code>Visual Studio Code</code>.</p>
+<p>Este ambiente isola a área de desenvolvimento do sistema operativo do computador de cada aluno, seja <code>macOS</code>, <code>Ubuntu</code> ou <code>Windows</code>, garantindo que todos trabalham sobre a mesma configuração de servidor, base de dados e linguagem, independentemente do computador usado em casa.</p>
 </section>
 </section>
 <section id="sec-02-referencias" class="level2 unnumbered">
