@@ -44,26 +44,27 @@ a arquitetura estudada nesta UC: o *frontend* corre no cliente, o
 *backend* corre no servidor, e os dois lados comunicam através do
 protocolo HTTP.
 
-Uma **página estática**, um ficheiro `.html`, é enviada ao cliente tal
-como está guardada no disco. Uma **página dinâmica**, um ficheiro
-`.php`, é executada pelo servidor a cada pedido, e o HTML que o cliente
+Na *web* há dois tipos de páginas: estáticas e dinâmicas. Uma **página estática** é um ficheiro `.html`, que é enviado ao cliente tal
+como está guardado no disco do servidor. Uma **página dinâmica** é um ficheiro
+`.php`, executado pelo servidor a cada pedido, e o HTML que o cliente
 recebe é gerado nesse momento a partir dos dados disponíveis
-(@fig-02-pedido-dinamico). No sítio de uma revista *online*, quando um
+(@fig-02-pedido-dinamico).
+
+Por exemplo, no *site* de uma revista *online*, quando um
 leitor abre o endereço `artigos.php?id=5`:
 
 1. o *browser* envia o pedido ao servidor web, através do protocolo HTTP;
-2. o servidor web, o `Apache`, reconhece um ficheiro PHP e entrega-o ao
-   interpretador de PHP;
-3. o PHP executa o código, que pede à base de dados o artigo número 5;
-4. a base de dados, o `MySQL`, devolve o título, o autor e o texto desse
-   artigo;
+2. o servidor web (por exemplo o `Apache`) reconhece um ficheiro PHP e entrega-o ao
+   **interpretador de PHP**;
+3. o PHP executa o código PHP, que pede à base de dados o artigo número 5;
+4. a base de dados (por exemplo o `MySQL`) devolve o título, o autor e o texto desse
+   artigo ao PHP;
 5. o PHP insere esses dados num modelo de página e produz HTML;
-6. o servidor web envia esse HTML ao *browser*, que o mostra ao leitor.
+6. finalmente, o servidor web envia esse HTML ao *browser*, que o mostra ao leitor.
 
 ![Percurso de um pedido a uma página dinâmica: o *browser* só envia o pedido e recebe HTML; o Apache, o PHP e o MySQL trabalham do lado do servidor.](../assets/images/cap02/pedido-dinamico.png){#fig-02-pedido-dinamico}
 
-Se o artigo for corrigido na base de dados, o pedido seguinte já mostra
-a versão corrigida, sem que nenhum ficheiro HTML tenha sido editado.
+Se o artigo for corrigido na base de dados, o pedido seguinte já mostra a versão corrigida sem que seja preciso editar o ficheiro `artigos.php`: o código mantém-se igual, e é o HTML gerado a cada pedido que passa a incluir os dados atualizados.
 
 ### Model-View-Controller (MVC) {#sec-02-mvc}
 

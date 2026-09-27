@@ -25,18 +25,20 @@ A single computer can play both roles at the same time, running both the client 
 
 This model has a direct consequence on how a web application is organised: the code that runs on the client, HTML, CSS and JavaScript, is sent by the server but then executed entirely on the user's computer, outside the *backend* programmer's control; the code that runs on the server, in this case PHP, is on the other hand never visible to the client, which only receives the result of its processing. This separation is the basis of the whole architecture studied in this course: the *frontend* runs on the client, the *backend* runs on the server, and the two sides communicate through the HTTP protocol.
 
-A **static page**, an `.html` file, is sent to the client exactly as it is stored on disk. A **dynamic page**, a `.php` file, is executed by the server on every request, and the HTML the client receives is generated at that moment from the available data (@fig-02-dynamic-request-en). On an *online* magazine's site, when a reader opens the address `artigos.php?id=5`:
+There are two types of pages on the *web*: static and dynamic. A **static page** is an `.html` file, which is sent to the client exactly as it is stored on the server's disk. A **dynamic page** is a `.php` file, executed by the server on every request, and the HTML the client receives is generated at that moment from the available data (@fig-02-dynamic-request-en).
+
+For example, on an *online* magazine's *site*, when a reader opens the address `artigos.php?id=5`:
 
 1. the *browser* sends the request to the web server, through the HTTP protocol;
-2. the web server, `Apache`, recognises a PHP file and hands it to the PHP interpreter;
-3. PHP runs the code, which asks the database for article number 5;
-4. the database, `MySQL`, returns that article's title, author and text;
+2. the web server (for example `Apache`) recognises a PHP file and hands it to the **PHP interpreter**;
+3. PHP runs the PHP code, which asks the database for article number 5;
+4. the database (for example `MySQL`) returns that article's title, author and text to PHP;
 5. PHP inserts that data into a page template and produces HTML;
-6. the web server sends that HTML to the *browser*, which shows it to the reader.
+6. finally, the web server sends that HTML to the *browser*, which shows it to the reader.
 
 ![Path of a request to a dynamic page: the *browser* only sends the request and receives HTML; Apache, PHP and MySQL work on the server side.](../assets/images/cap02/pedido-dinamico.png){#fig-02-dynamic-request-en}
 
-If the article is corrected in the database, the next request already shows the corrected version, without any HTML file having been edited.
+If the article is corrected in the database, the next request already shows the corrected version without the `artigos.php` file having to be edited: the code stays the same, and it is the HTML generated on each request that now includes the updated data.
 
 ### Model-View-Controller (MVC) {#sec-02-mvc-en}
 

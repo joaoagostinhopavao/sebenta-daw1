@@ -325,14 +325,15 @@ div.csl-indent {
 </ul>
 <p>Um só computador pode desempenhar os dois papéis ao mesmo tempo, correndo tanto o cliente como o servidor, e um servidor pode responder a muitos clientes em simultâneo. O que nunca muda é a direção do pedido: é sempre o cliente que inicia a comunicação, o servidor limita-se a responder. Um servidor não envia dados a um cliente por iniciativa própria, sem que antes exista um pedido.</p>
 <p>Este modelo tem uma consequência direta na forma como uma aplicação web se organiza: o código que corre no cliente, HTML, CSS e JavaScript, é enviado pelo servidor mas depois executado inteiramente no computador do utilizador, fora do controlo do programador de <em>backend</em>; já o código que corre no servidor, neste caso PHP, nunca é visível ao cliente, que recebe apenas o resultado do seu processamento. Esta separação é a base de toda a arquitetura estudada nesta UC: o <em>frontend</em> corre no cliente, o <em>backend</em> corre no servidor, e os dois lados comunicam através do protocolo HTTP.</p>
-<p>Uma <strong>página estática</strong>, um ficheiro <code>.html</code>, é enviada ao cliente tal como está guardada no disco. Uma <strong>página dinâmica</strong>, um ficheiro <code>.php</code>, é executada pelo servidor a cada pedido, e o HTML que o cliente recebe é gerado nesse momento a partir dos dados disponíveis (<a href="#fig-02-pedido-dinamico" class="quarto-xref">Figura&nbsp;<span>2.1</span></a>). No sítio de uma revista <em>online</em>, quando um leitor abre o endereço <code>artigos.php?id=5</code>:</p>
+<p>Na <em>web</em> há dois tipos de páginas: estáticas e dinâmicas. Uma <strong>página estática</strong> é um ficheiro <code>.html</code>, que é enviado ao cliente tal como está guardado no disco do servidor. Uma <strong>página dinâmica</strong> é um ficheiro <code>.php</code>, executado pelo servidor a cada pedido, e o HTML que o cliente recebe é gerado nesse momento a partir dos dados disponíveis (<a href="#fig-02-pedido-dinamico" class="quarto-xref">Figura&nbsp;<span>2.1</span></a>).</p>
+<p>Por exemplo, no <em>site</em> de uma revista <em>online</em>, quando um leitor abre o endereço <code>artigos.php?id=5</code>:</p>
 <ol type="1">
 <li>o <em>browser</em> envia o pedido ao servidor web, através do protocolo HTTP;</li>
-<li>o servidor web, o <code>Apache</code>, reconhece um ficheiro PHP e entrega-o ao interpretador de PHP;</li>
-<li>o PHP executa o código, que pede à base de dados o artigo número 5;</li>
-<li>a base de dados, o <code>MySQL</code>, devolve o título, o autor e o texto desse artigo;</li>
+<li>o servidor web (por exemplo o <code>Apache</code>) reconhece um ficheiro PHP e entrega-o ao <strong>interpretador de PHP</strong>;</li>
+<li>o PHP executa o código PHP, que pede à base de dados o artigo número 5;</li>
+<li>a base de dados (por exemplo o <code>MySQL</code>) devolve o título, o autor e o texto desse artigo ao PHP;</li>
 <li>o PHP insere esses dados num modelo de página e produz HTML;</li>
-<li>o servidor web envia esse HTML ao <em>browser</em>, que o mostra ao leitor.</li>
+<li>finalmente, o servidor web envia esse HTML ao <em>browser</em>, que o mostra ao leitor.</li>
 </ol>
 <div id="fig-02-pedido-dinamico" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -344,7 +345,7 @@ Figura&nbsp;2.1: Percurso de um pedido a uma página dinâmica: o <em>browser</e
 </figcaption>
 </figure>
 </div>
-<p>Se o artigo for corrigido na base de dados, o pedido seguinte já mostra a versão corrigida, sem que nenhum ficheiro HTML tenha sido editado.</p>
+<p>Se o artigo for corrigido na base de dados, o pedido seguinte já mostra a versão corrigida sem que seja preciso editar o ficheiro <code>artigos.php</code>: o código mantém-se igual, e é o HTML gerado a cada pedido que passa a incluir os dados atualizados.</p>
 </section>
 <section id="sec-02-mvc" class="level3" data-number="2.1.2">
 <h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-02-mvc"><span class="header-section-number">2.1.2</span> Model-View-Controller (MVC)</h3>

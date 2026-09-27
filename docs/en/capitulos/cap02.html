@@ -326,14 +326,15 @@ div.csl-indent {
 </ul>
 <p>A single computer can play both roles at the same time, running both the client and the server, and a server can respond to many clients simultaneously. What never changes is the direction of the request: it is always the client that starts the communication, the server only responds. A server does not send data to a client on its own initiative, without a prior request.</p>
 <p>This model has a direct consequence on how a web application is organised: the code that runs on the client, HTML, CSS and JavaScript, is sent by the server but then executed entirely on the user’s computer, outside the <em>backend</em> programmer’s control; the code that runs on the server, in this case PHP, is on the other hand never visible to the client, which only receives the result of its processing. This separation is the basis of the whole architecture studied in this course: the <em>frontend</em> runs on the client, the <em>backend</em> runs on the server, and the two sides communicate through the HTTP protocol.</p>
-<p>A <strong>static page</strong>, an <code>.html</code> file, is sent to the client exactly as it is stored on disk. A <strong>dynamic page</strong>, a <code>.php</code> file, is executed by the server on every request, and the HTML the client receives is generated at that moment from the available data (<a href="#fig-02-dynamic-request-en" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>). On an <em>online</em> magazine’s site, when a reader opens the address <code>artigos.php?id=5</code>:</p>
+<p>There are two types of pages on the <em>web</em>: static and dynamic. A <strong>static page</strong> is an <code>.html</code> file, which is sent to the client exactly as it is stored on the server’s disk. A <strong>dynamic page</strong> is a <code>.php</code> file, executed by the server on every request, and the HTML the client receives is generated at that moment from the available data (<a href="#fig-02-dynamic-request-en" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>).</p>
+<p>For example, on an <em>online</em> magazine’s <em>site</em>, when a reader opens the address <code>artigos.php?id=5</code>:</p>
 <ol type="1">
 <li>the <em>browser</em> sends the request to the web server, through the HTTP protocol;</li>
-<li>the web server, <code>Apache</code>, recognises a PHP file and hands it to the PHP interpreter;</li>
-<li>PHP runs the code, which asks the database for article number 5;</li>
-<li>the database, <code>MySQL</code>, returns that article’s title, author and text;</li>
+<li>the web server (for example <code>Apache</code>) recognises a PHP file and hands it to the <strong>PHP interpreter</strong>;</li>
+<li>PHP runs the PHP code, which asks the database for article number 5;</li>
+<li>the database (for example <code>MySQL</code>) returns that article’s title, author and text to PHP;</li>
 <li>PHP inserts that data into a page template and produces HTML;</li>
-<li>the web server sends that HTML to the <em>browser</em>, which shows it to the reader.</li>
+<li>finally, the web server sends that HTML to the <em>browser</em>, which shows it to the reader.</li>
 </ol>
 <div id="fig-02-dynamic-request-en" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -345,7 +346,7 @@ Figure&nbsp;2.1: Path of a request to a dynamic page: the <em>browser</em> only 
 </figcaption>
 </figure>
 </div>
-<p>If the article is corrected in the database, the next request already shows the corrected version, without any HTML file having been edited.</p>
+<p>If the article is corrected in the database, the next request already shows the corrected version without the <code>artigos.php</code> file having to be edited: the code stays the same, and it is the HTML generated on each request that now includes the updated data.</p>
 </section>
 <section id="sec-02-mvc-en" class="level3" data-number="2.1.2">
 <h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-02-mvc-en"><span class="header-section-number">2.1.2</span> Model-View-Controller (MVC)</h3>
