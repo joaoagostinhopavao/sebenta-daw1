@@ -25,6 +25,19 @@ A single computer can play both roles at the same time, running both the client 
 
 This model has a direct consequence on how a web application is organised: the code that runs on the client, HTML, CSS and JavaScript, is sent by the server but then executed entirely on the user's computer, outside the *backend* programmer's control; the code that runs on the server, in this case PHP, is on the other hand never visible to the client, which only receives the result of its processing. This separation is the basis of the whole architecture studied in this course: the *frontend* runs on the client, the *backend* runs on the server, and the two sides communicate through the HTTP protocol.
 
+A **static page**, an `.html` file, is sent to the client exactly as it is stored on disk. A **dynamic page**, a `.php` file, is executed by the server on every request, and the HTML the client receives is generated at that moment from the available data (@fig-02-dynamic-request-en). On an *online* magazine's site, when a reader opens the address `artigos.php?id=5`:
+
+1. the *browser* sends the request to the web server, through the HTTP protocol;
+2. the web server, `Apache`, recognises a PHP file and hands it to the PHP interpreter;
+3. PHP runs the code, which asks the database for article number 5;
+4. the database, `MySQL`, returns that article's title, author and text;
+5. PHP inserts that data into a page template and produces HTML;
+6. the web server sends that HTML to the *browser*, which shows it to the reader.
+
+![Path of a request to a dynamic page: the *browser* only sends the request and receives HTML; Apache, PHP and MySQL work on the server side.](../assets/images/cap02/pedido-dinamico.png){#fig-02-dynamic-request-en}
+
+If the article is corrected in the database, the next request already shows the corrected version, without any HTML file having been edited.
+
 ### Model-View-Controller (MVC) {#sec-02-mvc-en}
 
 MVC is a software architecture pattern, originally proposed by Trygve Reenskaug in 1978, during his work at Xerox PARC on the Smalltalk language [@reenskaug2003mvc]. Today it is one of the most used patterns in web application development, and separates the application into three components:
@@ -43,6 +56,10 @@ Closely related to MVC is three-tier architecture (*3-tier*), which separates an
 
 The difference between MVC and three-tier architecture is mainly one of level: MVC is a pattern for organising code within an application, while three-tier architecture describes, more generally, how those responsibilities are distributed, and can even run on different physical machines, for example an application server separate from the database server. In practice, for a PHP application like the ones developed in this course, the two architectures describe, to a large extent, the same separation of responsibilities seen from different angles.
 
+### Server-Side and Client-Side Rendering {#sec-02-rendering-en}
+
+In the path described above, it is the server that assembles the complete page: the page is **rendered on the server** (*server-side rendering*), the PHP model and the one followed in this book. In **Single Page Applications** (SPA), built with `React`, `Angular` or `Vue`, the opposite happens: the server sends an almost empty page and the JavaScript code, running in the *browser*, requests the data in JSON format and builds the page on the client itself (*client-side rendering*). Navigation becomes smoother, but the first load is heavier. Many applications combine the two models.
+
 ## Infrastructure {#sec-02-infrastructure-en}
 
 ### Servers {#sec-02-servers-en}
@@ -50,6 +67,12 @@ The difference between MVC and three-tier architecture is mainly one of level: M
 A web server is the program responsible for listening for HTTP requests on a network port and returning responses, typically web pages or data. It is a piece of *software* that runs continuously on a machine, waiting for new connections, capable of handling many simultaneous requests from different clients. The most used web servers include `Apache` and `NGinX`, both capable of serving PHP pages, either through a built-in module or a separate process (such as `PHP-FPM`) that the web server invokes to run the PHP code.
 
 Besides web servers, there are other specialised types of servers. In the Java world, for example, there are application servers such as `GlassFish`, currently maintained by the Eclipse Foundation as part of Jakarta EE, and `WildFly` (formerly known as JBoss Application Server; today the name of the commercial product supported by Red Hat is JBoss EAP). On the data side, `MySQL Server` is the most common example in the context of this course, running as a process separate from the web server, and communicating with PHP through a local network connection.
+
+In production, these servers run on a machine permanently connected to the Internet, usually in one of three ways:
+
+- **shared hosting**: many sites on the same server, already configured with `Apache`, `PHP` and `MySQL`; it is cheap, but gives little control over the configuration;
+- **virtual private server** (VPS): a rented virtual machine, which the programmer configures to suit their needs;
+- **cloud**, such as `Amazon Web Services`, `Microsoft Azure` or `Google Cloud`: infrastructure or ready-to-use platforms, paid for according to the resources consumed.
 
 ### Web Services (API) {#sec-02-web-services-en}
 
@@ -66,11 +89,31 @@ To develop and test web applications in isolation from the local computer's oper
 
 **Containers**: instead of replicating the whole operating system, containers share the host operating system's kernel, encapsulating only the application and its dependencies. `Docker` is the reference tool for this model. The advantages are a smaller system footprint, faster startup, and ease of sharing, building and distribution; the disadvantage is less complete isolation than a whole virtual machine, since all the containers on a machine share the same operating system kernel.
 
+The following table summarises the differences between the two approaches (@tbl-02-vm-container-en).
+
+|                    | Virtual machine                     | Container                          |
+|--------------------|-------------------------------------|------------------------------------|
+| Operating system   | complete, specific to each machine  | shares the host's kernel           |
+| Typical size       | several *gigabytes*                 | from *megabytes* to hundreds of *megabytes* |
+| Startup            | from tens of seconds to minutes     | seconds                            |
+| Isolation          | full                                | partial (shared kernel)            |
+| Reference tool     | `VirtualBox`                        | `Docker`                           |
+
+: Comparison between virtual machines and containers. {#tbl-02-vm-container-en}
+
+In `Docker`, three concepts are essential:
+
+- **image**: the template with everything the application needs to run;
+- **container**: an image in execution; several identical containers can be started from the same image, just as several cakes can be made from the same recipe;
+- **Docker Compose**: a file describing several containers that work together, for example the web server and the database, started with a single command.
+
 This distinction is not merely academic: the same two approaches used to develop locally, in a virtual machine or in a container, are also the most common ways to put a web application into production on a real server, which makes the choice of development environment a decision with a direct impact on how the application will later be published.
 
 ### This Course's Working Environment {#sec-02-course-environment-en}
 
-In this course, the *backend* is developed inside a virtual machine (`VirtualBox`) with Ubuntu, containing the `XAMP` *stack* (depending on the operating system it may be `WAMP` for Windows, `MAMP` for Mac, `XAMP` for various OSes), `Apache` (the server), `MySQL` (the database) and `PHP` (the programming language), the four initials that give the acronym its name. The text editor used is `Visual Studio Code`. This environment isolates the development work from each student's own computer operating system, be it `macOS`, `Ubuntu` or `Windows`, ensuring that everyone works on the same server, database and language configuration, regardless of the computer used at home.
+In this course, the *backend* is developed inside a *docker* container with Ubuntu, containing the `Apache` server (web server), `MySQL` (the database) and `PHP 8` (programming language). Any text editor can be used, such as `Visual Studio Code`.
+
+This environment isolates the development area from each student's own computer operating system, be it `macOS`, `Ubuntu` or `Windows`, ensuring that everyone works on the same server, database and language configuration, regardless of the computer used at home.
 
 ## References {#sec-02-references-en .unnumbered}
 

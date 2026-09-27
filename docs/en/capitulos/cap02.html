@@ -264,6 +264,7 @@ div.csl-indent {
   <li><a href="#sec-02-client-server-en" id="toc-sec-02-client-server-en" class="nav-link" data-scroll-target="#sec-02-client-server-en"><span class="header-section-number">2.1.1</span> Client-Server Architecture</a></li>
   <li><a href="#sec-02-mvc-en" id="toc-sec-02-mvc-en" class="nav-link" data-scroll-target="#sec-02-mvc-en"><span class="header-section-number">2.1.2</span> Model-View-Controller (MVC)</a></li>
   <li><a href="#sec-02-three-tier-en" id="toc-sec-02-three-tier-en" class="nav-link" data-scroll-target="#sec-02-three-tier-en"><span class="header-section-number">2.1.3</span> Three-Tier Architecture</a></li>
+  <li><a href="#sec-02-rendering-en" id="toc-sec-02-rendering-en" class="nav-link" data-scroll-target="#sec-02-rendering-en"><span class="header-section-number">2.1.4</span> Server-Side and Client-Side Rendering</a></li>
   </ul></li>
   <li><a href="#sec-02-infrastructure-en" id="toc-sec-02-infrastructure-en" class="nav-link" data-scroll-target="#sec-02-infrastructure-en"><span class="header-section-number">2.2</span> Infrastructure</a>
   <ul class="collapse">
@@ -325,6 +326,26 @@ div.csl-indent {
 </ul>
 <p>A single computer can play both roles at the same time, running both the client and the server, and a server can respond to many clients simultaneously. What never changes is the direction of the request: it is always the client that starts the communication, the server only responds. A server does not send data to a client on its own initiative, without a prior request.</p>
 <p>This model has a direct consequence on how a web application is organised: the code that runs on the client, HTML, CSS and JavaScript, is sent by the server but then executed entirely on the user’s computer, outside the <em>backend</em> programmer’s control; the code that runs on the server, in this case PHP, is on the other hand never visible to the client, which only receives the result of its processing. This separation is the basis of the whole architecture studied in this course: the <em>frontend</em> runs on the client, the <em>backend</em> runs on the server, and the two sides communicate through the HTTP protocol.</p>
+<p>A <strong>static page</strong>, an <code>.html</code> file, is sent to the client exactly as it is stored on disk. A <strong>dynamic page</strong>, a <code>.php</code> file, is executed by the server on every request, and the HTML the client receives is generated at that moment from the available data (<a href="#fig-02-dynamic-request-en" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>). On an <em>online</em> magazine’s site, when a reader opens the address <code>artigos.php?id=5</code>:</p>
+<ol type="1">
+<li>the <em>browser</em> sends the request to the web server, through the HTTP protocol;</li>
+<li>the web server, <code>Apache</code>, recognises a PHP file and hands it to the PHP interpreter;</li>
+<li>PHP runs the code, which asks the database for article number 5;</li>
+<li>the database, <code>MySQL</code>, returns that article’s title, author and text;</li>
+<li>PHP inserts that data into a page template and produces HTML;</li>
+<li>the web server sends that HTML to the <em>browser</em>, which shows it to the reader.</li>
+</ol>
+<div id="fig-02-dynamic-request-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-02-dynamic-request-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/cap02/pedido-dinamico.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-dynamic-request-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Path of a request to a dynamic page: the <em>browser</em> only sends the request and receives HTML; Apache, PHP and MySQL work on the server side.
+</figcaption>
+</figure>
+</div>
+<p>If the article is corrected in the database, the next request already shows the corrected version, without any HTML file having been edited.</p>
 </section>
 <section id="sec-02-mvc-en" class="level3" data-number="2.1.2">
 <h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-02-mvc-en"><span class="header-section-number">2.1.2</span> Model-View-Controller (MVC)</h3>
@@ -342,6 +363,10 @@ div.csl-indent {
 <p>Closely related to MVC is three-tier architecture (<em>3-tier</em>), which separates an application into a presentation tier (what the user sees and interacts with), a business logic tier (the application’s processing and rules) and a data tier (persistent storage). In a PHP application, this typically translates into HTML/CSS at the presentation tier, PHP at the logic tier, and MySQL at the data tier.</p>
 <p>The difference between MVC and three-tier architecture is mainly one of level: MVC is a pattern for organising code within an application, while three-tier architecture describes, more generally, how those responsibilities are distributed, and can even run on different physical machines, for example an application server separate from the database server. In practice, for a PHP application like the ones developed in this course, the two architectures describe, to a large extent, the same separation of responsibilities seen from different angles.</p>
 </section>
+<section id="sec-02-rendering-en" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="sec-02-rendering-en"><span class="header-section-number">2.1.4</span> Server-Side and Client-Side Rendering</h3>
+<p>In the path described above, it is the server that assembles the complete page: the page is <strong>rendered on the server</strong> (<em>server-side rendering</em>), the PHP model and the one followed in this book. In <strong>Single Page Applications</strong> (SPA), built with <code>React</code>, <code>Angular</code> or <code>Vue</code>, the opposite happens: the server sends an almost empty page and the JavaScript code, running in the <em>browser</em>, requests the data in JSON format and builds the page on the client itself (<em>client-side rendering</em>). Navigation becomes smoother, but the first load is heavier. Many applications combine the two models.</p>
+</section>
 </section>
 <section id="sec-02-infrastructure-en" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="sec-02-infrastructure-en"><span class="header-section-number">2.2</span> Infrastructure</h2>
@@ -349,6 +374,12 @@ div.csl-indent {
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="sec-02-servers-en"><span class="header-section-number">2.2.1</span> Servers</h3>
 <p>A web server is the program responsible for listening for HTTP requests on a network port and returning responses, typically web pages or data. It is a piece of <em>software</em> that runs continuously on a machine, waiting for new connections, capable of handling many simultaneous requests from different clients. The most used web servers include <code>Apache</code> and <code>NGinX</code>, both capable of serving PHP pages, either through a built-in module or a separate process (such as <code>PHP-FPM</code>) that the web server invokes to run the PHP code.</p>
 <p>Besides web servers, there are other specialised types of servers. In the Java world, for example, there are application servers such as <code>GlassFish</code>, currently maintained by the Eclipse Foundation as part of Jakarta EE, and <code>WildFly</code> (formerly known as JBoss Application Server; today the name of the commercial product supported by Red Hat is JBoss EAP). On the data side, <code>MySQL Server</code> is the most common example in the context of this course, running as a process separate from the web server, and communicating with PHP through a local network connection.</p>
+<p>In production, these servers run on a machine permanently connected to the Internet, usually in one of three ways:</p>
+<ul>
+<li><strong>shared hosting</strong>: many sites on the same server, already configured with <code>Apache</code>, <code>PHP</code> and <code>MySQL</code>; it is cheap, but gives little control over the configuration;</li>
+<li><strong>virtual private server</strong> (VPS): a rented virtual machine, which the programmer configures to suit their needs;</li>
+<li><strong>cloud</strong>, such as <code>Amazon Web Services</code>, <code>Microsoft Azure</code> or <code>Google Cloud</code>: infrastructure or ready-to-use platforms, paid for according to the resources consumed.</li>
+</ul>
 </section>
 <section id="sec-02-web-services-en" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="sec-02-web-services-en"><span class="header-section-number">2.2.2</span> Web Services (API)</h3>
@@ -363,11 +394,69 @@ div.csl-indent {
 <p>To develop and test web applications in isolation from the local computer’s operating system, and without the risk of the work’s outcome depending on that computer’s particularities, virtualised environments are used. There are two main approaches:</p>
 <p><strong>Virtual machines</strong>: each virtual machine includes its own complete operating system, in addition to the application and its dependencies. The advantage is that they are completely isolated from one another, and their configurations can be shared and reproduced reliably, ensuring that every student in a class works on exactly the same server configuration; the disadvantage is duplicated resources, since each virtual machine loads its own operating system, and longer startup times.</p>
 <p><strong>Containers</strong>: instead of replicating the whole operating system, containers share the host operating system’s kernel, encapsulating only the application and its dependencies. <code>Docker</code> is the reference tool for this model. The advantages are a smaller system footprint, faster startup, and ease of sharing, building and distribution; the disadvantage is less complete isolation than a whole virtual machine, since all the containers on a machine share the same operating system kernel.</p>
+<p>The following table summarises the differences between the two approaches (<a href="#tbl-02-vm-container-en" class="quarto-xref">Table&nbsp;<span>2.1</span></a>).</p>
+<div id="tbl-02-vm-container-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-02-vm-container-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.1: Comparison between virtual machines and containers.
+</figcaption>
+<div aria-describedby="tbl-02-vm-container-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 39%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Virtual machine</th>
+<th>Container</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Operating system</td>
+<td>complete, specific to each machine</td>
+<td>shares the host’s kernel</td>
+</tr>
+<tr class="even">
+<td>Typical size</td>
+<td>several <em>gigabytes</em></td>
+<td>from <em>megabytes</em> to hundreds of <em>megabytes</em></td>
+</tr>
+<tr class="odd">
+<td>Startup</td>
+<td>from tens of seconds to minutes</td>
+<td>seconds</td>
+</tr>
+<tr class="even">
+<td>Isolation</td>
+<td>full</td>
+<td>partial (shared kernel)</td>
+</tr>
+<tr class="odd">
+<td>Reference tool</td>
+<td><code>VirtualBox</code></td>
+<td><code>Docker</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>In <code>Docker</code>, three concepts are essential:</p>
+<ul>
+<li><strong>image</strong>: the template with everything the application needs to run;</li>
+<li><strong>container</strong>: an image in execution; several identical containers can be started from the same image, just as several cakes can be made from the same recipe;</li>
+<li><strong>Docker Compose</strong>: a file describing several containers that work together, for example the web server and the database, started with a single command.</li>
+</ul>
 <p>This distinction is not merely academic: the same two approaches used to develop locally, in a virtual machine or in a container, are also the most common ways to put a web application into production on a real server, which makes the choice of development environment a decision with a direct impact on how the application will later be published.</p>
 </section>
 <section id="sec-02-course-environment-en" class="level3" data-number="2.2.4">
 <h3 data-number="2.2.4" class="anchored" data-anchor-id="sec-02-course-environment-en"><span class="header-section-number">2.2.4</span> This Course’s Working Environment</h3>
-<p>In this course, the <em>backend</em> is developed inside a virtual machine (<code>VirtualBox</code>) with Ubuntu, containing the <code>XAMP</code> <em>stack</em> (depending on the operating system it may be <code>WAMP</code> for Windows, <code>MAMP</code> for Mac, <code>XAMP</code> for various OSes), <code>Apache</code> (the server), <code>MySQL</code> (the database) and <code>PHP</code> (the programming language), the four initials that give the acronym its name. The text editor used is <code>Visual Studio Code</code>. This environment isolates the development work from each student’s own computer operating system, be it <code>macOS</code>, <code>Ubuntu</code> or <code>Windows</code>, ensuring that everyone works on the same server, database and language configuration, regardless of the computer used at home.</p>
+<p>In this course, the <em>backend</em> is developed inside a <em>docker</em> container with Ubuntu, containing the <code>Apache</code> server (web server), <code>MySQL</code> (the database) and <code>PHP 8</code> (programming language). Any text editor can be used, such as <code>Visual Studio Code</code>.</p>
+<p>This environment isolates the development area from each student’s own computer operating system, be it <code>macOS</code>, <code>Ubuntu</code> or <code>Windows</code>, ensuring that everyone works on the same server, database and language configuration, regardless of the computer used at home.</p>
 </section>
 </section>
 <section id="sec-02-references-en" class="level2 unnumbered">
