@@ -564,7 +564,8 @@ condicionais:
 2. Mostrar o título do terceiro artigo do catálogo;
 3. Construir um array `$categorias` com as categorias já usadas nos
    artigos, sem repetições, e ordená-lo por ordem alfabética com
-   `sort()`;
+   `sort()` (dica: `array_column()` extrai as categorias e
+   `array_unique()` elimina as repetições);
 4. Verificar, com `in_array()`, se a categoria `"Entrevistas"` já está
    presente no array `$categorias` construído no ponto anterior.
 

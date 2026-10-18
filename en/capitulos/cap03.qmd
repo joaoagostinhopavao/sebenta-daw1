@@ -366,7 +366,7 @@ Tiago now knows how to represent an article, and a list of articles, as arrays. 
 
 1. Complete the `$artigos` array with at least five articles, each with a title, author and category;
 2. Display the title of the third article in the catalogue;
-3. Build a `$categorias` array with the categories already used in the articles, with no repeats, and sort it alphabetically with `sort()`;
+3. Build a `$categorias` array with the categories already used in the articles, with no repeats, and sort it alphabetically with `sort()` (hint: `array_column()` extracts the categories and `array_unique()` removes the repeats);
 4. Check, with `in_array()`, whether the category `"Entrevistas"` is already present in the `$categorias` array built in the previous point.
 
 The starter file, with the `$artigos` array partially filled in, is available in @sec-apC-cap03-en.

@@ -14,7 +14,39 @@ lang: en-GB
 
 ## Conditional Structures {#sec-04-conditionals-en}
 
-With the article catalogue complete, Tiago notices that not everything in the `$artigos` array should be treated the same way: an article can be ready to publish, or it can still just be a draft that Rita is reviewing. With what he knows so far, the only code he can write is a direct `echo`, always executed the same way, never varying with the data: there is no way to say "show this **if** the article is published, but not if it is still a draft". This is exactly the kind of decision a conditional structure allows: it evaluates whether a condition is true or false, and executes a different block of code depending on the result, directing the flow of the program according to the data. In PHP, the most common structure is `if`/`else`, and it solves the article-status problem well:
+With the article catalogue complete, Tiago notices that not everything in the `$artigos` array should be treated the same way: an article can be ready to publish, or it can still just be a draft that Rita is reviewing. With what he knows so far, the only code he can write is a direct `echo`, always executed the same way, never varying with the data: there is no way to say "show this **if** the article is published, but not if it is still a draft". This is exactly the kind of decision a conditional structure allows: it evaluates whether a condition is true or false, and executes a different block of code depending on the result, directing the flow of the program according to the data. Before writing the first one, it is worth understanding what a condition is made of.
+
+### Comparison Operators {#sec-04-comparison-operators-en}
+
+A condition is almost always a comparison between two values: is the article's status equal to `"publicado"`? Is the number of views greater than or equal to 1000? These questions are written with comparison operators, which evaluate two values and always return a boolean, `true` or `false`:
+
+| Operator | Meaning |
+|----------|-------------|
+| `==`     | equal (compares only the value) |
+| `===`    | identical (compares the value and the type) |
+| `!=`     | not equal (compares only the value) |
+| `!==`    | not identical (compares the value and the type) |
+| `<`      | less than |
+| `>`      | greater than |
+| `<=`     | less than or equal to |
+| `>=`     | greater than or equal to |
+
+The distinction between `==` and `===` is one of the most common sources of subtle bugs in PHP, precisely because PHP automatically converts between types when using `==`:
+
+| Comparison     | Result  | Why |
+|-------------|----------|-------------------------------------|
+| `5 == "5"`     | `true`  | the string `"5"` is converted to the number 5 |
+| `5 === "5"`    | `false` | one value is an `integer`, the other a string |
+| `"1" == "01"`  | `true`  | both strings look like numbers, so they are compared as numbers |
+| `"1" === "01"` | `false` | they are different strings |
+| `0 == false`   | `true`  | `false` is converted to the number 0 |
+| `0 === false`  | `false` | one value is an `integer`, the other a boolean |
+
+For this reason, it is good practice to use `===` whenever the goal is to guarantee two values are really equal, both in value and in type, avoiding comparisons that rely on automatic conversions that are not always obvious. This distinction will become particularly relevant later in the book, once Tiago starts receiving data from real HTTP requests, in @sec-07-superglobals-en: an article identifier received through the URL always arrives as a *string*, even when it represents a number, and comparing that *string* against an `id` stored as an `integer` can have unexpected results if `==` is used instead of `===`.
+
+### `if`/`else`, `elseif` and `switch` {#sec-04-if-else-en}
+
+With comparison operators, Tiago can now write his first condition. In PHP, the most common conditional structure is `if`/`else`, and it solves the article-status problem well:
 
 ```php
 <?php
@@ -44,15 +76,14 @@ if ($vistas >= 1000) {
 }
 ```
 
-This views problem is well solved with `elseif` because each alternative depends on a different range of values. But when Tiago wants to decide the site section from an article's exact category, always comparing the same `$categoria` variable against several possible values, one by one, writing an `elseif` for each category starts to get repetitive: `elseif ($categoria === "Cultura")`, `elseif ($categoria === "Música")`, and so on. There is another, simpler way for Tiago to do the same thing, whenever what is at stake is comparing a single variable against several exact values: `switch`. Notice the use of `break`: without it, execution would continue on to the next `case` even after finding a match, a behaviour called *fallthrough*, sometimes used on purpose, as in the first two lines of the example, to group several cases under the same site section:
+This views problem is well solved with `elseif` because each alternative depends on a different range of values. But when Tiago wants to decide the site section from an article's exact category, always comparing the same `$categoria` variable against several possible values, one by one, writing an `elseif` for each category starts to get repetitive: `elseif ($categoria === "Cultura")`, `elseif ($categoria === "Tecnologia")`, and so on. There is another, simpler way for Tiago to do the same thing, whenever what is at stake is comparing a single variable against several exact values: `switch`. Each `case` ends with `break`, which exits the `switch`: without it, execution would continue on to the next `case` even after finding a match, which is almost always a mistake. `default` works like `else`, and runs when no `case` matches:
 
 ```php
 <?php
-$categoria = "Música";
+$categoria = "Tecnologia";
 
 switch ($categoria) {
     case "Cultura":
-    case "Música":
         echo "Secção Lazer";
         break;
     case "Tecnologia":
@@ -63,41 +94,14 @@ switch ($categoria) {
 }
 ```
 
-### Comparison Operators {#sec-04-comparison-operators-en}
-
-While testing the article-status `if`, Tiago runs into a detail of PHP that is worth understanding well before moving on. Conditions rest on comparison operators, which evaluate two values and always return a boolean, `true` or `false`:
-
-| Operator | Meaning |
-|----------|-------------|
-| `==`     | equal (compares only the value) |
-| `===`    | identical (compares the value and the type) |
-| `!=`     | not equal (compares only the value) |
-| `!==`    | not identical (compares the value and the type) |
-| `<`      | less than |
-| `>`      | greater than |
-| `<=`     | less than or equal to |
-| `>=`     | greater than or equal to |
-
-The distinction between `==` and `===` is one of the most common sources of subtle bugs in PHP, precisely because PHP automatically converts between types when using `==`:
-
-```php
-<?php
-var_dump(0 == "abc");    // false in most current PHP versions
-var_dump(0 == "0");      // true: "0" is converted to the number 0
-var_dump(0 === "0");     // false: different types, integer vs string
-var_dump("10" == "1e1"); // true: both converted to the same number
-var_dump("10" === "1e1");// false: they are different strings
-```
-
-For this reason, it is good practice to use `===` whenever the goal is to guarantee two values are really equal, both in value and in type, avoiding comparisons that rely on automatic conversions that are not always obvious. This distinction will become particularly relevant later in the book, once Tiago starts receiving data from real HTTP requests, in @sec-07-superglobals-en: an article identifier received through the URL always arrives as a *string*, even when it represents a number, and comparing that *string* against an `id` stored as an `integer` can have unexpected results if `==` is used instead of `===`.
-
 ### Logical Operators {#sec-04-logical-operators-en}
 
 Tiago realises that showing an article, in practice, depends on two conditions at once: the article has to be published, **and** its category cannot in the meantime have been archived. Testing this with two separate `if`s would require nesting one inside the other; combining both conditions into one is the role of logical operators:
 
 - **`and`** (or `&&`): true only if both conditions are true;
 - **`or`** (or `||`): true if at least one of the conditions is true;
-- **`xor`**: true if exactly one of the two conditions is true, but not both.
+- **`xor`**: true if exactly one of the two conditions is true, but not both;
+- **`!`** (*not*): inverts a condition; `!$publicado` is true when the article is not published.
 
 ```php
 <?php

@@ -24,8 +24,56 @@ nunca variar consoante os dados: não há forma de dizer "mostra isto
 exatamente este tipo de decisão que uma estrutura condicional permite
 tomar: avalia se uma condição é verdadeira ou falsa, e executa um bloco
 de código diferente consoante o resultado, direcionando o fluxo do
-programa de acordo com os dados. Em PHP, a estrutura mais comum é o
-`if`/`else`, e resolve bem o problema do estado do artigo:
+programa de acordo com os dados. Antes de escrever a primeira, convém
+perceber de que é feita uma condição.
+
+### Operadores de Comparação {#sec-04-operadores-comparacao}
+
+Uma condição é, quase sempre, uma comparação entre dois valores: o
+estado do artigo é igual a `"publicado"`? O número de vistas é maior ou
+igual a 1000? Estas perguntas escrevem-se com operadores de comparação,
+que avaliam dois valores e devolvem sempre um booleano, `true` ou
+`false`:
+
+| Operador | Significado |
+|----------|-------------|
+| `==`     | igual (compara apenas o valor) |
+| `===`    | idêntico (compara o valor e o tipo) |
+| `!=`     | diferente (compara apenas o valor) |
+| `!==`    | não idêntico (compara o valor e o tipo) |
+| `<`      | menor que |
+| `>`      | maior que |
+| `<=`     | menor ou igual a |
+| `>=`     | maior ou igual a |
+
+A distinção entre `==` e `===` é uma das fontes mais comuns de erros
+subtis em PHP, precisamente por o PHP converter automaticamente entre
+tipos ao usar `==`:
+
+| Comparação     | Resultado | Porquê |
+|-------------|----------|-------------------------------------|
+| `5 == "5"`     | `true`    | a *string* `"5"` é convertida no número 5 |
+| `5 === "5"`    | `false`   | um valor é `integer`, o outro é *string* |
+| `"1" == "01"`  | `true`    | as duas *strings* parecem números, por isso são comparadas como números |
+| `"1" === "01"` | `false`   | são *strings* diferentes |
+| `0 == false`   | `true`    | `false` é convertido no número 0 |
+| `0 === false`  | `false`   | um valor é `integer`, o outro é booleano |
+
+Por esta razão, é boa prática usar `===` sempre que se quer garantir que
+dois valores são realmente iguais, tanto no valor como no tipo, evitando
+comparações que dependam de conversões automáticas nem sempre óbvias.
+Esta distinção vai ser particularmente relevante mais adiante no livro,
+quando Tiago começar a receber dados de pedidos HTTP reais, na
+@sec-07-supervariaveis: um identificador de artigo recebido pela URL
+chega sempre como *string*, mesmo que represente um número, e comparar
+essa *string* com um `id` guardado como `integer` pode ter resultados
+inesperados se se usar `==` em vez de `===`.
+
+### `if`/`else`, `elseif` e `switch` {#sec-04-if-else}
+
+Com os operadores de comparação, Tiago já consegue escrever a primeira
+condição. Em PHP, a estrutura condicional mais comum é o `if`/`else`, e
+resolve bem o problema do estado do artigo:
 
 ```php
 <?php
@@ -66,22 +114,21 @@ quer decidir a secção do sítio a partir da categoria exata de um
 artigo, comparando sempre a mesma variável `$categoria` com vários
 valores possíveis, um a um, escrever um `elseif` para cada categoria
 começa a ficar repetitivo: `elseif ($categoria === "Cultura")`,
-`elseif ($categoria === "Música")`, e assim sucessivamente. Há uma
+`elseif ($categoria === "Tecnologia")`, e assim sucessivamente. Há uma
 outra maneira mais simples de Tiago fazer a mesma coisa, sempre que o
 que está em causa é comparar uma única variável com vários valores
-exatos: o `switch`. Repare-se no uso do `break`: sem ele, a execução
-continuaria para o `case` seguinte mesmo depois de encontrar uma
-correspondência, um comportamento chamado *fallthrough*, por vezes
-usado propositadamente, como nas duas primeiras linhas do exemplo, para
-agrupar vários casos sob a mesma secção do sítio:
+exatos: o `switch`. Cada `case` termina com `break`, que faz sair do
+`switch`: sem ele, a execução continuaria para o `case` seguinte mesmo
+depois de encontrar uma correspondência, o que é quase sempre um erro.
+O `default` funciona como o `else`, e é executado quando nenhum `case`
+corresponde:
 
 ```php
 <?php
-$categoria = "Música";
+$categoria = "Tecnologia";
 
 switch ($categoria) {
     case "Cultura":
-    case "Música":
         echo "Secção Lazer";
         break;
     case "Tecnologia":
@@ -91,47 +138,6 @@ switch ($categoria) {
         echo "Outras notícias";
 }
 ```
-
-### Operadores de Comparação {#sec-04-operadores-comparacao}
-
-Ao testar o `if` do estado do artigo, Tiago tropeça num pormenor do PHP
-que vale a pena perceber bem antes de continuar. As condições assentam
-em operadores de comparação, que avaliam dois valores e devolvem sempre
-um booleano, `true` ou `false`:
-
-| Operador | Significado |
-|----------|-------------|
-| `==`     | igual (compara apenas o valor) |
-| `===`    | idêntico (compara o valor e o tipo) |
-| `!=`     | diferente (compara apenas o valor) |
-| `!==`    | não idêntico (compara o valor e o tipo) |
-| `<`      | menor que |
-| `>`      | maior que |
-| `<=`     | menor ou igual a |
-| `>=`     | maior ou igual a |
-
-A distinção entre `==` e `===` é uma das fontes mais comuns de erros
-subtis em PHP, precisamente por o PHP converter automaticamente entre
-tipos ao usar `==`:
-
-```php
-<?php
-var_dump(0 == "abc");    // false na maioria das versões atuais do PHP
-var_dump(0 == "0");      // true: "0" é convertido para o número 0
-var_dump(0 === "0");     // false: tipos diferentes, integer vs string
-var_dump("10" == "1e1"); // true: ambos convertidos para o mesmo número
-var_dump("10" === "1e1");// false: são strings diferentes
-```
-
-Por esta razão, é boa prática usar `===` sempre que se quer garantir que
-dois valores são realmente iguais, tanto no valor como no tipo, evitando
-comparações que dependam de conversões automáticas nem sempre óbvias.
-Esta distinção vai ser particularmente relevante mais adiante no livro,
-quando Tiago começar a receber dados de pedidos HTTP reais, na
-@sec-07-supervariaveis: um identificador de artigo recebido pela URL
-chega sempre como *string*, mesmo que represente um número, e comparar
-essa *string* com um `id` guardado como `integer` pode ter resultados
-inesperados se se usar `==` em vez de `===`.
 
 ### Operadores Lógicos {#sec-04-operadores-logicos}
 
@@ -146,7 +152,9 @@ condições numa só é o papel dos operadores lógicos:
 - **`or`** (ou `||`): verdadeiro se pelo menos uma das condições for
   verdadeira;
 - **`xor`**: verdadeiro se exatamente uma das duas condições for
-  verdadeira, mas não ambas.
+  verdadeira, mas não ambas;
+- **`!`** (*not*): inverte uma condição; `!$publicado` é verdadeiro
+  quando o artigo não está publicado.
 
 ```php
 <?php

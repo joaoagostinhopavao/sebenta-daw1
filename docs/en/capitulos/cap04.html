@@ -295,7 +295,8 @@ div.csl-indent {
   <li><a href="#sec-04-conditionals-en" id="toc-sec-04-conditionals-en" class="nav-link active" data-scroll-target="#sec-04-conditionals-en"><span class="header-section-number">4.1</span> Conditional Structures</a>
   <ul class="collapse">
   <li><a href="#sec-04-comparison-operators-en" id="toc-sec-04-comparison-operators-en" class="nav-link" data-scroll-target="#sec-04-comparison-operators-en"><span class="header-section-number">4.1.1</span> Comparison Operators</a></li>
-  <li><a href="#sec-04-logical-operators-en" id="toc-sec-04-logical-operators-en" class="nav-link" data-scroll-target="#sec-04-logical-operators-en"><span class="header-section-number">4.1.2</span> Logical Operators</a></li>
+  <li><a href="#sec-04-if-else-en" id="toc-sec-04-if-else-en" class="nav-link" data-scroll-target="#sec-04-if-else-en"><span class="header-section-number">4.1.2</span> <code>if</code>/<code>else</code>, <code>elseif</code> and <code>switch</code></a></li>
+  <li><a href="#sec-04-logical-operators-en" id="toc-sec-04-logical-operators-en" class="nav-link" data-scroll-target="#sec-04-logical-operators-en"><span class="header-section-number">4.1.3</span> Logical Operators</a></li>
   </ul></li>
   <li><a href="#sec-04-loops-en" id="toc-sec-04-loops-en" class="nav-link" data-scroll-target="#sec-04-loops-en"><span class="header-section-number">4.2</span> Loops</a>
   <ul class="collapse">
@@ -349,46 +350,10 @@ div.csl-indent {
 </div>
 <section id="sec-04-conditionals-en" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="sec-04-conditionals-en"><span class="header-section-number">4.1</span> Conditional Structures</h2>
-<p>With the article catalogue complete, Tiago notices that not everything in the <code>$artigos</code> array should be treated the same way: an article can be ready to publish, or it can still just be a draft that Rita is reviewing. With what he knows so far, the only code he can write is a direct <code>echo</code>, always executed the same way, never varying with the data: there is no way to say “show this <strong>if</strong> the article is published, but not if it is still a draft”. This is exactly the kind of decision a conditional structure allows: it evaluates whether a condition is true or false, and executes a different block of code depending on the result, directing the flow of the program according to the data. In PHP, the most common structure is <code>if</code>/<code>else</code>, and it solves the article-status problem well:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="va">$estado</span> <span class="op">=</span> <span class="st">"publicado"</span><span class="ot">;</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="cf">if</span> (<span class="va">$estado</span> <span class="op">===</span> <span class="st">"publicado"</span>) {</span>
-<span id="cb1-5"><a href="#cb1-5"></a>    <span class="kw">echo</span> <span class="st">"Mostrar o artigo aos leitores."</span><span class="ot">;</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>} <span class="cf">else</span> {</span>
-<span id="cb1-7"><a href="#cb1-7"></a>    <span class="kw">echo</span> <span class="st">"Artigo ainda em rascunho, não mostrar."</span><span class="ot">;</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This handles a yes-or-no decision well. But Tiago has another, similar problem: he wants the home page to highlight articles according to how many views they have already had, and this time there are more than two possible categories, not just “viral” or “not viral”. A single <code>if</code>/<code>else</code> only distinguishes two cases; when there are more than two alternatives, <code>elseif</code> is chained on:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="va">$vistas</span> <span class="op">=</span> <span class="dv">850</span><span class="ot">;</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="cf">if</span> (<span class="va">$vistas</span> <span class="op">&gt;=</span> <span class="dv">1000</span>) {</span>
-<span id="cb2-5"><a href="#cb2-5"></a>    <span class="kw">echo</span> <span class="st">"Viral"</span><span class="ot">;</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>} <span class="cf">elseif</span> (<span class="va">$vistas</span> <span class="op">&gt;=</span> <span class="dv">500</span>) {</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    <span class="kw">echo</span> <span class="st">"Popular"</span><span class="ot">;</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>} <span class="cf">elseif</span> (<span class="va">$vistas</span> <span class="op">&gt;=</span> <span class="dv">100</span>) {</span>
-<span id="cb2-9"><a href="#cb2-9"></a>    <span class="kw">echo</span> <span class="st">"Normal"</span><span class="ot">;</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a>} <span class="cf">else</span> {</span>
-<span id="cb2-11"><a href="#cb2-11"></a>    <span class="kw">echo</span> <span class="st">"Pouco lido"</span><span class="ot">;</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This views problem is well solved with <code>elseif</code> because each alternative depends on a different range of values. But when Tiago wants to decide the site section from an article’s exact category, always comparing the same <code>$categoria</code> variable against several possible values, one by one, writing an <code>elseif</code> for each category starts to get repetitive: <code>elseif ($categoria === "Cultura")</code>, <code>elseif ($categoria === "Música")</code>, and so on. There is another, simpler way for Tiago to do the same thing, whenever what is at stake is comparing a single variable against several exact values: <code>switch</code>. Notice the use of <code>break</code>: without it, execution would continue on to the next <code>case</code> even after finding a match, a behaviour called <em>fallthrough</em>, sometimes used on purpose, as in the first two lines of the example, to group several cases under the same site section:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="va">$categoria</span> <span class="op">=</span> <span class="st">"Música"</span><span class="ot">;</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="cf">switch</span> (<span class="va">$categoria</span>) {</span>
-<span id="cb3-5"><a href="#cb3-5"></a>    <span class="cf">case</span> <span class="st">"Cultura"</span><span class="ot">:</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>    <span class="cf">case</span> <span class="st">"Música"</span><span class="ot">:</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>        <span class="kw">echo</span> <span class="st">"Secção Lazer"</span><span class="ot">;</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>        <span class="cf">break</span><span class="ot">;</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>    <span class="cf">case</span> <span class="st">"Tecnologia"</span><span class="ot">:</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>        <span class="kw">echo</span> <span class="st">"Secção Inovação"</span><span class="ot">;</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>        <span class="cf">break</span><span class="ot">;</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>    <span class="cf">default</span><span class="ot">:</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a>        <span class="kw">echo</span> <span class="st">"Outras notícias"</span><span class="ot">;</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With the article catalogue complete, Tiago notices that not everything in the <code>$artigos</code> array should be treated the same way: an article can be ready to publish, or it can still just be a draft that Rita is reviewing. With what he knows so far, the only code he can write is a direct <code>echo</code>, always executed the same way, never varying with the data: there is no way to say “show this <strong>if</strong> the article is published, but not if it is still a draft”. This is exactly the kind of decision a conditional structure allows: it evaluates whether a condition is true or false, and executes a different block of code depending on the result, directing the flow of the program according to the data. Before writing the first one, it is worth understanding what a condition is made of.</p>
 <section id="sec-04-comparison-operators-en" class="level3" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="sec-04-comparison-operators-en"><span class="header-section-number">4.1.1</span> Comparison Operators</h3>
-<p>While testing the article-status <code>if</code>, Tiago runs into a detail of PHP that is worth understanding well before moving on. Conditions rest on comparison operators, which evaluate two values and always return a boolean, <code>true</code> or <code>false</code>:</p>
+<p>A condition is almost always a comparison between two values: is the article’s status equal to <code>"publicado"</code>? Is the number of views greater than or equal to 1000? These questions are written with comparison operators, which evaluate two values and always return a boolean, <code>true</code> or <code>false</code>:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -432,29 +397,109 @@ div.csl-indent {
 </tbody>
 </table>
 <p>The distinction between <code>==</code> and <code>===</code> is one of the most common sources of subtle bugs in PHP, precisely because PHP automatically converts between types when using <code>==</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">var_dump</span>(<span class="dv">0</span> <span class="op">==</span> <span class="st">"abc"</span>)<span class="ot">;</span>    <span class="co">// false in most current PHP versions</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">var_dump</span>(<span class="dv">0</span> <span class="op">==</span> <span class="st">"0"</span>)<span class="ot">;</span>      <span class="co">// true: "0" is converted to the number 0</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">var_dump</span>(<span class="dv">0</span> <span class="op">===</span> <span class="st">"0"</span>)<span class="ot">;</span>     <span class="co">// false: different types, integer vs string</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">var_dump</span>(<span class="st">"10"</span> <span class="op">==</span> <span class="st">"1e1"</span>)<span class="ot">;</span> <span class="co">// true: both converted to the same number</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">var_dump</span>(<span class="st">"10"</span> <span class="op">===</span> <span class="st">"1e1"</span>)<span class="ot">;</span><span class="co">// false: they are different strings</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 16%">
+<col style="width: 61%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Comparison</th>
+<th>Result</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>5 == "5"</code></td>
+<td><code>true</code></td>
+<td>the string <code>"5"</code> is converted to the number 5</td>
+</tr>
+<tr class="even">
+<td><code>5 === "5"</code></td>
+<td><code>false</code></td>
+<td>one value is an <code>integer</code>, the other a string</td>
+</tr>
+<tr class="odd">
+<td><code>"1" == "01"</code></td>
+<td><code>true</code></td>
+<td>both strings look like numbers, so they are compared as numbers</td>
+</tr>
+<tr class="even">
+<td><code>"1" === "01"</code></td>
+<td><code>false</code></td>
+<td>they are different strings</td>
+</tr>
+<tr class="odd">
+<td><code>0 == false</code></td>
+<td><code>true</code></td>
+<td><code>false</code> is converted to the number 0</td>
+</tr>
+<tr class="even">
+<td><code>0 === false</code></td>
+<td><code>false</code></td>
+<td>one value is an <code>integer</code>, the other a boolean</td>
+</tr>
+</tbody>
+</table>
 <p>For this reason, it is good practice to use <code>===</code> whenever the goal is to guarantee two values are really equal, both in value and in type, avoiding comparisons that rely on automatic conversions that are not always obvious. This distinction will become particularly relevant later in the book, once Tiago starts receiving data from real HTTP requests, in <a href="cap07.html#sec-07-superglobals-en" class="quarto-xref"><span>Section 7.5</span></a>: an article identifier received through the URL always arrives as a <em>string</em>, even when it represents a number, and comparing that <em>string</em> against an <code>id</code> stored as an <code>integer</code> can have unexpected results if <code>==</code> is used instead of <code>===</code>.</p>
 </section>
-<section id="sec-04-logical-operators-en" class="level3" data-number="4.1.2">
-<h3 data-number="4.1.2" class="anchored" data-anchor-id="sec-04-logical-operators-en"><span class="header-section-number">4.1.2</span> Logical Operators</h3>
+<section id="sec-04-if-else-en" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="sec-04-if-else-en"><span class="header-section-number">4.1.2</span> <code>if</code>/<code>else</code>, <code>elseif</code> and <code>switch</code></h3>
+<p>With comparison operators, Tiago can now write his first condition. In PHP, the most common conditional structure is <code>if</code>/<code>else</code>, and it solves the article-status problem well:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="va">$estado</span> <span class="op">=</span> <span class="st">"publicado"</span><span class="ot">;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="cf">if</span> (<span class="va">$estado</span> <span class="op">===</span> <span class="st">"publicado"</span>) {</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="kw">echo</span> <span class="st">"Mostrar o artigo aos leitores."</span><span class="ot">;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>} <span class="cf">else</span> {</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    <span class="kw">echo</span> <span class="st">"Artigo ainda em rascunho, não mostrar."</span><span class="ot">;</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This handles a yes-or-no decision well. But Tiago has another, similar problem: he wants the home page to highlight articles according to how many views they have already had, and this time there are more than two possible categories, not just “viral” or “not viral”. A single <code>if</code>/<code>else</code> only distinguishes two cases; when there are more than two alternatives, <code>elseif</code> is chained on:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="va">$vistas</span> <span class="op">=</span> <span class="dv">850</span><span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="cf">if</span> (<span class="va">$vistas</span> <span class="op">&gt;=</span> <span class="dv">1000</span>) {</span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="kw">echo</span> <span class="st">"Viral"</span><span class="ot">;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>} <span class="cf">elseif</span> (<span class="va">$vistas</span> <span class="op">&gt;=</span> <span class="dv">500</span>) {</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="kw">echo</span> <span class="st">"Popular"</span><span class="ot">;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>} <span class="cf">elseif</span> (<span class="va">$vistas</span> <span class="op">&gt;=</span> <span class="dv">100</span>) {</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="kw">echo</span> <span class="st">"Normal"</span><span class="ot">;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>} <span class="cf">else</span> {</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    <span class="kw">echo</span> <span class="st">"Pouco lido"</span><span class="ot">;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This views problem is well solved with <code>elseif</code> because each alternative depends on a different range of values. But when Tiago wants to decide the site section from an article’s exact category, always comparing the same <code>$categoria</code> variable against several possible values, one by one, writing an <code>elseif</code> for each category starts to get repetitive: <code>elseif ($categoria === "Cultura")</code>, <code>elseif ($categoria === "Tecnologia")</code>, and so on. There is another, simpler way for Tiago to do the same thing, whenever what is at stake is comparing a single variable against several exact values: <code>switch</code>. Each <code>case</code> ends with <code>break</code>, which exits the <code>switch</code>: without it, execution would continue on to the next <code>case</code> even after finding a match, which is almost always a mistake. <code>default</code> works like <code>else</code>, and runs when no <code>case</code> matches:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="va">$categoria</span> <span class="op">=</span> <span class="st">"Tecnologia"</span><span class="ot">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="cf">switch</span> (<span class="va">$categoria</span>) {</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="cf">case</span> <span class="st">"Cultura"</span><span class="ot">:</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="kw">echo</span> <span class="st">"Secção Lazer"</span><span class="ot">;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>        <span class="cf">break</span><span class="ot">;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="cf">case</span> <span class="st">"Tecnologia"</span><span class="ot">:</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>        <span class="kw">echo</span> <span class="st">"Secção Inovação"</span><span class="ot">;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>        <span class="cf">break</span><span class="ot">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="cf">default</span><span class="ot">:</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>        <span class="kw">echo</span> <span class="st">"Outras notícias"</span><span class="ot">;</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sec-04-logical-operators-en" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="sec-04-logical-operators-en"><span class="header-section-number">4.1.3</span> Logical Operators</h3>
 <p>Tiago realises that showing an article, in practice, depends on two conditions at once: the article has to be published, <strong>and</strong> its category cannot in the meantime have been archived. Testing this with two separate <code>if</code>s would require nesting one inside the other; combining both conditions into one is the role of logical operators:</p>
 <ul>
 <li><strong><code>and</code></strong> (or <code>&amp;&amp;</code>): true only if both conditions are true;</li>
 <li><strong><code>or</code></strong> (or <code>||</code>): true if at least one of the conditions is true;</li>
-<li><strong><code>xor</code></strong>: true if exactly one of the two conditions is true, but not both.</li>
+<li><strong><code>xor</code></strong>: true if exactly one of the two conditions is true, but not both;</li>
+<li><strong><code>!</code></strong> (<em>not</em>): inverts a condition; <code>!$publicado</code> is true when the article is not published.</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="va">$publicado</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">;</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="va">$categoria_ativa</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">;</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="cf">if</span> (<span class="va">$publicado</span> <span class="op">&amp;&amp;</span> <span class="va">$categoria_ativa</span>) {</span>
-<span id="cb5-6"><a href="#cb5-6"></a>    <span class="kw">echo</span> <span class="st">"Mostrar artigo."</span><span class="ot">;</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="va">$publicado</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="va">$categoria_ativa</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="cf">if</span> (<span class="va">$publicado</span> <span class="op">&amp;&amp;</span> <span class="va">$categoria_ativa</span>) {</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    <span class="kw">echo</span> <span class="st">"Mostrar artigo."</span><span class="ot">;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="sec-04-loops-en" class="level2" data-number="4.2">
@@ -463,57 +508,57 @@ div.csl-indent {
 <section id="sec-04-for-en" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="sec-04-for-en"><span class="header-section-number">4.2.1</span> <code>for</code></h3>
 <p>Used when the number of repetitions needed is known in advance, taking three parameters: the initial value, the stopping condition, and the increment applied at each repetition:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="cf">for</span> (<span class="va">$pagina</span> <span class="op">=</span> <span class="dv">1</span><span class="ot">;</span> <span class="va">$pagina</span> <span class="op">&lt;=</span> <span class="dv">5</span><span class="ot">;</span> <span class="va">$pagina</span><span class="op">++</span>) {</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="kw">echo</span> <span class="st">"Página </span><span class="va">$pagina</span><span class="st"> "</span><span class="ot">;</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>}</span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">// Página 1 Página 2 Página 3 Página 4 Página 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">for</span> (<span class="va">$pagina</span> <span class="op">=</span> <span class="dv">1</span><span class="ot">;</span> <span class="va">$pagina</span> <span class="op">&lt;=</span> <span class="dv">5</span><span class="ot">;</span> <span class="va">$pagina</span><span class="op">++</span>) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="kw">echo</span> <span class="st">"Página </span><span class="va">$pagina</span><span class="st"> "</span><span class="ot">;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>}</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">// Página 1 Página 2 Página 3 Página 4 Página 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-04-while-en" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="sec-04-while-en"><span class="header-section-number">4.2.2</span> <code>while</code></h3>
 <p>Takes only one condition, evaluated <strong>before</strong> each repetition; if the condition is false from the start, the code block never runs at all. In Contraponto’s management panel, an editor could use a <code>while</code> to work through, one by one, the comments still waiting for approval:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$comentarios_pendentes</span> <span class="op">=</span> <span class="dv">5</span><span class="ot">;</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="cf">while</span> (<span class="va">$comentarios_pendentes</span> <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb7-4"><a href="#cb7-4"></a>    <span class="kw">echo</span> <span class="st">"Comentário pendente: </span><span class="va">$comentarios_pendentes</span><span class="st"> "</span><span class="ot">;</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>    <span class="va">$comentarios_pendentes</span><span class="op">--</span><span class="ot">;</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="va">$comentarios_pendentes</span> <span class="op">=</span> <span class="dv">5</span><span class="ot">;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="cf">while</span> (<span class="va">$comentarios_pendentes</span> <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="kw">echo</span> <span class="st">"Comentário pendente: </span><span class="va">$comentarios_pendentes</span><span class="st"> "</span><span class="ot">;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="va">$comentarios_pendentes</span><span class="op">--</span><span class="ot">;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-04-do-while-en" class="level3" data-number="4.2.3">
 <h3 data-number="4.2.3" class="anchored" data-anchor-id="sec-04-do-while-en"><span class="header-section-number">4.2.3</span> <code>do...while</code></h3>
 <p>Very similar to <code>while</code>, but with the condition evaluated <strong>after</strong> each repetition, which guarantees the code block always runs at least once, even if the condition is false from the start. It is useful, for example, to guarantee the home page always shows some featured article, even on days when none was explicitly marked as such:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="va">$artigos_destaque</span> <span class="op">=</span> <span class="dv">0</span><span class="ot">;</span>   <span class="co">// no article marked as featured today</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="cf">do</span> {</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="kw">echo</span> <span class="st">"A mostrar o artigo mais recente como destaque. "</span><span class="ot">;</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="va">$artigos_destaque</span><span class="op">--</span><span class="ot">;</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>} <span class="cf">while</span> (<span class="va">$artigos_destaque</span> <span class="op">&gt;</span> <span class="dv">0</span>)<span class="ot">;</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">// runs once, even though the condition is already false from the start</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$artigos_destaque</span> <span class="op">=</span> <span class="dv">0</span><span class="ot">;</span>   <span class="co">// no article marked as featured today</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="cf">do</span> {</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="kw">echo</span> <span class="st">"A mostrar o artigo mais recente como destaque. "</span><span class="ot">;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="va">$artigos_destaque</span><span class="op">--</span><span class="ot">;</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>} <span class="cf">while</span> (<span class="va">$artigos_destaque</span> <span class="op">&gt;</span> <span class="dv">0</span>)<span class="ot">;</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">// runs once, even though the condition is already false from the start</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-04-foreach-en" class="level3" data-number="4.2.4">
 <h3 data-number="4.2.4" class="anchored" data-anchor-id="sec-04-foreach-en"><span class="header-section-number">4.2.4</span> <code>foreach</code></h3>
 <p>Used specifically to loop through arrays, with no need to manage an index manually. It is finally with a <code>foreach</code> that Tiago manages to turn the <code>$titulos</code> array, sketched in <a href="cap03.html#sec-03-indexed-arrays-en" class="quarto-xref"><span>Section 3.8.1</span></a>, into a real list of articles on the site’s page, without repeating <code>echo</code> once per article:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="va">$titulos</span> <span class="op">=</span> [</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="st">"Como nasceu a Contraponto"</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>]<span class="ot">;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="cf">foreach</span> (<span class="va">$titulos</span> <span class="kw">as</span> <span class="va">$titulo</span>) {</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    <span class="kw">echo</span> <span class="va">$titulo</span> <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With an associative array, <code>foreach</code> allows both the key and the value of each element to be accessed at the same time, which is useful, for example, for showing every field of a single article without writing a separate <code>echo</code> for each property:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="va">$titulos</span> <span class="op">=</span> [</span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>    <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>    <span class="st">"Como nasceu a Contraponto"</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="va">$artigo</span> <span class="op">=</span> [</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
 <span id="cb9-6"><a href="#cb9-6"></a>]<span class="ot">;</span></span>
 <span id="cb9-7"><a href="#cb9-7"></a></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="cf">foreach</span> (<span class="va">$titulos</span> <span class="kw">as</span> <span class="va">$titulo</span>) {</span>
-<span id="cb9-9"><a href="#cb9-9"></a>    <span class="kw">echo</span> <span class="va">$titulo</span> <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="cf">foreach</span> (<span class="va">$artigo</span> <span class="kw">as</span> <span class="va">$chave</span> =&gt; <span class="va">$valor</span>) {</span>
+<span id="cb9-9"><a href="#cb9-9"></a>    <span class="kw">echo</span> <span class="st">"</span><span class="va">$chave</span><span class="st">: </span><span class="va">$valor</span><span class="st">&lt;br&gt;"</span><span class="ot">;</span></span>
 <span id="cb9-10"><a href="#cb9-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>With an associative array, <code>foreach</code> allows both the key and the value of each element to be accessed at the same time, which is useful, for example, for showing every field of a single article without writing a separate <code>echo</code> for each property:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="va">$artigo</span> <span class="op">=</span> [</span>
-<span id="cb10-3"><a href="#cb10-3"></a>    <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>    <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>    <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>]<span class="ot">;</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="cf">foreach</span> (<span class="va">$artigo</span> <span class="kw">as</span> <span class="va">$chave</span> =&gt; <span class="va">$valor</span>) {</span>
-<span id="cb10-9"><a href="#cb10-9"></a>    <span class="kw">echo</span> <span class="st">"</span><span class="va">$chave</span><span class="st">: </span><span class="va">$valor</span><span class="st">&lt;br&gt;"</span><span class="ot">;</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="sec-04-challenge-en" class="level2" data-number="4.3">
