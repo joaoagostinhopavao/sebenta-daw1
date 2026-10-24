@@ -87,12 +87,12 @@ The `date()` function formats the server's current date and time according to a 
 <?php
 echo date("d/m/Y");        // 24/08/2026
 echo date("d/m/Y H:i:s");  // 24/08/2026 15:42:07
-echo date("l, d \d\e F");  // segunda-feira, 24 de Agosto (localised)
+echo date("H:i");          // 15:42
 ```
 
 ### Custom Formatting {#sec-05-custom-formatting-en}
 
-As shown in the previous examples, the same instant can be presented in very different ways, simply by changing the format given to `date()`, which is useful for adapting how the publication date is shown to the context: a compact format in the article listing, or a written-out format in the header of a single article's page.
+As shown in the previous examples, the same instant can be presented in very different ways, simply by changing the format given to `date()`, which is useful for adapting how the publication date is shown to the context: just the day, month and year in the article listing, or the full date, with the time, on a single article's page.
 
 ### Time Zones {#sec-05-timezones-en}
 
@@ -139,6 +139,28 @@ require "header.php";
 <?php
 require "footer.php";
 ?>
+```
+
+The two included files contain only the HTML that is repeated on every page of the site: `header.php` holds the magazine's name and the category menu, and `footer.php` holds the copyright notice.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Contraponto</h1>
+    <nav>
+        <a href="index.php">Início</a> |
+        <a href="index.php?categoria=Cultura">Cultura</a> |
+        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+        <a href="index.php?categoria=Música">Música</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+</footer>
 ```
 
 Since the header and footer are usually essential to a page's visual structure, without which the result would look incomplete or broken, it is common to prefer `require` over `include` to include them. There are also the `include_once` and `require_once` variants, which guarantee that the same file is only included once, even if the instruction appears, directly or indirectly, more than once in the execution flow, avoiding errors such as redefining the same function.

@@ -123,7 +123,7 @@ em que um novo artigo é criado:
 <?php
 echo date("d/m/Y");        // 24/08/2026
 echo date("d/m/Y H:i:s");  // 24/08/2026 15:42:07
-echo date("l, d \d\e F");  // segunda-feira, 24 de Agosto (com localização)
+echo date("H:i");          // 15:42
 ```
 
 ### Formatação Personalizada {#sec-05-formatacao-datas}
@@ -131,8 +131,8 @@ echo date("l, d \d\e F");  // segunda-feira, 24 de Agosto (com localização)
 Como se vê nos exemplos anteriores, o mesmo instante pode ser apresentado
 de formas muito diferentes, apenas mudando o formato pedido a `date()`,
 o que é útil para adaptar a apresentação da data de publicação ao
-contexto: um formato compacto na listagem de artigos, ou um formato por
-extenso no cabeçalho da página de um único artigo.
+contexto: só o dia, o mês e o ano na listagem de artigos, ou a data
+completa, com a hora, na página de um único artigo.
 
 ### Fusos Horários {#sec-05-fusos-horarios}
 
@@ -209,6 +209,30 @@ require "header.php";
 <?php
 require "footer.php";
 ?>
+```
+
+Os dois ficheiros incluídos têm apenas o HTML que se repete em todas
+as páginas do sítio: o `header.php` tem o nome da revista e o menu de
+categorias, e o `footer.php` tem os direitos de autor.
+
+```php
+<!-- header.php -->
+<header>
+    <h1>Contraponto</h1>
+    <nav>
+        <a href="index.php">Início</a> |
+        <a href="index.php?categoria=Cultura">Cultura</a> |
+        <a href="index.php?categoria=Tecnologia">Tecnologia</a> |
+        <a href="index.php?categoria=Música">Música</a>
+    </nav>
+</header>
+```
+
+```php
+<!-- footer.php -->
+<footer>
+    <p>&copy; 2026 Revista Contraponto. Todos os direitos reservados.</p>
+</footer>
 ```
 
 Como o cabeçalho e o rodapé costumam ser essenciais à estrutura visual
