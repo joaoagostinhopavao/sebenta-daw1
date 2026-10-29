@@ -12,160 +12,329 @@ lang: en-GB
 </div>
 ```
 
+## From PHP to the Network {#sec-06-context-en}
+
+While developing the Contraponto site, Tiago works only on the server side: he keeps the article catalogue in an *array*, filters it by category with an `if` inside a `foreach`, and adds the same header and footer to every page with `include`. He tests everything on `localhost`, that is, with the *browser* and the server on the same computer.
+
+Rita, the magazine's editor, then asks a simple question: "When a reader in Bragança types in the Contraponto address, how does the page get to them?". It is already known that the *browser* sends a request and the server returns HTML. This chapter deals with what happens **between** the two.
+
+## What Does a Web Programmer Gain from Understanding the Network? {#sec-06-why-network-en}
+
+There are three reasons for a web programmer to understand the path each request travels:
+
+1. **PHP only reaches the reader through the network.** The code may be correct, but the page only appears if the request reaches the server and the response comes back.
+2. **To understand errors.** "Server not found" is a naming problem. "Connection refused" is a port problem. Neither is a PHP error: knowing where the problem lies avoids looking for it in the wrong place.
+3. **To publish the site.** Putting Contraponto *online* requires a domain name, an IP address and ports 80 and 443.
+
+When Rita calls to say "the site won't open", Tiago has to be able to answer: is the problem in the PHP or on the way to the server?
+
 ## Why Organise Communication into Layers? {#sec-06-why-layers-en}
 
-Before a Contraponto reader can even see the magazine's home page, the request the *browser* sends to the server only gets there after a series of operations:
+For a *browser* request to reach the Contraponto server, several operations are needed, each carried out by a different part of the system. For example:
 
-- finding the address of the magazine's server;
-- determining the path the data must travel to get there;
-- establishing a reliable connection;
-- converting the data into electrical signals or radio pulses.
+1. **Finding the server:** discovering the address from the name (name resolution);
+2. **Guaranteeing a reliable connection:** confirming that nothing is lost and that everything arrives in the right order;
+3. **Determining the path:** choosing where the data goes, from network to network (routing);
+4. **Converting the data into signals:** electrical, light or radio, handled by the network card.
 
-This set of operations is governed by rules that regulate each of these operations — the format of messages, the order of exchanges, error handling — which is precisely what is called a communication protocol. Without it, two devices cannot understand each other.
+Only the first one starts in the *browser*. The others are carried out by the operating system, by *routers* and by the network card. This leaves a question: how do devices from different manufacturers, spread all over the world, all carry out these operations in the same way?
 
-The *browser* does all of this without Tiago, on the server side, needing to think about any of these details. Before a request can leave the *browser* and reach a server, there is an entire stack of protocols that has to work correctly underneath that communication.
+### What is a Protocol? {#sec-06-protocol-en}
 
-What, exactly, is a **protocol**? And what is a protocol stack? A **protocol** is a set of rules agreed between two parties (two devices) that want to communicate: it defines the exact format of the messages exchanged and the order in which they must be sent, so that both sides understand each other unambiguously. A protocol can be thought of as a contract between two remote devices on a network, defining the rules for how they will communicate at a distance.
+The answer lies in protocols. A **protocol** is a set of rules agreed between two devices that communicate at a distance. It defines:
 
-No protocol, on its own, solves every problem involved in getting a message from one computer to another: several are needed, each handling a different part of the problem, the same four operations already mentioned above.
+- the **format** of the messages;
+- the **order** in which they are exchanged;
+- what to do when **something goes wrong**.
 
-That set of protocols is organised so that each one, when it needs a feature offered by another, turns to that other protocol to obtain it. That relationship defines a hierarchy in which the protocols that use others are "above" and the ones being used are "below". This arrangement is called a **protocol stack**, or layered architecture.
+It works as a **contract** between the two devices.
 
-It is this stack, not a single isolated protocol, that the Contraponto reader's request has to cross, without the user noticing, before it even reaches the server.
+No protocol handles the whole sending of a message on its own. Several are used, each responsible for one of the operations above, stacked on top of each other: **the ones above use the ones below**. This set is called a **protocol stack**. Each level of the stack is called a **layer**; hence the name **layered architecture**. Each layer uses the services of the layer below and offers its own services to the layer above.
 
-In a layered architecture, each layer is a module that depends on the layers below it, but is completely independent of the layers above it: it only needs to know how to use the layer immediately below it, not how the layers above it work. This allows each one to be developed, optimised or replaced independently of the others, as long as the service it provides to the layers above it stays the same. That service a layer provides to the layer immediately above it, without the latter needing to know how it is implemented underneath, is precisely called a **service**.
+### Example: the Layers in Sending a Letter {#sec-06-letter-en}
 
-A **service**, like a protocol, can also be thought of as a kind of contract, but with an essential difference: a protocol is a contract between two remote devices, defining how they communicate at a distance; a service is a contract between layers within the same device, defining how they work with each other, locally. In other words, a service acts locally, while a protocol acts remotely.
+Sending a letter by post is organised in the same way. Rita wants to send a letter to Tiago. She writes it and hands it to her secretary, who puts it in an envelope, writes the address and sends it by registered post, with proof of delivery. The post office chooses the route by postcode, and the letter travels by van, train or plane. On Tiago's side, the path is reversed: the post office delivers the letter to the address, Tiago's secretary signs the proof of delivery and hands him the letter, and Tiago reads it (@fig-06-letter-en).
 
-![Protocols (horizontal arrows) connect matching layers on different
-devices; services (vertical arrows) connect adjacent layers within the
-same
-device.](../assets/images/cap06/protocolo-vs-servico.png){#fig-06-protocol-service-en width="70%"}
+![The layers in sending a letter: the letter goes down on Rita's side and up on Tiago's side (solid arrows); each layer follows rules agreed with the layer at the same level on the other side (dashed arrows).](../assets/images/cap06/carta-camadas.png){#fig-06-letter-en width="85%"}
+
+In this example, each layer carries out one of the four operations described above:
+
+1. **Finding the server:** equivalent to Rita looking up Tiago's address in her address book;
+2. **Reliable connection:** equivalent to the secretary asking for proof of delivery and, if it does not arrive, sending the letter again;
+3. **Path:** the post office chooses it using maps and postcodes;
+4. **Signals:** the circulation itself; the van, the train or the plane carry the letter from one point to the other.
+
+Rita does not know whether the letter went by van or by plane, and the driver never reads it. If the post office replaces the van with a drone, neither Rita, nor the secretaries, nor Tiago have anything to do with it. **This independence is what gives layers their value:** each layer can be improved or replaced without touching the others, as long as it keeps providing the same service to the layer above.
+
+### Service and Protocol {#sec-06-service-protocol-en}
+
+The letter figure shows two kinds of relationship, which should be told apart:
+
+- **Protocol:** rules between the **same layer** on two different devices (the so-called **peer layers**). The two peer layers follow the same rules and understand each other **at a distance**. In @fig-06-protocol-service-en, these are the horizontal arrows.
+- **Service:** what a layer offers to the **layer immediately above**, within the **same device**. The layer above uses that service without needing to know how it works inside. In @fig-06-protocol-service-en, these are the vertical arrows.
+
+In short, a protocol acts remotely and a service acts locally. In the letter, Rita's secretary **uses the service** of the post office: she hands over the letter and does not care how it gets there. But she **follows a protocol** with Tiago's secretary, without ever speaking to her: she asks for proof of delivery, and the other secretary knows she has to sign it and send it back, because that is the agreed rule.
+
+![Protocols (horizontal arrows) link corresponding layers on different
+devices; services (vertical arrows) link adjacent layers within the
+same device.](../assets/images/cap06/protocolo-vs-servico.png){#fig-06-protocol-service-en width="70%"}
 
 ## The Two Models: OSI and TCP/IP {#sec-06-osi-tcpip-en}
 
-Historically, two reference models emerged for organising communication into layers, with different origins:
+Historically, two reference models emerged for organising communication into layers, with different origins.
 
-- **OSI** (*Open Systems Interconnection*): developed by ISO (*International Organization for Standardization*) as a formal model, with seven layers: physical, data link, network, transport, session, presentation and application. Because it was formally defined and approved by an international standardisation body before being widely implemented, OSI is known as the *de jure* standard (by law, i.e., formally instituted).
-- **TCP/IP** (also called the DoD model, as it originated in the US Department of Defense): a simpler model, with only four layers, application, transport, network (or internet) and network access, which arose directly from the practical implementation of ARPANET, the precursor to the Internet. Because it became the model actually used, through its widespread adoption, before any formal international standardisation, TCP/IP is known as the *de facto* standard (as a matter of fact, i.e., imposed by practice and common use).
+### The OSI Model {#sec-06-osi-en}
 
-![The OSI model, with its seven layers, from application (closest to
-the user) to physical (the transmission medium
-itself).](../assets/images/cap06/Mix_ modelo-osi + modelo-TCP-IP.png){#fig-06-osi-model-en width="45%"}
+The **OSI** (*Open Systems Interconnection*) model is a formal model with **seven layers**, created by the ISO (*International Organization for Standardization*), the international standards body. From top (7) to bottom (1):
 
-In practice, today's Internet runs on the TCP/IP model, not on OSI: OSI continues to be used, mainly, as a pedagogical tool, because it divides more finely responsibilities that, in TCP/IP, appear concentrated in a single layer. For the purposes of this course, three layers of the TCP/IP model are of particular interest:
+- **Application (7):** where the protocols used by the user's programs work (HTTP, SMTP, FTP);
+- **Presentation (6):** puts the data in a format both sides understand (encoding, compression, encryption);
+- **Session (5):** opens, maintains and closes the conversation between the two sides;
+- **Transport (4):** delivers the data to the right program, with or without a delivery guarantee (TCP, UDP);
+- **Network (3):** chooses the path between different networks (IP);
+- **Data Link (2):** delivers the data to another device on the same local network (Ethernet, Wi-Fi);
+- **Physical (1):** turns the bits into electrical, light or radio signals.
 
-- **Application**: where the protocols an application uses directly run, such as HTTP, the rough equivalent of OSI's three upper layers (application, presentation and session);
-- **Transport**: responsible for reliably delivering data between two programs, through the `TCP` protocol;
-- **Network**: responsible for routing data between different networks, to its destination, through the `IP` protocol.
+OSI is a ***de jure*** standard (Latin for "by law"): it was formally defined by a standards body before it was in widespread use.
 
-Each of these layers communicates with its peer layer (on the remote device) through a **protocol** (as seen in @fig-06-protocol-service-en): a set of rules that defines how data is exchanged between two entities of the same layer, one on the client side and one on the server side. It is the Application layer protocol of the TCP/IP model, known as `HTTP`, that defines the rules for how a *browser* requests a page from a server. `HTTP` will be the topic of the next chapter.
+### The TCP/IP Model {#sec-06-tcpip-en}
+
+The **TCP/IP** model was born from practice, in ARPANET, the network created in the 1960s by the US Department of Defense that gave rise to the Internet. It is simpler than OSI: it has only **four layers**.
+
+- **Application:** the protocols programs use directly (HTTP, SMTP, FTP, DNS);
+- **Transport:** delivers the data to the right program on the remote computer, using **TCP** (*Transmission Control Protocol*), which confirms that all the data sent reaches its destination, or **UDP** (*User Datagram Protocol*), faster but without that confirmation;
+- **Network (or Internet):** routes the data between different networks, with **IP** (*Internet Protocol*). It is called "Internet" because it is the layer that links networks together (the name comes from *internetwork*);
+- **Network Access:** delivers the data on the local network and transmits it over the physical medium (Ethernet, Wi-Fi).
+
+TCP/IP is a ***de facto*** standard ("in practice"): it established itself through widespread use, before any formal standardisation. It is the model the Internet uses.
+
+### OSI and TCP/IP Side by Side {#sec-06-side-by-side-en}
+
+@tbl-06-osi-tcpip-en summarises the differences between the two models.
+
+|                 | OSI model                | TCP/IP model                 |
+|-----------------|--------------------------|------------------------------|
+| Layers          | 7                        | 4                            |
+| Origin          | ISO, standards body      | ARPANET, born from practice  |
+| Type of standard | *de jure*               | *de facto*                   |
+| Use today       | reference and teaching   | what the Internet uses       |
+
+: The differences between the OSI and TCP/IP models. {#tbl-06-osi-tcpip-en}
+
+@fig-06-osi-model-en shows the correspondence: the top three OSI layers merge into the TCP/IP **Application** layer, and the bottom two into **Network Access**. OSI is still taught because it separates the responsibilities of each layer more clearly. A web programmer is mainly interested in three TCP/IP layers: application, where HTTP works; transport, with TCP; and network, with IP.
+
+![The OSI and TCP/IP models side by side: the top three OSI layers correspond to the TCP/IP application layer, and the bottom two to network access.](../assets/images/cap06/Mix_ modelo-osi + modelo-TCP-IP.png){#fig-06-osi-model-en width="45%"}
 
 ::: {.callout-note}
-To see which other real protocols run at each layer, and the more precise formalism behind the distinction between service and protocol, see @sec-apD-protocols-layer-en and @sec-apD-services-protocols-en.
+To see which other real protocols run in each layer, and the more precise formalism behind the distinction between service and protocol, see @sec-apD-protocols-layer-en and @sec-apD-services-protocols-en.
 :::
 
-## The Data's Journey: Encapsulation {#sec-06-encapsulation-en}
+## The Path of the Data: Encapsulation {#sec-06-encapsulation-en}
 
-When an application sends data, it passes through each layer of the TCP/IP model, and each layer adds its own control information, in a process called encapsulation. It is worth following this journey step by step, from the upper layers down to the physical medium.
+@fig-06-nic-transmission-en shows the path that the data of a request travels inside the computer, from top to bottom:
 
-The following figure summarises the whole journey: the data of an `HTTP` message leaves the application layer, passes through a *socket* (the connection point between the application layer and the protocol stack), and goes down the transport, network and link layers, each applying its own protocol and encapsulating the data it receives from the layer above, until it reaches the network card (`NIC`, *Network Interface Controller*), which finally converts it into an electrical or radio signal:
+1. The *browser* (the **DADOS** rectangle, "data") translates its requests (for example, for a page) into a text message, according to the rules of a protocol called HTTP;
+2. It hands that message to the ***socket***: the connection point between the program and the layers below;
+3. The message goes down the transport, network and link layers, and each one adds a header with its own information, according to the rules of its protocol;
+4. It reaches the **network card** (NIC, *Network Interface Controller*), which converts it into electrical or radio signals.
 
-![The journey of data from the application to the physical medium, layer by
-layer, down to the network card
+![The path of the data from the application down to the physical
+medium, layer by layer, to the network card
 (NIC).](../assets/images/cap06/emissao-dos-dados-com-nic.png){#fig-06-nic-transmission-en width="55%"}
 
 ::: {.callout-note}
-Do not confuse the **application layer** with the **application** itself: the application layer is just one of the layers of the TCP/IP model, defining how data is exchanged between two remote applications; the application is the program the user directly uses, such as a *browser* or an *email client*, which uses the application layer to send and receive data. In @fig-06-nic-transmission-en the *browser* or *email client* is represented by the **DADOS** rectangle, which is the application sending the data.
+Do not confuse the **application layer** (a layer of the TCP/IP model) with the **application** (the program the user uses, such as the *browser*).
 :::
 
-### The Transport Layer: TCP {#sec-06-tcp-en}
+On the way down, each layer adds a **header** to the data: a block with the information that the peer layer, on the other device, will need to do its job. This process is called **encapsulation**:
 
-The *payload* (the technical name given to the data, in this case, for example, an HTTP message) is passed to the transport layer by the application layer, through a *socket*, which adds to it a `TCP` header with the **source and destination ports**. These are two addresses that identify the **applications** sending and receiving the data — a *browser* or an *email client*.
+1. **Application Layer:** produces the data (the HTTP message);
+2. **Transport Layer:** adds the TCP header, with the **port** numbers, which identify the program sending and the program receiving the data;
+3. **Network Layer:** adds the IP header, with the **IP addresses**, which identify the computer;
+4. **Network Access Layer:**
+   1. **Link Sublayer:** adds the MAC header, with the **MAC addresses**, which identify the network card;
+   2. **Physical Sublayer:** converts everything into electrical, optical or radio signals.
 
-Ports range from 0 to 65535, and the so-called *well-known ports*, from 0 to 1023, are reserved for well-known services, such as port 80 for HTTP or 443 for HTTPS. @tbl-06-common-ports-en shows the most common ports for some well-known protocols.
+At the receiver, each layer removes and processes its own header, in reverse order. It is like a letter placed in an envelope, which goes inside another envelope, which in turn goes inside another: each layer adds its own envelope, with its own address, and at the destination the envelopes are opened in reverse order.
+
+![The headers added at each layer: ports (transport), IP addresses (network) and MAC addresses (link), each wrapping the data already prepared by the layer above.](../assets/images/cap06/diferentes-tipos-enderecos.png){#fig-06-headers-en width="85%"}
+
+### The Transport Layer: TCP and Ports {#sec-06-tcp-en}
+
+The transport layer receives the HTTP message through the *socket* and adds a TCP header with two **ports**:
+
+- **source port:** identifies the sending program (for example, port 52344, chosen by the operating system for the *browser*);
+- **destination port:** identifies the receiving program (port 80, the web server's).
+
+A port is a number between 0 and 65535 that identifies a **program** within the computer, not the computer.
+
+To guarantee that everything arrives, TCP:
+
+1. Splits the message into numbered pieces, called **segments**, labels them with their headers and sends them to the network layer;
+2. On the other side, the receiver's transport layer acknowledges each segment it receives;
+3. Anything not acknowledged within a given period of time is sent again;
+4. At the destination, the segments are put back in order by number, because they may arrive out of order, depending on the path taken through the network.
+
+Ports 0 to 1023, called ***well-known ports***, are reserved for well-known services. That way, any *browser* knows, without asking, on which port to find a web server. @tbl-06-common-ports-en shows some of the most used.
 
 | Port | Protocol | Service |
 |------|----------|---------|
-| 80   | HTTP     | Web pages (unencrypted) |
-| 443  | HTTPS    | Web pages (TLS-encrypted) |
+| 80   | HTTP     | Web pages |
+| 443  | HTTPS    | Encrypted web pages (the padlock in the *browser*) |
 | 21   | FTP      | File transfer |
 | 25   | SMTP     | Sending email |
-| 53   | DNS      | Domain name resolution |
+| 53   | DNS      | Translating names into addresses |
 
-: *Well-known* ports for some common protocols. {#tbl-06-common-ports-en}
+: *Well-known* ports of some common protocols. {#tbl-06-common-ports-en}
 
-TCP also guarantees that data arrives reliably and in the correct order: it divides it into numbered segments, and resends any segment that is not acknowledged by the receiver within a well-defined time window.
+When the address typed into the *browser* does not specify a port, the protocol's port is used: `http://www.utad.pt` is the same as `http://www.utad.pt:80`.
 
 ::: {.callout-note}
-The exact structure of the TCP header, and the mechanisms that guarantee this reliability, are covered in more depth in @sec-apD-tcp-en, for the more curious students.
+The exact structure of the TCP header, and the mechanisms that guarantee reliability, are covered in depth in @sec-apD-tcp-en.
 :::
 
-### The Network Layer: IP {#sec-06-ip-en}
+### The Network Layer: IP Addresses {#sec-06-ip-en}
 
-Next, the data passes to the network layer, to which an `IP` header is added with the **source and destination IP addresses**. An `IPv4` address has the form `(0-255).(0-255).(0-255).(0-255)`, such as `192.168.24.36`; this address identifies each computer even if they are on different networks.
+The network layer adds an IP header with the **source and destination IP addresses**. An IP address identifies a **computer**, even if it is on a different network.
 
-The same computer can have several IP addresses, one for each network interface it has. This is the case in @fig-06-nic-transmission-en, where there are two network devices: the Wi-Fi network card and the Ethernet network card, each with its own IP address.
+- **IPv4:** four numbers from 0 to 255, separated by dots, as in `192.168.24.36`;
+- **IPv6:** the most recent version, created because IPv4 addresses (around 4.3 billion) ran out. It is written in groups separated by colons, as in `2001:db8::1`.
+
+A computer has one IP address per network card. A laptop connected by Wi-Fi and by cable has two.
 
 ::: {.callout-note}
-The complete structure of the IP header is covered in more depth in @sec-apD-ip-en.
+The full structure of the IP header is covered in depth in @sec-apD-ip-en.
 :::
 
 ### The Link Layer: Ethernet and MAC Addresses {#sec-06-ethernet-en}
 
-After the network layer comes the data link layer, whose task is to deliver a packet to a machine within the same local network. This layer adds the **source and destination MAC addresses** (MAC stands for Medium Access Control), forming a frame, typically according to the `IEEE 802.3` standard (Ethernet) or the equivalent for wireless networks. These addresses only identify devices **within the same** local network, and are assigned by the network card's manufacturer, being unique worldwide. A MAC address has the form `XX:XX:XX:XX:XX:XX`, such as `00:1A:2B:3C:4D:5E`.
+The link layer delivers the packet to a machine **on the same local network**, adding the source and destination **MAC addresses** (*Medium Access Control*) and forming a *frame*, typically according to the IEEE 802.3 standard (Ethernet) or its Wi-Fi equivalent. The MAC address:
+
+- has the format `XX:XX:XX:XX:XX:XX`, as in `00:1A:2B:3C:4D:5E`;
+- is assigned by the **manufacturer of the network card**;
+- was designed to be unique worldwide;
+- is only valid **within the same local network**.
+
+For privacy reasons, many recent phones and computers do not show the Wi-Fi network the manufacturer's address, but a **private MAC address**, generated by the device itself and different for each network. This is the case of the iPhone in @fig-06-iphone-example-en.
 
 ::: {.callout-note}
-The complete structure of an Ethernet frame is covered in more depth in @sec-apD-ethernet-en.
+The full structure of an Ethernet frame is covered in depth in @sec-apD-ethernet-en.
 :::
 
 ### The Physical Medium {#sec-06-physical-en}
 
-Finally, at the physical layer, bits are converted into electrical signals, pulses of light (optical fibre) or radio waves (Wi-Fi), and transmitted through the corresponding physical channel. On the receiving side, this process happens exactly in reverse, layer by layer, until only the original application data remains; the complete journey, in both directions, is covered in more depth in @sec-apD-reception-en and in @sec-apD-overview-en.
+Finally, in the physical layer, the bits are converted into electrical signals, light pulses (optical fibre) or radio waves (Wi-Fi), and transmitted over the corresponding physical channel. On the receiver's side, the process happens in reverse, layer by layer, until only the application's original data remains. The full path, in both directions, is covered in depth in @sec-apD-reception-en and @sec-apD-overview-en.
 
-None of these addresses are theoretical abstractions: any computer, phone or tablet connected to a network has, at that very moment, a MAC address and an IP address assigned, visible in its own network settings. The following screenshot shows the Wi-Fi settings of an iPhone connected to the `eduroam` network, with its MAC address (labelled "Wi-Fi Address"), its IP address, the subnet mask and the *router*'s address:
+### The Three Levels of Addressing {#sec-06-three-levels-en}
 
-![The Wi-Fi settings of a mobile phone show, in practice, the MAC
-address and the IP address assigned to that
+Two applications communicate through **three addresses**, each identifying something different (@tbl-06-layer-addresses-en).
+
+| Layer     | Protocol | Source and destination | Identifies        |
+|-----------|----------|------------------------|-------------------|
+| Transport | TCP      | application ports      | the application   |
+| Network   | IP       | computers' IPs         | the computer      |
+| Link      | Ethernet | MAC addresses          | the network card  |
+
+: The three levels of addressing. {#tbl-06-layer-addresses-en}
+
+If any one of these three addresses is missing, the communication cannot be completed.
+
+These addresses are not theoretical abstractions: any device connected to a network has a MAC address and an IP address, visible in its network settings. @fig-06-iphone-example-en shows the Wi-Fi settings of an iPhone connected to the `eduroam` network:
+
+- **Wi-Fi Address:** the MAC address, in this case a private address;
+- **IP Address:** `192.168.155.39`;
+- **Subnet Mask:** indicates which part of the IP address identifies the local network and which part identifies the device within it;
+- **Router:** `192.168.155.254`, the device to which the iPhone sends everything destined for other networks.
+
+The IP address was assigned automatically by the network, through **DHCP** (*Dynamic Host Configuration Protocol*), without the user having to configure it.
+
+![A phone's Wi-Fi settings show, in practice, the MAC address and the
+IP address assigned to that
 device.](../assets/images/cap06/exemplo-iphone-wifi.png){#fig-06-iphone-example-en width="35%"}
-
-@tbl-06-layer-addresses-en summarises the different types of address added along the data's journey, from the application to the physical medium: each layer of the TCP/IP model adds its own address, and each identifies something different.
-
-| Layer     | Protocol | Source Address                    | Destination Address                 |
-|-----------|----------|------------------------------------|---------------------------------------|
-| Transport | TCP      | Port of the sending application   | Port of the receiving application   |
-| Network   | IP       | IP of the sending computer        | IP of the receiving computer        |
-| Link      | Ethernet | MAC of the sending network card   | MAC of the receiving network card   |
-
-: The different types of address used along the data's journey. {#tbl-06-layer-addresses-en}
-
-It is precisely because these three levels exist that two applications, on two different computers, can only communicate with each other once all three addresses are identified: the port, which guarantees the data reaches the right application, within the right computer; the IP address, which guarantees it reaches the right computer, within the right network; and the MAC address, which guarantees it reaches the right network card, within the local network. If any one of these three is missing, communication cannot be completed.
 
 ## Routing {#sec-06-routing-en}
 
-Up to this point, data has always moved within the same local network, identified by the MAC address. But the Internet is, at its core, a huge network of networks: thousands of different local networks, connected to each other. It is this connection between networks that allows, for example, the Contraponto reader, from home, to reach the magazine's server, which sits on a completely different network. The equipment responsible for that connection is called a **router**: its function is to receive packets coming from one network and forward them to the next network, along the right path to the destination.
+The Internet is a **network of networks**, linked by *routers*. It is this link between networks that allows, for example, a Contraponto reader at home to reach the magazine's server, which is on a completely different network.
 
-A router recognises, from each packet's destination IP address, that it is not meant for its own local network, and decides which network to forward it to next. A typical example: someone, at home, types a search into `Google`. The resulting packet has the destination IP set to the IP of `Google`'s servers. The home *router* receives that packet, recognises that the destination IP does not belong to its network, and forwards it to the public network; from router to router, hop by hop, the packet eventually reaches the destination computer, with the intended IP. To decide where to forward each packet, each router maintains a **routing table**, with rules that map possible destinations to the network interface the packet should follow.
+Two tasks should be told apart:
 
-It is worth noting the difference between a *router* and a *switch*: a *switch* interconnects several devices within the same local network, forwarding frames based on the MAC address; a *router* interconnects different networks with each other, forwarding packets based on the IP address. That is why a request to a server outside the local network, like Google's in the earlier example, always passes through at least one router.
+- **Routing**: choosing the path the packet follows, network by network, to its destination (@fig-06-routing-en);
+- **Forwarding**: what each *router* does with each packet that arrives (@fig-06-forwarding-en).
+
+![Routing: the packet goes from the PC, on the home network, to the UTAD server, passing from *router* to *router*. Other paths were possible, for example through R3.](../assets/images/cap06/routing-caminho.png){#fig-06-routing-en width="85%"}
+
+To forward a packet, a *router*:
+
+1. Reads the packet's **destination IP address**;
+2. Looks up its **routing table**, with rules that associate each possible destination with the exit the packet should take;
+3. Forwards the packet through that exit, to the **next network**.
+
+Network by network, the packet reaches its destination.
+
+![Forwarding inside *router* R1: the destination `193.136.40.195` starts with `193.136`, so the packet leaves through exit 2, towards *router* R2.](../assets/images/cap06/forwarding-router.png){#fig-06-forwarding-en width="80%"}
+
+A typical example: someone at home types a search into Google. The packet's destination IP is that of Google's servers. The home *router* recognises that this IP does not belong to the local network and forwards the packet to the Internet provider's network; from *router* to *router*, the packet eventually reaches the destination server.
+
+A *router* should also be told apart from a *switch*:
+
+- ***switch***: links devices on the **same local network**, passing frames on based on **MAC** addresses (this process is called **switching**);
+- ***router***: links **different networks**, routing packets based on **IP** addresses.
+
+That is why a request to a server outside the local network always goes through at least one *router*.
 
 ## Ports, Addresses and URLs {#sec-06-ports-addresses-en}
 
-An address such as `http://www.utad.pt` actually hides several pieces of information: the protocol to use (`http`), the server name (`www.utad.pt`), optionally, the port to use, and the resource to be accessed (i.e., the name of the web page). The *browser* needs all these separate pieces of information: the server's address and the port to use. When no port is explicitly given, the well-known port of the protocol in question is assumed, port 80 in the case of HTTP, so `http://www.utad.pt` and `http://www.utad.pt:80` are, in practice, equivalent.
+A URL such as `https://www.utad.pt/index.php` combines several pieces of information:
 
-![The URL typed in the browser's address bar is the starting point of the whole journey described in this chapter.](../assets/images/cap06/pc-com-url.png){#fig-06-pc-url-en width="55%"}
+- **Protocol** (`https`): defines how to communicate. The "s" after `http` indicates that the HTTP connection is secure, that is, encrypted, and uses port 443;
+- **Server name** (`www.utad.pt`): identifies the destination server, through DNS;
+- **Port** (optional): by default, 80 for HTTP and 443 for HTTPS;
+- **Resource** (optional, `index.php`): the path or name of the page or file.
 
-Since humans memorise text more easily than numbers, the address written in a URL always takes the form of a domain name, such as `www.utad.pt`, never an IP number directly. But the network, at the IP layer level, only understands numbers. It is DNS that bridges these two realities.
+So `http://www.utad.pt` and `http://www.utad.pt:80` are equivalent.
+
+![The URL typed into the *browser*'s address bar is the starting point of the whole path described in this chapter.](../assets/images/cap06/pc-com-url.png){#fig-06-pc-url-en width="55%"}
+
+The network only understands IP addresses, not domain names. It is DNS that converts the name into the IP address needed.
 
 ## The Domain Name System (DNS) {#sec-06-dns-en}
 
-`DNS` (*Domain Name System*) is the service responsible for translating domain names, such as `www.utad.pt`, into the corresponding IP address. The process is simple from the point of view of whoever uses it: the *browser* asks a name server what the IP corresponding to a given domain is, and the name system replies with the IP number, which the *browser* then uses in the IP header of every subsequent packet to that destination.
+**DNS** (*Domain Name System*) translates domain names, such as `www.utad.pt`, which are easy for people to remember, into the corresponding IP address. From the user's point of view, it works like this:
 
-![The domain name system is organised in a hierarchy, from the root domain (`ROOT`) to the top-level domains (`TLD`) and to each organisation's domains.](../assets/images/cap06/dns.png){#fig-06-dns-en width="70%"}
+1. The *browser* asks the local DNS server for the IP of a name;
+2. DNS replies with the IP address;
+3. The *browser* uses that IP in the following packets.
 
-DNS is not, however, a single server, but a hierarchical, distributed system of servers, organised by domains and subdomains: a server may not directly know the IP of `www.utad.pt`, but it knows which other server to ask, closer to that domain in the hierarchy, until the final answer is obtained. Only once the domain name has been resolved to its IP address can the HTTP request actually be sent to the destination server, which makes DNS resolution a mandatory step, and sometimes the slowest one, whenever a given site is accessed for the first time.
+DNS is a **hierarchical and distributed** system, organised into domains and subdomains (@fig-06-dns-en). A server may not know the IP of a name, but it knows whom to ask. Name resolution (that is, turning names into IP addresses) is a mandatory step when a site is accessed for the first time.
 
-![The process of resolving `www.utad.pt`: the *browser* asks the local DNS server, which in turn successively asks the root server, the `.pt` domain server and, finally, the `utad.pt` server, until it obtains the corresponding IP address.](../assets/images/cap06/dns2.png){#fig-06-dns-resolution-en width="90%"}
+![The domain name system is organised as a hierarchy, from the root domain (`ROOT`) to the top-level domains (`TLD`) and the domains of each organisation.](../assets/images/cap06/dns.png){#fig-06-dns-en width="70%"}
+
+Resolving `www.utad.pt` follows a chain of questions between DNS servers (@fig-06-dns-resolution-en):
+
+1. The *browser* asks the local DNS for the IP of `www.utad.pt`;
+2. The local DNS asks the root server (`ROOT`): "Who manages `.pt`?";
+3. The root server points to the server of the `.pt` top-level domain;
+4. The local DNS asks the `.pt` server: "Who manages `utad.pt`?";
+5. The `.pt` server points to the `utad.pt` server;
+6. The local DNS asks the `utad.pt` server: "What is the IP of `www.utad.pt`?";
+7. The `utad.pt` server replies to the local DNS: `193.136.40.195`;
+8. The local DNS returns the IP to the *browser*.
+
+Only after the name has been resolved can the HTTP request be sent.
+
+![The resolution of `www.utad.pt`: the *browser* asks the local DNS server, which successively asks the root server, the `.pt` domain server and, finally, the `utad.pt` server, until it obtains the corresponding IP address.](../assets/images/cap06/dns2.png){#fig-06-dns-resolution-en width="90%"}
+
+## Summary: the Complete Path of a Web Request {#sec-06-summary-en}
+
+Before the reader sees the Contraponto page, all of this happens automatically:
+
+1. **URL → DNS:** the domain name is resolved into an IP address;
+2. **Application → TCP:** the HTTP data is encapsulated with the source and destination ports;
+3. **TCP → IP:** the segment is encapsulated with the IP addresses;
+4. **IP → Ethernet:** the packet is encapsulated with the MAC addresses, in a frame;
+5. **Physical:** the frame is converted into electrical, light or radio signals;
+6. **Routing:** the packet travels across the Internet, from *router* to *router*;
+7. **Reception:** the server decapsulates the data layer by layer and processes the HTTP request.
 
 ## References {#sec-06-references-en .unnumbered}
 
