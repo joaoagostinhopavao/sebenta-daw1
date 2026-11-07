@@ -80,6 +80,8 @@ The choice between `GET` and `POST` in a form has concrete practical consequence
 
 ### Virtual Resources {#sec-07-virtual-resources-en}
 
+A **static resource** is a file that already exists on the server and that the server simply returns as it is, such as the `index.html` of a simple page.
+
 Not all resources accessible through the Web exist, as such, as a file on the server. Many are created, or assembled "on the fly", according to the client's specific request, after the server retrieves the necessary data from a database, the topic of @sec-08-dbms-en. A request to `artigos.php?id=5`, for example, does not correspond to a file literally called that; it corresponds to the execution of the `artigos.php` *script*, which, based on the `id` parameter, dynamically generates the content to return.
 
 ## Superglobals {#sec-07-superglobals-en}
@@ -118,11 +120,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ```
 
+To join text and variables, PHP offers two equivalent ways. The `$_GET` example used **concatenation**, with the `.` operator; the `$_POST` example used **interpolation**, writing the variables directly inside double quotes. The result is the same, and the form example can also be written with concatenation:
+
+```php
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nome_comentario = $_POST["nome"];
+    $texto_comentario = $_POST["texto"];
+    echo "Comentário de " . $nome_comentario . " recebido: " . $texto_comentario;
+}
+```
+
 Superglobals are the connecting point between `HTTP`, on the network side, and the PHP logic, on the server side: the category filter and the comment form only take effect because their data reaches the PHP *script* through `$_GET` or `$_POST`. The complete code for this demonstration, including the HTML form used to test `$_GET` and `$_POST`, is available in @sec-apB-conditionals-loops-en.
 
 ## HTTP Headers {#sec-07-headers-en}
 
 Both the request and the response include **headers**, key-value pairs with additional information about the message, already present in the general structure shown in @sec-07-request-message-en. The only required header in a request is `Host`, which indicates which server the request is meant for, essential when a single IP address hosts several different domains, as with Contraponto's own server.
+
+The `Content-Type` header indicates the type of content in the body of the message. In a `POST` request carrying form data, for example, it has the value `application/x-www-form-urlencoded`; in a response, the value `text/html` tells the *browser* that the body is an HTML page. It only makes sense when the message has a body, so a `GET` request normally does not include it.
 
 ::: {.callout-note}
 Other common headers, such as `Accept`, are described in @sec-apE-headers-en.
@@ -147,7 +162,19 @@ The status code is a number summarising the outcome of the request, grouped into
 - **4xx**: client-side error, such as `404 Not Found`, when the requested resource does not exist, or `403 Forbidden`, when access is denied;
 - **5xx**: server-side error, such as `500 Internal Server Error`, indicating a failure in the server-side application, typically a bug in the PHP code itself.
 
----insert here the table with the summary of status codes, as in the original slides
+@tbl-07-status-codes-en summarises the most common codes.
+
+| Code                      | Meaning                | When it occurs               |
+|---------------------------|------------------------|------------------------------|
+| 200 OK                    | Success                | Resource returned            |
+| 301 Moved Permanently     | Permanent redirection  | Resource has changed address |
+| 302 Found                 | Temporary redirection  | Resource at another address  |
+| 400 Bad Request           | Invalid request        | Malformed request            |
+| 403 Forbidden             | Access denied          | Access refused               |
+| 404 Not Found             | Not found              | Resource does not exist      |
+| 500 Internal Server Error | Internal server error  | Application failure          |
+
+: Most common HTTP status codes. {#tbl-07-status-codes-en}
 
 ## HTTP Is a Stateless Protocol {#sec-07-stateless-en}
 
@@ -204,6 +231,16 @@ $_SESSION["utilizador"] = "joao";
 session_start();
 echo "Bem-vindo, " . $_SESSION["utilizador"];
 ```
+
+@tbl-07-cookies-sessions-en compares the two solutions.
+
+| Aspect      | *Cookies*                      | Sessions                                 |
+|-------------|--------------------------------|------------------------------------------|
+| Data stored | In the client's *browser*      | On the server                            |
+| Duration    | Configurable through `Expires` | Until the *browser* is closed or timeout |
+| Security    | Exposed on the client          | Sensitive data stays on the server       |
+
+: Comparison between *cookies* and sessions. {#tbl-07-cookies-sessions-en}
 
 Cookies and sessions are, therefore, the engineering solution that allows continuity to be simulated in a web application built on a protocol that, by nature, keeps no memory of anything between one request and the next.
 

@@ -29,7 +29,7 @@ visto na @sec-03-arrays-multidimensionais: guardado apenas em memória,
 esse array reinicia-se sempre que o servidor reinicia, e um leitor nunca
 vê um artigo publicado por outro processo do servidor. Uma base de
 dados guarda a informação entre pedidos diferentes, e entre utilizadores
-diferentes, exatamente o que falta a Tiago para o sítio da Contraponto
+diferentes, exatamente o que falta a Tiago para o site da Contraponto
 deixar de depender de dados fixos no código.
 
 ## Comandos SQL {#sec-08-sql}
@@ -328,7 +328,7 @@ bases de dados em PHP:
 ## Uma Aplicação CRUD Completa {#sec-08-crud}
 
 Juntando tudo o que foi visto neste capítulo, o próximo passo natural
-para o sítio da Contraponto é dar a Rita, a diretora, uma forma de gerir
+para o site da Contraponto é dar a Rita, a diretora, uma forma de gerir
 os artigos sem precisar de mexer diretamente na base de dados: uma
 pequena aplicação de gestão de artigos, sobre a tabela `artigos` criada
 na @sec-08-criar-bd, distinta das páginas públicas já esboçadas nos

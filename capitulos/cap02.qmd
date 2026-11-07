@@ -159,7 +159,7 @@ web, e comunicando com o PHP através de uma ligação de rede local.
 Em produção, estes servidores correm numa máquina sempre ligada à
 Internet, normalmente de uma de três formas:
 
-- **alojamento partilhado**: muitos sítios no mesmo servidor, já
+- **alojamento partilhado**: muitos sites no mesmo servidor, já
   configurado com `Apache`, `PHP` e `MySQL`; é barato, mas dá pouco
   controlo sobre a configuração;
 - **servidor virtual privado** (*Virtual Private Server*, VPS): uma

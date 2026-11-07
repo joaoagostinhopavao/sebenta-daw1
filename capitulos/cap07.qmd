@@ -134,6 +134,8 @@ práticas concretas:
 
 ### Recursos Virtuais {#sec-07-recursos-virtuais}
 
+Um **recurso estático** é um ficheiro que já existe no servidor e que este se limita a devolver tal como está, como o `index.html` de uma página simples.
+
 Nem todos os recursos acessíveis através da Web existem, como tal, num
 ficheiro no servidor. Muitos são criados, ou montados "na hora", de
 acordo com o pedido específico do cliente, depois de o servidor
@@ -172,7 +174,7 @@ parâmetros de um pedido `GET`, os campos de um formulário `POST`, os
   atual, como o endereço do cliente, o método `HTTP` usado, ou o
   caminho do próprio *script*.
 
-No sítio da Contraponto, `$_GET` é exatamente o mecanismo que permite a
+No site da Contraponto, `$_GET` é exatamente o mecanismo que permite a
 um leitor filtrar os artigos por categoria, através de um endereço como
 `contraponto.pt/artigos.php?categoria=Cultura`, substituindo finalmente, por
 dados reais de um pedido, a variável fixa usada na @sec-04-desafio:
@@ -191,7 +193,7 @@ O uso de `isset()` no exemplo anterior não é acidental: aceder
 diretamente a uma chave de `$_GET` ou `$_POST` que não exista gera um
 aviso em PHP, pelo que é boa prática verificar sempre se um determinado
 campo foi de facto enviado antes de o usar, já que nem todos os leitores
-chegam ao sítio através de um endereço com esse parâmetro.
+chegam ao site através de um endereço com esse parâmetro.
 
 O `$_POST`, por sua vez, é o que recebe o formulário de comentário
 esboçado na @sec-03-projeto, quando um leitor o submete:
@@ -202,6 +204,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nome_comentario = $_POST["nome"];
     $texto_comentario = $_POST["texto"];
     echo "Comentário de $nome_comentario recebido: $texto_comentario";
+}
+```
+
+Para juntar texto e variáveis, o PHP permite duas formas equivalentes. O exemplo de `$_GET` usou a **concatenação**, com o operador `.`; o de `$_POST` usou a **interpolação**, escrevendo as variáveis diretamente dentro de aspas duplas. O resultado é o mesmo, e o exemplo do formulário também pode ser escrito com concatenação:
+
+```php
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nome_comentario = $_POST["nome"];
+    $texto_comentario = $_POST["texto"];
+    echo "Comentário de " . $nome_comentario . " recebido: " . $texto_comentario;
 }
 ```
 
@@ -220,6 +233,8 @@ estrutura genérica apresentada na @sec-07-mensagem-pedido. O único
 cabeçalho obrigatório num pedido é o `Host`, que indica a que servidor
 o pedido se destina, essencial quando um mesmo endereço IP aloja vários
 domínios diferentes, como o próprio servidor da Contraponto.
+
+O cabeçalho `Content-Type` indica o tipo de conteúdo do corpo da mensagem. Num pedido `POST` com os dados de um formulário, por exemplo, tem o valor `application/x-www-form-urlencoded`; numa resposta, o valor `text/html` informa o *browser* de que o corpo é uma página HTML. Só faz sentido quando a mensagem tem corpo, pelo que um pedido `GET` normalmente não o inclui.
 
 ::: {.callout-note}
 Outros cabeçalhos comuns, como o `Accept`, estão descritos na
@@ -244,7 +259,7 @@ agrupado em cinco categorias:
 - **1xx**: informativo, usado raramente diretamente por quem programa
   aplicações web;
 - **2xx**: sucesso, como `200 OK`;
-- **3xx**: redireccionamento, como `301 Moved Permanently`, que indica
+- **3xx**: redirecionamento, como `301 Moved Permanently`, que indica
   que o recurso pedido passou a estar disponível noutro endereço;
 - **4xx**: erro do lado do cliente, como `404 Not Found`, quando o
   recurso pedido não existe, ou `403 Forbidden`, quando o acesso é
@@ -253,7 +268,19 @@ agrupado em cinco categorias:
   que indica uma falha na aplicação do lado do servidor, tipicamente um
   erro no próprio código PHP.
 
----colocar aqui a tabela com o resumo dos códigos tal como nos slides originais
+A @tbl-07-codigos-estado resume os códigos mais frequentes.
+
+| Código                    | Significado                 | Quando ocorre             |
+|---------------------------|-----------------------------|---------------------------|
+| 200 OK                    | Sucesso                     | Recurso devolvido         |
+| 301 Moved Permanently     | Redirecionamento permanente | Recurso mudou de endereço |
+| 302 Found                 | Redirecionamento temporário | Recurso noutro endereço   |
+| 400 Bad Request           | Pedido inválido             | Pedido malformado         |
+| 403 Forbidden             | Acesso negado               | Acesso recusado           |
+| 404 Not Found             | Não encontrado              | Recurso inexistente       |
+| 500 Internal Server Error | Erro interno do servidor    | Falha na aplicação        |
+
+: Códigos de estado HTTP mais frequentes. {#tbl-07-codigos-estado}
 
 ## HTTP é um Protocolo Stateless {#sec-07-stateless}
 
@@ -268,7 +295,7 @@ estabelecer a sua própria ligação. Os *browsers* atenuam este custo com
 várias estratégias de gestão de ligações, mas o princípio mantém-se:
 cada pedido é, por si só, independente de todos os outros.
 
-Se cada página tem mais do que um recurso e o servidor não guarda estado, como é que um sítio de comércio eletrónico sabe que artigos um utilizador colocou no seu carrinho, ou como é que a Contraponto reconhece um leitor que já comentou antes, sem lhe pedir de novo o nome em cada comentário? Para isso, o HTTP recorre a mecanismos de gestão de estado, como *cookies* e sessões, tema da secção @sec-07-estado.
+Se cada página tem mais do que um recurso e o servidor não guarda estado, como é que um site de comércio eletrónico sabe que artigos um utilizador colocou no seu carrinho, ou como é que a Contraponto reconhece um leitor que já comentou antes, sem lhe pedir de novo o nome em cada comentário? Para isso, o HTTP recorre a mecanismos de gestão de estado, como *cookies* e sessões, tema da secção @sec-07-estado.
 
 ::: {.callout-note}
 As estratégias concretas usadas pelos *browsers* para atenuar este
@@ -279,7 +306,7 @@ custo, ligações paralelas, persistentes e em rajada, estão descritas na
 ## Gestão de Estado: Cookies e Sessões {#sec-07-estado}
 
 Apesar de o HTTP ser, por natureza, *stateless*, o comportamento mais
-comum na Web é precisamente o oposto: um sítio de comércio eletrónico
+comum na Web é precisamente o oposto: um site de comércio eletrónico
 precisa de saber que artigos um utilizador colocou no seu carrinho, e a
 Contraponto, por exemplo, precisaria de reconhecer um leitor que já
 comentou antes, sem lhe pedir de novo o nome em cada comentário.
@@ -346,6 +373,16 @@ session_start();
 echo "Bem-vindo, " . $_SESSION["utilizador"];
 ```
 
+A @tbl-07-cookies-sessoes compara as duas soluções.
+
+| Aspeto          | *Cookies*                         | Sessões                                       |
+|-----------------|-----------------------------------|-----------------------------------------------|
+| Dados guardados | No *browser* do cliente           | No servidor                                   |
+| Duração         | Configurável através de `Expires` | Até fechar o *browser* ou expirar (*timeout*) |
+| Segurança       | Expostos no cliente               | Dados sensíveis ficam no servidor             |
+
+: Comparação entre *cookies* e sessões. {#tbl-07-cookies-sessoes}
+
 Cookies e sessões são, assim, a solução de engenharia que permite
 simular continuidade numa aplicação web construída sobre um protocolo
 que, por natureza, não guarda memória de nada entre um pedido e o
@@ -353,7 +390,7 @@ seguinte.
 
 ## Desafio {#sec-07-desafio}
 
-Com o `HTTP` e as supervariáveis, o sítio da Contraponto deixa
+Com o `HTTP` e as supervariáveis, o site da Contraponto deixa
 finalmente de depender de dados simulados. O desafio, a partir do
 ficheiro de arranque da @sec-05-desafio, é:
 

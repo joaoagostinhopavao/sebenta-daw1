@@ -99,11 +99,12 @@ Which, when submitted, results in the following message:
 ```bash
 POST /comentar.php HTTP/1.1
 Host: contraponto.pt
+Content-Type: application/x-www-form-urlencoded
 
 nome=Rita&texto=Excelente+artigo%21
 ```
 
-Unlike `GET`, the data goes in the body of the message, not in the URL.
+Unlike `GET`, the data goes in the body of the message, not in the URL. The `Content-Type` header tells the server that the body follows the encoded `key=value` format.
 Notice how the `key=value` format is preserved, but now in the body,
 and how special characters in the text (such as `!`) appear encoded
 (`%21`), a rule called *URL encoding*, necessary because the body of an

@@ -11,7 +11,7 @@ A @sec-07-http dá a um programador de aplicações web o que precisa de
 saber sobre o protocolo `HTTP` para perceber o resto deste livro: o
 que são os métodos `GET` e `POST`, como um pedido chega a um recurso
 virtual, como o PHP recebe esses dados através das supervariáveis, e
-como um sítio mantém o estado de um leitor através de *cookies* e
+como um site mantém o estado de um leitor através de *cookies* e
 sessões, apesar de o `HTTP` ser, por natureza, *stateless*. Este
 apêndice aprofunda essa matéria além do que é estritamente necessário
 para desenvolver aplicações web, tal como um pintor não precisa de
@@ -100,11 +100,12 @@ Que, ao ser submetido, resulta na seguinte mensagem:
 ```bash
 POST /comentar.php HTTP/1.1
 Host: contraponto.pt
+Content-Type: application/x-www-form-urlencoded
 
 nome=Rita&texto=Excelente+artigo%21
 ```
 
-Ao contrário do `GET`, os dados vão no corpo da mensagem, não na URL.
+Ao contrário do `GET`, os dados vão no corpo da mensagem, não na URL. O cabeçalho `Content-Type` informa o servidor de que o corpo segue o formato `chave=valor` codificado.
 Repare-se como o formato `chave=valor` se mantém, mas agora no corpo, e
 como caracteres especiais no texto (como o `!`) aparecem codificados
 (`%21`), uma regra chamada *URL encoding*, necessária porque o corpo de

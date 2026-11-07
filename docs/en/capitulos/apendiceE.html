@@ -378,9 +378,10 @@ div.csl-indent {
 <p>Which, when submitted, results in the following message:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">POST</span> /comentar.php HTTP/1.1</span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="ex">Host:</span> contraponto.pt</span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="va">nome</span><span class="op">=</span>Rita<span class="kw">&amp;</span><span class="va">texto</span><span class="op">=</span>Excelente+artigo%21</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Unlike <code>GET</code>, the data goes in the body of the message, not in the URL. Notice how the <code>key=value</code> format is preserved, but now in the body, and how special characters in the text (such as <code>!</code>) appear encoded (<code>%21</code>), a rule called <em>URL encoding</em>, necessary because the body of an <code>HTTP</code> message can only contain a restricted set of characters.</p>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="ex">Content-Type:</span> application/x-www-form-urlencoded</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="va">nome</span><span class="op">=</span>Rita<span class="kw">&amp;</span><span class="va">texto</span><span class="op">=</span>Excelente+artigo%21</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Unlike <code>GET</code>, the data goes in the body of the message, not in the URL. The <code>Content-Type</code> header tells the server that the body follows the encoded <code>key=value</code> format. Notice how the <code>key=value</code> format is preserved, but now in the body, and how special characters in the text (such as <code>!</code>) appear encoded (<code>%21</code>), a rule called <em>URL encoding</em>, necessary because the body of an <code>HTTP</code> message can only contain a restricted set of characters.</p>
 </section>
 </section>
 <section id="sec-apE-headers-en" class="level2" data-number="E.3">

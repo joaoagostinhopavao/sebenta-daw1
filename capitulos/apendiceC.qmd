@@ -122,7 +122,7 @@ apenas a função `formatarArtigo()` e a sua integração no `foreach`.
 
 ```php
 <!-- header.php -->
-<!-- TODO: escrever aqui um cabeçalho simples para o sítio da
+<!-- TODO: escrever aqui um cabeçalho simples para o site da
      Contraponto, com o nome da revista e um menu de navegação por
      categoria. Exemplo de estrutura possível:
 
@@ -140,7 +140,7 @@ apenas a função `formatarArtigo()` e a sua integração no `foreach`.
 
 ```php
 <!-- footer.php -->
-<!-- TODO: escrever aqui um rodapé simples para o sítio da Contraponto,
+<!-- TODO: escrever aqui um rodapé simples para o site da Contraponto,
      por exemplo com os direitos de autor:
 
      <footer>

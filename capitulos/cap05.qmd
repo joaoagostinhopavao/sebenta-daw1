@@ -14,7 +14,7 @@ lang: pt-PT
 
 ## Funções {#sec-05-funcoes}
 
-À medida que o sítio da Contraponto cresce, Tiago repara que está a
+À medida que o site da Contraponto cresce, Tiago repara que está a
 escrever o mesmo tipo de código em vários sítios diferentes: sempre que
 mostra um artigo, seja na listagem, seja na página do próprio artigo,
 tem de juntar o autor à categoria no mesmo formato, "por Rita Ferreira,
@@ -39,7 +39,7 @@ echo formatarAutoria("Marco Antunes", "Cultura");
 Uma função pode receber vários parâmetros, e pode definir-lhes um valor
 por omissão, usado quando esse parâmetro não é indicado na chamada. É
 o que Tiago usa para estimar o tempo de leitura de um artigo, uma
-funcionalidade comum em sítios de conteúdos: por omissão assume-se que
+funcionalidade comum em sites de conteúdos: por omissão assume-se que
 um leitor lê 200 palavras por minuto, mas essa velocidade pode ser
 ajustada quando se souber melhor:
 
@@ -56,7 +56,7 @@ echo tempoLeitura(600, 300);  // 2, o valor indicado sobrepõe-se ao por omissã
 Uma função pode ainda não devolver nada, limitando-se a produzir um
 efeito, como mostrar diretamente algo no ecrã. É assim que Tiago
 resume, num único sítio, como se mostra o teaser de um artigo na
-listagem do sítio:
+listagem do site:
 
 ```php
 <?php
@@ -176,7 +176,7 @@ o cálculo de anos bissextos, está disponível na @sec-apB-datas.
 
 ## Manipulação do Fluxo de Páginas: Includes {#sec-05-includes}
 
-O sítio da Contraponto vai ter várias páginas, a listagem de artigos, a
+O site da Contraponto vai ter várias páginas, a listagem de artigos, a
 página de um artigo, o formulário de comentário, mas todas partilham o
 mesmo cabeçalho, com o logótipo e o menu de categorias, e o mesmo
 rodapé, com os direitos de autor. Copiar esse HTML para cada nova
@@ -212,7 +212,7 @@ require "footer.php";
 ```
 
 Os dois ficheiros incluídos têm apenas o HTML que se repete em todas
-as páginas do sítio: o `header.php` tem o nome da revista e o menu de
+as páginas do site: o `header.php` tem o nome da revista e o menu de
 categorias, e o `footer.php` tem os direitos de autor.
 
 ```php
@@ -244,7 +244,7 @@ indiretamente, mais do que uma vez no fluxo de execução, evitando erros
 como a redefinição de uma mesma função.
 
 Este padrão, ficheiros `header.php` e `footer.php` incluídos em cada
-página do sítio, é o primeiro passo prático para pensar numa aplicação
+página do site, é o primeiro passo prático para pensar numa aplicação
 web como um conjunto de componentes reutilizáveis, em vez de páginas
 HTML independentes e desligadas umas das outras, uma ideia retomada com
 mais profundidade na @sec-02-mvc e na @sec-10-porque-separar.
@@ -255,7 +255,7 @@ na @sec-apB-includes.
 ## Desafio {#sec-05-desafio}
 
 Com funções, datas e *includes*, Tiago já tem as peças para organizar o
-código do sítio em vez de o repetir. O desafio, a partir do catálogo
+código do site em vez de o repetir. O desafio, a partir do catálogo
 `$artigos` e do filtro por categoria da @sec-04-desafio, é:
 
 1. Escrever uma função `formatarArtigo($artigo)` que recebe um artigo
@@ -264,7 +264,7 @@ código do sítio em vez de o repetir. O desafio, a partir do catálogo
 2. Usar essa função dentro do `foreach` que já percorre `$artigos`, em
    vez de escrever a formatação diretamente lá dentro;
 3. Criar dois ficheiros, `header.php` e `footer.php`, com um cabeçalho
-   e um rodapé simples do sítio, e usar `require` para os incluir antes
+   e um rodapé simples do site, e usar `require` para os incluir antes
    e depois da listagem de artigos.
 
 O ficheiro de arranque, com o catálogo e o filtro por categoria já

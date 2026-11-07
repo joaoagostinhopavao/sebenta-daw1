@@ -20,7 +20,7 @@ lado do servidor com PHP, desde os fundamentos da comunicação cliente-servidor
 até à arquitetura e segurança de aplicações web modernas.
 
 Na componente prática da UC, os alunos aplicam estes conceitos na construção de
-sítios web dinâmicos com PHP e bases de dados. Este documento cobre a componente
+sites dinâmicos com PHP e bases de dados. Este documento cobre a componente
 teórica; a componente prática é acompanhada em separado, nas respetivas aulas.
 
 ## Organização do documento {.unnumbered}
@@ -40,7 +40,7 @@ oficial da UC:
 
 ## Fonte e atualização {.unnumbered}
 
-Os conteúdos deste documento de aopio ao estudo baseiam-se no material próprio dos docentes,
+Os conteúdos deste documento de apoio ao estudo baseiam-se no material próprio dos docentes,
 desenvolvido ao longo de anos anteriores de lecionação da UC (slides e
 demonstrações de código), reorganizado e atualizado para o ano letivo
 2026/2027. A bibliografia de referência da UC está indicada em cada
@@ -57,4 +57,4 @@ Em cada capítulo que envolve programação PHP, o código de exemplo é apresen
 
 ## Autor {.unnumbered}
 
-**João Pavão** — UTAD
+**João Pavão**, regente da unidade curricular (UTAD)

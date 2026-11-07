@@ -119,8 +119,8 @@ ou de um *cookie*, sem primeiro os validar e tratar adequadamente.
 
 ## Vulnerabilidades em Dependências de Terceiros {#sec-09-dependencias}
 
-A superfície de ataque de um sítio web não se limita ao código escrito
-diretamente pelo seu programador. Grande parte dos sítios web atuais é
+A superfície de ataque de um site não se limita ao código escrito
+diretamente pelo seu programador. Grande parte dos sites atuais é
 construída sobre sistemas de gestão de conteúdos, como o `WordPress`,
 estendidos através de extensões (*plugins*) desenvolvidas por terceiros,
 muitas vezes por equipas pequenas ou até um único programador
@@ -137,9 +137,9 @@ segurança de uma aplicação depende também da segurança de todas as
 bibliotecas, *frameworks* e extensões de que esta depende, e não apenas
 do código escrito pela própria equipa [@owasp_top10_2025]. É por esta
 razão que, na prática, os serviços de alojamento suspendem por vezes o
-acesso a um sítio web até que as suas dependências vulneráveis sejam
+acesso a um site até que as suas dependências vulneráveis sejam
 atualizadas: a vulnerabilidade pode não estar em nenhuma linha de código
-escrita pelo dono do sítio, mas o risco que representa é igualmente
+escrita pelo dono do site, mas o risco que representa é igualmente
 real.
 
 ## Boas Práticas {#sec-09-boas-praticas}

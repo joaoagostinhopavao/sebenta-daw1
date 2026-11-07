@@ -110,7 +110,7 @@ if ($vistas >= 1000) {
 
 Este problema das vistas resolve-se bem com `elseif` porque cada
 alternativa depende de uma faixa diferente de valores. Mas quando Tiago
-quer decidir a secção do sítio a partir da categoria exata de um
+quer decidir a secção do site a partir da categoria exata de um
 artigo, comparando sempre a mesma variável `$categoria` com vários
 valores possíveis, um a um, escrever um `elseif` para cada categoria
 começa a ficar repetitivo: `elseif ($categoria === "Cultura")`,
@@ -228,7 +228,7 @@ do {
 Usado especificamente para percorrer arrays, sem necessidade de gerir um
 índice manualmente. É finalmente com um `foreach` que Tiago consegue
 transformar o array `$titulos`, esboçado na @sec-03-arrays-numericos,
-numa lista real de artigos na página do sítio, sem repetir `echo` uma
+numa lista real de artigos na página do site, sem repetir `echo` uma
 vez por artigo:
 
 ```php

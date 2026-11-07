@@ -375,7 +375,7 @@ div.csl-indent {
 <li>The <em>browser</em> extracts the server name (<em>hostname</em>) from the URL, including the port number, if given, and queries <code>DNS</code> to obtain its <code>IP</code> address;</li>
 <li>The <em>browser</em> then opens a <code>TCP</code> <em>socket</em>, specifying the destination <code>IP</code> and the port to use (by default, port 80 for a typical web page);</li>
 <li>It writes an <strong><code>HTTP</code> request message</strong> and sends it through that <code>TCP</code> <em>socket</em>; if no web page name is explicitly given in the URL, the server assumes <code>index.html</code> by default (if this does not exist, it looks for other default pages, such as <code>index.php</code>, <code>default.html</code>, etc.);</li>
-<li>The <code>TCP</code> layer <strong>accepts the message</strong> and guarantees its reliable delivery to the server, as described in <a href="cap06.html#sec-06-tcp-en" class="quarto-xref"><span>Section 6.3.1</span></a>;</li>
+<li>The <code>TCP</code> layer <strong>accepts the message</strong> and guarantees its reliable delivery to the server, as described in <a href="cap06.html#sec-06-tcp-en" class="quarto-xref"><span>Section 6.5.1</span></a>;</li>
 <li>The server responds, sending a <strong>response message</strong> that travels back along the same protocol stack, until it reaches the <em>browser</em> again, which interprets it and presents the page to the user.</li>
 </ol>
 </section>
@@ -433,6 +433,7 @@ Note
 </section>
 <section id="sec-07-virtual-resources-en" class="level3" data-number="7.4.4">
 <h3 data-number="7.4.4" class="anchored" data-anchor-id="sec-07-virtual-resources-en"><span class="header-section-number">7.4.4</span> Virtual Resources</h3>
+<p>A <strong>static resource</strong> is a file that already exists on the server and that the server simply returns as it is, such as the <code>index.html</code> of a simple page.</p>
 <p>Not all resources accessible through the Web exist, as such, as a file on the server. Many are created, or assembled “on the fly”, according to the client’s specific request, after the server retrieves the necessary data from a database, the topic of <a href="cap08.html#sec-08-dbms-en" class="quarto-xref"><span>Section 8.1</span></a>. A request to <code>artigos.php?id=5</code>, for example, does not correspond to a file literally called that; it corresponds to the execution of the <code>artigos.php</code> <em>script</em>, which, based on the <code>id</code> parameter, dynamically generates the content to return.</p>
 </section>
 </section>
@@ -463,11 +464,19 @@ Note
 <span id="cb4-4"><a href="#cb4-4"></a>    <span class="va">$texto_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"texto"</span>]<span class="ot">;</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a>    <span class="kw">echo</span> <span class="st">"Comentário de </span><span class="va">$nome_comentario</span><span class="st"> recebido: </span><span class="va">$texto_comentario</span><span class="st">"</span><span class="ot">;</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To join text and variables, PHP offers two equivalent ways. The <code>$_GET</code> example used <strong>concatenation</strong>, with the <code>.</code> operator; the <code>$_POST</code> example used <strong>interpolation</strong>, writing the variables directly inside double quotes. The result is the same, and the form example can also be written with concatenation:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">if</span> (<span class="va">$_SERVER</span>[<span class="st">"REQUEST_METHOD"</span>] <span class="op">===</span> <span class="st">"POST"</span>) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="va">$nome_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="va">$texto_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"texto"</span>]<span class="ot">;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="kw">echo</span> <span class="st">"Comentário de "</span> <span class="op">.</span> <span class="va">$nome_comentario</span> <span class="op">.</span> <span class="st">" recebido: "</span> <span class="op">.</span> <span class="va">$texto_comentario</span><span class="ot">;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Superglobals are the connecting point between <code>HTTP</code>, on the network side, and the PHP logic, on the server side: the category filter and the comment form only take effect because their data reaches the PHP <em>script</em> through <code>$_GET</code> or <code>$_POST</code>. The complete code for this demonstration, including the HTML form used to test <code>$_GET</code> and <code>$_POST</code>, is available in <a href="apendiceB.html#sec-apB-conditionals-loops-en" class="quarto-xref"><span>Section B.3</span></a>.</p>
 </section>
 <section id="sec-07-headers-en" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="sec-07-headers-en"><span class="header-section-number">7.6</span> HTTP Headers</h2>
 <p>Both the request and the response include <strong>headers</strong>, key-value pairs with additional information about the message, already present in the general structure shown in <a href="#sec-07-request-message-en" class="quarto-xref"><span>Section 7.4</span></a>. The only required header in a request is <code>Host</code>, which indicates which server the request is meant for, essential when a single IP address hosts several different domains, as with Contraponto’s own server.</p>
+<p>The <code>Content-Type</code> header indicates the type of content in the body of the message. In a <code>POST</code> request carrying form data, for example, it has the value <code>application/x-www-form-urlencoded</code>; in a response, the value <code>text/html</code> tells the <em>browser</em> that the body is an HTML page. It only makes sense when the message has a body, so a <code>GET</code> request normally does not include it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -485,10 +494,10 @@ Note
 <section id="sec-07-response-en" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="sec-07-response-en"><span class="header-section-number">7.7</span> The Server’s Response</h2>
 <p>The server’s response follows a structure similar to the request’s, but starts with a status line, instead of a method and a URL:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">[version]</span> [status code] [reason phrase]</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="ex">[headers]</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="ex">[body]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">[version]</span> [status code] [reason phrase]</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">[headers]</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="ex">[body]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The status code is a number summarising the outcome of the request, grouped into five categories:</p>
 <ul>
 <li><strong>1xx</strong>: informational, rarely used directly by web application programmers;</li>
@@ -497,7 +506,67 @@ Note
 <li><strong>4xx</strong>: client-side error, such as <code>404 Not Found</code>, when the requested resource does not exist, or <code>403 Forbidden</code>, when access is denied;</li>
 <li><strong>5xx</strong>: server-side error, such as <code>500 Internal Server Error</code>, indicating a failure in the server-side application, typically a bug in the PHP code itself.</li>
 </ul>
-<p>—insert here the table with the summary of status codes, as in the original slides</p>
+<p><a href="#tbl-07-status-codes-en" class="quarto-xref">Table&nbsp;<span>7.1</span></a> summarises the most common codes.</p>
+<div id="tbl-07-status-codes-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-07-status-codes-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.1: Most common HTTP status codes.
+</figcaption>
+<div aria-describedby="tbl-07-status-codes-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 29%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Meaning</th>
+<th>When it occurs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>200 OK</td>
+<td>Success</td>
+<td>Resource returned</td>
+</tr>
+<tr class="even">
+<td>301 Moved Permanently</td>
+<td>Permanent redirection</td>
+<td>Resource has changed address</td>
+</tr>
+<tr class="odd">
+<td>302 Found</td>
+<td>Temporary redirection</td>
+<td>Resource at another address</td>
+</tr>
+<tr class="even">
+<td>400 Bad Request</td>
+<td>Invalid request</td>
+<td>Malformed request</td>
+</tr>
+<tr class="odd">
+<td>403 Forbidden</td>
+<td>Access denied</td>
+<td>Access refused</td>
+</tr>
+<tr class="even">
+<td>404 Not Found</td>
+<td>Not found</td>
+<td>Resource does not exist</td>
+</tr>
+<tr class="odd">
+<td>500 Internal Server Error</td>
+<td>Internal server error</td>
+<td>Application failure</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 </section>
 <section id="sec-07-stateless-en" class="level2" data-number="7.8">
 <h2 data-number="7.8" class="anchored" data-anchor-id="sec-07-stateless-en"><span class="header-section-number">7.8</span> HTTP Is a Stateless Protocol</h2>
@@ -525,11 +594,11 @@ Note
 <section id="sec-07-cookies-en" class="level3" data-number="7.9.1">
 <h3 data-number="7.9.1" class="anchored" data-anchor-id="sec-07-cookies-en"><span class="header-section-number">7.9.1</span> Cookies</h3>
 <p>A <em>cookie</em> is a small piece of information the server asks the <em>browser</em> to store, inserted into an <code>HTTP</code> response header, which the <em>browser</em> then automatically includes in every subsequent request to that same server, allowing it to recognise the client:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">HTTP/1.1</span> 200 OK</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">Set-Cookie:</span> sessao=00b38b9a6f949a8df5476999c876789e<span class="kw">;</span> <span class="va">Path</span><span class="op">=</span>/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">HTTP/1.1</span> 200 OK</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="ex">Set-Cookie:</span> sessao=00b38b9a6f949a8df5476999c876789e<span class="kw">;</span> <span class="va">Path</span><span class="op">=</span>/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In PHP, a <em>cookie</em> is created with the <code>setcookie()</code> function:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">setcookie</span>(<span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"joao"</span><span class="ot">,</span> <span class="fu">time</span>() <span class="op">+</span> <span class="dv">3600</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">setcookie</span>(<span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"joao"</span><span class="ot">,</span> <span class="fu">time</span>() <span class="op">+</span> <span class="dv">3600</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A <em>cookie</em>, by itself, does not amount to authentication: it only allows recognising that a request comes from the same <em>browser</em> that received it previously.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -548,13 +617,54 @@ Note
 <section id="sec-07-sessions-en" class="level3" data-number="7.9.2">
 <h3 data-number="7.9.2" class="anchored" data-anchor-id="sec-07-sessions-en"><span class="header-section-number">7.9.2</span> Sessions</h3>
 <p>Sessions go further than plain <em>cookies</em>: instead of storing the actual data on the client, visible and changeable by anyone with access to the <em>browser</em>, the server stores the data locally, associated with a unique identifier, and sends only that identifier to the client, typically through a <em>cookie</em>. In PHP, a session starts with <code>session_start()</code>, called at the beginning of every page that uses it, and its data is available through the <code>$_SESSION</code> superglobal:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="st">"joao"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">// On another page, also with session_start() at the start:</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="kw">echo</span> <span class="st">"Bem-vindo, "</span> <span class="op">.</span> <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="st">"joao"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">// On another page, also with session_start() at the start:</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="kw">echo</span> <span class="st">"Bem-vindo, "</span> <span class="op">.</span> <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="#tbl-07-cookies-sessions-en" class="quarto-xref">Table&nbsp;<span>7.2</span></a> compares the two solutions.</p>
+<div id="tbl-07-cookies-sessions-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-07-cookies-sessions-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.2: Comparison between <em>cookies</em> and sessions.
+</figcaption>
+<div aria-describedby="tbl-07-cookies-sessions-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 36%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspect</th>
+<th><em>Cookies</em></th>
+<th>Sessions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data stored</td>
+<td>In the client’s <em>browser</em></td>
+<td>On the server</td>
+</tr>
+<tr class="even">
+<td>Duration</td>
+<td>Configurable through <code>Expires</code></td>
+<td>Until the <em>browser</em> is closed or timeout</td>
+</tr>
+<tr class="odd">
+<td>Security</td>
+<td>Exposed on the client</td>
+<td>Sensitive data stays on the server</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 <p>Cookies and sessions are, therefore, the engineering solution that allows continuity to be simulated in a web application built on a protocol that, by nature, keeps no memory of anything between one request and the next.</p>
 </section>
 </section>
