@@ -90,7 +90,7 @@ One piece is still missing to close the loop: how does the `artigos.php` *script
 
 - **`$_GET`**: contains the data sent through the URL, exactly the `id` parameter of `artigos.php?id=5`, or the fields of a form submitted with `method="GET"`, as seen in @sec-07-get-en;
 - **`$_POST`**: contains the data sent in the body of a `POST` request, typically by a form such as the comment one seen in @sec-07-post-en;
-- **`$_REQUEST`**: combines the data from `$_GET`, `$_POST` and the request's *cookies*, useful when it does not matter by which method the data arrived;
+- **`$_REQUEST`**: combines the data from `$_GET` and `$_POST` (and, depending on the PHP configuration, the request's *cookies*), useful when it does not matter by which method the data arrived;
 - **`$_SESSION`**: stores the user's session information, a topic covered in more depth later in this chapter, in @sec-07-sessions-en;
 - **`$_COOKIE`**: contains the *cookies* sent by the client to the server, a topic covered in more depth in @sec-07-cookies-en;
 - **`$_SERVER`**: contains information about the server and about the current request, such as the client's address, the `HTTP` method used, or the *script*'s own path.

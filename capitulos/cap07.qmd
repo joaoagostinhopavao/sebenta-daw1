@@ -163,8 +163,8 @@ parâmetros de um pedido `GET`, os campos de um formulário `POST`, os
   submetido com `method="GET"`, como visto na @sec-07-get;
 - **`$_POST`**: contém os dados enviados no corpo de um pedido `POST`,
   tipicamente por um formulário como o de comentário visto na @sec-07-post;
-- **`$_REQUEST`**: combina os dados de `$_GET`, `$_POST` e dos *cookies*
-  do pedido, útil quando não interessa saber por que método os dados
+- **`$_REQUEST`**: combina os dados de `$_GET` e `$_POST` (e, consoante a
+  configuração do PHP, dos *cookies* do pedido), útil quando não interessa saber por que método os dados
   chegaram;
 - **`$_SESSION`**: guarda informação de sessão do utilizador, tema
   aprofundado mais adiante neste capítulo, na @sec-07-sessoes;

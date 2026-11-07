@@ -443,7 +443,7 @@ Note
 <ul>
 <li><strong><code>$_GET</code></strong>: contains the data sent through the URL, exactly the <code>id</code> parameter of <code>artigos.php?id=5</code>, or the fields of a form submitted with <code>method="GET"</code>, as seen in <a href="#sec-07-get-en" class="quarto-xref"><span>Section 7.4.1</span></a>;</li>
 <li><strong><code>$_POST</code></strong>: contains the data sent in the body of a <code>POST</code> request, typically by a form such as the comment one seen in <a href="#sec-07-post-en" class="quarto-xref"><span>Section 7.4.2</span></a>;</li>
-<li><strong><code>$_REQUEST</code></strong>: combines the data from <code>$_GET</code>, <code>$_POST</code> and the request’s <em>cookies</em>, useful when it does not matter by which method the data arrived;</li>
+<li><strong><code>$_REQUEST</code></strong>: combines the data from <code>$_GET</code> and <code>$_POST</code> (and, depending on the PHP configuration, the request’s <em>cookies</em>), useful when it does not matter by which method the data arrived;</li>
 <li><strong><code>$_SESSION</code></strong>: stores the user’s session information, a topic covered in more depth later in this chapter, in <a href="#sec-07-sessions-en" class="quarto-xref"><span>Section 7.9.2</span></a>;</li>
 <li><strong><code>$_COOKIE</code></strong>: contains the <em>cookies</em> sent by the client to the server, a topic covered in more depth in <a href="#sec-07-cookies-en" class="quarto-xref"><span>Section 7.9.1</span></a>;</li>
 <li><strong><code>$_SERVER</code></strong>: contains information about the server and about the current request, such as the client’s address, the <code>HTTP</code> method used, or the <em>script</em>’s own path.</li>

@@ -442,7 +442,7 @@ Nota
 <ul>
 <li><strong><code>$_GET</code></strong>: contém os dados enviados através da URL, exatamente o parâmetro <code>id</code> de <code>artigos.php?id=5</code>, ou os campos de um formulário submetido com <code>method="GET"</code>, como visto na <a href="#sec-07-get" class="quarto-xref"><span>Secção 7.4.1</span></a>;</li>
 <li><strong><code>$_POST</code></strong>: contém os dados enviados no corpo de um pedido <code>POST</code>, tipicamente por um formulário como o de comentário visto na <a href="#sec-07-post" class="quarto-xref"><span>Secção 7.4.2</span></a>;</li>
-<li><strong><code>$_REQUEST</code></strong>: combina os dados de <code>$_GET</code>, <code>$_POST</code> e dos <em>cookies</em> do pedido, útil quando não interessa saber por que método os dados chegaram;</li>
+<li><strong><code>$_REQUEST</code></strong>: combina os dados de <code>$_GET</code> e <code>$_POST</code> (e, consoante a configuração do PHP, dos <em>cookies</em> do pedido), útil quando não interessa saber por que método os dados chegaram;</li>
 <li><strong><code>$_SESSION</code></strong>: guarda informação de sessão do utilizador, tema aprofundado mais adiante neste capítulo, na <a href="#sec-07-sessoes" class="quarto-xref"><span>Secção 7.9.2</span></a>;</li>
 <li><strong><code>$_COOKIE</code></strong>: contém os <em>cookies</em> enviados pelo cliente ao servidor, tema aprofundado na <a href="#sec-07-cookies" class="quarto-xref"><span>Secção 7.9.1</span></a>;</li>
 <li><strong><code>$_SERVER</code></strong>: contém informação sobre o servidor e sobre o pedido atual, como o endereço do cliente, o método <code>HTTP</code> usado, ou o caminho do próprio <em>script</em>.</li>
