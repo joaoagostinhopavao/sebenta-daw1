@@ -207,6 +207,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ```
 
+Este código verifica o método do pedido, mas não garante que os campos existam. Tal como no `$_GET`, a forma mais segura é verificar com `isset()` se os campos foram enviados, o que dispensa a verificação do método:
+
+```php
+<?php
+if (isset($_POST["nome"], $_POST["texto"])) {
+    $nome_comentario = $_POST["nome"];
+    $texto_comentario = $_POST["texto"];
+    echo "Comentário de $nome_comentario recebido: $texto_comentario";
+}
+```
+
+A verificação do `$_SERVER["REQUEST_METHOD"]` continua útil quando o mesmo *script* serve a página com o formulário (um pedido `GET`) e processa os dados enviados (um pedido `POST`), porque permite distinguir os dois casos.
+
 Para juntar texto e variáveis, o PHP permite duas formas equivalentes. O exemplo de `$_GET` usou a **concatenação**, com o operador `.`; o de `$_POST` usou a **interpolação**, escrevendo as variáveis diretamente dentro de aspas duplas. O resultado é o mesmo, e o exemplo do formulário também pode ser escrito com concatenação:
 
 ```php
@@ -403,9 +416,12 @@ ficheiro de arranque da @sec-05-desafio, é:
    `index.php?categoria=Tecnologia`, etc.), que a listagem de artigos
    muda de facto consoante a categoria escolhida no *browser*;
 3. Tratar a submissão do formulário de comentário, já incluído no
-   ficheiro de arranque: verificar se `$_SERVER["REQUEST_METHOD"]` é
-   `"POST"` e, nesse caso, ler `$_POST["nome"]` e `$_POST["texto"]`,
-   mostrando uma mensagem de confirmação ao leitor.
+   ficheiro de arranque: verificar com `isset()` se `$_POST["nome"]` e
+   `$_POST["texto"]` existem e, nesse caso, mostrar uma mensagem de
+   confirmação ao leitor (em alternativa, pode verificar se
+   `$_SERVER["REQUEST_METHOD"]` é `"POST"`);
+4. Testar os dois casos de cada pedido: com e sem categoria, com e
+   sem comentário.
 
 O ficheiro de arranque está disponível na @sec-apC-cap07.
 

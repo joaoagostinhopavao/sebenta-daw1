@@ -523,66 +523,68 @@ div.csl-indent {
 <span id="cb8-6"><a href="#cb8-6"></a><span class="co">//    $_GET["categoria"], com isset() a tratar o caso de não existir</span></span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="co">//    (nesse caso, mostrar todos os artigos);</span></span>
 <span id="cb8-8"><a href="#cb8-8"></a><span class="co">// 2. Tratar a submissão do formulário de comentário, já incluído mais</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">//    abaixo: verificar se $_SERVER["REQUEST_METHOD"] é "POST" e, nesse</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">//    caso, mostrar uma mensagem de confirmação com $_POST["nome"] e</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">//    $_POST["texto"].</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="kw">function</span> formatarArtigo(<span class="va">$artigo</span>) {</span>
-<span id="cb8-14"><a href="#cb8-14"></a>    <span class="cf">return</span> <span class="va">$artigo</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" — por "</span> <span class="op">.</span> <span class="va">$artigo</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a>}</span>
-<span id="cb8-16"><a href="#cb8-16"></a></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
-<span id="cb8-18"><a href="#cb8-18"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-19"><a href="#cb8-19"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
-<span id="cb8-20"><a href="#cb8-20"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
-<span id="cb8-21"><a href="#cb8-21"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
-<span id="cb8-22"><a href="#cb8-22"></a>    )<span class="ot">,</span></span>
-<span id="cb8-23"><a href="#cb8-23"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-24"><a href="#cb8-24"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
-<span id="cb8-25"><a href="#cb8-25"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
-<span id="cb8-26"><a href="#cb8-26"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
-<span id="cb8-27"><a href="#cb8-27"></a>    )<span class="ot">,</span></span>
-<span id="cb8-28"><a href="#cb8-28"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-29"><a href="#cb8-29"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
-<span id="cb8-30"><a href="#cb8-30"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
-<span id="cb8-31"><a href="#cb8-31"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
-<span id="cb8-32"><a href="#cb8-32"></a>    )<span class="ot">,</span></span>
-<span id="cb8-33"><a href="#cb8-33"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-34"><a href="#cb8-34"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Roteiro cultural de outubro"</span><span class="ot">,</span></span>
-<span id="cb8-35"><a href="#cb8-35"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
-<span id="cb8-36"><a href="#cb8-36"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Música"</span></span>
-<span id="cb8-37"><a href="#cb8-37"></a>    )<span class="ot">,</span></span>
-<span id="cb8-38"><a href="#cb8-38"></a>    <span class="dt">array</span>(</span>
-<span id="cb8-39"><a href="#cb8-39"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como a IA está a mudar o jornalismo"</span><span class="ot">,</span></span>
-<span id="cb8-40"><a href="#cb8-40"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
-<span id="cb8-41"><a href="#cb8-41"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
-<span id="cb8-42"><a href="#cb8-42"></a>    )</span>
-<span id="cb8-43"><a href="#cb8-43"></a>)<span class="ot">;</span></span>
-<span id="cb8-44"><a href="#cb8-44"></a></span>
-<span id="cb8-45"><a href="#cb8-45"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 1: substituir esta linha pela leitura de $_GET["categoria"]</span></span>
-<span id="cb8-46"><a href="#cb8-46"></a><span class="va">$categoria_escolhida</span> <span class="op">=</span> <span class="st">"Tecnologia"</span><span class="ot">;</span></span>
-<span id="cb8-47"><a href="#cb8-47"></a></span>
-<span id="cb8-48"><a href="#cb8-48"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">//    abaixo: verificar com isset() se $_POST["nome"] e $_POST["texto"]</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">//    existem e, nesse caso, mostrar uma mensagem de confirmação (em</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">//    alternativa, verificar se $_SERVER["REQUEST_METHOD"] é "POST");</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">// 3. Testar os dois casos de cada pedido: com e sem categoria, com e</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">//    sem comentário.</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="kw">function</span> formatarArtigo(<span class="va">$artigo</span>) {</span>
+<span id="cb8-16"><a href="#cb8-16"></a>    <span class="cf">return</span> <span class="va">$artigo</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" — por "</span> <span class="op">.</span> <span class="va">$artigo</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a>}</span>
+<span id="cb8-18"><a href="#cb8-18"></a></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="va">$artigos</span> <span class="op">=</span> <span class="dt">array</span>(</span>
+<span id="cb8-20"><a href="#cb8-20"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-21"><a href="#cb8-21"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Entrevista: o futuro do jornalismo local"</span><span class="ot">,</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a>    )<span class="ot">,</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-26"><a href="#cb8-26"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Crítica: a nova exposição do museu"</span><span class="ot">,</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a>    )<span class="ot">,</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-31"><a href="#cb8-31"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como nasceu a Contraponto"</span><span class="ot">,</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Cultura"</span></span>
+<span id="cb8-34"><a href="#cb8-34"></a>    )<span class="ot">,</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-36"><a href="#cb8-36"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Roteiro cultural de outubro"</span><span class="ot">,</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Marco Antunes"</span><span class="ot">,</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Música"</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a>    )<span class="ot">,</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a>    <span class="dt">array</span>(</span>
+<span id="cb8-41"><a href="#cb8-41"></a>        <span class="st">"titulo"</span>    =&gt; <span class="st">"Como a IA está a mudar o jornalismo"</span><span class="ot">,</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a>        <span class="st">"autor"</span>     =&gt; <span class="st">"Rita Ferreira"</span><span class="ot">,</span></span>
+<span id="cb8-43"><a href="#cb8-43"></a>        <span class="st">"categoria"</span> =&gt; <span class="st">"Tecnologia"</span></span>
+<span id="cb8-44"><a href="#cb8-44"></a>    )</span>
+<span id="cb8-45"><a href="#cb8-45"></a>)<span class="ot">;</span></span>
+<span id="cb8-46"><a href="#cb8-46"></a></span>
+<span id="cb8-47"><a href="#cb8-47"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 1: substituir esta linha pela leitura de $_GET["categoria"]</span></span>
+<span id="cb8-48"><a href="#cb8-48"></a><span class="va">$categoria_escolhida</span> <span class="op">=</span> <span class="st">"Tecnologia"</span><span class="ot">;</span></span>
 <span id="cb8-49"><a href="#cb8-49"></a></span>
-<span id="cb8-50"><a href="#cb8-50"></a><span class="cf">foreach</span> (<span class="va">$artigos</span> <span class="kw">as</span> <span class="va">$artigo</span>) {</span>
-<span id="cb8-51"><a href="#cb8-51"></a>    <span class="cf">if</span> (<span class="va">$artigo</span>[<span class="st">"categoria"</span>] <span class="op">===</span> <span class="va">$categoria_escolhida</span>) {</span>
-<span id="cb8-52"><a href="#cb8-52"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> formatarArtigo(<span class="va">$artigo</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb8-53"><a href="#cb8-53"></a>    }</span>
-<span id="cb8-54"><a href="#cb8-54"></a>}</span>
-<span id="cb8-55"><a href="#cb8-55"></a></span>
-<span id="cb8-56"><a href="#cb8-56"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 2: tratar a submissão do formulário de comentário abaixo, por POST</span></span>
-<span id="cb8-57"><a href="#cb8-57"></a><span class="kw">?&gt;</span></span>
-<span id="cb8-58"><a href="#cb8-58"></a></span>
-<span id="cb8-59"><a href="#cb8-59"></a><span class="op">&lt;</span>form action<span class="op">=</span><span class="st">"index.php"</span> method<span class="op">=</span><span class="st">"POST"</span><span class="op">&gt;</span></span>
-<span id="cb8-60"><a href="#cb8-60"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"nome"</span><span class="op">&gt;</span>Nome<span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
-<span id="cb8-61"><a href="#cb8-61"></a>    <span class="op">&lt;</span>input id<span class="op">=</span><span class="st">"nome"</span> name<span class="op">=</span><span class="st">"nome"</span> type<span class="op">=</span><span class="st">"text"</span> <span class="op">/&gt;</span></span>
-<span id="cb8-62"><a href="#cb8-62"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"texto"</span><span class="op">&gt;</span>Comentário<span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
-<span id="cb8-63"><a href="#cb8-63"></a>    <span class="op">&lt;</span>textarea id<span class="op">=</span><span class="st">"texto"</span> name<span class="op">=</span><span class="st">"texto"</span><span class="op">&gt;&lt;/</span>textarea<span class="op">&gt;</span></span>
-<span id="cb8-64"><a href="#cb8-64"></a>    <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"submit"</span> value<span class="op">=</span><span class="st">"Comentar"</span> <span class="op">/&gt;</span></span>
-<span id="cb8-65"><a href="#cb8-65"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span>
-<span id="cb8-66"><a href="#cb8-66"></a></span>
-<span id="cb8-67"><a href="#cb8-67"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
-<span id="cb8-68"><a href="#cb8-68"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-50"><a href="#cb8-50"></a><span class="kw">require</span> <span class="st">"header.php"</span><span class="ot">;</span></span>
+<span id="cb8-51"><a href="#cb8-51"></a></span>
+<span id="cb8-52"><a href="#cb8-52"></a><span class="cf">foreach</span> (<span class="va">$artigos</span> <span class="kw">as</span> <span class="va">$artigo</span>) {</span>
+<span id="cb8-53"><a href="#cb8-53"></a>    <span class="cf">if</span> (<span class="va">$artigo</span>[<span class="st">"categoria"</span>] <span class="op">===</span> <span class="va">$categoria_escolhida</span>) {</span>
+<span id="cb8-54"><a href="#cb8-54"></a>        <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> formatarArtigo(<span class="va">$artigo</span>) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb8-55"><a href="#cb8-55"></a>    }</span>
+<span id="cb8-56"><a href="#cb8-56"></a>}</span>
+<span id="cb8-57"><a href="#cb8-57"></a></span>
+<span id="cb8-58"><a href="#cb8-58"></a><span class="co">// </span><span class="al">TODO</span><span class="co"> 2: tratar a submissão do formulário de comentário abaixo, por POST</span></span>
+<span id="cb8-59"><a href="#cb8-59"></a><span class="kw">?&gt;</span></span>
+<span id="cb8-60"><a href="#cb8-60"></a></span>
+<span id="cb8-61"><a href="#cb8-61"></a><span class="op">&lt;</span>form action<span class="op">=</span><span class="st">"index.php"</span> method<span class="op">=</span><span class="st">"POST"</span><span class="op">&gt;</span></span>
+<span id="cb8-62"><a href="#cb8-62"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"nome"</span><span class="op">&gt;</span>Nome<span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
+<span id="cb8-63"><a href="#cb8-63"></a>    <span class="op">&lt;</span>input id<span class="op">=</span><span class="st">"nome"</span> name<span class="op">=</span><span class="st">"nome"</span> type<span class="op">=</span><span class="st">"text"</span> <span class="op">/&gt;</span></span>
+<span id="cb8-64"><a href="#cb8-64"></a>    <span class="op">&lt;</span>label <span class="cf">for</span><span class="op">=</span><span class="st">"texto"</span><span class="op">&gt;</span>Comentário<span class="op">&lt;/</span>label<span class="op">&gt;</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a>    <span class="op">&lt;</span>textarea id<span class="op">=</span><span class="st">"texto"</span> name<span class="op">=</span><span class="st">"texto"</span><span class="op">&gt;&lt;/</span>textarea<span class="op">&gt;</span></span>
+<span id="cb8-66"><a href="#cb8-66"></a>    <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"submit"</span> value<span class="op">=</span><span class="st">"Comentar"</span> <span class="op">/&gt;</span></span>
+<span id="cb8-67"><a href="#cb8-67"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span>
+<span id="cb8-68"><a href="#cb8-68"></a></span>
+<span id="cb8-69"><a href="#cb8-69"></a><span class="op">&lt;</span><span class="ot">?</span>php</span>
+<span id="cb8-70"><a href="#cb8-70"></a><span class="kw">require</span> <span class="st">"footer.php"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sec-apC-cap08" class="level2" data-number="C.6">
 <h2 data-number="C.6" class="anchored" data-anchor-id="sec-apC-cap08"><span class="header-section-number">C.6</span> Desafio do Capítulo 8: Migrar o Catálogo para uma Base de Dados</h2>

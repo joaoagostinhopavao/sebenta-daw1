@@ -238,9 +238,11 @@ submissão desse formulário.
 //    $_GET["categoria"], com isset() a tratar o caso de não existir
 //    (nesse caso, mostrar todos os artigos);
 // 2. Tratar a submissão do formulário de comentário, já incluído mais
-//    abaixo: verificar se $_SERVER["REQUEST_METHOD"] é "POST" e, nesse
-//    caso, mostrar uma mensagem de confirmação com $_POST["nome"] e
-//    $_POST["texto"].
+//    abaixo: verificar com isset() se $_POST["nome"] e $_POST["texto"]
+//    existem e, nesse caso, mostrar uma mensagem de confirmação (em
+//    alternativa, verificar se $_SERVER["REQUEST_METHOD"] é "POST");
+// 3. Testar os dois casos de cada pedido: com e sem categoria, com e
+//    sem comentário.
 
 function formatarArtigo($artigo) {
     return $artigo["titulo"] . " — por " . $artigo["autor"];

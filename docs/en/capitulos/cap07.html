@@ -464,13 +464,21 @@ Note
 <span id="cb4-4"><a href="#cb4-4"></a>    <span class="va">$texto_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"texto"</span>]<span class="ot">;</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a>    <span class="kw">echo</span> <span class="st">"Comentário de </span><span class="va">$nome_comentario</span><span class="st"> recebido: </span><span class="va">$texto_comentario</span><span class="st">"</span><span class="ot">;</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To join text and variables, PHP offers two equivalent ways. The <code>$_GET</code> example used <strong>concatenation</strong>, with the <code>.</code> operator; the <code>$_POST</code> example used <strong>interpolation</strong>, writing the variables directly inside double quotes. The result is the same, and the form example can also be written with concatenation:</p>
+<p>This code checks the request method, but does not guarantee that the fields exist. As with <code>$_GET</code>, the safest way is to check with <code>isset()</code> whether the fields were sent, which makes the method check unnecessary:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">if</span> (<span class="va">$_SERVER</span>[<span class="st">"REQUEST_METHOD"</span>] <span class="op">===</span> <span class="st">"POST"</span>) {</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">if</span> (<span class="kw">isset</span>(<span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"texto"</span>])) {</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    <span class="va">$nome_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">;</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a>    <span class="va">$texto_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"texto"</span>]<span class="ot">;</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="kw">echo</span> <span class="st">"Comentário de "</span> <span class="op">.</span> <span class="va">$nome_comentario</span> <span class="op">.</span> <span class="st">" recebido: "</span> <span class="op">.</span> <span class="va">$texto_comentario</span><span class="ot">;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="kw">echo</span> <span class="st">"Comentário de </span><span class="va">$nome_comentario</span><span class="st"> recebido: </span><span class="va">$texto_comentario</span><span class="st">"</span><span class="ot">;</span></span>
 <span id="cb5-6"><a href="#cb5-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Checking <code>$_SERVER["REQUEST_METHOD"]</code> remains useful when the same <em>script</em> serves the page with the form (a <code>GET</code> request) and processes the submitted data (a <code>POST</code> request), because it tells the two cases apart.</p>
+<p>To join text and variables, PHP offers two equivalent ways. The <code>$_GET</code> example used <strong>concatenation</strong>, with the <code>.</code> operator; the <code>$_POST</code> example used <strong>interpolation</strong>, writing the variables directly inside double quotes. The result is the same, and the form example can also be written with concatenation:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="cf">if</span> (<span class="va">$_SERVER</span>[<span class="st">"REQUEST_METHOD"</span>] <span class="op">===</span> <span class="st">"POST"</span>) {</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="va">$nome_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"nome"</span>]<span class="ot">;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="va">$texto_comentario</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"texto"</span>]<span class="ot">;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="kw">echo</span> <span class="st">"Comentário de "</span> <span class="op">.</span> <span class="va">$nome_comentario</span> <span class="op">.</span> <span class="st">" recebido: "</span> <span class="op">.</span> <span class="va">$texto_comentario</span><span class="ot">;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Superglobals are the connecting point between <code>HTTP</code>, on the network side, and the PHP logic, on the server side: the category filter and the comment form only take effect because their data reaches the PHP <em>script</em> through <code>$_GET</code> or <code>$_POST</code>. The complete code for this demonstration, including the HTML form used to test <code>$_GET</code> and <code>$_POST</code>, is available in <a href="apendiceB.html#sec-apB-conditionals-loops-en" class="quarto-xref"><span>Section B.3</span></a>.</p>
 </section>
 <section id="sec-07-headers-en" class="level2" data-number="7.6">
@@ -494,10 +502,10 @@ Note
 <section id="sec-07-response-en" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="sec-07-response-en"><span class="header-section-number">7.7</span> The Server’s Response</h2>
 <p>The server’s response follows a structure similar to the request’s, but starts with a status line, instead of a method and a URL:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">[version]</span> [status code] [reason phrase]</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">[headers]</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="ex">[body]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">[version]</span> [status code] [reason phrase]</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="ex">[headers]</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="ex">[body]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The status code is a number summarising the outcome of the request, grouped into five categories:</p>
 <ul>
 <li><strong>1xx</strong>: informational, rarely used directly by web application programmers;</li>
@@ -594,11 +602,11 @@ Note
 <section id="sec-07-cookies-en" class="level3" data-number="7.9.1">
 <h3 data-number="7.9.1" class="anchored" data-anchor-id="sec-07-cookies-en"><span class="header-section-number">7.9.1</span> Cookies</h3>
 <p>A <em>cookie</em> is a small piece of information the server asks the <em>browser</em> to store, inserted into an <code>HTTP</code> response header, which the <em>browser</em> then automatically includes in every subsequent request to that same server, allowing it to recognise the client:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">HTTP/1.1</span> 200 OK</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="ex">Set-Cookie:</span> sessao=00b38b9a6f949a8df5476999c876789e<span class="kw">;</span> <span class="va">Path</span><span class="op">=</span>/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="ex">HTTP/1.1</span> 200 OK</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="ex">Set-Cookie:</span> sessao=00b38b9a6f949a8df5476999c876789e<span class="kw">;</span> <span class="va">Path</span><span class="op">=</span>/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In PHP, a <em>cookie</em> is created with the <code>setcookie()</code> function:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">setcookie</span>(<span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"joao"</span><span class="ot">,</span> <span class="fu">time</span>() <span class="op">+</span> <span class="dv">3600</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">setcookie</span>(<span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"joao"</span><span class="ot">,</span> <span class="fu">time</span>() <span class="op">+</span> <span class="dv">3600</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A <em>cookie</em>, by itself, does not amount to authentication: it only allows recognising that a request comes from the same <em>browser</em> that received it previously.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -617,13 +625,13 @@ Note
 <section id="sec-07-sessions-en" class="level3" data-number="7.9.2">
 <h3 data-number="7.9.2" class="anchored" data-anchor-id="sec-07-sessions-en"><span class="header-section-number">7.9.2</span> Sessions</h3>
 <p>Sessions go further than plain <em>cookies</em>: instead of storing the actual data on the client, visible and changeable by anyone with access to the <em>browser</em>, the server stores the data locally, associated with a unique identifier, and sends only that identifier to the client, typically through a <em>cookie</em>. In PHP, a session starts with <code>session_start()</code>, called at the beginning of every page that uses it, and its data is available through the <code>$_SESSION</code> superglobal:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="st">"joao"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="co">// On another page, also with session_start() at the start:</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="kw">echo</span> <span class="st">"Bem-vindo, "</span> <span class="op">.</span> <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="st">"joao"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co">// On another page, also with session_start() at the start:</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="kw">echo</span> <span class="st">"Bem-vindo, "</span> <span class="op">.</span> <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><a href="#tbl-07-cookies-sessions-en" class="quarto-xref">Table&nbsp;<span>7.2</span></a> compares the two solutions.</p>
 <div id="tbl-07-cookies-sessions-en" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -674,7 +682,8 @@ Table&nbsp;7.2: Comparison between <em>cookies</em> and sessions.
 <ol type="1">
 <li>Replace the fixed variable <code>$categoria_escolhida</code>, used in <a href="cap04.html#sec-04-challenge-en" class="quarto-xref"><span>Section 4.3</span></a> to simulate the filter, with the real value of <code>$_GET["categoria"]</code>, with <code>isset()</code> handling the case where no category is given;</li>
 <li>Confirm, through the menu <em>links</em> in <code>header.php</code> (which already point to <code>index.php?categoria=Cultura</code>, <code>index.php?categoria=Tecnologia</code>, etc.), that the article listing does indeed change depending on the category chosen in the <em>browser</em>;</li>
-<li>Handle the submission of the comment form, already included in the starter file: check whether <code>$_SERVER["REQUEST_METHOD"]</code> is <code>"POST"</code> and, if so, read <code>$_POST["nome"]</code> and <code>$_POST["texto"]</code>, showing a confirmation message to the reader.</li>
+<li>Handle the submission of the comment form, already included in the starter file: check with <code>isset()</code> whether <code>$_POST["nome"]</code> and <code>$_POST["texto"]</code> exist and, if so, show a confirmation message to the reader (alternatively, you can check whether <code>$_SERVER["REQUEST_METHOD"]</code> is <code>"POST"</code>);</li>
+<li>Test both cases of each request: with and without a category, with and without a comment.</li>
 </ol>
 <p>The starter file is available in <a href="apendiceC.html#sec-apC-cap07-en" class="quarto-xref"><span>Section C.5</span></a>.</p>
 </section>

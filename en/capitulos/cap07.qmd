@@ -120,6 +120,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ```
 
+This code checks the request method, but does not guarantee that the fields exist. As with `$_GET`, the safest way is to check with `isset()` whether the fields were sent, which makes the method check unnecessary:
+
+```php
+<?php
+if (isset($_POST["nome"], $_POST["texto"])) {
+    $nome_comentario = $_POST["nome"];
+    $texto_comentario = $_POST["texto"];
+    echo "Comentário de $nome_comentario recebido: $texto_comentario";
+}
+```
+
+Checking `$_SERVER["REQUEST_METHOD"]` remains useful when the same *script* serves the page with the form (a `GET` request) and processes the submitted data (a `POST` request), because it tells the two cases apart.
+
 To join text and variables, PHP offers two equivalent ways. The `$_GET` example used **concatenation**, with the `.` operator; the `$_POST` example used **interpolation**, writing the variables directly inside double quotes. The result is the same, and the form example can also be written with concatenation:
 
 ```php
@@ -250,7 +263,8 @@ With `HTTP` and superglobals, the Contraponto site finally stops depending on si
 
 1. Replace the fixed variable `$categoria_escolhida`, used in @sec-04-challenge-en to simulate the filter, with the real value of `$_GET["categoria"]`, with `isset()` handling the case where no category is given;
 2. Confirm, through the menu *links* in `header.php` (which already point to `index.php?categoria=Cultura`, `index.php?categoria=Tecnologia`, etc.), that the article listing does indeed change depending on the category chosen in the *browser*;
-3. Handle the submission of the comment form, already included in the starter file: check whether `$_SERVER["REQUEST_METHOD"]` is `"POST"` and, if so, read `$_POST["nome"]` and `$_POST["texto"]`, showing a confirmation message to the reader.
+3. Handle the submission of the comment form, already included in the starter file: check with `isset()` whether `$_POST["nome"]` and `$_POST["texto"]` exist and, if so, show a confirmation message to the reader (alternatively, you can check whether `$_SERVER["REQUEST_METHOD"]` is `"POST"`);
+4. Test both cases of each request: with and without a category, with and without a comment.
 
 The starter file is available in @sec-apC-cap07-en.
 

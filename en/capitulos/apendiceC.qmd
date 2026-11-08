@@ -239,9 +239,12 @@ handling that form's submission.
 //    $_GET["categoria"], with isset() handling the case where it
 //    doesn't exist (in that case, show all articles);
 // 2. Handle the submission of the comment form, already included
-//    further below: check whether $_SERVER["REQUEST_METHOD"] is
-//    "POST" and, in that case, show a confirmation message with
-//    $_POST["nome"] and $_POST["texto"].
+//    further below: check with isset() whether $_POST["nome"] and
+//    $_POST["texto"] exist and, in that case, show a confirmation
+//    message (alternatively, check whether $_SERVER["REQUEST_METHOD"]
+//    is "POST");
+// 3. Test both cases of each request: with and without a category,
+//    with and without a comment.
 
 function formatarArtigo($artigo) {
     return $artigo["titulo"] . " — por " . $artigo["autor"];
