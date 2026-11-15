@@ -16,7 +16,9 @@ lang: en-GB
 
 A `DBMS` (*Database Management System*) is the *software* that creates, organises and manages databases: it controls access, queries and updates, guarantees the integrity, security and performance of the data, and allows applications, such as those written in PHP, to read and write information persistently. Common examples of DBMS include `MySQL`, `MariaDB`, `PostgreSQL`, `Oracle`, `SQL Server` and `SQLite`.
 
-In a relational database, such as `MySQL`, data is organised into tables, each with fixed-type columns, and rows that represent individual records. It is exactly this persistence that the `$artigos` array seen in @sec-03-multidimensional-arrays-en lacks: kept only in memory, that array resets every time the server restarts, and one reader never sees an article published by another server process. A database keeps information across different requests, and across different users — exactly what Tiago's Contraponto site is missing to stop depending on data fixed in the code.
+In a relational database, such as `MySQL`, data is organised into tables, each with fixed-type columns, and rows that represent individual records. It is exactly this persistence that the `$artigos` array seen in @sec-03-multidimensional-arrays-en lacks: the data lives in the PHP file, so publishing an article means editing the code, and nothing the program adds to the array is kept, because, on the next request (or on a *refresh*), the array goes back to holding only the articles written in the file. A database keeps information beyond each request, and shares it across all users, exactly what Tiago's Contraponto site is missing to stop depending on data fixed in the code.
+
+A database is organised on three levels: the MySQL server (the DBMS in operation) has several databases, and each database has several tables. In the Contraponto `artigos` table, each column is a kind of information (`id`, `titulo`, `autor`, `categoria`), each row is a record (a complete article), and the primary key (`id`) is a unique number that identifies each row.
 
 ## SQL Commands {#sec-08-sql-en}
 
@@ -55,29 +57,27 @@ Each tier thus fulfils its own mission: the *browser* asks, the server thinks, t
 
 ## Connecting PHP to MySQL {#sec-08-connecting-en}
 
-PHP connects to a `MySQL` database through the `mysqli` extension (*MySQL Improved*), which supports connecting to MySQL, running queries, *prepared statements* and transactions, and can be used in two styles: procedural or object-oriented.
+PHP connects to a `MySQL` database through the `mysqli` extension (*MySQL Improved*), a set of features added to PHP that allows it to connect to the MySQL server, send it SQL commands and receive the results, including *prepared statements* and transactions. It can be used in two styles: object-oriented or procedural. In this chapter the object-oriented style is used, the most common in real projects: an object is created with `new`, just like the `DateTime` seen in @sec-05-dates-en, and its functions (methods) are called with `->`.
 
-In the procedural style, `mysqli_connect()` creates the connection and returns `false` if it fails — a simple, straightforward version, suited to beginners:
-
-```php
-<?php
-$conexao = mysqli_connect("localhost", "utilizador", "password", "contraponto");
-
-if (!$conexao) {
-    die("Ligação falhou: " . mysqli_connect_error());
-}
-```
-
-In the object-oriented style, `new mysqli()` creates a connection object, and errors are exposed in that object's `connect_error` property. It is the more modern style, and the one most used in practice:
+`new mysqli()` creates the connection object, which is stored in `$conexao`, and every request to MySQL goes through it. It takes four arguments, in order: the server where MySQL runs (`"localhost"`), the MySQL user PHP identifies itself with, that user's password, and the database to use:
 
 ```php
 <?php
-$conexao = new mysqli("localhost", "utilizador", "password", "contraponto");
+$conexao = new mysqli(
+    "localhost",
+    "utilizador",
+    "password",
+    "contraponto"
+);
 
 if ($conexao->connect_error) {
     die("Ligação falhou: " . $conexao->connect_error);
 }
 ```
+
+The `connect_error` property holds the error message if the connection fails, and `die()` prints that message and stops the program. Since PHP 8.1, `mysqli` also stops the program by itself when the connection fails; this check is the classic form and still works.
+
+The procedural style does the same with a function instead of an object: `mysqli_connect("localhost", "utilizador", "password", "contraponto")` creates the connection and returns `false` if it fails, and `mysqli_connect_error()` returns the error message.
 
 ## Creating Databases and Tables {#sec-08-creating-db-en}
 
@@ -100,7 +100,9 @@ $conexao->query("
 ");
 ```
 
-It is worth understanding the meaning of each part of this table definition:
+`IF NOT EXISTS` avoids an error if the database or the table already exists, and the `select_db()` method chooses the database to work with next.
+
+Each column has a type, which defines what it can hold: `INT` (whole number), `VARCHAR(150)` (text of up to 150 characters), `TEXT` (long text) and `DATETIME` (date and time). Some columns also have a rule, and it is worth understanding the meaning of each one:
 
 - **`PRIMARY KEY`** (PK): unambiguously identifies each record in the table; no well-designed relational table should exist without one;
 - **`AUTO_INCREMENT`**: makes this field's value increase automatically by one for each new record inserted, without the programmer having to calculate it;
@@ -111,7 +113,7 @@ In practice, creating the database and tables from PHP is an initial, rare step 
 
 ## Fundamental Operations: CRUD in SQL {#sec-08-crud-sql-en}
 
-The four fundamental operations on persistent data, `CRUD` (*Create*, *Read*, *Update*, *Delete*), correspond directly to four SQL commands.
+The four fundamental operations on stored data, `CRUD` (*Create*, *Read*, *Update*, *Delete*), correspond directly to four SQL commands.
 
 **Insert** a new record (*Create*), with `INSERT`:
 
@@ -119,7 +121,7 @@ The four fundamental operations on persistent data, `CRUD` (*Create*, *Read*, *U
 <?php
 $conexao->query(
     "INSERT INTO artigos (titulo, autor, categoria)
-     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Cultura')"
+     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Música')"
 );
 ```
 
@@ -135,6 +137,8 @@ while ($linha = $resultado->fetch_assoc()) {
 }
 ```
 
+Each call to `fetch_assoc()` returns the next row, and, when there are no more rows, it returns `null` and the `while` ends (@sec-04-while-en). Each row's associative array has one key per table column, including those the `INSERT` did not fill in: `resumo` comes back as `null`, and `data_publicacao` holds the date and time MySQL filled in by default. Each value is read through its key, as in `$linha["titulo"]`.
+
 This last construct, a `while` looping over the results row by row, is also the usual way to dynamically generate an HTML table from data returned by the database, turning each article into a `<tr>` row on the page — exactly what the `$artigos` *array*, seen in @sec-03-multidimensional-arrays-en, did in memory.
 
 **Update** (*Update*) and **delete** (*Delete*) existing records, with `UPDATE` and `DELETE`:
@@ -149,20 +153,27 @@ Both `UPDATE` and `DELETE` **always require a `WHERE` clause**; forgetting it is
 
 ## Prepared Statements {#sec-08-prepared-statements-en}
 
-All the examples above, with fixed values written directly in the code, are useful for understanding the basic flow, but are not suitable for a real application. Building an SQL statement by directly concatenating values coming from the user, such as those from `$_POST`, has several problems: it mixes data with code, it is vulnerable to an SQL injection attack (a topic covered in depth in @sec-09-custom-code-en), it is more prone to syntax errors, and it is hard to maintain.
-
-The correct alternative is to use *prepared statements*, which separate the fixed SQL statement from the values, which are only inserted afterwards. They work in two phases: the server prepares the statement, with question marks (`?`) in place of the values, and only then does PHP send the data, separately and safely. The advantages are protection against SQL injection, better performance when the same statement is executed multiple times, and cleaner code:
+All the examples above, with fixed values written directly in the code, are useful for understanding the basic flow, but are not suitable for a real application. Building an SQL statement by directly concatenating values coming from the user, such as those from `$_POST`, has a fundamental problem: the text typed into the form becomes part of the command, and MySQL can no longer tell what is command and what is value, which causes errors and security problems (a topic covered in depth in @sec-09-custom-code-en):
 
 ```php
 <?php
-$stmt = $conexao->prepare(
-    "INSERT INTO artigos (titulo, autor, categoria) VALUES (?, ?, ?)"
-);
-$stmt->bind_param("sss", $titulo, $autor, $categoria);  // "sss" = three string parameters
+$sql = "INSERT INTO artigos (titulo, autor, categoria)
+        VALUES ('$titulo', '$autor', '$categoria')";
+```
 
+The correct alternative is to use *prepared statements*, which separate the fixed SQL statement from the values, which are only inserted afterwards: the statement is sent with question marks (`?`) in place of the values, and the values follow separately, so they are never read as part of the command. In PHP, a *prepared statement* has three steps: `prepare()` prepares the statement with the `?` placeholders, `bind_param()` binds each variable to its `?`, and `execute()` runs the statement with the real values. The advantages are protection against the problems mentioned, better performance when the same statement is executed multiple times, and cleaner code:
+
+```php
+<?php
 $titulo = $_POST["titulo"];
 $autor = $_POST["autor"];
 $categoria = $_POST["categoria"];
+
+$stmt = $conexao->prepare(
+    "INSERT INTO artigos (titulo, autor, categoria)
+     VALUES (?, ?, ?)"
+);
+$stmt->bind_param("sss", $titulo, $autor, $categoria);  // "sss" = three strings
 $stmt->execute();
 ```
 
@@ -173,13 +184,14 @@ $stmt->execute();
 - **`d`**: *double* (numbers with decimal places);
 - **`b`**: *blob* (binary data, such as images or files).
 
-To query data with *prepared statements*, the pattern is similar, ending with `get_result()` to obtain the returned rows:
+To query data with *prepared statements*, the pattern is that of `INSERT`, with one more step at the end: `get_result()` returns the result, which is traversed with the `while`, as in the previous example with `query()`:
 
 ```php
 <?php
+$id = $_GET["id"];
+
 $stmt = $conexao->prepare("SELECT titulo, autor FROM artigos WHERE id = ?");
 $stmt->bind_param("i", $id);  // "i" = one integer parameter
-$id = $_GET["id"];
 $stmt->execute();
 
 $resultado = $stmt->get_result();
@@ -188,19 +200,19 @@ while ($linha = $resultado->fetch_assoc()) {
 }
 ```
 
-Note that this last example is exactly what `artigos.php?id=5`, the article detail page mentioned in @sec-07-virtual-resources-en, was missing: the `id` arriving through `$_GET` now identifies a real article, read directly from the `artigos` table.
+In this example, the `id` arriving through `$_GET` identifies a real article, read directly from the `artigos` table.
 
-The same principle applies to `UPDATE` and `DELETE`: using *prepared statements* makes them safe, because the values are never interpreted as part of the SQL command itself, which prevents both SQL injection and accidental changes.
+The same principle applies to `UPDATE` and `DELETE`: using *prepared statements* makes them safe, because the values are never interpreted as part of the SQL command itself.
 
 ## Errors and Best Practices {#sec-08-errors-en}
 
 Working with databases inevitably means dealing with errors. The most common fall into three categories:
 
-- **Connection errors**: incorrect credentials, the MySQL server being down, or the specified database not existing;
-- **SQL errors**: invalid syntax, wrong table or column names, missing quotes or commas in the statement;
-- **PHP execution errors**: using undefined variables, or calling `fetch_assoc()` on an empty result.
+- **Connection errors**: incorrect credentials, the MySQL server being down, or the specified database not existing; the MySQL message is, for example, `Access denied for user 'utilizador'@'localhost'`;
+- **SQL errors**: invalid syntax, wrong table or column names, missing quotes or commas in the statement; the message is, for example, `You have an error in your SQL syntax`;
+- **PHP execution errors**: using undefined variables, or calling `fetch_assoc()` on the result of a query that failed (in that case, the result is `false`, and PHP gives the message `Call to a member function fetch_assoc() on bool`). A simply empty result is not an error: `fetch_assoc()` returns `null` and the `while` ends.
 
-During development, it is essential to enable the display of all PHP errors and warnings — something that should never remain active in a production environment, for security reasons:
+During development, it is essential to enable the display of all PHP errors and warnings, something that should never remain active in a production environment, for security reasons: the error message reveals table and user names to whoever visits the site:
 
 ```php
 <?php
@@ -211,10 +223,8 @@ ini_set("display_errors", 1);
 `mysqli` always explains what went wrong, as long as the right information is read: `connect_error` shows problems with the connection itself, and `error` shows problems coming from MySQL regarding a specific query. Some general good practices, to always keep in mind when working with databases in PHP:
 
 - Use *prepared statements* whenever there is data coming from the user;
-- Validate and sanitise inputs before using them;
-- Clearly separate PHP, SQL and HTML code;
-- Show errors during development, but hide them in production;
-- Always test with real data and also with deliberately malicious data.
+- Show errors only during development, and hide them in production;
+- Clearly separate PHP, SQL and HTML code, each in its own place, so the code is easy to read.
 
 ## A Complete CRUD Application {#sec-08-crud-en}
 
@@ -226,11 +236,109 @@ Putting together everything seen in this chapter, the natural next step for the 
 - `edit.php` and `update.php`: `edit.php` presents a form pre-filled with the data of an existing article, and `update.php` saves the changes (*Update*), for example after Rita corrects an error or changes an article's category;
 - `delete.php`: removes an existing article (*Delete*).
 
-One detail deserves special attention in `index.php`: each `link` to edit or delete an article carries that article's `id` in the URL itself, for example `edit.php?id=7`, just as already happened in `artigos.php?id=5` on the reader's side, seen in @sec-07-virtual-resources-en, so the following page knows exactly which record it refers to. This `id`, coming from a simple `GET`, with no sensitive data or side effects until it is actually processed, does not require a *prepared statement* here in the listing; but in `edit.php`, when reading that same `id` from `GET` to include it again in the form, it has to be placed in a `hidden` field of the form, so that, when submitted by `POST` to `update.php`, the `id` of the article to change travels along with the rest of the data.
+The pattern repeats: one file shows the form, and the other receives the data and talks to the database.
+
+`config.php` avoids repeating the connection: the code from @sec-08-connecting-en is written once in that file, and all the others start with `require "config.php";`, just like `header.php` and `footer.php` in @sec-05-includes-en. PHP replaces the `require` with the contents of the file, so in `index.php` the `$conexao` variable already exists, and, if the password changes, it is changed in a single place:
+
+```php
+<?php
+// config.php
+$conexao = new mysqli("localhost", "utilizador", "password", "contraponto");
+
+if ($conexao->connect_error) {
+    die("Ligação falhou: " . $conexao->connect_error);
+}
+```
+
+```php
+<?php
+// index.php
+require "config.php";
+
+$resultado = $conexao->query("SELECT * FROM artigos");
+```
+
+**Creating an article.** `add.php` shows the form, which sends the data by `POST` (@sec-07-superglobals-en) to `insert.php`:
+
+```html
+<form action="insert.php" method="post">
+    <!-- titulo, autor and categoria fields, and the Guardar button -->
+</form>
+```
+
+`insert.php` reads the data from `$_POST`, saves the article with the `INSERT` *prepared statement* seen earlier, and ends with a redirect:
+
+```php
+<?php
+require "config.php";
+
+$titulo = $_POST["titulo"];
+$autor = $_POST["autor"];
+$categoria = $_POST["categoria"];
+
+$stmt = $conexao->prepare(
+    "INSERT INTO artigos (titulo, autor, categoria)
+     VALUES (?, ?, ?)"
+);
+$stmt->bind_param("sss", $titulo, $autor, $categoria);
+$stmt->execute();
+
+header("Location: index.php");
+```
+
+The last line, `header("Location: index.php")`, adds a header to the response (@sec-07-headers-en): the response has status code 302, a redirect (@sec-07-response-en), and the *browser* requests `index.php`, where the new article already appears. Without this line, Rita would be left looking at a blank page, because `insert.php` has no HTML.
+
+**Changing an article.** In the `index.php` list, each article's *link* carries the `id` in the URL itself, for example `edit.php?id=3`, just as already happened in `artigos.php?id=5` (@sec-07-virtual-resources-en). `edit.php` reads that article, with a `SELECT` *prepared statement*, and shows the form already filled in. The `id` travels in a `hidden` field, which does not appear on screen but is sent along with the other data, so that `update.php` knows which article to change:
+
+```html
+<form action="update.php" method="post">
+    <input type="hidden" name="id" value="3">
+    <!-- titulo, autor and categoria fields, already filled in -->
+</form>
+```
+
+```php
+<?php
+require "config.php";
+
+$id = $_POST["id"];
+$titulo = $_POST["titulo"];
+$autor = $_POST["autor"];
+$categoria = $_POST["categoria"];
+
+$stmt = $conexao->prepare(
+    "UPDATE artigos
+     SET titulo = ?, autor = ?, categoria = ?
+     WHERE id = ?"
+);
+$stmt->bind_param("sssi", $titulo, $autor, $categoria, $id);
+$stmt->execute();
+
+header("Location: index.php");
+```
+
+The `"sssi"` indicates three strings and one integer, in the order of the four `?`.
+
+**Deleting an article.** In `index.php`, the link to delete article 3 is `<a href="delete.php?id=3">Apagar</a>`. The *browser* requests that address with a `GET`, in which the `id` goes in the URL, with no form, and `delete.php` deletes only that article and returns to the list:
+
+```php
+<?php
+require "config.php";
+
+$id = $_GET["id"];
+
+$stmt = $conexao->prepare("DELETE FROM artigos WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+header("Location: index.php");
+```
+
+Anyone who types `delete.php?id=3` into the *browser* deletes the article, which is why, as explained next, this management area would be protected by authentication.
 
 The complete flow of the application can be summarised as follows: Rita navigates between simple, independent pages starting from `index.php`; each operation, `add`, `edit` or `delete`, communicates with the database through `insert.php`, `update.php` or directly in `delete.php`; and, once the change is saved, the application always redirects back to `index.php`, closing the cycle. In a real application, this management area would, of course, be protected by authentication, through sessions as seen in @sec-07-sessions-en, so that only Rita, and not any reader, could use it.
 
-This small project brings together, in practice, almost everything seen so far in the course: HTML and forms on the client side, superglobals to receive submitted data, *prepared statements* to save and read them securely, and an application organised into several simple pages, each with a single responsibility — the pattern underlying most dynamic web applications, and the one the rest of this course continues to build on.
+This small project brings together what came before, forms, `$_GET` and `$_POST` (@sec-07-superglobals-en) and `require` (@sec-05-includes-en), with what was seen in this chapter: the `mysqli` connection, the CRUD operations and *prepared statements*, in an application organised into several simple pages, each with a single responsibility.
 
 ## Challenge {#sec-08-challenge-en}
 

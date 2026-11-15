@@ -25,12 +25,21 @@ o `Oracle`, o `SQL Server` e o `SQLite`.
 Numa base de dados relacional, como o `MySQL`, os dados organizam-se em
 tabelas, cada uma com colunas de tipo fixo, e linhas que representam
 registos individuais. É esta persistência que falta ao array `$artigos`
-visto na @sec-03-arrays-multidimensionais: guardado apenas em memória,
-esse array reinicia-se sempre que o servidor reinicia, e um leitor nunca
-vê um artigo publicado por outro processo do servidor. Uma base de
-dados guarda a informação entre pedidos diferentes, e entre utilizadores
-diferentes, exatamente o que falta a Tiago para o site da Contraponto
-deixar de depender de dados fixos no código.
+visto na @sec-03-arrays-multidimensionais: os dados vivem no ficheiro
+PHP, pelo que publicar um artigo obriga a editar o código, e nada do
+que o programa acrescenta ao array fica guardado, porque, no pedido
+seguinte (ou num *refresh*), o array volta a ter só os artigos escritos
+no ficheiro. Uma base de dados guarda a informação para além de cada
+pedido, e partilha-a por todos os utilizadores, exatamente o que falta
+a Tiago para o site da Contraponto deixar de depender de dados fixos no
+código.
+
+Uma base de dados organiza-se em três níveis: o servidor MySQL (o DBMS
+em funcionamento) tem várias bases de dados, e cada base de dados tem
+várias tabelas. Na tabela `artigos` da Contraponto, cada coluna é um
+tipo de informação (`id`, `titulo`, `autor`, `categoria`), cada linha é
+um registo (um artigo completo), e a chave primária (`id`) é um número
+único que identifica cada linha.
 
 ## Comandos SQL {#sec-08-sql}
 
@@ -97,35 +106,43 @@ na base de dados.
 ## Ligar o PHP ao MySQL {#sec-08-ligacao}
 
 O PHP liga-se a uma base de dados `MySQL` através da extensão `mysqli`
-(*MySQL Improved*), que suporta a ligação ao MySQL, permite executar
-consultas, *prepared statements* e transações, e pode ser usada em dois
-estilos: procedural ou orientado a objetos.
+(*MySQL Improved*), um conjunto de funcionalidades que se acrescenta ao
+PHP e que permite ligar ao servidor MySQL, enviar-lhe comandos SQL e
+receber os resultados, incluindo *prepared statements* e transações.
+Pode ser usada em dois estilos: orientado a objetos ou procedural.
+Neste capítulo usa-se o orientado a objetos, o mais usado em projetos
+reais: um objeto cria-se com `new`, tal como o `DateTime` visto na
+@sec-05-datas, e as suas funções (métodos) chamam-se com `->`.
 
-No estilo procedural, `mysqli_connect()` cria a ligação e devolve
-`false` caso esta falhe, uma versão simples e direta, adequada a quem
-está a começar:
-
-```php
-<?php
-$conexao = mysqli_connect("localhost", "utilizador", "password", "contraponto");
-
-if (!$conexao) {
-    die("Ligação falhou: " . mysqli_connect_error());
-}
-```
-
-No estilo orientado a objetos, `new mysqli()` cria um objeto de ligação,
-e os erros ficam expostos na propriedade `connect_error` desse objeto.
-É o estilo mais moderno, e o mais usado na prática:
+O `new mysqli()` cria o objeto de ligação, que fica guardado em
+`$conexao`, e é por ele que passam todos os pedidos ao MySQL. Recebe
+quatro argumentos, pela ordem: o servidor onde corre o MySQL
+(`"localhost"`), o utilizador MySQL com que o PHP se identifica, a
+palavra-passe desse utilizador, e a base de dados a usar:
 
 ```php
 <?php
-$conexao = new mysqli("localhost", "utilizador", "password", "contraponto");
+$conexao = new mysqli(
+    "localhost",
+    "utilizador",
+    "password",
+    "contraponto"
+);
 
 if ($conexao->connect_error) {
     die("Ligação falhou: " . $conexao->connect_error);
 }
 ```
+
+A propriedade `connect_error` guarda a mensagem de erro se a ligação
+falhar, e `die()` escreve essa mensagem e pára o programa. Desde o PHP
+8.1, o `mysqli` também interrompe o programa sozinho quando a ligação
+falha; esta verificação é a forma clássica e continua a funcionar.
+
+O estilo procedural faz o mesmo com uma função em vez de um objeto:
+`mysqli_connect("localhost", "utilizador", "password", "contraponto")`
+cria a ligação e devolve `false` caso esta falhe, e
+`mysqli_connect_error()` devolve a mensagem de erro.
 
 ## Criar Bases de Dados e Tabelas {#sec-08-criar-bd}
 
@@ -152,8 +169,14 @@ $conexao->query("
 ");
 ```
 
-Vale a pena perceber o significado de cada parte desta definição de
-tabela:
+O `IF NOT EXISTS` evita um erro se a base de dados ou a tabela já
+existirem, e o método `select_db()` escolhe a base de dados com que se
+vai trabalhar a seguir.
+
+Cada coluna tem um tipo, que define o que pode guardar: `INT` (número
+inteiro), `VARCHAR(150)` (texto com até 150 carateres), `TEXT` (texto
+longo) e `DATETIME` (data e hora). Algumas colunas têm ainda uma regra,
+e vale a pena perceber o significado de cada uma:
 
 - **`PRIMARY KEY`** (PK): identifica, de forma inequívoca, cada registo
   da tabela; nenhuma tabela relacional bem desenhada deve existir sem
@@ -175,7 +198,7 @@ execução do *script*.
 
 ## Operações Fundamentais: CRUD em SQL {#sec-08-crud-sql}
 
-As quatro operações fundamentais sobre dados persistentes, `CRUD`
+As quatro operações fundamentais sobre dados guardados, `CRUD`
 (*Create*, *Read*, *Update*, *Delete*), correspondem diretamente a
 quatro comandos SQL.
 
@@ -185,7 +208,7 @@ quatro comandos SQL.
 <?php
 $conexao->query(
     "INSERT INTO artigos (titulo, autor, categoria)
-     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Cultura')"
+     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Música')"
 );
 ```
 
@@ -203,6 +226,13 @@ while ($linha = $resultado->fetch_assoc()) {
     echo $linha["titulo"] . " - " . $linha["autor"] . "<br>";
 }
 ```
+
+Cada chamada de `fetch_assoc()` devolve a linha seguinte, e, quando já
+não há linhas, devolve `null` e o `while` termina (@sec-04-while). O
+array associativo de cada linha tem uma chave por coluna da tabela,
+incluindo as que o `INSERT` não preencheu: `resumo` vem a `null`, e
+`data_publicacao` traz a data e hora que o MySQL preencheu por omissão.
+Lê-se cada valor pela sua chave, como em `$linha["titulo"]`.
 
 Esta última construção, um `while` a percorrer os resultados linha a
 linha, é também a forma habitual de gerar uma tabela HTML dinamicamente
@@ -229,29 +259,40 @@ afetados, a instrução aplica-se a **todas** as linhas da tabela.
 Todos os exemplos acima, com valores fixos escritos diretamente no
 código, servem para perceber o fluxo básico, mas não são adequados a uma
 aplicação real. Construir uma instrução SQL concatenando diretamente
-valores vindos do utilizador, como os de `$_POST`, tem vários problemas:
-mistura dados com código, é vulnerável a um ataque de injeção de SQL
-(tema aprofundado na @sec-09-codigo-proprio), é mais propenso a erros de
-sintaxe, e é difícil de manter.
-
-A alternativa correta é usar *prepared statements*, que separam a
-instrução SQL, fixa, dos valores, que só são inseridos depois. Funcionam
-em duas fases: o servidor prepara a instrução, com pontos de
-interrogação (`?`) no lugar dos valores, e só depois o PHP envia os
-dados, de forma separada e segura. As vantagens são proteção contra
-injeção de SQL, melhor desempenho quando a mesma instrução é executada
-várias vezes, e um código mais limpo:
+valores vindos do utilizador, como os de `$_POST`, tem um problema de
+fundo: o texto escrito no formulário passa a fazer parte do comando, e o
+MySQL deixa de distinguir o que é comando do que é valor, o que causa
+erros e problemas de segurança (tema aprofundado na
+@sec-09-codigo-proprio):
 
 ```php
 <?php
-$stmt = $conexao->prepare(
-    "INSERT INTO artigos (titulo, autor, categoria) VALUES (?, ?, ?)"
-);
-$stmt->bind_param("sss", $titulo, $autor, $categoria);  // "sss" = três parâmetros string
+$sql = "INSERT INTO artigos (titulo, autor, categoria)
+        VALUES ('$titulo', '$autor', '$categoria')";
+```
 
+A alternativa correta é usar *prepared statements*, que separam a
+instrução SQL, fixa, dos valores, que só são inseridos depois: a
+instrução segue com pontos de interrogação (`?`) no lugar dos valores, e
+os valores seguem à parte, pelo que nunca são lidos como parte do
+comando. Em PHP, um *prepared statement* segue três passos: `prepare()`
+prepara a instrução com os `?`, `bind_param()` liga cada variável ao seu
+`?`, e `execute()` executa a instrução com os valores reais. As
+vantagens são a proteção contra os problemas referidos, melhor
+desempenho quando a mesma instrução é executada várias vezes, e um
+código mais limpo:
+
+```php
+<?php
 $titulo = $_POST["titulo"];
 $autor = $_POST["autor"];
 $categoria = $_POST["categoria"];
+
+$stmt = $conexao->prepare(
+    "INSERT INTO artigos (titulo, autor, categoria)
+     VALUES (?, ?, ?)"
+);
+$stmt->bind_param("sss", $titulo, $autor, $categoria);  // "sss" = três strings
 $stmt->execute();
 ```
 
@@ -263,14 +304,17 @@ indicado por uma letra:
 - **`d`**: *double* (números com casas decimais);
 - **`b`**: *blob* (dados binários, como imagens ou ficheiros).
 
-Para consultar dados com *prepared statements*, o padrão é semelhante,
-terminando com `get_result()` para obter as linhas devolvidas:
+Para consultar dados com *prepared statements*, o padrão é o do
+`INSERT`, com um passo a mais no fim: `get_result()` devolve o
+resultado, que se percorre com o `while`, como no exemplo anterior com
+`query()`:
 
 ```php
 <?php
+$id = $_GET["id"];
+
 $stmt = $conexao->prepare("SELECT titulo, autor FROM artigos WHERE id = ?");
 $stmt->bind_param("i", $id);  // "i" = um parâmetro integer
-$id = $_GET["id"];
 $stmt->execute();
 
 $resultado = $stmt->get_result();
@@ -279,15 +323,12 @@ while ($linha = $resultado->fetch_assoc()) {
 }
 ```
 
-Repare-se que este último exemplo é exatamente o que faltava a
-`artigos.php?id=5`, a página de detalhe de um artigo referida na
-@sec-07-recursos-virtuais: o `id` que chega pelo `$_GET` identifica,
-agora sim, um artigo real, lido diretamente da tabela `artigos`.
+Neste exemplo, o `id` que chega pelo `$_GET` identifica um artigo real,
+lido diretamente da tabela `artigos`.
 
 O mesmo princípio aplica-se ao `UPDATE` e ao `DELETE`: usar *prepared
 statements* torna-os seguros, porque os valores nunca são interpretados
-como parte do próprio comando SQL, o que evita tanto a injeção de SQL
-como alterações acidentais.
+como parte do próprio comando SQL.
 
 ## Erros e Boas Práticas {#sec-08-erros-boas-praticas}
 
@@ -295,15 +336,21 @@ Trabalhar com bases de dados implica, inevitavelmente, lidar com erros.
 Os mais comuns dividem-se em três categorias:
 
 - **Erros de ligação**: credenciais incorretas, o servidor MySQL estar
-  desligado, ou a base de dados indicada não existir;
+  desligado, ou a base de dados indicada não existir; a mensagem do
+  MySQL é, por exemplo, `Access denied for user 'utilizador'@'localhost'`;
 - **Erros de SQL**: sintaxe inválida, nomes de tabelas ou colunas
-  errados, falta de aspas ou vírgulas na instrução;
+  errados, falta de aspas ou vírgulas na instrução; a mensagem é, por
+  exemplo, `You have an error in your SQL syntax`;
 - **Erros de execução no PHP**: usar variáveis não definidas, ou chamar
-  `fetch_assoc()` sobre um resultado vazio.
+  `fetch_assoc()` sobre o resultado de uma consulta que falhou (nesse
+  caso, o resultado é `false`, e o PHP dá a mensagem `Call to a member
+  function fetch_assoc() on bool`). Um resultado simplesmente vazio não
+  é um erro: `fetch_assoc()` devolve `null` e o `while` termina.
 
 Durante o desenvolvimento, é essencial ativar a exibição de todos os
 erros e avisos do PHP, algo que nunca deve ficar ativo num ambiente de
-produção, por razões de segurança:
+produção, por razões de segurança: a mensagem de erro revela a quem
+visita o site nomes de tabelas e de utilizadores:
 
 ```php
 <?php
@@ -319,16 +366,14 @@ bases de dados em PHP:
 
 - Usar *prepared statements* sempre que houver dados vindos do
   utilizador;
-- Validar e sanitizar as entradas antes de as usar;
-- Separar claramente código PHP, SQL e HTML;
-- Mostrar erros durante o desenvolvimento, mas ocultá-los em produção;
-- Testar sempre com dados reais e também com dados propositadamente
-  maliciosos.
+- Mostrar erros só durante o desenvolvimento, e ocultá-los em produção;
+- Separar claramente código PHP, SQL e HTML, cada um no seu lugar, para
+  o código ser fácil de ler.
 
 ## Uma Aplicação CRUD Completa {#sec-08-crud}
 
 Juntando tudo o que foi visto neste capítulo, o próximo passo natural
-para o site da Contraponto é dar a Rita, a diretora, uma forma de gerir
+para o site da Contraponto é dar à Rita, a diretora, uma forma de gerir
 os artigos sem precisar de mexer diretamente na base de dados: uma
 pequena aplicação de gestão de artigos, sobre a tabela `artigos` criada
 na @sec-08-criar-bd, distinta das páginas públicas já esboçadas nos
@@ -347,40 +392,148 @@ ficheiros PHP, cada um responsável por uma operação:
   `index.php`;
 - `edit.php` e `update.php`: `edit.php` apresenta um formulário
   pré-preenchido com os dados de um artigo existente, e `update.php`
-  grava as alterações (*Update*), por exemplo depois de Rita corrigir um
-  erro ou mudar um artigo de categoria;
+  grava as alterações (*Update*), por exemplo depois de a Rita corrigir
+  um erro ou mudar um artigo de categoria;
 - `delete.php`: remove um artigo existente (*Delete*).
 
-Um detalhe merece atenção especial no `index.php`: cada `link` para
-editar ou apagar um artigo transporta o `id` desse artigo na própria
-URL, por exemplo `edit.php?id=7`, tal como já acontecia em
-`artigos.php?id=5` do lado do leitor, visto na
-@sec-07-recursos-virtuais, para que a página seguinte saiba exatamente
-a que registo se refere. Este `id`, por vir de um `GET` simples, sem
-dados sensíveis nem efeitos colaterais até ser efetivamente processado,
-não exige, aqui, um *prepared statement* na listagem; já em `edit.php`,
-ao ler esse mesmo `id` do `GET` para o incluir de novo no formulário,
-este tem de ser colocado num campo `hidden` do formulário, para que, ao
-ser submetido por `POST` para `update.php`, o `id` do artigo a alterar
-viaje junto com os restantes dados.
+O padrão repete-se: um ficheiro mostra o formulário, e o outro recebe
+os dados e fala com a base de dados.
 
-O fluxo completo da aplicação pode resumir-se assim: Rita navega entre
+O `config.php` evita repetir a ligação: o código da @sec-08-ligacao
+escreve-se uma só vez nesse ficheiro, e todos os outros começam com
+`require "config.php";`, tal como o `header.php` e o `footer.php` da
+@sec-05-includes. O PHP substitui o `require` pelo conteúdo do ficheiro,
+pelo que, no `index.php`, a variável `$conexao` já existe, e, se a
+palavra-passe mudar, altera-se num só lugar:
+
+```php
+<?php
+// config.php
+$conexao = new mysqli("localhost", "utilizador", "password", "contraponto");
+
+if ($conexao->connect_error) {
+    die("Ligação falhou: " . $conexao->connect_error);
+}
+```
+
+```php
+<?php
+// index.php
+require "config.php";
+
+$resultado = $conexao->query("SELECT * FROM artigos");
+```
+
+**Criar um artigo.** O `add.php` mostra o formulário, que envia os dados
+por `POST` (@sec-07-supervariaveis) para `insert.php`:
+
+```html
+<form action="insert.php" method="post">
+    <!-- campos titulo, autor e categoria, e o botão Guardar -->
+</form>
+```
+
+O `insert.php` lê os dados do `$_POST`, grava o artigo com o *prepared
+statement* de `INSERT` visto atrás, e termina com um redirecionamento:
+
+```php
+<?php
+require "config.php";
+
+$titulo = $_POST["titulo"];
+$autor = $_POST["autor"];
+$categoria = $_POST["categoria"];
+
+$stmt = $conexao->prepare(
+    "INSERT INTO artigos (titulo, autor, categoria)
+     VALUES (?, ?, ?)"
+);
+$stmt->bind_param("sss", $titulo, $autor, $categoria);
+$stmt->execute();
+
+header("Location: index.php");
+```
+
+A última linha, `header("Location: index.php")`, acrescenta um
+cabeçalho à resposta (@sec-07-cabecalhos): a resposta tem o código 302,
+um redirecionamento (@sec-07-resposta), e o *browser* pede
+`index.php`, onde o artigo novo já aparece. Sem esta linha, a Rita ficava
+a olhar para uma página em branco, porque o `insert.php` não tem HTML.
+
+**Alterar um artigo.** Na lista do `index.php`, o *link* de cada artigo
+transporta o `id` na própria URL, por exemplo `edit.php?id=3`, tal como
+já acontecia em `artigos.php?id=5` (@sec-07-recursos-virtuais). O
+`edit.php` lê esse artigo, com um *prepared statement* de `SELECT`, e
+mostra o formulário já preenchido. O `id` segue num campo `hidden`, que
+não aparece no ecrã, mas é enviado com os outros dados, para que o
+`update.php` saiba que artigo alterar:
+
+```html
+<form action="update.php" method="post">
+    <input type="hidden" name="id" value="3">
+    <!-- campos titulo, autor e categoria, já preenchidos -->
+</form>
+```
+
+```php
+<?php
+require "config.php";
+
+$id = $_POST["id"];
+$titulo = $_POST["titulo"];
+$autor = $_POST["autor"];
+$categoria = $_POST["categoria"];
+
+$stmt = $conexao->prepare(
+    "UPDATE artigos
+     SET titulo = ?, autor = ?, categoria = ?
+     WHERE id = ?"
+);
+$stmt->bind_param("sssi", $titulo, $autor, $categoria, $id);
+$stmt->execute();
+
+header("Location: index.php");
+```
+
+O `"sssi"` indica três textos e um inteiro, pela ordem dos quatro `?`.
+
+**Apagar um artigo.** No `index.php`, o *link* para apagar o artigo 3 é
+`<a href="delete.php?id=3">Apagar</a>`. O *browser* pede esse endereço
+com um `GET`, em que o `id` vai no URL, sem formulário, e o `delete.php`
+apaga só esse artigo e volta à lista:
+
+```php
+<?php
+require "config.php";
+
+$id = $_GET["id"];
+
+$stmt = $conexao->prepare("DELETE FROM artigos WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+header("Location: index.php");
+```
+
+Qualquer pessoa que escreva `delete.php?id=3` no *browser* apaga o
+artigo, razão pela qual, como se diz a seguir, esta área de gestão
+ficaria protegida por autenticação.
+
+O fluxo completo da aplicação pode resumir-se assim: a Rita navega entre
 páginas simples e independentes a partir de `index.php`; cada operação,
 `add`, `edit` ou `delete`, comunica com a base de dados através de
 `insert.php`, `update.php` ou diretamente em `delete.php`; e, depois de
 gravada a alteração, a aplicação redireciona sempre de volta para
 `index.php`, fechando o ciclo. Numa aplicação real, esta área de gestão
 ficaria, claro, protegida por autenticação, através de sessões como as
-vistas na @sec-07-sessoes, para que só Rita, e não qualquer leitor, a
+vistas na @sec-07-sessoes, para que só a Rita, e não qualquer leitor, a
 pudesse usar.
 
-Este pequeno projeto reúne, na prática, praticamente tudo o que foi
-visto até este ponto da UC: HTML e formulários do lado do cliente,
-supervariáveis para receber os dados submetidos, *prepared statements*
-para os gravar e ler em segurança, e uma aplicação organizada em várias
-páginas simples, cada uma com uma única responsabilidade, o padrão
-sobre o qual assenta a maioria das aplicações web dinâmicas, e sobre o
-qual o resto desta UC continua a construir.
+Este pequeno projeto junta o que vem de trás, formulários, `$_GET` e
+`$_POST` (@sec-07-supervariaveis) e `require` (@sec-05-includes), com o
+que se viu neste capítulo: a ligação `mysqli`, as operações CRUD e os
+*prepared statements*, numa aplicação organizada em várias páginas
+simples, cada uma com uma única responsabilidade.
 
 ## Desafio {#sec-08-desafio}
 

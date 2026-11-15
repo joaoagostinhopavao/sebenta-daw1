@@ -347,7 +347,8 @@ div.csl-indent {
 <section id="sec-08-dbms-en" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="sec-08-dbms-en"><span class="header-section-number">8.1</span> Relational Databases and the DBMS</h2>
 <p>A <code>DBMS</code> (<em>Database Management System</em>) is the <em>software</em> that creates, organises and manages databases: it controls access, queries and updates, guarantees the integrity, security and performance of the data, and allows applications, such as those written in PHP, to read and write information persistently. Common examples of DBMS include <code>MySQL</code>, <code>MariaDB</code>, <code>PostgreSQL</code>, <code>Oracle</code>, <code>SQL Server</code> and <code>SQLite</code>.</p>
-<p>In a relational database, such as <code>MySQL</code>, data is organised into tables, each with fixed-type columns, and rows that represent individual records. It is exactly this persistence that the <code>$artigos</code> array seen in <a href="cap03.html#sec-03-multidimensional-arrays-en" class="quarto-xref"><span>Section 3.8.3</span></a> lacks: kept only in memory, that array resets every time the server restarts, and one reader never sees an article published by another server process. A database keeps information across different requests, and across different users — exactly what Tiago’s Contraponto site is missing to stop depending on data fixed in the code.</p>
+<p>In a relational database, such as <code>MySQL</code>, data is organised into tables, each with fixed-type columns, and rows that represent individual records. It is exactly this persistence that the <code>$artigos</code> array seen in <a href="cap03.html#sec-03-multidimensional-arrays-en" class="quarto-xref"><span>Section 3.8.3</span></a> lacks: the data lives in the PHP file, so publishing an article means editing the code, and nothing the program adds to the array is kept, because, on the next request (or on a <em>refresh</em>), the array goes back to holding only the articles written in the file. A database keeps information beyond each request, and shares it across all users, exactly what Tiago’s Contraponto site is missing to stop depending on data fixed in the code.</p>
+<p>A database is organised on three levels: the MySQL server (the DBMS in operation) has several databases, and each database has several tables. In the Contraponto <code>artigos</code> table, each column is a kind of information (<code>id</code>, <code>titulo</code>, <code>autor</code>, <code>categoria</code>), each row is a record (a complete article), and the primary key (<code>id</code>) is a unique number that identifies each row.</p>
 </section>
 <section id="sec-08-sql-en" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="sec-08-sql-en"><span class="header-section-number">8.2</span> SQL Commands</h2>
@@ -378,40 +379,41 @@ div.csl-indent {
 </section>
 <section id="sec-08-connecting-en" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="sec-08-connecting-en"><span class="header-section-number">8.4</span> Connecting PHP to MySQL</h2>
-<p>PHP connects to a <code>MySQL</code> database through the <code>mysqli</code> extension (<em>MySQL Improved</em>), which supports connecting to MySQL, running queries, <em>prepared statements</em> and transactions, and can be used in two styles: procedural or object-oriented.</p>
-<p>In the procedural style, <code>mysqli_connect()</code> creates the connection and returns <code>false</code> if it fails — a simple, straightforward version, suited to beginners:</p>
+<p>PHP connects to a <code>MySQL</code> database through the <code>mysqli</code> extension (<em>MySQL Improved</em>), a set of features added to PHP that allows it to connect to the MySQL server, send it SQL commands and receive the results, including <em>prepared statements</em> and transactions. It can be used in two styles: object-oriented or procedural. In this chapter the object-oriented style is used, the most common in real projects: an object is created with <code>new</code>, just like the <code>DateTime</code> seen in <a href="cap05.html#sec-05-dates-en" class="quarto-xref"><span>Section 5.2</span></a>, and its functions (methods) are called with <code>-&gt;</code>.</p>
+<p><code>new mysqli()</code> creates the connection object, which is stored in <code>$conexao</code>, and every request to MySQL goes through it. It takes four arguments, in order: the server where MySQL runs (<code>"localhost"</code>), the MySQL user PHP identifies itself with, that user’s password, and the database to use:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="fu">mysqli_connect</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"contraponto"</span>)<span class="ot">;</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="cf">if</span> (<span class="op">!</span><span class="va">$conexao</span>) {</span>
-<span id="cb3-5"><a href="#cb3-5"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="fu">mysqli_connect_error</span>())<span class="ot">;</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the object-oriented style, <code>new mysqli()</code> creates a connection object, and errors are exposed in that object’s <code>connect_error</code> property. It is the more modern style, and the one most used in practice:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"contraponto"</span>)<span class="ot">;</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="st">"localhost"</span><span class="ot">,</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="st">"utilizador"</span><span class="ot">,</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="st">"password"</span><span class="ot">,</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="st">"contraponto"</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>)<span class="ot">;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>connect_error</code> property holds the error message if the connection fails, and <code>die()</code> prints that message and stops the program. Since PHP 8.1, <code>mysqli</code> also stops the program by itself when the connection fails; this check is the classic form and still works.</p>
+<p>The procedural style does the same with a function instead of an object: <code>mysqli_connect("localhost", "utilizador", "password", "contraponto")</code> creates the connection and returns <code>false</code> if it fails, and <code>mysqli_connect_error()</code> returns the error message.</p>
 </section>
 <section id="sec-08-creating-db-en" class="level2" data-number="8.5">
 <h2 data-number="8.5" class="anchored" data-anchor-id="sec-08-creating-db-en"><span class="header-section-number">8.5</span> Creating Databases and Tables</h2>
 <p>Creating the database and creating the tables are two separate steps: first the “container” is created (the database), only then the internal structures (the tables). Like any other SQL statement, both can be done from PHP, through the <code>query()</code> method, which sends the SQL command to MySQL and returns success or failure:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"CREATE DATABASE IF NOT EXISTS contraponto"</span>)<span class="ot">;</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="va">$conexao</span>-&gt;select_db(<span class="st">"contraponto"</span>)<span class="ot">;</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="st">    CREATE TABLE IF NOT EXISTS artigos (</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="st">        id INT AUTO_INCREMENT PRIMARY KEY,</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="st">        titulo VARCHAR(150) NOT NULL,</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="st">        autor VARCHAR(100) NOT NULL,</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="st">        categoria VARCHAR(50) NOT NULL,</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="st">        resumo TEXT,</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="st">        data_publicacao DATETIME DEFAULT CURRENT_TIMESTAMP</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="st">    )</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="st">"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It is worth understanding the meaning of each part of this table definition:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"CREATE DATABASE IF NOT EXISTS contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="va">$conexao</span>-&gt;select_db(<span class="st">"contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="st">    CREATE TABLE IF NOT EXISTS artigos (</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="st">        id INT AUTO_INCREMENT PRIMARY KEY,</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="st">        titulo VARCHAR(150) NOT NULL,</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="st">        autor VARCHAR(100) NOT NULL,</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="st">        categoria VARCHAR(50) NOT NULL,</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="st">        resumo TEXT,</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="st">        data_publicacao DATETIME DEFAULT CURRENT_TIMESTAMP</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="st">    )</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="st">"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>IF NOT EXISTS</code> avoids an error if the database or the table already exists, and the <code>select_db()</code> method chooses the database to work with next.</p>
+<p>Each column has a type, which defines what it can hold: <code>INT</code> (whole number), <code>VARCHAR(150)</code> (text of up to 150 characters), <code>TEXT</code> (long text) and <code>DATETIME</code> (date and time). Some columns also have a rule, and it is worth understanding the meaning of each one:</p>
 <ul>
 <li><strong><code>PRIMARY KEY</code></strong> (PK): unambiguously identifies each record in the table; no well-designed relational table should exist without one;</li>
 <li><strong><code>AUTO_INCREMENT</code></strong>: makes this field’s value increase automatically by one for each new record inserted, without the programmer having to calculate it;</li>
@@ -422,42 +424,47 @@ div.csl-indent {
 </section>
 <section id="sec-08-crud-sql-en" class="level2" data-number="8.6">
 <h2 data-number="8.6" class="anchored" data-anchor-id="sec-08-crud-sql-en"><span class="header-section-number">8.6</span> Fundamental Operations: CRUD in SQL</h2>
-<p>The four fundamental operations on persistent data, <code>CRUD</code> (<em>Create</em>, <em>Read</em>, <em>Update</em>, <em>Delete</em>), correspond directly to four SQL commands.</p>
+<p>The four fundamental operations on stored data, <code>CRUD</code> (<em>Create</em>, <em>Read</em>, <em>Update</em>, <em>Delete</em>), correspond directly to four SQL commands.</p>
 <p><strong>Insert</strong> a new record (<em>Create</em>), with <code>INSERT</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="va">$conexao</span>-&gt;query(</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="st">"INSERT INTO artigos (titulo, autor, categoria)</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="st">     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Cultura')"</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="va">$conexao</span>-&gt;query(</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="st">"INSERT INTO artigos (titulo, autor, categoria)</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="st">     VALUES ('Roteiro cultural de outubro', 'Marco Antunes', 'Música')"</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Read</strong> existing data (<em>Read</em>), with <code>SELECT</code>. The result’s <code>num_rows</code> property indicates how many rows were returned, and the <code>fetch_assoc()</code> method returns each row as an associative array, as seen in <a href="cap03.html#sec-03-multidimensional-arrays-en" class="quarto-xref"><span>Section 3.8.3</span></a>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM artigos"</span>)<span class="ot">;</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">echo</span> <span class="va">$resultado</span>-&gt;num_rows <span class="op">.</span> <span class="st">" artigos encontrados"</span><span class="ot">;</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
-<span id="cb7-6"><a href="#cb7-6"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"autor"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM artigos"</span>)<span class="ot">;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">echo</span> <span class="va">$resultado</span>-&gt;num_rows <span class="op">.</span> <span class="st">" artigos encontrados"</span><span class="ot">;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"autor"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Each call to <code>fetch_assoc()</code> returns the next row, and, when there are no more rows, it returns <code>null</code> and the <code>while</code> ends (<a href="cap04.html#sec-04-while-en" class="quarto-xref"><span>Section 4.2.2</span></a>). Each row’s associative array has one key per table column, including those the <code>INSERT</code> did not fill in: <code>resumo</code> comes back as <code>null</code>, and <code>data_publicacao</code> holds the date and time MySQL filled in by default. Each value is read through its key, as in <code>$linha["titulo"]</code>.</p>
 <p>This last construct, a <code>while</code> looping over the results row by row, is also the usual way to dynamically generate an HTML table from data returned by the database, turning each article into a <code>&lt;tr&gt;</code> row on the page — exactly what the <code>$artigos</code> <em>array</em>, seen in <a href="cap03.html#sec-03-multidimensional-arrays-en" class="quarto-xref"><span>Section 3.8.3</span></a>, did in memory.</p>
 <p><strong>Update</strong> (<em>Update</em>) and <strong>delete</strong> (<em>Delete</em>) existing records, with <code>UPDATE</code> and <code>DELETE</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"UPDATE artigos SET categoria = 'Tecnologia' WHERE id = 3"</span>)<span class="ot">;</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM artigos WHERE id = 3"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"UPDATE artigos SET categoria = 'Tecnologia' WHERE id = 3"</span>)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM artigos WHERE id = 3"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Both <code>UPDATE</code> and <code>DELETE</code> <strong>always require a <code>WHERE</code> clause</strong>; forgetting it is one of the most serious and most common mistakes one can make with a database, because, without a condition filtering the affected records, the statement applies to <strong>every</strong> row in the table.</p>
 </section>
 <section id="sec-08-prepared-statements-en" class="level2" data-number="8.7">
 <h2 data-number="8.7" class="anchored" data-anchor-id="sec-08-prepared-statements-en"><span class="header-section-number">8.7</span> Prepared Statements</h2>
-<p>All the examples above, with fixed values written directly in the code, are useful for understanding the basic flow, but are not suitable for a real application. Building an SQL statement by directly concatenating values coming from the user, such as those from <code>$_POST</code>, has several problems: it mixes data with code, it is vulnerable to an SQL injection attack (a topic covered in depth in <a href="cap09.html#sec-09-custom-code-en" class="quarto-xref"><span>Section 9.1</span></a>), it is more prone to syntax errors, and it is hard to maintain.</p>
-<p>The correct alternative is to use <em>prepared statements</em>, which separate the fixed SQL statement from the values, which are only inserted afterwards. They work in two phases: the server prepares the statement, with question marks (<code>?</code>) in place of the values, and only then does PHP send the data, separately and safely. The advantages are protection against SQL injection, better performance when the same statement is executed multiple times, and cleaner code:</p>
+<p>All the examples above, with fixed values written directly in the code, are useful for understanding the basic flow, but are not suitable for a real application. Building an SQL statement by directly concatenating values coming from the user, such as those from <code>$_POST</code>, has a fundamental problem: the text typed into the form becomes part of the command, and MySQL can no longer tell what is command and what is value, which causes errors and security problems (a topic covered in depth in <a href="cap09.html#sec-09-custom-code-en" class="quarto-xref"><span>Section 9.1</span></a>):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="va">$sql</span> <span class="op">=</span> <span class="st">"INSERT INTO artigos (titulo, autor, categoria)</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="st">        VALUES ('</span><span class="va">$titulo</span><span class="st">', '</span><span class="va">$autor</span><span class="st">', '</span><span class="va">$categoria</span><span class="st">')"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The correct alternative is to use <em>prepared statements</em>, which separate the fixed SQL statement from the values, which are only inserted afterwards: the statement is sent with question marks (<code>?</code>) in place of the values, and the values follow separately, so they are never read as part of the command. In PHP, a <em>prepared statement</em> has three steps: <code>prepare()</code> prepares the statement with the <code>?</code> placeholders, <code>bind_param()</code> binds each variable to its <code>?</code>, and <code>execute()</code> runs the statement with the real values. The advantages are protection against the problems mentioned, better performance when the same statement is executed multiple times, and cleaner code:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="st">"INSERT INTO artigos (titulo, autor, categoria) VALUES (?, ?, ?)"</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>)<span class="ot">;</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"sss"</span><span class="ot">,</span> <span class="va">$titulo</span><span class="ot">,</span> <span class="va">$autor</span><span class="ot">,</span> <span class="va">$categoria</span>)<span class="ot">;</span>  <span class="co">// "sss" = three string parameters</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="va">$titulo</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"titulo"</span>]<span class="ot">;</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="va">$autor</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="va">$categoria</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"categoria"</span>]<span class="ot">;</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="va">$titulo</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"titulo"</span>]<span class="ot">;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="va">$autor</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="va">$categoria</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"categoria"</span>]<span class="ot">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb9-7"><a href="#cb9-7"></a>    <span class="st">"INSERT INTO artigos (titulo, autor, categoria)</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="st">     VALUES (?, ?, ?)"</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>)<span class="ot">;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"sss"</span><span class="ot">,</span> <span class="va">$titulo</span><span class="ot">,</span> <span class="va">$autor</span><span class="ot">,</span> <span class="va">$categoria</span>)<span class="ot">;</span>  <span class="co">// "sss" = three strings</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>bind_param()</code> needs to know the type of each associated value, indicated by a letter:</p>
 <ul>
 <li><strong><code>s</code></strong>: <em>string</em>;</li>
@@ -465,39 +472,38 @@ div.csl-indent {
 <li><strong><code>d</code></strong>: <em>double</em> (numbers with decimal places);</li>
 <li><strong><code>b</code></strong>: <em>blob</em> (binary data, such as images or files).</li>
 </ul>
-<p>To query data with <em>prepared statements</em>, the pattern is similar, ending with <code>get_result()</code> to obtain the returned rows:</p>
+<p>To query data with <em>prepared statements</em>, the pattern is that of <code>INSERT</code>, with one more step at the end: <code>get_result()</code> returns the result, which is traversed with the <code>while</code>, as in the previous example with <code>query()</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT titulo, autor FROM artigos WHERE id = ?"</span>)<span class="ot">;</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span>  <span class="co">// "i" = one integer parameter</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a></span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
-<span id="cb10-9"><a href="#cb10-9"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"autor"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note that this last example is exactly what <code>artigos.php?id=5</code>, the article detail page mentioned in <a href="cap07.html#sec-07-virtual-resources-en" class="quarto-xref"><span>Section 7.4.4</span></a>, was missing: the <code>id</code> arriving through <code>$_GET</code> now identifies a real article, read directly from the <code>artigos</code> table.</p>
-<p>The same principle applies to <code>UPDATE</code> and <code>DELETE</code>: using <em>prepared statements</em> makes them safe, because the values are never interpreted as part of the SQL command itself, which prevents both SQL injection and accidental changes.</p>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"SELECT titulo, autor FROM artigos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span>  <span class="co">// "i" = one integer parameter</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="kw">echo</span> <span class="va">$linha</span>[<span class="st">"titulo"</span>] <span class="op">.</span> <span class="st">" - "</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"autor"</span>] <span class="op">.</span> <span class="st">"&lt;br&gt;"</span><span class="ot">;</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this example, the <code>id</code> arriving through <code>$_GET</code> identifies a real article, read directly from the <code>artigos</code> table.</p>
+<p>The same principle applies to <code>UPDATE</code> and <code>DELETE</code>: using <em>prepared statements</em> makes them safe, because the values are never interpreted as part of the SQL command itself.</p>
 </section>
 <section id="sec-08-errors-en" class="level2" data-number="8.8">
 <h2 data-number="8.8" class="anchored" data-anchor-id="sec-08-errors-en"><span class="header-section-number">8.8</span> Errors and Best Practices</h2>
 <p>Working with databases inevitably means dealing with errors. The most common fall into three categories:</p>
 <ul>
-<li><strong>Connection errors</strong>: incorrect credentials, the MySQL server being down, or the specified database not existing;</li>
-<li><strong>SQL errors</strong>: invalid syntax, wrong table or column names, missing quotes or commas in the statement;</li>
-<li><strong>PHP execution errors</strong>: using undefined variables, or calling <code>fetch_assoc()</code> on an empty result.</li>
+<li><strong>Connection errors</strong>: incorrect credentials, the MySQL server being down, or the specified database not existing; the MySQL message is, for example, <code>Access denied for user 'utilizador'@'localhost'</code>;</li>
+<li><strong>SQL errors</strong>: invalid syntax, wrong table or column names, missing quotes or commas in the statement; the message is, for example, <code>You have an error in your SQL syntax</code>;</li>
+<li><strong>PHP execution errors</strong>: using undefined variables, or calling <code>fetch_assoc()</code> on the result of a query that failed (in that case, the result is <code>false</code>, and PHP gives the message <code>Call to a member function fetch_assoc() on bool</code>). A simply empty result is not an error: <code>fetch_assoc()</code> returns <code>null</code> and the <code>while</code> ends.</li>
 </ul>
-<p>During development, it is essential to enable the display of all PHP errors and warnings — something that should never remain active in a production environment, for security reasons:</p>
+<p>During development, it is essential to enable the display of all PHP errors and warnings, something that should never remain active in a production environment, for security reasons: the error message reveals table and user names to whoever visits the site:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
 <span id="cb11-3"><a href="#cb11-3"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>mysqli</code> always explains what went wrong, as long as the right information is read: <code>connect_error</code> shows problems with the connection itself, and <code>error</code> shows problems coming from MySQL regarding a specific query. Some general good practices, to always keep in mind when working with databases in PHP:</p>
 <ul>
 <li>Use <em>prepared statements</em> whenever there is data coming from the user;</li>
-<li>Validate and sanitise inputs before using them;</li>
-<li>Clearly separate PHP, SQL and HTML code;</li>
-<li>Show errors during development, but hide them in production;</li>
-<li>Always test with real data and also with deliberately malicious data.</li>
+<li>Show errors only during development, and hide them in production;</li>
+<li>Clearly separate PHP, SQL and HTML code, each in its own place, so the code is easy to read.</li>
 </ul>
 </section>
 <section id="sec-08-crud-en" class="level2" data-number="8.9">
@@ -510,9 +516,78 @@ div.csl-indent {
 <li><code>edit.php</code> and <code>update.php</code>: <code>edit.php</code> presents a form pre-filled with the data of an existing article, and <code>update.php</code> saves the changes (<em>Update</em>), for example after Rita corrects an error or changes an article’s category;</li>
 <li><code>delete.php</code>: removes an existing article (<em>Delete</em>).</li>
 </ul>
-<p>One detail deserves special attention in <code>index.php</code>: each <code>link</code> to edit or delete an article carries that article’s <code>id</code> in the URL itself, for example <code>edit.php?id=7</code>, just as already happened in <code>artigos.php?id=5</code> on the reader’s side, seen in <a href="cap07.html#sec-07-virtual-resources-en" class="quarto-xref"><span>Section 7.4.4</span></a>, so the following page knows exactly which record it refers to. This <code>id</code>, coming from a simple <code>GET</code>, with no sensitive data or side effects until it is actually processed, does not require a <em>prepared statement</em> here in the listing; but in <code>edit.php</code>, when reading that same <code>id</code> from <code>GET</code> to include it again in the form, it has to be placed in a <code>hidden</code> field of the form, so that, when submitted by <code>POST</code> to <code>update.php</code>, the <code>id</code> of the article to change travels along with the rest of the data.</p>
+<p>The pattern repeats: one file shows the form, and the other receives the data and talks to the database.</p>
+<p><code>config.php</code> avoids repeating the connection: the code from <a href="#sec-08-connecting-en" class="quarto-xref"><span>Section 8.4</span></a> is written once in that file, and all the others start with <code>require "config.php";</code>, just like <code>header.php</code> and <code>footer.php</code> in <a href="cap05.html#sec-05-includes-en" class="quarto-xref"><span>Section 5.3</span></a>. PHP replaces the <code>require</code> with the contents of the file, so in <code>index.php</code> the <code>$conexao</code> variable already exists, and, if the password changes, it is changed in a single place:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co">// config.php</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="va">$conexao</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">mysqli</span>(<span class="st">"localhost"</span><span class="ot">,</span> <span class="st">"utilizador"</span><span class="ot">,</span> <span class="st">"password"</span><span class="ot">,</span> <span class="st">"contraponto"</span>)<span class="ot">;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="cf">if</span> (<span class="va">$conexao</span>-&gt;connect_error) {</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="cf">die</span>(<span class="st">"Ligação falhou: "</span> <span class="op">.</span> <span class="va">$conexao</span>-&gt;connect_error)<span class="ot">;</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co">// index.php</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM artigos"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Creating an article.</strong> <code>add.php</code> shows the form, which sends the data by <code>POST</code> (<a href="cap07.html#sec-07-superglobals-en" class="quarto-xref"><span>Section 7.5</span></a>) to <code>insert.php</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb14-1"><a href="#cb14-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"insert.php"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="dt">&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>    <span class="co">&lt;!-- titulo, autor and categoria fields, and the Guardar button --&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>insert.php</code> reads the data from <code>$_POST</code>, saves the article with the <code>INSERT</code> <em>prepared statement</em> seen earlier, and ends with a redirect:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="va">$titulo</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"titulo"</span>]<span class="ot">;</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="va">$autor</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="va">$categoria</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"categoria"</span>]<span class="ot">;</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb15-9"><a href="#cb15-9"></a>    <span class="st">"INSERT INTO artigos (titulo, autor, categoria)</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="st">     VALUES (?, ?, ?)"</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>)<span class="ot">;</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"sss"</span><span class="ot">,</span> <span class="va">$titulo</span><span class="ot">,</span> <span class="va">$autor</span><span class="ot">,</span> <span class="va">$categoria</span>)<span class="ot">;</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="fu">header</span>(<span class="st">"Location: index.php"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The last line, <code>header("Location: index.php")</code>, adds a header to the response (<a href="cap07.html#sec-07-headers-en" class="quarto-xref"><span>Section 7.6</span></a>): the response has status code 302, a redirect (<a href="cap07.html#sec-07-response-en" class="quarto-xref"><span>Section 7.7</span></a>), and the <em>browser</em> requests <code>index.php</code>, where the new article already appears. Without this line, Rita would be left looking at a blank page, because <code>insert.php</code> has no HTML.</p>
+<p><strong>Changing an article.</strong> In the <code>index.php</code> list, each article’s <em>link</em> carries the <code>id</code> in the URL itself, for example <code>edit.php?id=3</code>, just as already happened in <code>artigos.php?id=5</code> (<a href="cap07.html#sec-07-virtual-resources-en" class="quarto-xref"><span>Section 7.4.4</span></a>). <code>edit.php</code> reads that article, with a <code>SELECT</code> <em>prepared statement</em>, and shows the form already filled in. The <code>id</code> travels in a <code>hidden</code> field, which does not appear on screen but is sent along with the other data, so that <code>update.php</code> knows which article to change:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb16-1"><a href="#cb16-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"update.php"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="dt">&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"hidden"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"id"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"3"</span><span class="dt">&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>    <span class="co">&lt;!-- titulo, autor and categoria fields, already filled in --&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="va">$titulo</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"titulo"</span>]<span class="ot">;</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="va">$autor</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"autor"</span>]<span class="ot">;</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="va">$categoria</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"categoria"</span>]<span class="ot">;</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb17-10"><a href="#cb17-10"></a>    <span class="st">"UPDATE artigos</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="st">     SET titulo = ?, autor = ?, categoria = ?</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="st">     WHERE id = ?"</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a>)<span class="ot">;</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"sssi"</span><span class="ot">,</span> <span class="va">$titulo</span><span class="ot">,</span> <span class="va">$autor</span><span class="ot">,</span> <span class="va">$categoria</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb17-16"><a href="#cb17-16"></a></span>
+<span id="cb17-17"><a href="#cb17-17"></a><span class="fu">header</span>(<span class="st">"Location: index.php"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>"sssi"</code> indicates three strings and one integer, in the order of the four <code>?</code>.</p>
+<p><strong>Deleting an article.</strong> In <code>index.php</code>, the link to delete article 3 is <code>&lt;a href="delete.php?id=3"&gt;Apagar&lt;/a&gt;</code>. The <em>browser</em> requests that address with a <code>GET</code>, in which the <code>id</code> goes in the URL, with no form, and <code>delete.php</code> deletes only that article and returns to the list:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"DELETE FROM artigos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a></span>
+<span id="cb18-10"><a href="#cb18-10"></a><span class="fu">header</span>(<span class="st">"Location: index.php"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Anyone who types <code>delete.php?id=3</code> into the <em>browser</em> deletes the article, which is why, as explained next, this management area would be protected by authentication.</p>
 <p>The complete flow of the application can be summarised as follows: Rita navigates between simple, independent pages starting from <code>index.php</code>; each operation, <code>add</code>, <code>edit</code> or <code>delete</code>, communicates with the database through <code>insert.php</code>, <code>update.php</code> or directly in <code>delete.php</code>; and, once the change is saved, the application always redirects back to <code>index.php</code>, closing the cycle. In a real application, this management area would, of course, be protected by authentication, through sessions as seen in <a href="cap07.html#sec-07-sessions-en" class="quarto-xref"><span>Section 7.9.2</span></a>, so that only Rita, and not any reader, could use it.</p>
-<p>This small project brings together, in practice, almost everything seen so far in the course: HTML and forms on the client side, superglobals to receive submitted data, <em>prepared statements</em> to save and read them securely, and an application organised into several simple pages, each with a single responsibility — the pattern underlying most dynamic web applications, and the one the rest of this course continues to build on.</p>
+<p>This small project brings together what came before, forms, <code>$_GET</code> and <code>$_POST</code> (<a href="cap07.html#sec-07-superglobals-en" class="quarto-xref"><span>Section 7.5</span></a>) and <code>require</code> (<a href="cap05.html#sec-05-includes-en" class="quarto-xref"><span>Section 5.3</span></a>), with what was seen in this chapter: the <code>mysqli</code> connection, the CRUD operations and <em>prepared statements</em>, in an application organised into several simple pages, each with a single responsibility.</p>
 </section>
 <section id="sec-08-challenge-en" class="level2" data-number="8.10">
 <h2 data-number="8.10" class="anchored" data-anchor-id="sec-08-challenge-en"><span class="header-section-number">8.10</span> Challenge</h2>
