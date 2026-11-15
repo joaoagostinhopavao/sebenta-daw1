@@ -573,17 +573,19 @@ div.csl-indent {
 <span id="cb17-16"><a href="#cb17-16"></a></span>
 <span id="cb17-17"><a href="#cb17-17"></a><span class="fu">header</span>(<span class="st">"Location: index.php"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O <code>"sssi"</code> indica três textos e um inteiro, pela ordem dos quatro <code>?</code>.</p>
-<p><strong>Apagar um artigo.</strong> No <code>index.php</code>, o <em>link</em> para apagar o artigo 3 é <code>&lt;a href="delete.php?id=3"&gt;Apagar&lt;/a&gt;</code>. O <em>browser</em> pede esse endereço com um <code>GET</code>, em que o <code>id</code> vai no URL, sem formulário, e o <code>delete.php</code> apaga só esse artigo e volta à lista:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
-<span id="cb18-3"><a href="#cb18-3"></a></span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
-<span id="cb18-5"><a href="#cb18-5"></a></span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"DELETE FROM artigos WHERE id = ?"</span>)<span class="ot">;</span></span>
-<span id="cb18-7"><a href="#cb18-7"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span></span>
-<span id="cb18-8"><a href="#cb18-8"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
-<span id="cb18-9"><a href="#cb18-9"></a></span>
-<span id="cb18-10"><a href="#cb18-10"></a><span class="fu">header</span>(<span class="st">"Location: index.php"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Apagar um artigo.</strong> No <code>index.php</code>, o <em>link</em> para apagar o artigo 3 é:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb18-1"><a href="#cb18-1"></a><span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"delete.php?id=3"</span><span class="dt">&gt;</span>Apagar<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O <em>browser</em> pede esse endereço com um <code>GET</code>, em que o <code>id</code> vai no URL, sem formulário, e o <code>delete.php</code> apaga só esse artigo e volta à lista:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(<span class="st">"DELETE FROM artigos WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$id</span>)<span class="ot">;</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a></span>
+<span id="cb19-10"><a href="#cb19-10"></a><span class="fu">header</span>(<span class="st">"Location: index.php"</span>)<span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Qualquer pessoa que escreva <code>delete.php?id=3</code> no <em>browser</em> apaga o artigo, razão pela qual, como se diz a seguir, esta área de gestão ficaria protegida por autenticação.</p>
 <p>O fluxo completo da aplicação pode resumir-se assim: a Rita navega entre páginas simples e independentes a partir de <code>index.php</code>; cada operação, <code>add</code>, <code>edit</code> ou <code>delete</code>, comunica com a base de dados através de <code>insert.php</code>, <code>update.php</code> ou diretamente em <code>delete.php</code>; e, depois de gravada a alteração, a aplicação redireciona sempre de volta para <code>index.php</code>, fechando o ciclo. Numa aplicação real, esta área de gestão ficaria, claro, protegida por autenticação, através de sessões como as vistas na <a href="cap07.html#sec-07-sessoes" class="quarto-xref"><span>Secção 7.9.2</span></a>, para que só a Rita, e não qualquer leitor, a pudesse usar.</p>
 <p>Este pequeno projeto junta o que vem de trás, formulários, <code>$_GET</code> e <code>$_POST</code> (<a href="cap07.html#sec-07-supervariaveis" class="quarto-xref"><span>Secção 7.5</span></a>) e <code>require</code> (<a href="cap05.html#sec-05-includes" class="quarto-xref"><span>Secção 5.3</span></a>), com o que se viu neste capítulo: a ligação <code>mysqli</code>, as operações CRUD e os <em>prepared statements</em>, numa aplicação organizada em várias páginas simples, cada uma com uma única responsabilidade.</p>

@@ -497,10 +497,14 @@ header("Location: index.php");
 
 O `"sssi"` indica três textos e um inteiro, pela ordem dos quatro `?`.
 
-**Apagar um artigo.** No `index.php`, o *link* para apagar o artigo 3 é
-`<a href="delete.php?id=3">Apagar</a>`. O *browser* pede esse endereço
-com um `GET`, em que o `id` vai no URL, sem formulário, e o `delete.php`
-apaga só esse artigo e volta à lista:
+**Apagar um artigo.** No `index.php`, o *link* para apagar o artigo 3 é:
+
+```html
+<a href="delete.php?id=3">Apagar</a>
+```
+
+O *browser* pede esse endereço com um `GET`, em que o `id` vai no URL,
+sem formulário, e o `delete.php` apaga só esse artigo e volta à lista:
 
 ```php
 <?php

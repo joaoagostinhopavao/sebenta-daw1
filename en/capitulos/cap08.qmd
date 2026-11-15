@@ -319,7 +319,13 @@ header("Location: index.php");
 
 The `"sssi"` indicates three strings and one integer, in the order of the four `?`.
 
-**Deleting an article.** In `index.php`, the link to delete article 3 is `<a href="delete.php?id=3">Apagar</a>`. The *browser* requests that address with a `GET`, in which the `id` goes in the URL, with no form, and `delete.php` deletes only that article and returns to the list:
+**Deleting an article.** In `index.php`, the link to delete article 3 is:
+
+```html
+<a href="delete.php?id=3">Apagar</a>
+```
+
+The *browser* requests that address with a `GET`, in which the `id` goes in the URL, with no form, and `delete.php` deletes only that article and returns to the list:
 
 ```php
 <?php
