@@ -107,9 +107,8 @@ de forma insegura, por concatenação direta:
 require "config.php";
 $utilizador = $_POST["utilizador"];
 $password = $_POST["password"];
-$sql = "SELECT * FROM utilizadores
-        WHERE utilizador = '$utilizador'
-        AND password = '$password'";
+$sql = "SELECT * FROM utilizadores WHERE "
+     . "utilizador = '$utilizador' AND password = '$password'";
 $resultado = $conexao->query($sql);
 if ($linha = $resultado->fetch_assoc()) {
     echo "Sessão iniciada.";
@@ -208,9 +207,14 @@ inofensivas, e o *browser* mostra o texto em vez de o executar:
 echo "<p>" . htmlspecialchars($_POST["comentario"]) . "</p>";
 ```
 
-Por exemplo, o texto `<script>alert(1)</script>` passa a
-`&lt;script&gt;alert(1)&lt;/script&gt;`: o *browser* mostra o texto, não o
-executa. Desta forma, o texto do atacante é mostrado literalmente na página, como
+Por exemplo, o texto `<script>alert(1)</script>` é enviado ao *browser*
+como:
+
+```html
+&lt;script&gt;alert(1)&lt;/script&gt;
+```
+
+O *browser* mostra o texto, não o executa. Desta forma, o texto do atacante é mostrado literalmente na página, como
 texto visível, e não interpretado como código. A regra é escapar sempre
 na saída: todo o texto vindo de utilizadores, antes de o mostrar em
 HTML.

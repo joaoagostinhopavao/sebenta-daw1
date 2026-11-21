@@ -459,13 +459,12 @@ Table&nbsp;9.1: The chapter topics and the OWASP Top 10:2025 categories.
 <span id="cb3-2"><a href="#cb3-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="va">$utilizador</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a><span class="va">$password</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="va">$sql</span> <span class="op">=</span> <span class="st">"SELECT * FROM utilizadores</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="st">        WHERE utilizador = '</span><span class="va">$utilizador</span><span class="st">'</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="st">        AND password = '</span><span class="va">$password</span><span class="st">'"</span><span class="ot">;</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="va">$sql</span>)<span class="ot">;</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
-<span id="cb3-10"><a href="#cb3-10"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="va">$sql</span> <span class="op">=</span> <span class="st">"SELECT * FROM utilizadores WHERE "</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>     <span class="op">.</span> <span class="st">"utilizador = '</span><span class="va">$utilizador</span><span class="st">' AND password = '</span><span class="va">$password</span><span class="st">'"</span><span class="ot">;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="va">$sql</span>)<span class="ot">;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If an attacker enters, in the <code>utilizador</code> field, the text <code>' OR '1'='1' --</code> (with a space at the end of the text; without it, MySQL reports a syntax error), the SQL statement actually executed becomes:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> utilizadores</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="kw">WHERE</span> utilizador <span class="op">=</span> <span class="st">''</span> <span class="kw">OR</span> <span class="st">'1'</span><span class="op">=</span><span class="st">'1'</span></span>
@@ -502,7 +501,9 @@ Table&nbsp;9.1: The chapter topics and the OWASP Top 10:2025 categories.
 <p>The defence is to always escape the text coming from users before displaying it in HTML, with the <code>htmlspecialchars()</code> function. This function replaces the special HTML characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code> and quotes) with harmless entities, and the <em>browser</em> displays the text instead of executing it:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="fu">htmlspecialchars</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For example, the text <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> becomes <code>&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</code>: the <em>browser</em> shows the text and does not execute it. This way, the attacker’s text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.</p>
+<p>For example, the text <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> is sent to the <em>browser</em> as:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb9-1"><a href="#cb9-1"></a><span class="dv">&amp;lt;</span>script<span class="dv">&amp;gt;</span>alert(1)<span class="dv">&amp;lt;</span>/script<span class="dv">&amp;gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <em>browser</em> shows the text and does not execute it. This way, the attacker’s text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.</p>
 </section>
 <section id="sec-09-csrf-en" class="level3" data-number="9.3.3">
 <h3 data-number="9.3.3" class="anchored" data-anchor-id="sec-09-csrf-en"><span class="header-section-number">9.3.3</span> CSRF (Cross-Site Request Forgery)</h3>
@@ -510,31 +511,31 @@ Table&nbsp;9.1: The chapter topics and the OWASP Top 10:2025 categories.
 <p>Consider the <code>delete.php</code> of <a href="cap08.html#sec-08-crud-en" class="quarto-xref"><span>Section 8.9</span></a>, in which, to delete a record, it is enough for the <em>browser</em> of Rita (authenticated on the Contraponto site) to request this address:</p>
 <pre><code>GET /delete.php?id=3</code></pre>
 <p>If the attacker’s page has, in its HTML, an “image” that is invisible to Rita (<code>width="0"</code>, <code>height="0"</code>), in which the <code>src</code>, which should be the address of an image, contains the address of <code>delete.php</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb10-1"><a href="#cb10-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://contraponto.example/delete.php?id=3"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"0"</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb11-1"><a href="#cb11-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://contraponto.example/delete.php?id=3"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"0"</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>then, when Rita visits that page, the <em>browser</em> sends the request when loading the “image” and attaches the session <em>cookie</em> by itself: it is a <code>GET</code> that deletes data. <code>delete.php</code> sees a valid session and deletes article 3, without Rita having clicked anything. The attacker never sees the <em>cookie</em> (unlike XSS, in which they steal it): they use Rita’s <em>browser</em> to send the request.</p>
 <p>The defence has two complementary parts. The first is never to change data through <code>GET</code>, as already recommended in <a href="cap07.html#sec-07-get-vs-post-en" class="quarto-xref"><span>Section 7.4.3</span></a> (<code>GET</code> reads, <code>POST</code> changes). The second is to put, in every sensitive form, an unpredictable <em>token</em>, stored in the session and checked before acting. The form generates the <em>token</em> and sends it in a hidden field:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="cf">if</span> (<span class="kw">empty</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>])) {</span>
-<span id="cb11-4"><a href="#cb11-4"></a>    <span class="va">$_SESSION</span>[<span class="st">"token"</span>] <span class="op">=</span> <span class="fu">bin2hex</span>(<span class="fu">random_bytes</span>(<span class="dv">32</span>))<span class="ot">;</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a>}</span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="kw">?&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="op">&lt;</span>form action<span class="op">=</span><span class="st">"delete.php"</span> method<span class="op">=</span><span class="st">"post"</span><span class="op">&gt;</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a>  <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"hidden"</span> name<span class="op">=</span><span class="st">"id"</span> value<span class="op">=</span><span class="st">"3"</span><span class="op">&gt;</span></span>
-<span id="cb11-9"><a href="#cb11-9"></a>  <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"hidden"</span> name<span class="op">=</span><span class="st">"token"</span></span>
-<span id="cb11-10"><a href="#cb11-10"></a>         value<span class="op">=</span><span class="st">"&lt;?= </span><span class="va">$_SESSION</span>[<span class="st">"</span>token<span class="st">"] ?&gt;"</span><span class="op">&gt;</span></span>
-<span id="cb11-11"><a href="#cb11-11"></a>  <span class="op">&lt;</span>button<span class="op">&gt;</span>Apagar<span class="op">&lt;/</span>button<span class="op">&gt;</span></span>
-<span id="cb11-12"><a href="#cb11-12"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The <code>random_bytes(32)</code> function generates unpredictable values, <code>bin2hex()</code> converts them to text and <code>hash_equals()</code> compares the two <em>tokens</em>. <code>delete.php</code> rejects the request if the <em>token</em> is missing or does not match:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"token"</span>])</span>
-<span id="cb12-4"><a href="#cb12-4"></a>    <span class="op">||</span> <span class="op">!</span><span class="fu">hash_equals</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>                    <span class="va">$_POST</span>[<span class="st">"token"</span>])) {</span>
-<span id="cb12-6"><a href="#cb12-6"></a>    <span class="fu">http_response_code</span>(<span class="dv">403</span>)<span class="ot">;</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a>    <span class="cf">exit</span>(<span class="st">"Pedido inválido."</span>)<span class="ot">;</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>}</span>
-<span id="cb12-9"><a href="#cb12-9"></a><span class="co">// valid token: delete with a prepared statement</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="cf">if</span> (<span class="kw">empty</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>])) {</span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="va">$_SESSION</span>[<span class="st">"token"</span>] <span class="op">=</span> <span class="fu">bin2hex</span>(<span class="fu">random_bytes</span>(<span class="dv">32</span>))<span class="ot">;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>}</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="kw">?&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="op">&lt;</span>form action<span class="op">=</span><span class="st">"delete.php"</span> method<span class="op">=</span><span class="st">"post"</span><span class="op">&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>  <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"hidden"</span> name<span class="op">=</span><span class="st">"id"</span> value<span class="op">=</span><span class="st">"3"</span><span class="op">&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>  <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"hidden"</span> name<span class="op">=</span><span class="st">"token"</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>         value<span class="op">=</span><span class="st">"&lt;?= </span><span class="va">$_SESSION</span>[<span class="st">"</span>token<span class="st">"] ?&gt;"</span><span class="op">&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>  <span class="op">&lt;</span>button<span class="op">&gt;</span>Apagar<span class="op">&lt;/</span>button<span class="op">&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>random_bytes(32)</code> function generates unpredictable values, <code>bin2hex()</code> converts them to text and <code>hash_equals()</code> compares the two <em>tokens</em>. <code>delete.php</code> rejects the request if the <em>token</em> is missing or does not match:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"token"</span>])</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="op">||</span> <span class="op">!</span><span class="fu">hash_equals</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>                    <span class="va">$_POST</span>[<span class="st">"token"</span>])) {</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="fu">http_response_code</span>(<span class="dv">403</span>)<span class="ot">;</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>    <span class="cf">exit</span>(<span class="st">"Pedido inválido."</span>)<span class="ot">;</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>}</span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="co">// valid token: delete with a prepared statement</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>if</code> reads piece by piece:</p>
 <ol type="1">
 <li><code>!isset($_SESSION["token"], $_POST["token"])</code>: the <code>!</code> means “not”, so the condition is true if either of the two <em>tokens</em> is missing;</li>
@@ -587,16 +588,16 @@ Table&nbsp;9.2: The <code>utilizadores</code> table with plain-text passwords.
 <h4 class="anchored" data-anchor-id="sec-09-hash-en">The <em>hash</em></h4>
 <p>A <em>hash</em> is the result of a function that turns the password into a fixed-size value. It identifies the password but does not allow it to be reconstructed: the password cannot be recovered from the <em>hash</em>, it can only be guessed, by trial and error. The database stores only the <em>hash</em>, and the real password is never stored. At <em>login</em>, PHP checks whether what the person typed as a password matches the stored <em>hash</em>.</p>
 <p>PHP has two functions for this. At registration, <code>password_hash()</code> creates the <em>hash</em>, and at login, <code>password_verify()</code> checks it:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="va">$hash</span> <span class="op">=</span> <span class="fu">password_hash</span>(</span>
-<span id="cb13-3"><a href="#cb13-3"></a>    <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span> <span class="cn">PASSWORD_DEFAULT</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="co">// $hash comes from the database</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="cf">if</span> (<span class="fu">password_verify</span>(</span>
-<span id="cb14-4"><a href="#cb14-4"></a>        <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span> <span class="va">$hash</span>)) {</span>
-<span id="cb14-5"><a href="#cb14-5"></a>    <span class="co">// correct password</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="va">$hash</span> <span class="op">=</span> <span class="fu">password_hash</span>(</span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span> <span class="cn">PASSWORD_DEFAULT</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">// $hash comes from the database</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="cf">if</span> (<span class="fu">password_verify</span>(</span>
+<span id="cb15-4"><a href="#cb15-4"></a>        <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span> <span class="va">$hash</span>)) {</span>
+<span id="cb15-5"><a href="#cb15-5"></a>    <span class="co">// correct password</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Two runs of <code>password_hash()</code> with the same password give different results, for example:</p>
 <pre><code>$2y$12$BpqtsRr5RdRVkRxTwYNZr.xd21tabzoCdzCgglor5pk9Ilryp9Xt2
 $2y$12$JN664fXU3AqFVrjy2BYRruHKFpVmDZnHpk4rHlZTo5mSHGVvCrjnC</code></pre>
@@ -606,35 +607,35 @@ $2y$12$JN664fXU3AqFVrjy2BYRruHKFpVmDZnHpk4rHlZTo5mSHGVvCrjnC</code></pre>
 <section id="sec-09-register-login-en" class="level4">
 <h4 class="anchored" data-anchor-id="sec-09-register-login-en">Registration and <em>login</em></h4>
 <p><code>registo.php</code> stores only the <em>hash</em>, and <code>login.php</code> searches only by user:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="va">$utilizador</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="va">$hash</span> <span class="op">=</span> <span class="fu">password_hash</span>(<span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a>                      <span class="cn">PASSWORD_DEFAULT</span>)<span class="ot">;</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
-<span id="cb16-7"><a href="#cb16-7"></a>    <span class="st">"INSERT INTO utilizadores</span></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="st">     (utilizador, password) VALUES (?, ?)"</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a>)<span class="ot">;</span></span>
-<span id="cb16-10"><a href="#cb16-10"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"ss"</span><span class="ot">,</span> <span class="va">$utilizador</span><span class="ot">,</span> <span class="va">$hash</span>)<span class="ot">;</span></span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">&lt;?php</span></span>
 <span id="cb17-2"><a href="#cb17-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
-<span id="cb17-4"><a href="#cb17-4"></a>    <span class="st">"SELECT password FROM utilizadores</span></span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="st">     WHERE utilizador = ?"</span></span>
-<span id="cb17-6"><a href="#cb17-6"></a>)<span class="ot">;</span></span>
-<span id="cb17-7"><a href="#cb17-7"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"s"</span><span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>])<span class="ot">;</span></span>
-<span id="cb17-8"><a href="#cb17-8"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
-<span id="cb17-9"><a href="#cb17-9"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
-<span id="cb17-10"><a href="#cb17-10"></a><span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()<span class="ot">;</span></span>
-<span id="cb17-11"><a href="#cb17-11"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">&amp;&amp;</span> <span class="fu">password_verify</span>(<span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span></span>
-<span id="cb17-12"><a href="#cb17-12"></a>                              <span class="va">$linha</span>[<span class="st">"password"</span>])) {</span>
-<span id="cb17-13"><a href="#cb17-13"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb17-14"><a href="#cb17-14"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
-<span id="cb17-15"><a href="#cb17-15"></a>    <span class="fu">header</span>(<span class="st">"Location: painel.php"</span>)<span class="ot">;</span></span>
-<span id="cb17-16"><a href="#cb17-16"></a>} <span class="cf">else</span> {</span>
-<span id="cb17-17"><a href="#cb17-17"></a>    <span class="kw">echo</span> <span class="st">"Utilizador ou palavra-passe inválidos."</span><span class="ot">;</span></span>
-<span id="cb17-18"><a href="#cb17-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="va">$utilizador</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="va">$hash</span> <span class="op">=</span> <span class="fu">password_hash</span>(<span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>                      <span class="cn">PASSWORD_DEFAULT</span>)<span class="ot">;</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb17-7"><a href="#cb17-7"></a>    <span class="st">"INSERT INTO utilizadores</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="st">     (utilizador, password) VALUES (?, ?)"</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a>)<span class="ot">;</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"ss"</span><span class="ot">,</span> <span class="va">$utilizador</span><span class="ot">,</span> <span class="va">$hash</span>)<span class="ot">;</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb18-4"><a href="#cb18-4"></a>    <span class="st">"SELECT password FROM utilizadores</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="st">     WHERE utilizador = ?"</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>)<span class="ot">;</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"s"</span><span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>])<span class="ot">;</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
+<span id="cb18-10"><a href="#cb18-10"></a><span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()<span class="ot">;</span></span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">&amp;&amp;</span> <span class="fu">password_verify</span>(<span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span></span>
+<span id="cb18-12"><a href="#cb18-12"></a>                              <span class="va">$linha</span>[<span class="st">"password"</span>])) {</span>
+<span id="cb18-13"><a href="#cb18-13"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb18-14"><a href="#cb18-14"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb18-15"><a href="#cb18-15"></a>    <span class="fu">header</span>(<span class="st">"Location: painel.php"</span>)<span class="ot">;</span></span>
+<span id="cb18-16"><a href="#cb18-16"></a>} <span class="cf">else</span> {</span>
+<span id="cb18-17"><a href="#cb18-17"></a>    <span class="kw">echo</span> <span class="st">"Utilizador ou palavra-passe inválidos."</span><span class="ot">;</span></span>
+<span id="cb18-18"><a href="#cb18-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This <em>login</em> differs from the one in the <em>SQL Injection</em> section in four ways:</p>
 <ol type="1">
 <li>Registration stores only the <em>hash</em>;</li>
@@ -657,30 +658,30 @@ $2y$12$JN664fXU3AqFVrjy2BYRruHKFpVmDZnHpk4rHlZTo5mSHGVvCrjnC</code></pre>
 <section id="sec-09-updates-en" class="level3" data-number="9.5.1">
 <h3 data-number="9.5.1" class="anchored" data-anchor-id="sec-09-updates-en"><span class="header-section-number">9.5.1</span> Regular updates</h3>
 <p>Many flaws are only exploited after they become public, and the interval between disclosure and exploitation can be very short. PHP, the web server and MySQL should be kept up to date (old versions stop receiving fixes, and their flaws become public and documented), as should <em>plugins</em> and themes, installing only the necessary ones, from trustworthy sources, and removing those that are no longer used. Checking the version is the first step to knowing whether there are fixes to apply:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="ex">php</span> <span class="at">-v</span>           <span class="co"># PHP version</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="ex">mysql</span> <span class="at">--version</span>  <span class="co"># MySQL version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">php</span> <span class="at">-v</span>           <span class="co"># PHP version</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="ex">mysql</span> <span class="at">--version</span>  <span class="co"># MySQL version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Updating is not just running a command: it is advisable to test first and have a backup, because an update can also fail.</p>
 </section>
 <section id="sec-09-least-privilege-en" class="level3" data-number="9.5.2">
 <h3 data-number="9.5.2" class="anchored" data-anchor-id="sec-09-least-privilege-en"><span class="header-section-number">9.5.2</span> Principle of least privilege</h3>
 <p>Every component of an application, and every database user, should have only the permissions it needs, never full access for convenience. With the SQL permission-control commands (<a href="cap08.html#sec-08-sql-en" class="quarto-xref"><span>Section 8.2</span></a>), a user is created just for the application:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">-- creates the user that the application uses</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'contraponto_app'</span>@<span class="st">'localhost'</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a>    <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'palavra-passe-forte'</span>;</span>
-<span id="cb19-4"><a href="#cb19-4"></a></span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="co">-- only these operations, only on this database</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span>, <span class="kw">INSERT</span>, <span class="kw">UPDATE</span>, <span class="kw">DELETE</span></span>
-<span id="cb19-7"><a href="#cb19-7"></a>    <span class="kw">ON</span> contraponto.<span class="op">*</span> <span class="kw">TO</span> <span class="st">'contraponto_app'</span>@<span class="st">'localhost'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">-- creates the user that the application uses</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'contraponto_app'</span>@<span class="st">'localhost'</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'palavra-passe-forte'</span>;</span>
+<span id="cb20-4"><a href="#cb20-4"></a></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="co">-- only these operations, only on this database</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span>, <span class="kw">INSERT</span>, <span class="kw">UPDATE</span>, <span class="kw">DELETE</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a>    <span class="kw">ON</span> contraponto.<span class="op">*</span> <span class="kw">TO</span> <span class="st">'contraponto_app'</span>@<span class="st">'localhost'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This account cannot drop tables, change the structure (<code>DROP</code>, <code>ALTER</code>, <code>CREATE</code>) or access other databases. It can still read and change the Contraponto data, however: least privilege limits the damage, it does not prevent the attack. Using the <code>root</code> user in a web application is a serious bad practice: with an <em>SQL Injection</em>, the attacker would have full access to the database server. The same principle applies to files: the web server should only be able to write to the folders it needs (for example, the one for uploaded files), never to the PHP code.</p>
 </section>
 <section id="sec-09-validate-escape-en" class="level3" data-number="9.5.3">
 <h3 data-number="9.5.3" class="anchored" data-anchor-id="sec-09-validate-escape-en"><span class="header-section-number">9.5.3</span> Validate and escape data</h3>
 <p>All data coming from outside (<code>$_GET</code>, <code>$_POST</code>, <code>$_COOKIE</code>, HTTP headers) is treated as untrusted. Validation checks whether the data has the expected format, such as a non-empty text, a number or a date:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>])</span>
-<span id="cb20-3"><a href="#cb20-3"></a>    <span class="op">||</span> <span class="va">$_POST</span>[<span class="st">"comentario"</span>] <span class="op">===</span> <span class="st">""</span>) {</span>
-<span id="cb20-4"><a href="#cb20-4"></a>    <span class="cf">exit</span>(<span class="st">"Escreve um comentário."</span>)<span class="ot">;</span></span>
-<span id="cb20-5"><a href="#cb20-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>])</span>
+<span id="cb21-3"><a href="#cb21-3"></a>    <span class="op">||</span> <span class="va">$_POST</span>[<span class="st">"comentario"</span>] <span class="op">===</span> <span class="st">""</span>) {</span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="cf">exit</span>(<span class="st">"Escreve um comentário."</span>)<span class="ot">;</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Escaping makes the data safe for the context in which it will be used:</p>
 <div id="tbl-09-contexts-en" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -717,15 +718,15 @@ Table&nbsp;9.3: Escaping according to context.
 <section id="sec-09-errors-production-en" class="level3" data-number="9.5.4">
 <h3 data-number="9.5.4" class="anchored" data-anchor-id="sec-09-errors-production-en"><span class="header-section-number">9.5.4</span> Do not show errors in production</h3>
 <p>During development, <code>display_errors</code> helps find out what is failing (<a href="cap08.html#sec-08-errors-en" class="quarto-xref"><span>Section 8.8</span></a>). On a production site, the same message helps the attacker: it reveals names of tables, files and users. The development configuration shows errors on screen; the production one logs them without showing them:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="co">// development</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
-<span id="cb21-4"><a href="#cb21-4"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb22"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="co">// production</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="co">// development</span></span>
 <span id="cb22-3"><a href="#cb22-3"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">0</span>)<span class="ot">;</span></span>
-<span id="cb22-5"><a href="#cb22-5"></a><span class="fu">ini_set</span>(<span class="st">"log_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co">// production</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">0</span>)<span class="ot">;</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">ini_set</span>(<span class="st">"log_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A visitor could read, for example, <code>Access denied for user 'utilizador'@'localhost'</code>, which reveals the name of the database user, or <code>You have an error in your SQL syntax</code>, which confirms that their input reached the query (<em>SQL Injection</em>). In production, errors are still all logged, but they go to the server’s error log, which only the team reads. In practice, these options are set in <code>php.ini</code>, the PHP configuration on the server, and not on each page.</p>
 </section>
 </section>
@@ -783,28 +784,28 @@ Table&nbsp;9.4: Rita’s requirements.
 </figure>
 </div>
 <p>Tiago wrote the first version of two files. There are six flaws from this chapter: the challenge is to find and fix them.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="co">// login.php</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="va">$u</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="va">$p</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM utilizadores</span></span>
-<span id="cb23-7"><a href="#cb23-7"></a><span class="st">    WHERE utilizador = '</span><span class="va">$u</span><span class="st">' AND password = '</span><span class="va">$p</span><span class="st">'"</span>)<span class="ot">;</span></span>
-<span id="cb23-8"><a href="#cb23-8"></a><span class="cf">if</span> (<span class="va">$r</span>-&gt;fetch_assoc()) {</span>
-<span id="cb23-9"><a href="#cb23-9"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb23-10"><a href="#cb23-10"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$u</span><span class="ot">;</span></span>
-<span id="cb23-11"><a href="#cb23-11"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
-<span id="cb23-12"><a href="#cb23-12"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb24"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="co">// comentarios.php</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="co">// login.php</span></span>
 <span id="cb24-3"><a href="#cb24-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
-<span id="cb24-4"><a href="#cb24-4"></a><span class="va">$c</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"apagar"</span>]<span class="ot">;</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM comentarios</span></span>
-<span id="cb24-6"><a href="#cb24-6"></a><span class="st">                WHERE id = </span><span class="va">$c</span><span class="st">"</span>)<span class="ot">;</span></span>
-<span id="cb24-7"><a href="#cb24-7"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT texto FROM comentarios"</span>)<span class="ot">;</span></span>
-<span id="cb24-8"><a href="#cb24-8"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$r</span>-&gt;fetch_assoc()) {</span>
-<span id="cb24-9"><a href="#cb24-9"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"texto"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
-<span id="cb24-10"><a href="#cb24-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="va">$u</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="va">$p</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM utilizadores</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a><span class="st">    WHERE utilizador = '</span><span class="va">$u</span><span class="st">' AND password = '</span><span class="va">$p</span><span class="st">'"</span>)<span class="ot">;</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a><span class="cf">if</span> (<span class="va">$r</span>-&gt;fetch_assoc()) {</span>
+<span id="cb24-9"><a href="#cb24-9"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb24-10"><a href="#cb24-10"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$u</span><span class="ot">;</span></span>
+<span id="cb24-11"><a href="#cb24-11"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
+<span id="cb24-12"><a href="#cb24-12"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="co">// comentarios.php</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="va">$c</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"apagar"</span>]<span class="ot">;</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM comentarios</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="st">                WHERE id = </span><span class="va">$c</span><span class="st">"</span>)<span class="ot">;</span></span>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT texto FROM comentarios"</span>)<span class="ot">;</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$r</span>-&gt;fetch_assoc()) {</span>
+<span id="cb25-9"><a href="#cb25-9"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"texto"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The challenge has three steps:</p>
 <ol type="1">
 <li>Say which attack each flaw allows;</li>
@@ -814,43 +815,43 @@ Table&nbsp;9.4: Rita’s requirements.
 <section id="sec-09-solution-en" class="level3" data-number="9.6.1">
 <h3 data-number="9.6.1" class="anchored" data-anchor-id="sec-09-solution-en"><span class="header-section-number">9.6.1</span> The corrected files</h3>
 <p>The six flaws and their fixes are marked by numbers in the comments of the corrected files:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="co">// login.php</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="va">$u</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="va">$p</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
-<span id="cb25-6"><a href="#cb25-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(  <span class="co">// 1</span></span>
-<span id="cb25-7"><a href="#cb25-7"></a>    <span class="st">"SELECT password FROM utilizadores</span></span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="st">     WHERE utilizador = ?"</span>)<span class="ot">;</span></span>
-<span id="cb25-9"><a href="#cb25-9"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"s"</span><span class="ot">,</span> <span class="va">$u</span>)<span class="ot">;</span></span>
-<span id="cb25-10"><a href="#cb25-10"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
-<span id="cb25-11"><a href="#cb25-11"></a><span class="va">$linha</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()-&gt;fetch_assoc()<span class="ot">;</span></span>
-<span id="cb25-12"><a href="#cb25-12"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb25-13"><a href="#cb25-13"></a>    <span class="fu">password_verify</span>(<span class="va">$p</span><span class="ot">,</span> <span class="va">$linha</span>[<span class="st">"password"</span>])) {  <span class="co">// 2</span></span>
-<span id="cb25-14"><a href="#cb25-14"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb25-15"><a href="#cb25-15"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$u</span><span class="ot">;</span></span>
-<span id="cb25-16"><a href="#cb25-16"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
-<span id="cb25-17"><a href="#cb25-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb26"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a><span class="co">// comentarios.php</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="co">// login.php</span></span>
 <span id="cb26-3"><a href="#cb26-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
-<span id="cb26-4"><a href="#cb26-4"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
-<span id="cb26-5"><a href="#cb26-5"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>])) {  <span class="co">// 5</span></span>
-<span id="cb26-6"><a href="#cb26-6"></a>    <span class="cf">exit</span>(<span class="st">"Acesso negado."</span>)<span class="ot">;</span></span>
-<span id="cb26-7"><a href="#cb26-7"></a>}</span>
-<span id="cb26-8"><a href="#cb26-8"></a><span class="cf">if</span> (<span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"apagar"</span>]<span class="ot">,</span>  <span class="co">// 3</span></span>
-<span id="cb26-9"><a href="#cb26-9"></a>        <span class="va">$_POST</span>[<span class="st">"token"</span>])</span>
-<span id="cb26-10"><a href="#cb26-10"></a>    <span class="op">&amp;&amp;</span> <span class="fu">hash_equals</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"token"</span>])) {</span>
-<span id="cb26-11"><a href="#cb26-11"></a>    <span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(  <span class="co">// 4</span></span>
-<span id="cb26-12"><a href="#cb26-12"></a>        <span class="st">"DELETE FROM comentarios WHERE id = ?"</span>)<span class="ot">;</span></span>
-<span id="cb26-13"><a href="#cb26-13"></a>    <span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"apagar"</span>])<span class="ot">;</span></span>
-<span id="cb26-14"><a href="#cb26-14"></a>    <span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
-<span id="cb26-15"><a href="#cb26-15"></a>}</span>
-<span id="cb26-16"><a href="#cb26-16"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT texto FROM comentarios"</span>)<span class="ot">;</span></span>
-<span id="cb26-17"><a href="#cb26-17"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$r</span>-&gt;fetch_assoc()) {</span>
-<span id="cb26-18"><a href="#cb26-18"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span></span>
-<span id="cb26-19"><a href="#cb26-19"></a>         <span class="fu">htmlspecialchars</span>(<span class="va">$linha</span>[<span class="st">"texto"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span>  <span class="co">// 6</span></span>
-<span id="cb26-20"><a href="#cb26-20"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="va">$u</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="va">$p</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(  <span class="co">// 1</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>    <span class="st">"SELECT password FROM utilizadores</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a><span class="st">     WHERE utilizador = ?"</span>)<span class="ot">;</span></span>
+<span id="cb26-9"><a href="#cb26-9"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"s"</span><span class="ot">,</span> <span class="va">$u</span>)<span class="ot">;</span></span>
+<span id="cb26-10"><a href="#cb26-10"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb26-11"><a href="#cb26-11"></a><span class="va">$linha</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()-&gt;fetch_assoc()<span class="ot">;</span></span>
+<span id="cb26-12"><a href="#cb26-12"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb26-13"><a href="#cb26-13"></a>    <span class="fu">password_verify</span>(<span class="va">$p</span><span class="ot">,</span> <span class="va">$linha</span>[<span class="st">"password"</span>])) {  <span class="co">// 2</span></span>
+<span id="cb26-14"><a href="#cb26-14"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb26-15"><a href="#cb26-15"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$u</span><span class="ot">;</span></span>
+<span id="cb26-16"><a href="#cb26-16"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
+<span id="cb26-17"><a href="#cb26-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="co">// comentarios.php</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>])) {  <span class="co">// 5</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>    <span class="cf">exit</span>(<span class="st">"Acesso negado."</span>)<span class="ot">;</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a>}</span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="cf">if</span> (<span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"apagar"</span>]<span class="ot">,</span>  <span class="co">// 3</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>        <span class="va">$_POST</span>[<span class="st">"token"</span>])</span>
+<span id="cb27-10"><a href="#cb27-10"></a>    <span class="op">&amp;&amp;</span> <span class="fu">hash_equals</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"token"</span>])) {</span>
+<span id="cb27-11"><a href="#cb27-11"></a>    <span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(  <span class="co">// 4</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a>        <span class="st">"DELETE FROM comentarios WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb27-13"><a href="#cb27-13"></a>    <span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"apagar"</span>])<span class="ot">;</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a>    <span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb27-15"><a href="#cb27-15"></a>}</span>
+<span id="cb27-16"><a href="#cb27-16"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT texto FROM comentarios"</span>)<span class="ot">;</span></span>
+<span id="cb27-17"><a href="#cb27-17"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$r</span>-&gt;fetch_assoc()) {</span>
+<span id="cb27-18"><a href="#cb27-18"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span></span>
+<span id="cb27-19"><a href="#cb27-19"></a>         <span class="fu">htmlspecialchars</span>(<span class="va">$linha</span>[<span class="st">"texto"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span>  <span class="co">// 6</span></span>
+<span id="cb27-20"><a href="#cb27-20"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol type="1">
 <li><em>SQL Injection</em> in the <em>login</em>: <em>prepared statements</em>;</li>
 <li>plain-text password: <code>password_verify()</code> on the <em>hash</em> (registration is in <a href="#sec-09-register-login-en" class="quarto-xref"><span>Section 9.3.4.2</span></a>);</li>

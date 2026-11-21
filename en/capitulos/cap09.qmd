@@ -71,9 +71,8 @@ The same mechanism allows entry into a restricted area without knowing the passw
 require "config.php";
 $utilizador = $_POST["utilizador"];
 $password = $_POST["password"];
-$sql = "SELECT * FROM utilizadores
-        WHERE utilizador = '$utilizador'
-        AND password = '$password'";
+$sql = "SELECT * FROM utilizadores WHERE "
+     . "utilizador = '$utilizador' AND password = '$password'";
 $resultado = $conexao->query($sql);
 if ($linha = $resultado->fetch_assoc()) {
     echo "Sessão iniciada.";
@@ -139,9 +138,14 @@ The defence is to always escape the text coming from users before displaying it 
 echo "<p>" . htmlspecialchars($_POST["comentario"]) . "</p>";
 ```
 
-For example, the text `<script>alert(1)</script>` becomes
-`&lt;script&gt;alert(1)&lt;/script&gt;`: the *browser* shows the text and does not
-execute it. This way, the attacker's text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.
+For example, the text `<script>alert(1)</script>` is sent to the *browser*
+as:
+
+```html
+&lt;script&gt;alert(1)&lt;/script&gt;
+```
+
+The *browser* shows the text and does not execute it. This way, the attacker's text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.
 
 ### CSRF (Cross-Site Request Forgery) {#sec-09-csrf-en}
 
